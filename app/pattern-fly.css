@@ -1,0 +1,19 @@
+h1, h2, h3, h4, h5, h6, label, p, span {
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}
+label {
+    font-weight: 600 !important;
+    font-size: 12px;
+}
+a {
+    cursor: pointer;
+}
+.help-block {
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .col-sm-4 {
+        width: 33.33333333%;
+    }
+}

@@ -1,0 +1,35 @@
+.react-tabs{
+    background: white;
+}
+.react-tabs [role=tab][aria-selected=true]{
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    color: #0088ce;
+}
+.react-tabs [role=tab][aria-selected=true]:hover{
+    border-color: #aaa;
+}
+.react-tabs [role=tab]:hover{
+    border-color: #ededed;
+}
+
+/** secondary tab **/
+.react-tabs.secondary [role=tablist] {
+    border: 0;
+    border-bottom: 1px solid #ededed;
+}
+.react-tabs.secondary [role=tab][aria-selected=true] {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid #0088ce;
+    -webkit-border-radius: 0;
+    color: #0088ce;
+    box-shadow: none;
+}
+.react-tabs.secondary [role=tab][aria-selected=true]::after {
+    display: none;
+}
+.react-tabs.secondary [role=tab][aria-selected=false]:hover {
+    border-bottom: 2px solid #ededed;
+    color: #252525;
+}

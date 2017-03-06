@@ -22,18 +22,23 @@ module.exports = {
   ],
   module: {
     loaders: [{
-      test: /\.js$/,
-      exclude:/node_module/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, 'app')
-    },
-    { test: /\.json$/,
-      loader: 'json'
-    },
-    {
-      test: /\.less$/,
-      loader: "style!css!less"
-    }
+            test: /\.jsx?$/,
+            loader: 'babel',
+            exclude: /node_modules/,
+            query: {
+                presets: ['es2015', 'react']
+            }
+        },
+        {
+            test: /\.scss$/,
+            loader: 'style!css!sass!sass-resources'
+        },
+        {
+            test: /bootstrap\/dist\/js\/umd\//,
+            loader: 'imports?jQuery=jquery'
+        },
+        { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
+        { test: /\.(ttf|eot)$/, loader: 'file' }
   ]
   },
   resolve: {
