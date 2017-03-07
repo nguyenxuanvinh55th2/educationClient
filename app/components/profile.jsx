@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link, Router, browserHistory } from 'react-router'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
-//import LeftBar from '../leftbar/leftbar';
+import LeftBar from './leftBar.jsx';
 //import ChatBar from '../chatbar/chatbar';
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
  constructor(props) {
      super(props);
      this.state = ({ temp: 'Foo' })
@@ -31,6 +33,7 @@ export default class Profile extends React.Component {
  }
 
  render() {
+   console.log("this props ", this.props);
      return (
        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', padding: 10}}>
          <div className="col-sm-2">
@@ -47,3 +50,42 @@ export default class Profile extends React.Component {
      )
  }
 }
+
+const USER_CHAT = gql`
+  query userChat($userId: String){
+    userChat(userId: $userId) {
+      _id
+      user {
+        name
+        image
+        online
+        lastLogin
+        email
+        social
+      }
+      contentId
+      content {
+        index
+        userId
+        user{
+          _id
+          name
+          image
+        }
+        message
+        read
+        date
+      }
+    },
+  }`
+
+console.log("message", JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '');
+
+const mapDataToProps = graphql(
+  USER_CHAT,
+  {
+    options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' },  pollInterval: 1000 })
+  }
+);
+
+export default mapDataToProps(Profile);

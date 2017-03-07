@@ -12,6 +12,7 @@ export default class ComponentRender extends React.Component {
         )
         break;
       default:
+        return (<div></div>)
     }
   }
 }

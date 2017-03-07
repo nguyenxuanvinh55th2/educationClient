@@ -4,6 +4,7 @@ import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
 import ComponentRender from './componentRender.jsx';
+import Profile from './profile.jsx';
 
 function mapStateToProps(state){
   return {
@@ -19,13 +20,14 @@ function mapDispathToProps(dispatch) {
 
 class Main extends React.Component {
   render(){
+    console.log("main props ", this.props);
     return (
       <div>
         {/*<div>
           <Header/>
         </div>*/}
         <div  style={{marginTop: '39px'}}>
-          {React.cloneElement(this.props.children, this.props)}
+          {React.cloneElement(<Profile/>, this.props)}
         </div>
       </div>
     )

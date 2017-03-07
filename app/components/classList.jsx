@@ -1,15 +1,17 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+
 //import {Meteor} from 'meteor/meteor'
 import { Link, Router, browserHistory } from 'react-router';
-import { Grid, Col, Row, Button, FormGroup, FormControl, Dropdown, MenuItem, InputGroup, Glyphicon, Modal, ControlLabel, Tab, Tabs } from 'react-bootstrap';
 
 var Cryptr = require('cryptr'),
 cryptr = new Cryptr('ntuquiz123');
 
-import { asteroid } from '../../asteroid';
+import { asteroid } from '../asteroid';
 
-import SearchResult from '../mailSearchResult/searchResult.js';
+//import SearchResult from '../mailSearchResult/searchResult.js';
 
 // //Meteor.subscribe("user");
 
@@ -25,9 +27,9 @@ class SubjectItem extends Component {
     let encryptedString = '';//= cryptr.encrypt(classInfo);
     return (
       <div>
-        <Button href={"/profile/"+this.props.userId+"/dashboard/"+encryptedString}>
+        <button href={"/profile/"+this.props.userId+"/dashboard/"+encryptedString}>
           { this.props.subjectName }
-        </Button>
+        </button>
       </div>
     )
   }
@@ -53,17 +55,17 @@ class ClassItem extends Component {
     console.log("message class List", this.props);
     return (
         <li>
-          <Row>
-            <Col md={8}>
+          <div>
+            <div className="col-sm-8">
               <Button bsStyle="success" style={{width: "100%"}}> { this.props.className } </Button>
-            </Col>
-            <Col md={4}>
-              <Button style={{background: 'transparent'}}>
-                <Glyphicon glyph="glyphicon glyphicon-triangle-bottom" />
-              </Button>
+            </div>
+            <div className="col-sm-4">
+              <IconButton style={{color: info.labelColor, width: buttonWidth, backgroundColor: info.backgroundColor}} iconStyle={{fontSize: iconSize, color: info.labelColor, marginTop: info.top, marginBottom: info.bottom, marginRight: info.right, marginLeft: info.left}} tooltip={info.tooltip?info.tooltip:"Tooltip"} onClick={this.buttonCommand.bind(this)}>
+                <FontIcon style={{color, marginLeft: 3}} className="material-icons fa-2x">home</FontIcon>
+              </IconButton>
               { this.renderSubject() }
-            </Col>
-          </Row>
+            </div>
+          </div>
         </li>
     )
   }
