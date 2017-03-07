@@ -3,29 +3,28 @@ import {connect} from 'react-redux'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-import ComponentRender from './componentRender.jsx';
-
 function mapStateToProps(state){
   return {
       isLogin:state.login,
-      salary:state.salary,
-      userInfo: state.account,
+      salary:state.salary
   }
 }
 
 function mapDispathToProps(dispatch) {
   return bindActionCreators(actionCreator, dispatch);
 }
-
 class Main extends React.Component {
+  constructor(props){
+    super(props);
+  }
   render(){
     return (
       <div>
-        {/*<div>
-          <Header/>
-        </div>*/}
+        {/* <div>
+          <HeaderContain/>
+        </div> */}
         <div  style={{marginTop: '39px'}}>
-          {React.cloneElement(this.props.children, this.props)}
+          {/* {React.cloneElement(<Home />, this.props)} */}
         </div>
       </div>
     )
