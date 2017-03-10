@@ -26,11 +26,13 @@ import Home from './components/Home.jsx'
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
-    <Router history={history}>
-      <Route path='/' component={App}>
-        <IndexRoute component={Home}/>
-        <Route path="login" component={Login}/>
-      </Route>
-    </Router>
+    <MuiThemeProvider>
+      <Router history={history}>
+        <Route path='/' component={App}>
+          <IndexRoute component={Home}/>
+          <Route path="login" component={Login}/>
+        </Route>
+      </Router>
+      </MuiThemeProvider>
   </ApolloProvider>
 , document.getElementById('root'));
