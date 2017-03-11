@@ -5,7 +5,6 @@ import {asteroid} from '../asteroid'
 
 import { Link, Router, browserHistory } from 'react-router'
 
-import Style from '../login.css'
 export default class Login extends Component {
   constructor(props) {
     super(props)
@@ -16,25 +15,14 @@ export default class Login extends Component {
   }
   render() {
     return (
-      <div style={{flexDirection: 'column', alignSelf: 'center', width:'50%'}}>
-        <div style={{display: 'flex',flexDirection: 'row', justifyContent:'space-between'}}>
-          <GoogleLogin
-            clientId="500871646789-sutbet90ovo14nub4f2l190ck6u93cgc.apps.googleusercontent.com"
-            onSuccess={(response) => {
-                response['services'] = 'google';
-                response['job'] = '';
-                response['friendList'] = [];
-                this.props.loginGG(response);
-              }
-            }
-            onFailure={(response) => {}}
-            >
-            <i className="fa fa-google" aria-hidden="true"></i>
-            <span> Login with Google</span>
-            </GoogleLogin>
+      <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', paddingTop: 10}}>
+        <div style={{flexDirection: 'column'}}>
+          <div>
             <FacebookLogin
-              appId="1055517184541707"
+              appId="265492483877076"
               autoLoad={false}
+              reAuthenticate={true}
+              textButton="Login with Facebook"
               fields="name,email,picture"
               callback={(response) => {
                   response['services'] = 'facebook';
@@ -43,11 +31,27 @@ export default class Login extends Component {
                   this.props.loginFB(response);
                 }
               }
-              cssClass={Style.loginFacbook}
+              cssClass="loginFacbook"
               icon="fa-facebook"
+            />
+          </div>
+          <div>
+            <GoogleLogin
+              clientId="500871646789-sutbet90ovo14nub4f2l190ck6u93cgc.apps.googleusercontent.com"
+              onSuccess={(response) => {
+                  response['services'] = 'google';
+                  response['job'] = '';
+                  response['friendList'] = [];
+                  this.props.loginGG(response);
+                }
+              }
+              onFailure={(response) => {}}
+              className="loginGoogle"
               >
-                <span> Login with Google</span>
-              </FacebookLogin>
+              <i className="fa fa-google" aria-hidden="true"></i>
+              <span> Login with Google</span>
+              </GoogleLogin>
+          </div>
         </div>
         <div style={{flexDirection: 'column', marginTop: 5}}>
           <form className="form-horizontal">

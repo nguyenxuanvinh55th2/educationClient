@@ -18,7 +18,7 @@ import './ag-pattern.css';
 import './react-tab.css';
 import './react-tree.css';
 import './pattern-fly.css';
-import Style from './login.css'
+import './customer.css'
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
 import Profile from './components/profile.jsx'

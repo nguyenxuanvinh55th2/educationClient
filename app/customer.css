@@ -1,0 +1,29 @@
+.loginFacbook {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  width: 138px;
+  background-color: #4c69ba;
+  border: none;
+}
+.loginGoogle {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  width: 138px;
+  background-color: rgb(209, 72, 54);
+  border: none;
+}
+.fa-facebook {
+  padding-right: 5px;
+}
+.fa-google {
+  margin-left: -14px;
+}
+.metro {
+
+}

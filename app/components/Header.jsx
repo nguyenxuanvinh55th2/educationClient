@@ -11,10 +11,27 @@ import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+import { Modal } from 'react-bootstrap'
 
+import Login from './Login.jsx'
 export default class Header extends React.Component {
   constructor(props) {
     super(props)
+    this.handleResize = this.handleResize.bind(this);
+    this.state = {
+      height: window.innerHeight,
+      showModal: true,
+      dialogType: ''
+    }
+  }
+  handleResize(e) {
+      this.setState({height: window.innerHeight});
+  }
+  componentDidMount() {
+      window.addEventListener('resize', this.handleResize);
+  }
+  componentWillUnmount() {
+      window.removeEventListener('resize', this.handleResize);
   }
   render() {
     return(
@@ -45,12 +62,27 @@ export default class Header extends React.Component {
                 </li>
                 <li style={{display:'inline'}}><a href="#"><img src="http://placehold.it/30x30" alt="Nature" style={{borderRadius: '50%',width:35, height: 35}}/>Vinh</a></li>
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a onClick={() => this.setState({showModal: true})}><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
                 <li><a href="#"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
               </ul>
             </div>
           </div>
         </nav>
+        <Modal show={this.state.showModal} onHide={() => this.setState({showModal: false})}>
+          <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+              <div className="modal-content">
+                  <div className="modal-header">
+                      <h4 className="modal-title">Quản lý files</h4>
+                  </div>
+                  <div className="modal-body" style={{height:this.state.height - 226, overflowY: 'auto', overflowX: 'hidden'}}>
+                      <Login {...this.props} />
+                  </div>
+                  <div className="modal-footer" style={{margin: 0}}>
+                      <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Thoát</button>
+                  </div>
+              </div>
+          </div>
+        </Modal>
       </div>
     )
   }
