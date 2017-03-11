@@ -22,24 +22,17 @@ import './pattern-fly.css';
 import App from './components/app.jsx'
 import Login from './components/login.jsx'
 import Profile from './components/profile.jsx'
-class Home extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-      <div>HOme</div>
-    )
-  }
-}
+import Home from './components/Home.jsx'
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
-    <Router history={history}>
-      <Route path='/' component={App}>
-        <IndexRoute component={Home}/>
-        <Route path="login/:userId" component={Login}/>
-      </Route>
-    </Router>
+    <MuiThemeProvider>
+      <Router history={history}>
+        <Route path='/' component={App}>
+          <IndexRoute component={Home}/>
+          <Route path="login" component={Login}/>
+        </Route>
+      </Router>
+      </MuiThemeProvider>
   </ApolloProvider>
 , document.getElementById('root'));
