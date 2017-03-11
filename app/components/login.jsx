@@ -13,7 +13,7 @@ export default class Login extends Component {
   }
 
   render() {
-    console.log("this props login", this.props);
+    console.log("ff", this.props);
     return (
       <div className="login-title">
           <h2 style={{marginLeft:'40%', color: 'white'}}>Đăng nhập</h2>

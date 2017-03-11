@@ -1,7 +1,8 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import { Link, Router, browserHistory } from 'react-router'
+import {ListGroup,ListGroupItem,Button,Glyphicon} from 'react-bootstrap'
 
-//import ClassList from './classList.jsx'
+import ClassList from './classList.jsx'
 //Meteor.subscribe("user");
 
 export default class LeftBar extends Component {
@@ -12,7 +13,7 @@ export default class LeftBar extends Component {
       return (
         <div id="menuLeft">
             <p>Danh sách lớp học</p>
-            {/*<ClassList friendList = {this.props.data}/>*/}
+            <ClassList friendList = {this.props.data}/>
         </div>
       )
   }

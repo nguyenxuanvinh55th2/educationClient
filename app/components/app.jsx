@@ -21,14 +21,14 @@ class Main extends React.Component {
     super(props);
   }
   render(){
-    console.log("main props ", this.props);
+    console.log("message app ", this.props);
     return (
       <div>
         {/* <div>
           <HeaderContain/>
         </div> */}
         <div  style={{marginTop: '39px'}}>
-          {/* {React.cloneElement(<Home />, this.props)} */}
+          {React.cloneElement(this.props.children, this.props)}
         </div>
       </div>
     )

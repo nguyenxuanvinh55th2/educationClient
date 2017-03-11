@@ -1,17 +1,21 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
+import { connect } from 'react-redux';
+//import { Meteor } from 'metor/meteor';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
+import { search } from '../action/actionCreator.js';
 
 //import {Meteor} from 'meteor/meteor'
 import { Link, Router, browserHistory } from 'react-router';
+import { Grid, Col, Row, Button, FormGroup, FormControl, Dropdown, MenuItem, InputGroup, Glyphicon, Modal, ControlLabel, Tab, Tabs } from 'react-bootstrap';
 
 var Cryptr = require('cryptr'),
 cryptr = new Cryptr('ntuquiz123');
 
 import { asteroid } from '../asteroid';
 
-//import SearchResult from '../mailSearchResult/searchResult.js';
+import SearchResult from './searchResult.jsx';
 
 // //Meteor.subscribe("user");
 
@@ -27,9 +31,9 @@ class SubjectItem extends Component {
     let encryptedString = '';//= cryptr.encrypt(classInfo);
     return (
       <div>
-        <button href={"/profile/"+this.props.userId+"/dashboard/"+encryptedString}>
+        <Button href={"/profile/"+this.props.userId+"/dashboard/"+encryptedString}>
           { this.props.subjectName }
-        </button>
+        </Button>
       </div>
     )
   }
@@ -55,17 +59,17 @@ class ClassItem extends Component {
     console.log("message class List", this.props);
     return (
         <li>
-          <div>
-            <div className="col-sm-8">
+          <Row>
+            <Col md={8}>
               <Button bsStyle="success" style={{width: "100%"}}> { this.props.className } </Button>
-            </div>
-            <div className="col-sm-4">
-              <IconButton style={{color: info.labelColor, width: buttonWidth, backgroundColor: info.backgroundColor}} iconStyle={{fontSize: iconSize, color: info.labelColor, marginTop: info.top, marginBottom: info.bottom, marginRight: info.right, marginLeft: info.left}} tooltip={info.tooltip?info.tooltip:"Tooltip"} onClick={this.buttonCommand.bind(this)}>
-                <FontIcon style={{color, marginLeft: 3}} className="material-icons fa-2x">home</FontIcon>
-              </IconButton>
+            </Col>
+            <Col md={4}>
+              <Button style={{background: 'transparent'}}>
+                <Glyphicon glyph="glyphicon glyphicon-triangle-bottom" />
+              </Button>
               { this.renderSubject() }
-            </div>
-          </div>
+            </Col>
+          </Row>
         </li>
     )
   }
@@ -648,8 +652,94 @@ export default class ClassList extends Component {
   }
 }
 
-ClassList.PropTypes = {
-  data: PropTypes.object.isRequired,
-  friendList: PropTypes.object.isRequired,
-  search: PropTypes.func.isRequired
-}
+const CLASS_LIST = gql`
+  query UserClass($userId: String){
+    userClass(userId: $userId) {
+  		teacherOf {
+        _id
+      	classCode
+      	className
+      	role
+        currentUserId
+        course {
+          _id
+          subjectName
+        }
+      }
+  		studentOf {
+        _id
+      	classCode
+      	className
+      	role
+        currentUserId
+        course {
+          _id
+          subjectName
+        }
+      }
+    },
+    subjects {
+      _id
+    	name
+    	owner {
+        _id
+        image
+        name
+        email
+      }
+    	createAt
+    	courses {
+        activity {
+          _id
+          topicId
+          topic {
+            _id
+            type
+            ownerId
+            owner {
+              name
+              image
+            }
+            title
+            content
+            createAt
+            dateStart
+            dateEnd
+            index
+            files {
+              index
+              ownerId
+              filename
+              filetype
+              link
+            }
+          }
+        }
+      }
+    },
+    users {
+      _id
+      image
+      name
+      email
+    }
+  }`
+
+const mapDataToProps = graphql(
+  CLASS_LIST,
+  {
+    options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' } })
+  }
+);
+
+const ClassListData = mapDataToProps(ClassList);
+
+
+const ClassListContain = connect(
+  (state) => ({ }),
+  (dispatch) => ({
+    search: (keyWord) => {
+      dispatch(search(keyWord))
+    }
+  }),
+)(ClassList);

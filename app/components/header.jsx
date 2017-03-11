@@ -1,12 +1,8 @@
 import React, { PropTypes, Component } from 'react'
 import { Link, Router, browserHistory } from 'react-router'
 import ReactDOM from 'react-dom'
+import { Button, Form, FormControl, ControlLabel, InputGroup, FormGroup, Glyphicon, Row, Col, Grid, Navbar  } from 'react-bootstrap'
 import Notification from '../notification/notification.js'
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
 
 class UserImage extends Component {
   render() {
@@ -20,6 +16,10 @@ class UserImage extends Component {
       </FormGroup>
     )
   }
+}
+
+UserImage.PropTypes = {
+  userImage: PropTypes.string.isRequired,
 }
 
 class NoteNotificate extends Component {
@@ -36,42 +36,54 @@ class NoteNotificate extends Component {
   }
 }
 
+NoteNotificate.PropTypes = {
+  show: PropTypes.bool.isRequired,
+  number: PropTypes.number.isRequired,
+}
+
 class UserMenu extends Component {
   render() {
     return (
       <div id="userMenu">
-        <div style={{marginBottom: '18px'}} onClick={e => {
+        <Row style={{marginBottom: '18px'}} onClick={e => {
             document.getElementById('userMenu').style.display = 'inline';
           }}>
-          <div className="col-sm-5">
+          <Col md={5}>
               <img style={{width: '80px', height: '80px'}} src={ this.props.image }></img>
-          </div>
-          <div className="col-sm-7">
+          </Col>
+          <Col md={7}>
               <h4 style={{width: '100%'}}><b>{ this.props.name }</b></h4>
-          </div>
-        </div>
-        <div>
-          <div className="col-sm-7">
+          </Col>
+        </Row>
+        <Row>
+          <Col md={7}>
             <Link to={"/profile/" + this.props.userId + "/wall" } className="btn btn-success" onClick={e => {
                 document.getElementById('userMenu').style.display = 'none';
               }}>
               Trang cá nhân
             </Link>
-          </div>
-          <div className="col-sm-5">
+          </Col>
+          <Col md={5}>
             <Button bsStyle="primary" onClick={e => {
                 this.props.onLogout();
                 document.getElementById('userMenu').style.display = 'none';
                 browserHistory.push('/');
               }}>Đăng xuất</Button>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     )
   }
 }
 
-class Header extends Component {
+UserMenu.PropTypes = {
+  userId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  onLogout: PropTypes.func.isRequired
+}
+
+export default class Header extends Component {
   constructor(props) {
       super(props);
       this.state = {reRender: false};
@@ -115,29 +127,31 @@ class Header extends Component {
       return (
         <div style={{width:'100%'}}>
           <div style={{width:'100%'}} className="header">
-            {/*<Notification noteList={ this.props.data }/>*/}
-            <UserMenu image={ image } name={ name } userId={ userId } onLogout={ this.props.logout }/>
-            <form inline style={{width:'100%'}} onSubmit ={e => {
+            <Notification noteList={ this.props.data }/>
+            <UserMenu image={ image } name={ name } userId={ userId } onLogout={ this.props.onLogout }/>
+            <Form inline style={{width:'100%'}} onSubmit ={e => {
                 e.preventDefault();
                 let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
                 this.props.search(keyWord);
                 browserHistory.push('/search/' + keyWord);
               }}>
 
-              <IconButton style={{color: info.labelColor, width: buttonWidth, backgroundColor: info.backgroundColor}} iconStyle={{fontSize: iconSize, color: info.labelColor, marginTop: info.top, marginBottom: info.bottom, marginRight: info.right, marginLeft: info.left}} tooltip={info.tooltip?info.tooltip:"Tooltip"} onClick={this.buttonCommand.bind(this)}>
-                <FontIcon style={{color, marginLeft: 3}} className="material-icons fa-2x">home</FontIcon>
-              </IconButton>
+              <FormGroup style={{marginLeft: '20px'}}>
+                <Link to="/" className="btn btn-success header-button">
+                  <Glyphicon glyph="home"></Glyphicon>
+                </Link>
+              </FormGroup>
 
-              <IconButton style={{color: info.labelColor, width: buttonWidth, backgroundColor: info.backgroundColor}} iconStyle={{fontSize: iconSize, color: info.labelColor, marginTop: info.top, marginBottom: info.bottom, marginRight: info.right, marginLeft: info.left}} tooltip={info.tooltip?info.tooltip:"Tooltip"} onClick={this.buttonCommand.bind(this)}>
-                <FontIcon style={{color, marginLeft: 3}} className="material-icons fa-2x">home</FontIcon>
-              </IconButton>
+              <FormGroup style={{marginLeft: '20px'}}>
+                <Link to="/" className="btn btn-success header-button">
+                  <Glyphicon glyph="home"></Glyphicon>
+                </Link>
+              </FormGroup>
 
-              {/*<FormGroup style={{width: '60%', marginLeft: '20px'}}>
+              <FormGroup style={{width: '60%', marginLeft: '20px'}}>
                 <InputGroup style={{width: '100%'}}>
                   <FormControl type="text" ref={node => this.keyWord=node}/>
-                    <IconButton style={{color: info.labelColor, width: buttonWidth, backgroundColor: info.backgroundColor}} iconStyle={{fontSize: iconSize, color: info.labelColor, marginTop: info.top, marginBottom: info.bottom, marginRight: info.right, marginLeft: info.left}} tooltip={info.tooltip?info.tooltip:"Tooltip"} onClick={this.buttonCommand.bind(this)}>
-                      <FontIcon style={{color, marginLeft: 3}} className="material-icons fa-2x">home</FontIcon>
-                    </IconButton>
+                  <InputGroup.Addon style={{width: '20px'}}><Glyphicon glyph="search" /></InputGroup.Addon>
                 </InputGroup>
               </FormGroup>
 
@@ -148,35 +162,19 @@ class Header extends Component {
                   { this.renderNotificateIcon() }
                   <Glyphicon glyph="bell"></Glyphicon>
                 </Button>
-              </FormGroup>*/}
+              </FormGroup>
 
               { localStorage.getItem("userInfo") ? <UserImage userImage={image}/> : null }
 
-            </form>
+            </Form>
           </div>
         </div>
       )
     }
 }
 
-const NOTIFICATION = gql`
-  query notification($userId: String){
-    notification(userId: $userId) {
-      _id
-    	userId
-      classCode
-    	type
-    	sendId
-    	sendname
-    	sendimage
-    	note
-      read
-    	date
-    },
-  }`
-
-export default compose(
-  graphql(NOTIFICATION, {
-    options: () => ({ variables: { userId: 'GCid2Yid7YoDC9Atj' },  pollInterval: 1000 })
-  })
-)
+Header.PropTypes = {
+  data: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  search: PropTypes.object.isRequired,
+}

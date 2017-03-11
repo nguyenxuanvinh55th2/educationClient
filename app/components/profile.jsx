@@ -1,55 +1,59 @@
-import React from 'react'
-import { Link, Router, browserHistory } from 'react-router'
-import { graphql } from 'react-apollo'
+import React, { PropTypes, Component } from 'react'
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag'
+import { Link, Router, browserHistory } from 'react-router'
 
 import LeftBar from './leftBar.jsx';
-//import ChatBar from '../chatbar/chatbar';
+import ChatBar from './chatBar.jsx';
+import Wall from './wall.jsx'
 
-class Profile extends React.Component {
- constructor(props) {
-     super(props);
-     this.state = ({ temp: 'Foo' })
- }
+import {Row,Col} from 'react-bootstrap'
 
- content() {
-   console.log(this.props.data);
-   if(this.props.data && !this.props.data.loading) {
-     var parent = this;
-     var data = {
-       loading: this.props.data.loading,
-       friendList: this.props.data.userChat
-     }
-     console.log("message profile", data);
-     return React.cloneElement(
-       parent.props.children,
-         {data: data}
-     );
-   } else {
-       return (
-         <div className="loader"></div>
-       )
-   }
- }
+class Profile extends Component {
+  constructor(props) {
+      super(props);
+      this.state = ({ temp: 'Foo' })
+  }
 
- render() {
-   console.log("this props ", this.props);
-     return (
-       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', padding: 10}}>
-         <div className="col-sm-2">
-           <LeftBar data={{loading: this.props.data.loading, friendList: this.props.data.userChat ? this.props.data.userChat : []}}/>
-         </div>
-         <div className="col-sm-7">
-         {/*this.props.children*/}
-         {this.content()}
-         </div>
-         <div className="col-sm-2">
-            {/*<ChatBar data={{loading: this.props.data.loading, userChat: this.props.data.userChat ? this.props.data.userChat : []}}/>*/}
-         </div>
-       </div>
-     )
- }
+  content() {
+    console.log(this.props.data);
+    if(this.props.data && !this.props.data.loading) {
+      var parent = this;
+      var data = {
+        loading: this.props.data.loading,
+        friendList: this.props.data.userChat
+      }
+      console.log("message profile", data);
+      return <Wall data={data}/>
+    } else {
+        return (
+          <div className="loader"></div>
+        )
+    }
+  }
+
+  render() {
+      return (
+        <Row>
+          <Col md={2}>
+            <LeftBar data={{loading: this.props.data.loading, friendList: this.props.data.userChat ? this.props.data.userChat : []}}/>
+          </Col>
+          <Col md={7}>
+          {/*this.props.children*/}
+          {this.content()}
+          </Col>
+          <Col md={2}>
+             <ChatBar data={{loading: this.props.data.loading, userChat: this.props.data.userChat ? this.props.data.userChat : []}}/>
+          </Col>
+        </Row>
+      )
+  }
 }
+
+Profile.PropTypes = {
+  data: PropTypes.object.isRequired
+}
+
 
 const USER_CHAT = gql`
   query userChat($userId: String){
@@ -79,12 +83,14 @@ const USER_CHAT = gql`
     },
   }`
 
-console.log("message", JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '');
+let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+console.log("message ", userInfo);
 
 const mapDataToProps = graphql(
   USER_CHAT,
   {
-    options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' },  pollInterval: 1000 })
+    options: () => ({ variables: { userId: userInfo ? userInfo._id : null },  pollInterval: 1000 })
   }
 );
 

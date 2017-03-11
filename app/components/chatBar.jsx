@@ -1,9 +1,9 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import { Link, Router, browserHistory } from 'react-router'
 import { Button, Form, FormControl, ControlLabel, InputGroup, FormGroup, Glyphicon, ListGroup } from 'react-bootstrap'
-import store from '../../store';
+import store from '../store';
 
-//import ChatItem from '../chatItem/chatitem.js';
+import ChatItem from './chatItem.jsx';
 
 //Meteor.subscribe("user");
 export default class ChatBar extends Component {
@@ -29,7 +29,7 @@ export default class ChatBar extends Component {
   searchItem(userList) {
     let searchList = [];
     if(this.state.sItem !== '') {
-      for(i = 0; i < userList.length; i++) {
+      for(let i = 0; i < userList.length; i++) {
         var lowerCase = this.renderSearchString(userList[i].user.name);
         if(lowerCase.indexOf(this.state.sItem) !== -1)
           searchList.push(userList[i])
