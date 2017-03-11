@@ -4,7 +4,6 @@ import GoogleLogin from 'react-google-login';
 import {asteroid} from '../asteroid'
 
 import { Link, Router, browserHistory } from 'react-router'
-
 export default class Login extends Component {
   constructor(props) {
     super(props);

@@ -45,8 +45,8 @@ export default class Header extends React.Component {
                 </li>
                 <li style={{display:'inline'}}><a href="#"><img src="http://placehold.it/30x30" alt="Nature" style={{borderRadius: '50%',width:35, height: 35}}/>Vinh</a></li>
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="#"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li><a href="#"><span className="glyphicon glyphicon-log-out"></span> Login</a></li>
+                <li><a href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
               </ul>
             </div>
           </div>
