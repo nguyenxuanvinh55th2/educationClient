@@ -27,30 +27,37 @@ return userInfo;
 //action xử lý việc đăng nhập của user thông qua facebook
 //---------------------------------------------------------------------------------//
 export const loginFB = createAction('LOGINFB', (userInfo) => {
-asteroid.call("loginFbGgUser", userInfo).then(result => {
-      console.log(result);
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-  })
-  .catch(error => {
-      console.log("Error");
-      console.error(error);
-  });
-return userInfo;
+  asteroid.call("loginFbUser", userInfo).then(result => {
+        console.log(result);
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    })
+    .catch(error => {
+        console.log("Error");
+        console.error(error);
+    });
+  return userInfo;
 });
 
 //action xử lý việc đăng nhập của user thông qua google
 //---------------------------------------------------------------------------------//
 export const loginGG = createAction('LOGINGG', (userInfo) => {
-asteroid.call("loginFbGgUser", userInfo).then(result => {
-      console.log(result);
-      localStorage.setItem("userInfo", JSON.stringify(result));
-  })
-  .catch(error => {
-      console.log("Error");
-      console.error(error);
-  });
-return userInfo;
+  asteroid.call("loginGgUser", userInfo).then(result => {
+        console.log(result);
+        localStorage.setItem("userInfo", JSON.stringify(result));
+    })
+    .catch(error => {
+        console.log("Error");
+        console.error(error);
+    });
+  return userInfo;
 });
+
+//action xử lý việc tìm kiếm của user
+//---------------------------------------------------------------------------------//
+export const search = createAction('SEARCH', (keyWord) => {
+return keyWord
+})
+
 
 export const logout = createAction('LOGOUT', () => {
   localStorage.removeItem("userInfo");

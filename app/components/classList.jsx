@@ -1,4 +1,10 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
+import { connect } from 'react-redux';
+//import { Meteor } from 'metor/meteor';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import { search } from '../action/actionCreator.js';
 
 //import {Meteor} from 'meteor/meteor'
 import { Link, Router, browserHistory } from 'react-router';
@@ -7,9 +13,9 @@ import { Grid, Col, Row, Button, FormGroup, FormControl, Dropdown, MenuItem, Inp
 var Cryptr = require('cryptr'),
 cryptr = new Cryptr('ntuquiz123');
 
-import { asteroid } from '../../asteroid';
+import { asteroid } from '../asteroid';
 
-import SearchResult from '../mailSearchResult/searchResult.js';
+import SearchResult from './searchResult.jsx';
 
 // //Meteor.subscribe("user");
 
@@ -646,8 +652,94 @@ export default class ClassList extends Component {
   }
 }
 
-ClassList.PropTypes = {
-  data: PropTypes.object.isRequired,
-  friendList: PropTypes.object.isRequired,
-  search: PropTypes.func.isRequired
-}
+const CLASS_LIST = gql`
+  query UserClass($userId: String){
+    userClass(userId: $userId) {
+  		teacherOf {
+        _id
+      	classCode
+      	className
+      	role
+        currentUserId
+        course {
+          _id
+          subjectName
+        }
+      }
+  		studentOf {
+        _id
+      	classCode
+      	className
+      	role
+        currentUserId
+        course {
+          _id
+          subjectName
+        }
+      }
+    },
+    subjects {
+      _id
+    	name
+    	owner {
+        _id
+        image
+        name
+        email
+      }
+    	createAt
+    	courses {
+        activity {
+          _id
+          topicId
+          topic {
+            _id
+            type
+            ownerId
+            owner {
+              name
+              image
+            }
+            title
+            content
+            createAt
+            dateStart
+            dateEnd
+            index
+            files {
+              index
+              ownerId
+              filename
+              filetype
+              link
+            }
+          }
+        }
+      }
+    },
+    users {
+      _id
+      image
+      name
+      email
+    }
+  }`
+
+const mapDataToProps = graphql(
+  CLASS_LIST,
+  {
+    options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' } })
+  }
+);
+
+const ClassListData = mapDataToProps(ClassList);
+
+
+const ClassListContain = connect(
+  (state) => ({ }),
+  (dispatch) => ({
+    search: (keyWord) => {
+      dispatch(search(keyWord))
+    }
+  }),
+)(ClassList);

@@ -3,7 +3,10 @@ import {connect} from 'react-redux'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-import Header from './Header.jsx'
+
+import Profile from './profile.jsx';
+import Header from './Header.jsx';
+
 function mapStateToProps(state){
   return {
       isLogin:state.login,
