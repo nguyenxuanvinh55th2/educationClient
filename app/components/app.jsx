@@ -3,8 +3,9 @@ import {connect} from 'react-redux'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-import ComponentRender from './componentRender.jsx';
+
 import Profile from './profile.jsx';
+import Header from './Header.jsx';
 
 function mapStateToProps(state){
   return {
@@ -21,12 +22,11 @@ class Main extends React.Component {
     super(props);
   }
   render(){
-    console.log("message app ", this.props);
     return (
       <div>
-        {/* <div>
-          <HeaderContain/>
-        </div> */}
+        <div>
+        {React.cloneElement(<Header/>, this.props)}
+        </div>
         <div  style={{marginTop: '39px'}}>
           {React.cloneElement(this.props.children, this.props)}
         </div>

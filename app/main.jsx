@@ -23,19 +23,12 @@ import App from './components/app.jsx'
 import Login from './components/login.jsx'
 import Profile from './components/profile.jsx'
 import Wall from './components/wall.jsx'
-class Home extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-      <div>HOme</div>
-    )
-  }
-}
+import Home from './components/Home.jsx'
+
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
+    <MuiThemeProvider>
     <Router history={history}>
       <Route path='/' component={App}>
         <IndexRoute component={Home}/>
@@ -45,5 +38,6 @@ ReactDOM.render(
         </Route>
       </Route>
     </Router>
+    </MuiThemeProvider>
   </ApolloProvider>
 , document.getElementById('root'));
