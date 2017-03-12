@@ -17,6 +17,8 @@ function mapStateToProps(state){
 function mapDispathToProps(dispatch) {
   return bindActionCreators(actionCreator, dispatch);
 }
+
+
 class Main extends React.Component {
   constructor(props){
     super(props);
@@ -27,8 +29,8 @@ class Main extends React.Component {
         <div>
         {React.cloneElement(<Header/>, this.props)}
         </div>
-        <div  style={{marginTop: '39px'}}>
-          {React.cloneElement(this.props.children, this.props)}
+        <div  style={{marginTop: '100px'}}>
+          {this.props.children}
         </div>
       </div>
     )

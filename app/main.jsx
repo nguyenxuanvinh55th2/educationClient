@@ -18,12 +18,14 @@ import './ag-pattern.css';
 import './react-tab.css';
 import './react-tree.css';
 import './pattern-fly.css';
+import './main.css';
 
 import App from './components/app.jsx'
 import Login from './components/login.jsx'
 import Profile from './components/profile.jsx'
 import Wall from './components/wall.jsx'
 import Home from './components/Home.jsx'
+import DashboardSubject from './components/dashboardSubject.jsx'
 
 injectTapEventPlugin();
 ReactDOM.render(
@@ -35,6 +37,7 @@ ReactDOM.render(
         <Route path="login" component={Login}/>
         <Route path="/profile/:id" component={Profile}>
           <Route path="/profile/:id/wall" component={Wall}/>
+          <Router path="/profile/:id/dashboard/:classInfo" component={DashboardSubject}/>
         </Route>
       </Route>
     </Router>

@@ -33,7 +33,7 @@ SearchResultItem.PropTypes = {
 class SearchResult extends Component {
   renderResult(){
     if(this.props.searchResult) {
-      result = [];
+      let result = [];
       for(let i = 0; i < this.props.searchResult.length; i++) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
         if(re.test(this.props.searchResult[i])) {

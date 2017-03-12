@@ -5,7 +5,7 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import LeftBar from './leftBar.jsx';
 import ChatBar from './chatBar.jsx';
-import Wall from './wall.jsx'
+import Wall from './wall.jsx';
 
 import {Row,Col} from 'react-bootstrap'
 
@@ -23,8 +23,7 @@ class Profile extends Component {
         loading: this.props.data.loading,
         friendList: this.props.data.userChat
       }
-      console.log("message profile", data);
-      return <Wall data={data}/>
+      return React.cloneElement(this.props.children, {data})
     } else {
         return (
           <div className="loader"></div>
@@ -90,7 +89,7 @@ console.log("message ", userInfo);
 const mapDataToProps = graphql(
   USER_CHAT,
   {
-    options: () => ({ variables: { userId: userInfo ? userInfo._id : null },  pollInterval: 1000 })
+    options: () => ({ variables: { userId: userInfo ? userInfo._id : null } })
   }
 );
 
