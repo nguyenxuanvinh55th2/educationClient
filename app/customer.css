@@ -17,6 +17,7 @@
   width: 138px;
   background-color: rgb(209, 72, 54);
   border: none;
+  margin-top: 5px;
 }
 .fa-facebook {
   padding-right: 5px;
@@ -26,4 +27,12 @@
 }
 .metro {
 
+}
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand>img {
+  height: 100%;
+  padding: 7px 15px;
+  width: auto;
 }

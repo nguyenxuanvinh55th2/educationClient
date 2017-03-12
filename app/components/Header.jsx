@@ -20,7 +20,7 @@ export default class Header extends React.Component {
     this.handleResize = this.handleResize.bind(this);
     this.state = {
       height: window.innerHeight,
-      showModal: true,
+      showModal: false,
       dialogType: ''
     }
   }
@@ -36,7 +36,7 @@ export default class Header extends React.Component {
   render() {
     return(
       <div style={{flexDirection:'column', width:'auto'}}>
-        <nav className="navbar navbar-default navbar-fixed-top">
+        <nav className="navbar navbar-default navbar-fixed-top" style={{backgroundColor: '#2b3a41', border: 0}}>
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -44,26 +44,33 @@ export default class Header extends React.Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="#">WebSiteName</a>
+              <a className="navbar-brand" href="/">
+                <img src="/public/imgs/logo.png" alt="Dispute Bills" />
+              </a>
             </div>
             <form className="navbar-form navbar-left">
-              <div className="input-group" style={{width: 450}}>
-                <input type="text" className="form-control" placeholder="Search"/>
-                <div className="input-group-btn">
-                  <button className="btn btn-default" type="submit">
-                    <i className="glyphicon glyphicon-search"></i>
-                  </button>
+              <div className="form-group">
+                <div className="input-group">
+                  <input type="text" className="form-control" placeholder="Search"/>
+                  <div className="input-group-btn">
+                    <button className="btn btn-default" type="submit">
+                      <i className="glyphicon glyphicon-search"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
+             </div>
             </form>
             <div className="collapse navbar-collapse" id="myNavbar">
-              <ul className="nav navbar-nav navbar-right">
-                <li><a href="#"><NotificationsIcon/> <span className="badge" style={{borderRadius: '50%', marginLeft: 0}}>5</span></a>
+              <ul className="nav navbar-nav navbar-right" style={{paddingRight: 20}}>
+                <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
+                <li style={{marginRight: 20}}><a href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
+                <li><a href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng xuất</a></li>
+                {/* <li><a href="#"><NotificationsIcon/> <span className="badge" style={{borderRadius: '50%', marginLeft: 0}}>5</span></a>
                 </li>
                 <li style={{display:'inline'}}><a href="#"><img src="http://placehold.it/30x30" alt="Nature" style={{borderRadius: '50%',width:35, height: 35}}/>Vinh</a></li>
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a onClick={() => this.setState({showModal: true})}><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li><a href="#"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                <li><a href="#"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li> */}
               </ul>
             </div>
           </div>
@@ -71,15 +78,15 @@ export default class Header extends React.Component {
         <Modal show={this.state.showModal} onHide={() => this.setState({showModal: false})}>
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                  <div className="modal-header">
+                  {/* <div className="modal-header">
                       <h4 className="modal-title">Quản lý files</h4>
-                  </div>
+                  </div> */}
                   <div className="modal-body" style={{height:this.state.height - 226, overflowY: 'auto', overflowX: 'hidden'}}>
                       <Login {...this.props} />
                   </div>
-                  <div className="modal-footer" style={{margin: 0}}>
+                  {/* <div className="modal-footer" style={{margin: 0}}>
                       <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Thoát</button>
-                  </div>
+                  </div> */}
               </div>
           </div>
         </Modal>
