@@ -19,9 +19,10 @@ import './react-tab.css';
 import './react-tree.css';
 import './pattern-fly.css';
 import './main.css';
+import './customer.css';
 
-import App from './components/app.jsx'
-import Login from './components/login.jsx'
+import App from './components/App.jsx'
+import Login from './components/Login.jsx'
 import Profile from './components/profile.jsx'
 import Wall from './components/wall.jsx'
 import Home from './components/Home.jsx'
