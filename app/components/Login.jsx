@@ -4,13 +4,39 @@ import GoogleLogin from 'react-google-login';
 import {asteroid} from '../asteroid'
 
 import { Link, Router, browserHistory } from 'react-router'
-
-export default class Login extends Component {
+import CryptoJS from "crypto-js";
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+class Login extends Component {
   constructor(props) {
     super(props)
+    this.handleLoginGoogle = this.handleLoginGoogle.bind(this);
     this.state= {
       email: '',
       password: ''
+    }
+  }
+  handleLogin(){
+    let { loginWithPassword } = this.props;
+    let that = this;
+    var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
+    loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
+        let dataUser = JSON.parse(data.loginWithPassword);
+        console.log(dataUser);
+        localStorage.setItem('Meteor.loginToken', dataUser.token);
+    }).catch(err=>{
+    });
+  }
+  handleLoginGoogle(response){
+    if(response){
+      if(this.props.loginWithGoogle){
+        this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
+          console.log(JSON.parse(data.loginWithGoogle));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     }
   }
   render() {
@@ -34,17 +60,7 @@ export default class Login extends Component {
                 <label className="col-sm-3 control-label" ></label>
                 <div className="col-sm-9" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                   <a style={{color: 'black'}}>Quên mật khẩu</a>
-                  <button className="btn btn-primary" type="button" onClick= {e => {
-                        e.preventDefault();
-                        asteroid.loginWithPassword({email:this.state.email,password:this.state.password}).then((res) => {
-                          let localToken = localStorage.getItem("ws://localhost:3000/websocket__login_token__");
-                          if(localToken){
-                            localStorage.setItem('Meteor.loginToken',localToken)
-                          }
-                          this.props.login(localStorage.getItem('Meteor.loginToken'));
-                        }).catch((err) => {console.log(err);})
-                      }
-                    }>Đăng Nhập</button>
+                  <button className="btn btn-primary" type="button" onClick={this.handleLogin.bind(this)}>Đăng Nhập</button>
                 </div>
               </div>
           </form>
@@ -64,7 +80,12 @@ export default class Login extends Component {
                     response['services'] = 'facebook';
                     response['job'] = '';
                     response['friendList'] = [];
-                    this.props.loginFB(response);
+                    this.props.loginWithFacebook(JSON.stringify(response)).then(({data}) => {
+                      console.log(data.loginWithFacebook);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    })
                   }
                 }
                 cssClass="loginFacbook"
@@ -78,8 +99,14 @@ export default class Login extends Component {
                     response['services'] = 'google';
                     response['job'] = '';
                     response['friendList'] = [];
-                    this.props.loginGG(response);
                   }
+                }
+                onSuccess={(response) => {
+                  response['services'] = 'google';
+                  response['job'] = '';
+                  response['friendList'] = [];
+                  this.handleLoginGoogle(response);
+                }
                 }
                 onFailure={(response) => {}}
                 className="loginGoogle"
@@ -95,3 +122,36 @@ export default class Login extends Component {
     )
   }
 }
+
+const LOGIN = gql`
+  mutation loginWithPassword($username: String, $password: String) {
+    loginWithPassword(username: $username, password: $password)
+  }
+`;
+const LOGINWITHGOOGLE = gql`
+  mutation loginWithGoogle($info: String) {
+    loginWithGoogle(info: $info)
+  }
+`;
+const LOGINWITHFACEBOOK = gql`
+  mutation loginWithFacebook($info: String) {
+    loginWithFacebook(info: $info)
+  }
+`;
+export default compose(
+  graphql(LOGIN,{
+      props:({mutate})=>({
+      loginWithPassword : (username,password) =>mutate({variables:{username,password}})
+    })
+  }),
+  graphql(LOGINWITHGOOGLE,{
+      props:({mutate})=>({
+      loginWithGoogle : (info) =>mutate({variables:{info}})
+    })
+  }),
+  graphql(LOGINWITHFACEBOOK,{
+      props:({mutate})=>({
+      loginWithFacebook : (info) =>mutate({variables:{info}})
+    })
+  }),
+)(Login);
