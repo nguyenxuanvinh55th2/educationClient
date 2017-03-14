@@ -4,10 +4,9 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import {routerReducer, syncHistoryWithStore} from 'react-router-redux'
 import { browserHistory} from 'react-router'
-
+import { socketEndpoint } from './config';
 const defaultState = {
-  account: false,
-  salary:0
+  users: {}
 }
 
 const store = createStore(

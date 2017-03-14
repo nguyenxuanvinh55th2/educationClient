@@ -7,6 +7,7 @@ import { Link, Router, browserHistory } from 'react-router'
 import CryptoJS from "crypto-js";
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -22,7 +23,7 @@ class Login extends Component {
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
     loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
         let dataUser = JSON.parse(data.loginWithPassword);
-        console.log(dataUser);
+        this.props.loginCommand(dataUser)
         localStorage.setItem('Meteor.loginToken', dataUser.token);
     }).catch(err=>{
     });
@@ -31,7 +32,8 @@ class Login extends Component {
     if(response){
       if(this.props.loginWithGoogle){
         this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
-          console.log(JSON.parse(data.loginWithGoogle));
+          let dataUser = data.loginWithGoogle
+          this.props.loginCommand(JSON.parse(data.loginWithGoogle))
         })
         .catch((error) => {
           console.log(error);
@@ -81,7 +83,7 @@ class Login extends Component {
                     response['job'] = '';
                     response['friendList'] = [];
                     this.props.loginWithFacebook(JSON.stringify(response)).then(({data}) => {
-                      console.log(data.loginWithFacebook);
+                      this.props.loginCommand(JSON.parse(data.loginWithFacebook))
                     })
                     .catch((error) => {
                       console.log(error);
