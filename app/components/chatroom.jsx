@@ -5,6 +5,8 @@ import { Link, Router, browserHistory } from 'react-router'
 import { Label, Panel, Button, Grid, Row, Col, Form, FormGroup, Glyphicon } from 'react-bootstrap'
 // import {FB, FacebookApiException} from 'fb';
 
+import { sendMessage } from '../action/actionCreator.js';
+
 import { asteroid } from '../asteroid'
 
 class Message extends Component {
@@ -55,7 +57,7 @@ Message.PropTypes = {
 }
 
 //Meteor.subscribe("user");
-export default class ChatRoom extends Component {
+class ChatRoom extends Component {
   constructor(props) {
       super(props);
       this.index = this.props.chatContent.length;
@@ -193,3 +195,22 @@ export default class ChatRoom extends Component {
       )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      onSendMess: (index, userName, userImage, message, date) => {
+        dispatch(sendMessage(index, userName, userImage, message, date))
+      }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatRoom)

@@ -32,6 +32,7 @@ class Profile extends Component {
   }
 
   render() {
+      console.log("props ", this.props);
       return (
         <Row>
           <Col md={2}>

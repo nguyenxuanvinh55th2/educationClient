@@ -33,33 +33,11 @@ export default class RenderPost extends Component {
     )
   }
   renderTag(){
-    if(this.props.owner === Meteor.userId()){
-      return (
-        <Tabs defaultActiveKey={1} id="uncontrolled-tab-example" >
-            <Tab eventKey={1} title="Bài giảng">
-                <div  className="tabcontent">
-                  <AddTopic courseId={this.props.courseId}/>
-                </div>
-            </Tab>
-
-            <Tab eventKey={2} title="Thông báo">
-              <div  className="tabcontent">
-                <ChatForum  subjectId={this.props.subjectId}/>
-              </div>
-            </Tab>
-
-            <Tab eventKey={3} title="Bài tập" >
-            <div  className="tabcontent">
-            </div>
-            </Tab>
-       </Tabs>
-      )
-    }
-    else {
-      return (
-        <AddTopic refetchData={this.props.refetchData} courseId={this.props.courseId} />
-      )
-    }
+    return (
+      <div  className="tabcontent">
+        <AddTopic courseId={this.props.courseId}/>
+      </div>
+    )
   }
   render(){
     return (

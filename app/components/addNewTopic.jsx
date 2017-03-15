@@ -38,7 +38,7 @@ class TopicEditor extends Component {
     this.changefile = this.changefile.bind(this)
     this.spliceList = this.spliceList.bind(this)
     this.newFile;
-    Meteor.subscribe("media");
+    //Meteor.subscribe("media");
     this.listfiles =[];
     this.topicName = '';
     this.topicContent = '';

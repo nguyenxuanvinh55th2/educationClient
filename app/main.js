@@ -100,7 +100,8 @@ export default StyleSheet.create({
         "paddingLeft": 5,
         "WebkitBorderRadius": 7,
         "MozBorderRadius": 7,
-        "borderRadius": 7
+        "borderRadius": 7,
+        "maxWidth": 170
     },
     "message-right": {
         "float": "right",
@@ -115,7 +116,8 @@ export default StyleSheet.create({
         "paddingLeft": 5,
         "WebkitBorderRadius": 7,
         "MozBorderRadius": 7,
-        "borderRadius": 7
+        "borderRadius": 7,
+        "maxWidth": 170
     },
     "messageDate": {
         "fontSize": 11
@@ -168,5 +170,123 @@ export default StyleSheet.create({
         "borderRadius": 3,
         "borderColor": "white",
         "backgroundColor": "inherit"
+    },
+    "navbar-inverse": {
+        "backgroundImage": "url(\"http://www.whitetablegallery.org/src/share/default.jpg\")"
+    },
+    "navbar-default": {
+        "backgroundColor": "blue",
+        "border": "1px solid yellow"
+    },
+    "ul": {
+        "display": "inline"
+    },
+    "li": {
+        "display": "inline"
+    },
+    "form-control": {
+        "width": "40%",
+        "marginBottom": 20
+    },
+    "loader": {
+        "border": "5px solid #f3f3f3",
+        "borderTop": "5px solid green",
+        "borderRadius": "50%",
+        "width": 30,
+        "height": 30,
+        "marginTop": 0,
+        "marginRight": "auto",
+        "marginBottom": 0,
+        "marginLeft": "auto",
+        "animation": "spin 2s linear infinite"
+    },
+    "extraTextContent": {
+        "marginLeft": 10
+    },
+    "DraftEditor-editorContainer": {
+        "width": "inherit",
+        "height": "inherit",
+        "backgroundcolor": "blue",
+        "border": "1px solid gray"
+    },
+    "controls-list": {
+        "display": "inline"
+    },
+    "align-right": {
+        "textAlign": "right"
+    },
+    "align-center": {
+        "textAlign": "center"
+    },
+    "align-left": {
+        "textAlign": "left"
+    },
+    "modal-content": {
+        "height": "100%"
+    },
+    "custom-modal": {
+        "width": 1000,
+        "height": 550
+    },
+    "fullsize-modal": {
+        "width": "100%",
+        "height": "100%"
+    },
+    "background-modal": {
+        "width": 550,
+        "marginTop": 100
+    },
+    "documentSet": {
+        "height": "60%",
+        "overflow": "scroll",
+        "overflowX": "hidden",
+        "marginBottom": 20
+    },
+    "searchTool": {
+        "position": "fixed",
+        "zIndex": 3,
+        "width": "76%",
+        "backgroundColor": "white"
+    },
+    "searchItem:hover": {
+        "backgroundColor": "green"
+    },
+    "chip": {
+        "display": "inline-block",
+        "paddingTop": 0,
+        "paddingRight": 10,
+        "paddingBottom": 0,
+        "paddingLeft": 10,
+        "height": 40,
+        "fontSize": 16,
+        "lineHeight": 40,
+        "borderRadius": 25,
+        "backgroundColor": "#f1f1f1",
+        "marginTop": 20
+    },
+    "chip img": {
+        "float": "left",
+        "marginTop": 0,
+        "marginRight": 5,
+        "marginBottom": 0,
+        "marginLeft": -26,
+        "height": 40,
+        "width": 40,
+        "borderRadius": "50%"
+    },
+    "chip p": {
+        "wordBreak": "keep-all"
+    },
+    "chip marquee": {},
+    "closebtn": {
+        "paddingLeft": 10,
+        "color": "#888",
+        "fontWeight": "bold",
+        "float": "right",
+        "fontSize": 20,
+        "cursor": "pointer"
+    },
+    "closebtn:hover": {
+        "color": "#000"
     }
 });

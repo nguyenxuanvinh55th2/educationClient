@@ -24,7 +24,7 @@ class DashboardSubject extends Component {
     if(!this.props.data || this.props.data.loading)
       return (<div className="loader"></div>)
     else {
-      let course = this.props.data.classInfo.course.filter(item => item._id === courseId)[0];
+      let course = this.props.data.classInfo.courses.filter(item => item._id === courseId)[0];
       return (
         <RenderPost refetchData={this.refetchData.bind(this)} listactivity={course.activity} courseId={course._id} owner={course.teacherId} />
       )
@@ -53,6 +53,7 @@ DashboardSubject.PropTypes = {
 
 const getClassInfo = (classInfo) => {
   let decryptedString = cryptr.decrypt(classInfo);
+  console.log("class Info ", decryptedString);
   return JSON.parse(decryptedString);
 }
 
@@ -60,8 +61,8 @@ const CLASS_INFO = gql`
   query classInfo($classId: String, $userId: String, $role: String) {
     classInfo(classId: $classId, userId: $userId, role: $role) {
       _id
-      classCode
-      className
+      code
+      name
       currentUserId
       role
       teacher {
@@ -82,11 +83,9 @@ const CLASS_INFO = gql`
         online
         lastLogin
       }
-      course {
+      courses {
         _id
         subjectName
-        teacherId
-        createAt
         dateStart
         dateEnd
         isOpen
@@ -94,46 +93,6 @@ const CLASS_INFO = gql`
         activity {
           _id
           topicId
-          topic {
-            _id
-            type
-            ownerId
-            owner {
-              name
-              image
-            }
-            title
-            content
-            createAt
-            dateStart
-            dateEnd
-            index
-            files {
-              index
-              ownerId
-              filename
-              filetype
-              link
-            }
-            memberReply {
-              _id
-              ownerId
-              owner {
-                name
-                image
-              }
-              content
-              createAt
-              index
-              files {
-                index
-                ownerId
-                filename
-                filetype
-                link
-              }
-            }
-          }
         }
       }
     }
@@ -141,7 +100,7 @@ const CLASS_INFO = gql`
 const mapDataToProps = graphql(
   CLASS_INFO,
   {
-    options: (ownProps) => ({ variables: { classId: getClassInfo(ownProps.params.classInfo).classId, userId: getClassInfo(ownProps.params.classInfo).userId, role: getClassInfo(ownProps.params.classInfo).role } })
+    options: (ownProps) => ({ variables: { classId: 'f3nHyx3ZxN7fELto', userId: 'gtez6BH4qdjmsFsQ3', role: 'teacher' } })
   }
 );
 

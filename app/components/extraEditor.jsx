@@ -59,7 +59,7 @@ export default class ExtraEditor extends Component {
   }
 
   enableTool(item) {
-    index = parseInt(item.key);
+    let index = parseInt(item.key);
     if(this.editorList[index]) {
       this.editorList[index].toolshow = true;
       this.setState({editorList: this.editorList});
@@ -67,7 +67,7 @@ export default class ExtraEditor extends Component {
   }
 
   disableTool(item) {
-    index = parseInt(item.key);
+    let index = parseInt(item.key);
     if(this.editorList[index]) {
       this.editorList[index].toolshow = false;
       this.setState({editorList: this.editorList});
@@ -116,7 +116,7 @@ export default class ExtraEditor extends Component {
   }
 
   getHtml(item, html) {
-    index = parseInt(item.key);
+    let index = parseInt(item.key);
     if(this.editorList[index]) {
       this.editorList[index].html = html;
       this.setState({editorList: this.editorList});
@@ -124,7 +124,7 @@ export default class ExtraEditor extends Component {
   }
 
   removeTextEditor(item) {
-    index = parseInt(item.key);
+    let index = parseInt(item.key);
     if(this.editorList[index]) {
       this.editorList[index].key = '';
       this.editorList[index].indexId = '';
@@ -199,13 +199,13 @@ export default class ExtraEditor extends Component {
             <Col md={2} style={{backgroundColor: 'green', height: '100%', }}>
               <Button onClick={this.addNewEditor.bind(this, 'text')}>Text</Button>
               <span className="btn btn-default btn-file">
-                Hình ảnh<input id="imageInput" type="file" accept="image/*" onChange={this.addNewEditor.bind(this, 'image')}/>
+                Hình ảnh<input id="imageInput" className="form-control" type="file" accept="image/*" onChange={this.addNewEditor.bind(this, 'image')}/>
               </span>
               <span className="btn btn-default btn-file">
-                Video<input id="videoInput" type="file" accept="video/*" onChange={this.addNewEditor.bind(this, 'video')}/>
+                Video<input id="videoInput" className="form-control" type="file" accept="video/*" onChange={this.addNewEditor.bind(this, 'video')}/>
               </span>
               <span className="btn btn-default btn-file">
-                Âm thanh<input id="audioInput" type="file" accept="audio/*" onChange={this.addNewEditor.bind(this, 'audio')}/>
+                Âm thanh<input id="audioInput" className="form-control" type="file" accept="audio/*" onChange={this.addNewEditor.bind(this, 'audio')}/>
               </span>
               <Button onClick={this.addNewEditor.bind(this, 'link')}>Link Media</Button>
               <span className="btn btn-default btn-file">

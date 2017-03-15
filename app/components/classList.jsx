@@ -23,7 +23,7 @@ import Combobox from './Combobox.jsx';
 
 // //Meteor.subscribe("user");
 
-
+//render các subject của một lớp
 class SubjectItem extends Component {
   render () {
     let classInfo = JSON.stringify({
@@ -86,6 +86,7 @@ ClassItem.PropTypes = {
   role: PropTypes.string.isRequired,
 }
 
+//Hình ảnh và tên user trong danh sách tìm kiếm
 class SearchItem extends Component {
   render() {
     return (
@@ -101,7 +102,7 @@ class SearchItem extends Component {
           </div>
         </div>
         <div className="searchItem" onClick={e=>{
-            item = document.getElementById('searchItem' + this.props.id);
+            let item = document.getElementById('searchItem' + this.props.id);
             item.style.display = 'inline';
             document.getElementById('searchResult').appendChild(item);
             document.getElementById('searchTool').style.display = 'none';
@@ -128,6 +129,7 @@ SearchItem.PropTypes = {
   popUser: PropTypes.func.isRequired
 }
 
+//tool tìm kiếm user
 class SearchTool extends Component {
   renderResult() {
     return this.props.searchList.map((item) => (
@@ -207,7 +209,7 @@ class FriendItem extends Component {
             }}>
             <Row>
               <Col md={4}>
-                <img src={this.props.friend.image} alt="Person" width="96" height="96"/>
+                <img style={{marginLeft: -10}} src={this.props.friend.image} alt="Person" width="96" height="96"/>
               </Col>
               <Col md={8}>
                 <marquee direction="left">{this.props.friend.name}</marquee>
@@ -264,7 +266,7 @@ class ClassList extends Component {
 
   popMemberFromClass(member) {
     if(this.classMembers.indexOf(member) !== -1)
-      for(i = 0; i < this.classMembers.length; i++)
+      for(let i = 0; i < this.classMembers.length; i++)
         if(this.classMembers[i] === member)
           this.classMembers.splice(i, 1)
     this.setState({classMembers: this.classMembers});
@@ -528,32 +530,34 @@ class ClassList extends Component {
 
                   {/*Tab 3*/}
                   <Tab eventKey={3} title="Tab 3" style={{height: '75vh'}}>
-                    <p style={{marginTop: '10px'}}><b>Tìm kiếm thành viên từ địa chỉ mail</b></p>
-                    <FormGroup style={{width: '80%'}}>
-                        <SearchResult searchResult={this.state.classMembers} pushUser={this.pushMemberToClass.bind(this)} popUser={this.popMemberFromClass.bind(this)}/>
-                        <form onSubmit={e=>{
-                            e.preventDefault();
-                            let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
-                            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
-                            if(re.test(keyWord)) {
-                              this.pushMemberToClass(keyWord);
-                            }else
-                              alert('Địa chỉ email không đúng');
-                          }}>
-                          <FormControl ref={node => this.keyWord = node} type="text" onChange={e=>{
+                    <div style={{width: '90%', marginLeft: '5%'}}>
+                      <p style={{marginTop: '10px'}}><b>Tìm kiếm thành viên từ địa chỉ mail</b></p>
+                      <FormGroup style={{width: '80%'}}>
+                          <SearchResult searchResult={this.state.classMembers} pushUser={this.pushMemberToClass.bind(this)} popUser={this.popMemberFromClass.bind(this)}/>
+                          <form onSubmit={e=>{
                               e.preventDefault();
                               let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
-                              this.setState({keyWord: keyWord});
-                              document.getElementById('searchTool').style.display ='inline';
-                           }}/>
-                           <input type="submit" style={{display: 'none'}}/>
-                        </form>
-                        <FormControl.Feedback />
-                        { this.renderSearchTool() }
-                    </FormGroup>
-                    <p style={{marginTop: '10px'}}><b>Chọn thành viên từ friendList của bạn</b></p>
-                    <div className="documentSet">
-                      {this.renderFriendList()}
+                              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
+                              if(re.test(keyWord)) {
+                                this.pushMemberToClass(keyWord);
+                              }else
+                                alert('Địa chỉ email không đúng');
+                            }}>
+                            <FormControl ref={node => this.keyWord = node} type="text" onChange={e=>{
+                                e.preventDefault();
+                                let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
+                                this.setState({keyWord: keyWord});
+                                document.getElementById('searchTool').style.display ='inline';
+                             }}/>
+                             <input type="submit" style={{display: 'none'}}/>
+                          </form>
+                          <FormControl.Feedback />
+                          { this.renderSearchTool() }
+                      </FormGroup>
+                      <p style={{marginTop: '10px'}}><b>Chọn thành viên từ friendList của bạn</b></p>
+                      <div className="documentSet">
+                        {this.renderFriendList()}
+                      </div>
                     </div>
                     <Row>
                       <Col mdOffset={9}>

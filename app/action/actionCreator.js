@@ -91,6 +91,7 @@ let ob ={
 }
 return ob;
 });
+
 //add forum
 export const addForum = createAction('ADD_CHAT_FORUM', (subjectId,main,files) => {
   let member ={
@@ -102,6 +103,8 @@ export const addForum = createAction('ADD_CHAT_FORUM', (subjectId,main,files) =>
   };
   return member;
 });
+
+
 export const replyforum = createAction('REPLY_FORUM', (forumId,message,files) => {
 let ob ={
   forumId:forumId,
@@ -111,6 +114,7 @@ let ob ={
 }
 return ob;
 });
+
 //action xử lý việc gửi tin nhắn trong chat room của user
 //---------------------------------------------------------------------------------//
 export const sendMessage = createAction('SENDMESSAGE', (index, userName, userImage, message, date, userId) => {
