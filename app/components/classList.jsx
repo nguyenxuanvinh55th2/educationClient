@@ -28,14 +28,15 @@ class SubjectItem extends Component {
   render () {
     let classInfo = JSON.stringify({
       classId: this.props.classId,
-      userId: this.props.userId,
+      userId: this.props.users._id,
       courseId: this.props.courseId,
       role: this.props.role
     })
     let encryptedString = cryptr.encrypt(classInfo);
+    let { user } = this.props;
     return (
       <div>
-        <Button href={"/profile/"+'gtez6BH4qdjmsFsQ3'+"/dashboard/"+encryptedString}>
+        <Button href={"/profile/"+users._id+"/dashboard/"+encryptedString}>
           { this.props.subjectName }
         </Button>
       </div>

@@ -19,11 +19,11 @@ class Profile extends Component {
     console.log(this.props.data);
     if(this.props.data && !this.props.data.loading) {
       var parent = this;
-      var data = {
-        loading: this.props.data.loading,
-        friendList: this.props.data.userChat
-      }
-      return React.cloneElement(this.props.children, {data})
+      // var data = {
+      //   loading: this.props.data.loading,
+      //   friendList: this.props.data.userChat
+      // }
+      return React.cloneElement(this.props.children, this.props)
     } else {
         return (
           <div className="loader"></div>
@@ -36,14 +36,14 @@ class Profile extends Component {
       return (
         <Row>
           <Col md={2}>
-            <LeftBar data={{loading: this.props.data.loading, friendList: this.props.data.userChat ? this.props.data.userChat : []}}/>
+            <LeftBar {...this.props} data={{loading: this.props.data.loading, friendList: this.props.data.userChat ? this.props.data.userChat : []}}/>
           </Col>
           <Col md={7}>
           {/*this.props.children*/}
           {this.content()}
           </Col>
           <Col md={2}>
-             <ChatBar data={{loading: this.props.data.loading, userChat: this.props.data.userChat ? this.props.data.userChat : []}}/>
+             <ChatBar {...this.props} data={{loading: this.props.data.loading, userChat: this.props.data.userChat ? this.props.data.userChat : []}}/>
           </Col>
         </Row>
       )
@@ -83,14 +83,14 @@ const USER_CHAT = gql`
     },
   }`
 
-let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-console.log("message ", userInfo);
+// let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+//
+// console.log("message ", userInfo);
 
 const mapDataToProps = graphql(
   USER_CHAT,
   {
-    options: () => ({ variables: { userId: userInfo ? userInfo._id : null } })
+    options: (ownProps) => ({ variables: { userId: ownProps.users ? ownProps.users._id : null } })
   }
 );
 

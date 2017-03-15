@@ -4,14 +4,13 @@ import __ from 'lodash'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-
 import Profile from './profile.jsx';
 import Header from './Header.jsx';
+import NotificationSystem from 'react-notification-system';
 
 function mapStateToProps(state){
   return {
-      isLogin:state.login,
-      salary:state.salary
+    users: state.users,
   }
 }
 
@@ -35,6 +34,7 @@ class Main extends React.Component {
         <div style={{marginTop: 65}}>
           {React.cloneElement(this.props.children, childProps)}
         </div>
+        {/* <NotificationSystem ref="notificationSystem" /> */}
       </div>
     )
   }

@@ -29,34 +29,41 @@ export default class Home extends React.Component {
           </div>
           <div className="col-sm-12 col-md-6 col-lg-6">
             <img src="/public/imgs/anh1.png" className="img-responsive" />
+            <img src="/public/imgs/anh2.png" className="img-responsive" />
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-            <div>
-              <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 50}}>
-              </span>
-            </div>
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-          </div>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-            <div>
-              <span className="glyphicon glyphicon-ok pull-left" style={{fontSize: 50}}>
-              </span>
-            </div>
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <div className="row" style={{margin: 40}}>
+          <div className="col-sm-12 col-md-4 col-lg-4">
+            <div className="row">
+              <div className="col-sm-2">
+                <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 50}}>
+                </span>
+              </div>
+              <div className="col-sm-6">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
             </div>
           </div>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-            <div>
-              <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 50}}>
-              </span>
+          <div className="col-sm-12 col-md-4 col-lg-4">
+            <div className="row">
+              <div className="col-sm-2">
+                <span  className="glyphicon glyphicon-ok pull-left" style={{fontSize: 50}}>
+                </span>
+              </div>
+              <div className="col-sm-6">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
             </div>
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </div>
+          <div className="col-sm-12 col-md-4 col-lg-4">
+            <div className="row">
+              <div className="col-sm-2 ">
+                <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 50}}>
+                </span>
+              </div>
+              <div className="col-sm-6">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
             </div>
           </div>
         </div>
@@ -75,11 +82,32 @@ export default class Home extends React.Component {
             <p style={{paddingRight: 50}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           </div>
         </div>
-        <div style={{flexDirection: 'column'}}>
+        <div className="row" style={{margin: 0}}>
+          <div className="col-sm-2 col-md-5 col-lg-6">
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'blue', margin: 10}}>
 
+                </div>
+                <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'red', margin: 10}}>
+
+                </div>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'blue', margin: 10}}>
+
+                </div>
+                <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'red', margin: 10}}>
+
+                </div>
+              </div>
+          </div>
+          <div className="col-sm-10 col-md-7 col-lg-6">
+            <p style={{textAlign: 'center'}}>Nguyen Xuan Vinh</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
         </div>
         <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
-          <div className="col-sm-12 col-md-6 col-lg-5" style={{flexDirection: 'column', alignItems: 'center'}}>
+          <div className="col-sm-12 col-md-5 col-lg-4 col-md-offset-1 col-lg-offset-1" style={{flexDirection: 'column', alignItems: 'center'}}>
             <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
             <div>
               <p>LIÊN HỆ</p>

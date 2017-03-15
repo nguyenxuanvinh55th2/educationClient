@@ -78,7 +78,7 @@ export default class FriendList extends Component {
         <div className="loader"></div>
       )
     else {
-      var friendList = this.searchItem(this.props.data.friendList);
+      var friendList = this.searchItem(this.props.data.userChat);
       console.log("friend List", friendList);
 
       return friendList.map((item) => (
@@ -88,6 +88,7 @@ export default class FriendList extends Component {
   }
 
   render() {
+    console.log("user chat ", this.props);
     return (
       <div className="friendList">
         <Row>

@@ -13,7 +13,7 @@ export default class LeftBar extends Component {
       return (
         <div id="menuLeft">
             <p>Danh sách lớp học</p>
-            <ClassList friendList = {this.props.data}/>
+            <ClassList {...this.props} friendList = {this.props.data}/>
         </div>
       )
   }

@@ -34,6 +34,7 @@ export default class Header extends React.Component {
       window.removeEventListener('resize', this.handleResize);
   }
   render() {
+    console.log('header ', this.props);
     return(
       <div style={{flexDirection:'column', width:'auto'}}>
         <nav className="navbar navbar-default navbar-fixed-top" style={{backgroundColor: '#2b3a41', border: 0}}>

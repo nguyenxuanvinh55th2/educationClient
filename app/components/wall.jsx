@@ -13,7 +13,7 @@ export default class Wall extends Component {
   }
 
   render() {
-    console.log("message wall", this.props.data);
+    console.log("message wall", this.props);
 
       return (
         <Row>
