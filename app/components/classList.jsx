@@ -1,7 +1,10 @@
-import React, { PropTypes, Component, ReactDom } from 'react';
+import React, { PropTypes, Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import __ from 'lodash';
+import moment from 'moment';
 //import { Meteor } from 'metor/meteor';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { search } from '../action/actionCreator.js';
@@ -16,22 +19,24 @@ cryptr = new Cryptr('ntuquiz123');
 import { asteroid } from '../asteroid';
 
 import SearchResult from './searchResult.jsx';
+import Combobox from './Combobox.jsx';
 
 // //Meteor.subscribe("user");
 
-
+//render các subject của một lớp
 class SubjectItem extends Component {
   render () {
     let classInfo = JSON.stringify({
       classId: this.props.classId,
-      userId: this.props.userId,
+      userId: this.props.users._id,
       courseId: this.props.courseId,
       role: this.props.role
     })
-    let encryptedString = '';//= cryptr.encrypt(classInfo);
+    let encryptedString = cryptr.encrypt(classInfo);
+    let { user } = this.props;
     return (
       <div>
-        <Button href={"/profile/"+this.props.userId+"/dashboard/"+encryptedString}>
+        <Button href={"/profile/"+users._id+"/dashboard/"+encryptedString}>
           { this.props.subjectName }
         </Button>
       </div>
@@ -82,6 +87,7 @@ ClassItem.PropTypes = {
   role: PropTypes.string.isRequired,
 }
 
+//Hình ảnh và tên user trong danh sách tìm kiếm
 class SearchItem extends Component {
   render() {
     return (
@@ -97,7 +103,7 @@ class SearchItem extends Component {
           </div>
         </div>
         <div className="searchItem" onClick={e=>{
-            item = document.getElementById('searchItem' + this.props.id);
+            let item = document.getElementById('searchItem' + this.props.id);
             item.style.display = 'inline';
             document.getElementById('searchResult').appendChild(item);
             document.getElementById('searchTool').style.display = 'none';
@@ -124,6 +130,7 @@ SearchItem.PropTypes = {
   popUser: PropTypes.func.isRequired
 }
 
+//tool tìm kiếm user
 class SearchTool extends Component {
   renderResult() {
     return this.props.searchList.map((item) => (
@@ -203,7 +210,7 @@ class FriendItem extends Component {
             }}>
             <Row>
               <Col md={4}>
-                <img src={this.props.friend.image} alt="Person" width="96" height="96"/>
+                <img style={{marginLeft: -10}} src={this.props.friend.image} alt="Person" width="96" height="96"/>
               </Col>
               <Col md={8}>
                 <marquee direction="left">{this.props.friend.name}</marquee>
@@ -223,21 +230,14 @@ FriendItem.PropTypes = {
 
   //Danh sách các lớp học
 //--------------------------------------------------------------------------------//
-export default class ClassList extends Component {
+class ClassList extends Component {
   constructor(props) {
     super(props);
-    this.state = { showModal: false };
+    this.classMembers = [];
+    this.state = { showModal: false, className: '', semeter: '', subjectId: '', tabKey: 1, keyWord: '', subjectId: null, subjectName: null, classMembers: this.classMembers, dateStart: '', dateEnd: '', courseId: null, courseName: null };
 	  this.className = {};
     this.keyWord = {};
     this.classCode = {};
-    this.state = {className: '', semeter: '', subjectId: ''};
-    this.state = {tabKey: 1};
-    this.state = {keyWord: ''};
-
-    //state chứa id của môn học cần lấy tài liệu
-    this.state = {subjectName: ''};
-    this.classMembers = []
-    this.state = {classMembers: this.classMembers};
   }
 
   //Sử dụng để đóng modal addClass
@@ -267,7 +267,7 @@ export default class ClassList extends Component {
 
   popMemberFromClass(member) {
     if(this.classMembers.indexOf(member) !== -1)
-      for(i = 0; i < this.classMembers.length; i++)
+      for(let i = 0; i < this.classMembers.length; i++)
         if(this.classMembers[i] === member)
           this.classMembers.splice(i, 1)
     this.setState({classMembers: this.classMembers});
@@ -279,6 +279,26 @@ export default class ClassList extends Component {
       return 'error';
     else
       return 'success';
+  }
+
+  getDataCombobox(type, value, label) {
+    let { data } = this.props;
+    console.log("data courseThemes ", data.courseThemes);
+    switch (type) {
+      case 'course':
+        this.setState({courseId: value ? value : null});
+        this.setState({courseName: !value ? (label ? label : null) : null});
+        if(value) {
+          let course = __.find(data.courseThemes, {_id: value});
+          this.setState({dateStart: moment(course.dateStart).format('YYYY-MM-DD'), dateEnd: moment(course.dateEnd).format('YYYYY-MM-DD')});
+        }
+        break;
+      case 'subject':
+        this.setState({subjectId: value ? value : null});
+        this.setState({subjectName: !value ? (label ? label : null) : null});
+        break;
+      default:
+    }
   }
 
   //sử dụng để xử lý ngoại lệ cho input semeter
@@ -315,18 +335,15 @@ export default class ClassList extends Component {
   }
 
   //trả về danh sách môn học cho propdown button lự chọn tên môn học
-  renderSubjectSelect(){
+  renderSubjectData(){
     if(!this.props.data || this.props.data.loading)
-      return (
-        <div className="loader"></div>
-      )
+      return null;
     else {
-      var subjects = [];
-      console.log("message classList", this.props.data);
-
+      let result = [];
+      let subjects = __.cloneDeep(this.props.data.subjects);
 
       //sắp xếp phần tử trong querySubject theo tên
-      this.props.data.subjects.sort((a, b) => {
+      subjects.sort((a, b) => {
         if(a.name < b.name)
           return -1;
         if(a.name > b.name)
@@ -335,15 +352,21 @@ export default class ClassList extends Component {
       });
 
       //lọc các phần tử không trùng lặp và thêm vào mảng subject
-      for(let i = 0; i < this.props.data.subjects.length; i++){
-        if( i === 0 || this.props.data.subjects[i].name !== this.props.data.subjects[i - 1].name ) {
-          subjects.push(this.props.data.subjects[i]);
+      for(let i = 0; i < subjects.length; i++){
+        if( i === 0 || subjects[i].name !== this.props.data.subjects[i - 1].name ) {
+          result.push(this.props.data.subjects[i]);
         }
       }
+      return result;
+    }
+  }
 
-      return subjects.map((item) => (
-        <SubjectOption key={item._id} subject={item}/>
-      ))
+  renderCourseThemeData() {
+    if(!this.props.data || this.props.data.loading)
+      return null;
+    else {
+      console.log("courseThemes ", this.props.data.courseThemes);
+      return this.props.data.courseThemes;
     }
   }
 
@@ -379,7 +402,7 @@ export default class ClassList extends Component {
       var teacherRole = this.props.data.userClass.teacherOf;
       let teacherOf = this.spliceDuplicate(teacherRole);
       return teacherRole.map((item, idx) => (
-        <ClassItem key={idx} className={item.className} classId={item._id} courses={item.course} role={item.role} userId={item.currentUserId}/>
+        <ClassItem key={idx} className={item.name} classId={item._id} courses={item.courses} role={item.role} userId={item.currentUserId}/>
       ));
     }
   }
@@ -419,236 +442,238 @@ export default class ClassList extends Component {
 
   //hàm render chính
   render() {
-    console.log(this.props.data);
-    return (
-      <div className="classList">
-        <Modal show={this.state.showModal} onHide={this.close.bind(this)} enforceFocus={true}>
-          <Modal.Header closeButton>
-            <Modal.Title>Thêm lớp học</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tabs activeKey={this.state.tabKey} onSelect={e=>{}} id="addClassTab">
+    console.log("this.props.data ", this.props.data);
+    if(!this.props.data || this.props.data.loading) {
+      return (
+        <div className="loader"></div>
+      )
+    } else {
+        return (
+          <div className="classList">
+            <Modal show={this.state.showModal} onHide={this.close.bind(this)} enforceFocus={true}>
+              <Modal.Header closeButton>
+                <Modal.Title>Thêm lớp học</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Tabs activeKey={this.state.tabKey} onSelect={e=>{}} id="addClassTab">
 
-              {/*Tab 1 */}
-              <Tab eventKey={1} title="Tab 1" style={{height: '75vh'}}>
-                <form>
-                  <p style={{marginLeft: '10%', marginTop: '10px'}}><b>Nhập thông tin lớp học</b></p>
+                  {/*Tab 1 */}
+                  <Tab eventKey={1} title="Tab 1" style={{height: '75vh'}}>
+                    <form>
+                      <p style={{marginLeft: '10%', marginTop: '10px'}}><b>Nhập thông tin lớp học</b></p>
 
-                  <FormGroup validationState={this.getNameValidation()} style={{
-                      width: '80%',
-                      marginLeft: '10%'
-                    }}>
-                    <FormControl id='className' type="text" placeholder="Tên lớp" ref={node => this.className = node }  onChange={this.handleChange.bind(this)}/>
-                    <FormControl.Feedback />
-                  </FormGroup>
+                      <FormGroup validationState={this.getNameValidation()} style={{
+                          width: '80%',
+                          marginLeft: '10%'
+                        }}>
+                        <FormControl id='className' type="text" placeholder="Tên lớp" ref={node => this.className = node }  onChange={this.handleChange.bind(this)}/>
+                        <FormControl.Feedback />
+                      </FormGroup>
 
-                  <FormGroup controlId="formControlsSelect" style={{
-                      width: '80%',
-                      marginLeft: '10%'
-                    }}>
-                    <ControlLabel>Chọn môn học</ControlLabel>
-                    <FormControl componentClass="select" placeholder="select" ref={ node => this.currentSubject = node} onChange={e=>{
-                        this.setState({subjectName: e.target.value})
-                      }}>
-                      { this.renderSubjectSelect() }
-                    </FormControl>
-                  </FormGroup>
+                      <FormGroup controlId="formControlsSelect" style={{
+                          width: '80%',
+                          marginLeft: '10%'
+                        }}>
+                        <ControlLabel>Chọn hoặc thêm khóa học</ControlLabel>
+                        <Combobox name="course" data={this.renderCourseThemeData()} label="name" datalistName="courseThemes"
+                            placeholder="Chọn hoặc thêm khóa học" getValue={this.getDataCombobox.bind(this, 'course')} />
+                        <br/>
+                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        Từ ngày
+                        <FormControl value={this.state.dateStart} type="date" style={{width: 150}}/>
+                        Đến ngày
+                        <FormControl value={this.state.dateEnd} type="date" style={{width: 150}}/>
+                        </div>
+                      </FormGroup>
 
-                  <p style={{marginLeft: '10%'}}><b>Hoặc thêm môn học mới</b></p>
-                  <FormGroup style={{
-                      width: '80%',
-                      marginLeft: '10%'
-                    }}>
-                    <FormControl id="addSubject" type="text" placeholder="Tên môn học" ref={ node => this.newSubject = node }/>
-                    <FormControl.Feedback />
-                  </FormGroup>
-                </form>
-                <Row>
-                  <Col mdOffset={9}>
-                    <Button bsStyle="primary" onClick={e=>{
-                        if(this.getNameValidation() === 'success') {
-                          let currentSubject = ReactDOM.findDOMNode(this.currentSubject).value;
-                          let newSubject = ReactDOM.findDOMNode(this.newSubject).value;
-                          this.setState({subjectName: newSubject ? newSubject : currentSubject})
-                          var key = this.state.tabKey;
-                          if(key < 3) {
-                            key ++;
-                            this.setState({tabKey: key});
-                          }
-                        }
-                      }}>Tiếp tục</Button>
-                  </Col>
-                </Row>
-              </Tab>
-
-              {/*Tab 2*/}
-              <Tab eventKey={2} title="Tab 2" style={{height: '75vh'}}>
-                <p style={{marginTop: '10px'}}><b>Chọn các tài liệu được chia sẽ</b></p>
-                <div className="documentSet">
-                  { this.renderSubjectDocument() }
-                </div>
-                <Row>
-                  <Col mdOffset={9}>
-                    <Button bsStyle="primary" onClick={e=>{
-                        var key = this.state.tabKey;
-                        if(key < 3){
-                          key ++;
-                          this.setState({tabKey: key});
-                        }
-                      }}>Tiếp tục</Button>
-                  </Col>
-                </Row>
-              </Tab>
-
-              {/*Tab 3*/}
-              <Tab eventKey={3} title="Tab 3" style={{height: '75vh'}}>
-                <p style={{marginTop: '10px'}}><b>Tìm kiếm thành viên từ địa chỉ mail</b></p>
-                <FormGroup style={{width: '80%'}}>
-                    <SearchResult searchResult={this.state.classMembers} pushUser={this.pushMemberToClass.bind(this)} popUser={this.popMemberFromClass.bind(this)}/>
-                    <form onSubmit={e=>{
-                        e.preventDefault();
-                        let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
-                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
-                        if(re.test(keyWord)) {
-                          this.pushMemberToClass(keyWord);
-                        }else
-                          alert('Địa chỉ email không đúng');
-                      }}>
-                      <FormControl ref={node => this.keyWord = node} type="text" onChange={e=>{
-                          e.preventDefault();
-                          let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
-                          this.setState({keyWord: keyWord});
-                          document.getElementById('searchTool').style.display ='inline';
-                       }}/>
-                       <input type="submit" style={{display: 'none'}}/>
+                      <FormGroup controlId="formControlsSelect" style={{
+                          width: '80%',
+                          marginLeft: '10%'
+                        }}>
+                        <ControlLabel>Chọn hoặc thêm môn học</ControlLabel>
+                        <Combobox name="subject" data={this.renderSubjectData()} label="name" datalistName="subjects"
+                            placeholder="Chọn hoặc thêm moon học" getValue={this.getDataCombobox.bind(this, 'subject')} />
+                      </FormGroup>
                     </form>
-                    <FormControl.Feedback />
-                    { this.renderSearchTool() }
-                </FormGroup>
-                <p style={{marginTop: '10px'}}><b>Chọn thành viên từ friendList của bạn</b></p>
-                <div className="documentSet">
-                  {this.renderFriendList()}
-                </div>
-                <Row>
-                  <Col mdOffset={9}>
-                    <Button bsStyle="primary" onClick={e=>{
-                        e.preventDefault();
-                        if(this.getNameValidation() === 'success' && this.getSemeterValidation() === 'success') {
-                            let className = ReactDOM.findDOMNode(this.className).value;
-                            let currentSubject = ReactDOM.findDOMNode(this.currentSubject).value;
-                            let newSubject = ReactDOM.findDOMNode(this.newSubject).value;
-                            let ownerId = Meteor.userId();
-                            let ownerName = Meteor.user().profile ? Meteor.user().profile.name : Meteor.user().services.google.name;
-                            let ownerPicture = Meteor.user().profile ? Meteor.user().profile.picture : Meteor.user().services.google.picture;
-                            let classCode = (Math.floor(Math.random()*90000) + 10000).toString();
-                            let documentId = (Math.floor(Math.random()*90000000) + 10000000).toString();
-
-                            var classItem = {
-                              className: className,
-                              classCode: classCode,
-                              ownerId: ownerId,
-                              ownerName: ownerName,
-                              ownerPicture: ownerPicture,
-                              students: [],
-                              subjectName: currentSubject ? currentSubject : newSubject,
-                              documentId: documentId,
-                              createAt: new Date()
+                    <Row>
+                      <Col mdOffset={9}>
+                        <Button bsStyle="primary" onClick={e=>{
+                            if(this.getNameValidation() === 'success') {
+                              var key = this.state.tabKey;
+                              if(key < 3) {
+                                key ++;
+                                this.setState({tabKey: key});
+                              }
                             }
+                          }}>Tiếp tục</Button>
+                      </Col>
+                    </Row>
+                  </Tab>
 
-                            asteroid.call('insertClasses', classItem);
-
-                            var subjectItem = {
-                              _id: documentId,
-                            	name: currentSubject ? currentSubject : newSubject,
-                            	owner: ownerName,
-                            	coppier: '',
-                            	date: new Date(),
-                            	public: false,
-                            	origin: true,
-                              activity: []
+                  {/*Tab 2*/}
+                  <Tab eventKey={2} title="Tab 2" style={{height: '75vh'}}>
+                    <p style={{marginTop: '10px'}}><b>Chọn các tài liệu được chia sẽ</b></p>
+                    <div className="documentSet">
+                      {/* this.renderSubjectDocument() */}
+                    </div>
+                    <Row>
+                      <Col mdOffset={9}>
+                        <Button bsStyle="primary" onClick={e=>{
+                            var key = this.state.tabKey;
+                            if(key < 3){
+                              key ++;
+                              this.setState({tabKey: key});
                             }
+                          }}>Tiếp tục</Button>
+                      </Col>
+                    </Row>
+                  </Tab>
 
-                          asteroid.call('insertSubjects', subjectItem);
+                  {/*Tab 3*/}
+                  <Tab eventKey={3} title="Tab 3" style={{height: '75vh'}}>
+                    <div style={{width: '90%', marginLeft: '5%'}}>
+                      <p style={{marginTop: '10px'}}><b>Tìm kiếm thành viên từ địa chỉ mail</b></p>
+                      <FormGroup style={{width: '80%'}}>
+                          <SearchResult searchResult={this.state.classMembers} pushUser={this.pushMemberToClass.bind(this)} popUser={this.popMemberFromClass.bind(this)}/>
+                          <form onSubmit={e=>{
+                              e.preventDefault();
+                              let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
+                              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
+                              if(re.test(keyWord)) {
+                                this.pushMemberToClass(keyWord);
+                              }else
+                                alert('Địa chỉ email không đúng');
+                            }}>
+                            <FormControl ref={node => this.keyWord = node} type="text" onChange={e=>{
+                                e.preventDefault();
+                                let keyWord = ReactDOM.findDOMNode(this.keyWord).value;
+                                this.setState({keyWord: keyWord});
+                                document.getElementById('searchTool').style.display ='inline';
+                             }}/>
+                             <input type="submit" style={{display: 'none'}}/>
+                          </form>
+                          <FormControl.Feedback />
+                          { this.renderSearchTool() }
+                      </FormGroup>
+                      <p style={{marginTop: '10px'}}><b>Chọn thành viên từ friendList của bạn</b></p>
+                      <div className="documentSet">
+                        {this.renderFriendList()}
+                      </div>
+                    </div>
+                    <Row>
+                      <Col mdOffset={9}>
+                        <Button bsStyle="primary" onClick={e=>{
+                            e.preventDefault();
+                            if(this.getNameValidation() === 'success' && this.getSemeterValidation() === 'success') {
+                                let name = ReactDOM.findDOMNode(this.className).value;
+                                let userId = 'gtez6BH4qdjmsFsQ3';
+                                let code = (Math.floor(Math.random()*90000) + 10000).toString();
+                                let dateStart = moment(new Date(this.state.dateStart)).valueOf();
+                                let dateEnd = moment(new Date(this.state.dateEnd)).valueOf();
 
-                            for(i = 0; i < this.state.classMembers.length; i ++) {
-                                var note = {
-                                  userId: this.state.classMembers[i],
-                                  type: 'add-class-note',
-                                  sendId: ownerId,
-                                  sendname: ownerName,
-                                  sendimage: ownerPicture,
-                                  note: 'Đã thêm bạn vào lớp ' + className + 'với mã ' + classCode,
-                                  read: false,
-                                  classCode: classCode,
-                                  date: new Date()
+                                let classItem = JSON.stringify({
+                                  name,
+                                  code,
+                                  students: this.state.classMembers
+                                });
+
+                                let subject = JSON.stringify({
+                                  _id: this.state.subjectId,
+                                  name: this.state.subjectName,
+                                });
+
+                                let courseTheme = JSON.stringify({
+                                  _id: this.state.courseId,
+                                  name: this.state.courseName,
+                                  dateStart,
+                                  dateEnd
+                                });
+
+                                for(let i = 0; i < this.state.classMembers.length; i ++) {
+                                    var note = {
+                                      userId: this.state.classMembers[i],
+                                      type: 'add-class-note',
+                                      sendId: ownerId,
+                                      sendname: ownerName,
+                                      sendimage: ownerPicture,
+                                      note: 'Đã thêm bạn vào lớp ' + className + 'với mã ' + classCode,
+                                      read: false,
+                                      classCode: classCode,
+                                      date: new Date()
+                                    }
                                 }
-                                asteroid.call('insertNotification', note);
-                            }
+                                console.log('ClassItem ', classItem);
+                                console.log('subject ', subject);
+                                console.log('courseTheme ', courseTheme);
 
-
-
-                            ReactDOM.findDOMNode(this.className).value = '';
-                          }
-                        this.setState({ showModal: false });
-                      }}>Hoàn tất</Button>
-                  </Col>
-                </Row>
-              </Tab>
-            </Tabs>
-          </Modal.Body>
-          <Modal.Footer>
-            {/*<Button onClick=this.close.bind(this)}>Close</Button>*/}
-          </Modal.Footer>
-        </Modal>
-        <Row>
-          <Button bsStyle="primary" onClick={e => {
-              var item = document.getElementById('teacher-class-list');
-              if(item.style.display === 'none')
-                item.style.display = 'inline';
-              else
-                item.style.display = 'none';
-            }}>Vai trò giáo viên</Button>
-          <ul id="teacher-class-list">
-            { this.renderTeacherRole() }
-          </ul>
-        </Row>
-        <Row>
-          <Button bsStyle="primary" onClick={e=>{
-              var item = document.getElementById('student-class-list');
-              if(item.style.display === 'none')
-                item.style.display = 'inline';
-              else
-                item.style.display = 'none';
-          }}>Vai trò sinh viên</Button>
-        <ul id="student-class-list">
-            { this.renderStudentRole() }
-          </ul>
-        </Row>
-        <Row>
-          <Button bsStyle="primary" onClick={this.open.bind(this)}>
-            Thêm lớp học
-          </Button>
-        </Row>
-        <Row>
-          <InputGroup style={{width: '80%'}}>
-            <FormControl type="text" ref={node => this.classCode = node}/>
-            <InputGroup.Addon><Glyphicon glyph="search" /></InputGroup.Addon>
-          </InputGroup>
-          <Button bsStyle="primary" onClick={e => {
-              var code = ReactDOM.findDOMNode(this.classCode).value;
-              Meteor.call("userJoinClass", code, function(err, result){
-                if(result)
-                  alert('yêu cầu của bạn đã được gửi đi');
-                else
-                  alert('mã lớp không tồn tại');
-              })
-              ReactDOM.findDOMNode(this.classCode).value = '';
-            }}>
-            Tham gia lớp
-          </Button>
-        </Row>
-      </div>
-    )
+                                this.props.addClass(userId, classItem, subject, courseTheme).then(() => {
+                                    this.props.data.refetch();
+                                }).catch((error) => {
+                                    console.log('there was an error sending the query', error);
+                                });
+                                ReactDOM.findDOMNode(this.className).value = '';
+                              }
+                            this.setState({ showModal: false });
+                          }}>Hoàn tất</Button>
+                      </Col>
+                    </Row>
+                  </Tab>
+                </Tabs>
+              </Modal.Body>
+              <Modal.Footer>
+                {/*<Button onClick=this.close.bind(this)}>Close</Button>*/}
+              </Modal.Footer>
+            </Modal>
+            <Row>
+              <Button bsStyle="primary" onClick={e => {
+                  var item = document.getElementById('teacher-class-list');
+                  if(item.style.display === 'none')
+                    item.style.display = 'inline';
+                  else
+                    item.style.display = 'none';
+                }}>Vai trò giáo viên</Button>
+              <ul id="teacher-class-list">
+                { this.renderTeacherRole() }
+              </ul>
+            </Row>
+            <Row>
+              <Button bsStyle="primary" onClick={e=>{
+                  var item = document.getElementById('student-class-list');
+                  if(item.style.display === 'none')
+                    item.style.display = 'inline';
+                  else
+                    item.style.display = 'none';
+              }}>Vai trò sinh viên</Button>
+            <ul id="student-class-list">
+                { this.renderStudentRole() }
+              </ul>
+            </Row>
+            <Row>
+              <Button bsStyle="primary" onClick={this.open.bind(this)}>
+                Thêm lớp học
+              </Button>
+            </Row>
+            <Row>
+              <InputGroup style={{width: '80%'}}>
+                <FormControl type="text" ref={node => this.classCode = node}/>
+                <InputGroup.Addon><Glyphicon glyph="search" /></InputGroup.Addon>
+              </InputGroup>
+              <Button bsStyle="primary" onClick={e => {
+                  var code = ReactDOM.findDOMNode(this.classCode).value;
+                  Meteor.call("userJoinClass", code, function(err, result){
+                    if(result)
+                      alert('yêu cầu của bạn đã được gửi đi');
+                    else
+                      alert('mã lớp không tồn tại');
+                  })
+                  ReactDOM.findDOMNode(this.classCode).value = '';
+                }}>
+                Tham gia lớp
+              </Button>
+            </Row>
+          </div>
+        )
+    }
   }
 }
 
@@ -657,25 +682,25 @@ const CLASS_LIST = gql`
     userClass(userId: $userId) {
   		teacherOf {
         _id
-      	classCode
-      	className
-      	role
-        currentUserId
-        course {
+        code
+        name
+        createAt
+        createrId
+        courses {
           _id
-          subjectName
+        	subjectName
+        	dateStart
+        	dateEnd
+        	isOpen
+        	publicActivity
         }
       }
   		studentOf {
         _id
-      	classCode
-      	className
-      	role
-        currentUserId
-        course {
-          _id
-          subjectName
-        }
+        code
+        name
+        createAt
+        createrId
       }
     },
     subjects {
@@ -722,24 +747,39 @@ const CLASS_LIST = gql`
       image
       name
       email
+    },
+    courseThemes {
+      _id
+      name
+      dateStart
+      dateEnd
     }
   }`
 
-const mapDataToProps = graphql(
-  CLASS_LIST,
-  {
-    options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' } })
-  }
-);
+  const ADD_CLASS = gql`
+      mutation addClass($userId: String!, $classItem: String!, $subject: String!, $courseTheme: String!){
+          addClass(userId: $userId, classItem: $classItem, subject: $subject, courseTheme: $courseTheme)
+  }`
 
-const ClassListData = mapDataToProps(ClassList);
+  export default compose (
+      graphql(CLASS_LIST,
+      {
+        options: () => ({ variables: { userId: JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo"))._id : '' } }),
+        forceFetch: true
+      }),
+      graphql(ADD_CLASS, {
+          props: ({mutate})=> ({
+              addClass : (userId, classItem, subject, courseTheme) => mutate({variables:{userId, classItem, subject, courseTheme}})
+          })
+      }),
+  )(ClassList);
 
 
-const ClassListContain = connect(
-  (state) => ({ }),
-  (dispatch) => ({
-    search: (keyWord) => {
-      dispatch(search(keyWord))
-    }
-  }),
-)(ClassList);
+// const ClassListContain = connect(
+//   (state) => ({ }),
+//   (dispatch) => ({
+//     search: (keyWord) => {
+//       dispatch(search(keyWord))
+//     }
+//   }),
+// )(ClassList);

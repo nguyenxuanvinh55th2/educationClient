@@ -1,5 +1,6 @@
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import __ from 'lodash'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
@@ -16,14 +17,18 @@ function mapStateToProps(state){
 function mapDispathToProps(dispatch) {
   return bindActionCreators(actionCreator, dispatch);
 }
+
+
 class Main extends React.Component {
   constructor(props){
     super(props);
   }
   render(){
+    let childProps = __.cloneDeep(this.props);
+    delete childProps.children;
     return (
       <div style={{flexDirection: 'column'}}>
-          {React.cloneElement(this.props.children, this.props)}
+          {React.cloneElement(this.props.children, childProps)}
       </div>
     )
   }

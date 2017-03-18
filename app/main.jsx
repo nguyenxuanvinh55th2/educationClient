@@ -18,13 +18,16 @@ import './ag-pattern.css';
 import './react-tab.css';
 import './react-tree.css';
 import './pattern-fly.css';
-import './customer.css'
+import './main.css';
+import './customer.css';
+
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
 import Profile from './components/Profile_Vinh.jsx'
 import Wall from './components/Wall_Vinh.jsx'
 import Home from './components/Home.jsx'
 import LeftBar from './components/LeftBar_Vinh.jsx'
+import DashboardSubject from './components/dashboardSubject.jsx'
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
@@ -35,7 +38,7 @@ ReactDOM.render(
         <Route path="login" component={Login}/>
         <Route path="/profile/:id" component={Profile}>
           <IndexRoute component={Wall}/>
-          {/* <Route path="/profile/:id/wall" component={Wall}/> */}
+          <Router path="/profile/:id/dashboard/:classInfo" component={DashboardSubject}/>
         </Route>
       </Route>
     </Router>
