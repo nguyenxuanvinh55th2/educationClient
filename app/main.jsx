@@ -21,10 +21,10 @@ import './pattern-fly.css';
 import './customer.css'
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
-import Profile from './components/profile.jsx'
-import Wall from './components/wall.jsx'
+import Profile from './components/Profile_Vinh.jsx'
+import Wall from './components/Wall_Vinh.jsx'
 import Home from './components/Home.jsx'
-
+import LeftBar from './components/LeftBar_Vinh.jsx'
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
@@ -34,7 +34,8 @@ ReactDOM.render(
         <IndexRoute component={Home}/>
         <Route path="login" component={Login}/>
         <Route path="/profile/:id" component={Profile}>
-          <Route path="/profile/:id/wall" component={Wall}/>
+          <IndexRoute component={Wall}/>
+          {/* <Route path="/profile/:id/wall" component={Wall}/> */}
         </Route>
       </Route>
     </Router>

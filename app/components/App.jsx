@@ -23,13 +23,7 @@ class Main extends React.Component {
   render(){
     return (
       <div style={{flexDirection: 'column'}}>
-        <div style={{flexDirection: 'column'}}>
-        {React.cloneElement(<Header/>, this.props)}
-        </div>
-        <div style={{marginTop: 65}}>
           {React.cloneElement(this.props.children, this.props)}
-        </div>
-        {/* <NotificationSystem ref="notificationSystem" /> */}
       </div>
     )
   }

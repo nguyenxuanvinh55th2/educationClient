@@ -34,10 +34,9 @@ export default class Header extends React.Component {
       window.removeEventListener('resize', this.handleResize);
   }
   render() {
-    console.log(this.props);
     return(
       <div style={{flexDirection:'column', width:'auto'}}>
-        <nav className="navbar navbar-default navbar-fixed-top" style={{backgroundColor: '#2b3a41', border: 0}}>
+        <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0}}>
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -49,18 +48,6 @@ export default class Header extends React.Component {
                 <img src="/public/imgs/logo.png" alt="Dispute Bills" />
               </a>
             </div>
-            <form className="navbar-form navbar-left">
-              <div className="form-group">
-                <div className="input-group">
-                  <input type="text" className="form-control" placeholder="Search"/>
-                  <div className="input-group-btn">
-                    <button className="btn btn-default" type="submit">
-                      <i className="glyphicon glyphicon-search"></i>
-                    </button>
-                  </div>
-                </div>
-             </div>
-            </form>
             <div className="collapse navbar-collapse" id="myNavbar">
               <ul className="nav navbar-nav navbar-right" style={{paddingRight: 20}}>
                 <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
@@ -79,15 +66,12 @@ export default class Header extends React.Component {
         <Modal show={this.state.showModal} onHide={() => this.setState({showModal: false})}>
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                  {/* <div className="modal-header">
-                      <h4 className="modal-title">Quản lý files</h4>
-                  </div> */}
-                  <div className="modal-body" style={{height:this.state.height - 226, overflowY: 'auto', overflowX: 'hidden'}}>
-                      <Login {...this.props} />
-                  </div>
-                  {/* <div className="modal-footer" style={{margin: 0}}>
-                      <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Thoát</button>
-                  </div> */}
+                <div className="modal-body" style={{height:this.state.height - 226, overflowY: 'auto', overflowX: 'hidden'}}>
+                    <Login {...this.props} />
+                </div>
+                {/* <div className="modal-footer" style={{margin: 0}}>
+                    <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Thoát</button>
+                </div> */}
               </div>
           </div>
         </Modal>
