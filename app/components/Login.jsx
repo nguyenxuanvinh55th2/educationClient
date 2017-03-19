@@ -33,6 +33,7 @@ class Login extends Component {
       if(this.props.loginWithGoogle){
         this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
           let dataUser = data.loginWithGoogle
+          localStorage.setItem('Meteor.loginToken', dataUser);
           this.props.loginCommand(JSON.parse(data.loginWithGoogle))
         })
         .catch((error) => {

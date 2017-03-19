@@ -14,6 +14,12 @@ import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import Subheader from 'material-ui/Subheader';
 import Person from 'material-ui/svg-icons/social/person';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import MenuItem from 'material-ui/MenuItem';
+import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class LeftBarVinh extends React.Component {
   constructor(props) {
     super(props)
@@ -36,9 +42,28 @@ export default class LeftBarVinh extends React.Component {
     return (
       <div>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#2b3a41'}}>
-        <button>f</button>
-        <button>ffe</button>
+        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#2b3a41'}}
+>
+  <IconMenu open={false} onTouchTap={() => console.log("f")}
+  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
+>
+</IconMenu>
+  <IconMenu open={false} onTouchTap={() => console.log("f")}
+  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
+>
+</IconMenu>
+  <IconMenu open={false} onTouchTap={() => console.log("f")}
+  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
+>
+</IconMenu>
+  <IconMenu open={false} onTouchTap={() => console.log("f")}
+  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
+>
+</IconMenu>
       </AppBar>
         <Drawer open={this.state.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
           onRequestChange={() => {
