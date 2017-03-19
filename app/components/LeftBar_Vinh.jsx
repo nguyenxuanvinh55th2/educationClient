@@ -23,100 +23,60 @@ import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class LeftBarVinh extends React.Component {
   constructor(props) {
     super(props)
-    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-    this.state = {
-      sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches
-    }
-  }
-  mediaQueryChanged(e) {
-    var mql = window.matchMedia(`(min-width: 800px)`);
-    this.setState({sidebarOpen: mql.matches});
-  }
-  componentDidMount() {
-      window.addEventListener('resize', this.mediaQueryChanged);
-  }
-  componentWillUnmount() {
-      window.removeEventListener('resize', this.mediaQueryChanged);
   }
   render() {
     return (
-      <div>
-        <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#2b3a41'}}
->
-  <IconMenu open={false} onTouchTap={() => console.log("f")}
-  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
->
-</IconMenu>
-  <IconMenu open={false} onTouchTap={() => console.log("f")}
-  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
->
-</IconMenu>
-  <IconMenu open={false} onTouchTap={() => console.log("f")}
-  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
->
-</IconMenu>
-  <IconMenu open={false} onTouchTap={() => console.log("f")}
-  iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-  iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
->
-</IconMenu>
-      </AppBar>
-        <Drawer open={this.state.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
-          onRequestChange={() => {
-            if(!window.matchMedia(`(min-width: 800px)`).matches){
-              this.setState({sidebarOpen: false})
-            }
-          }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
-          <div style={{textAlign: 'center'}}>
-            <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
-          </div>
-          <List>
-           <ListItem
-             primaryText="Giáo viên"
-             leftIcon={<Person />}
-             initiallyOpen={false}
-             primaryTogglesNestedList={true}
-             nestedItems={[
-               <ListItem
-                 key={1}
-                 primaryText="Starred"
-                 leftIcon={<ActionGrade />}
-               />,
-             ]}
-           />
-           <ListItem
-             primaryText="Học sinh"
-             leftIcon={<Person />}
-             initiallyOpen={false}
-             primaryTogglesNestedList={true}
-             nestedItems={[
-               <ListItem
-                 key={1}
-                 primaryText="Starred"
-                 leftIcon={<ActionGrade />}
-               />,
-             ]}
-           />
-           <ListItem
-             primaryText="Phụ huynh"
-             leftIcon={<Person />}
-             initiallyOpen={false}
-             primaryTogglesNestedList={true}
-             nestedItems={[
-               <ListItem
-                 key={1}
-                 primaryText="Starred"
-                 leftIcon={<ActionGrade />}
-               />,
-             ]}
-           />
-         </List>
-         </Drawer>
-      </div>
+      <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
+        onRequestChange={() => {
+          if(!window.matchMedia(`(min-width: 800px)`).matches){
+            this.props.closeLeftBar();
+          }
+        }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
+        <div style={{textAlign: 'center'}}>
+          <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
+        </div>
+        <List>
+         <ListItem
+           primaryText="Giáo viên"
+           leftIcon={<Person />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Học sinh"
+           leftIcon={<Person />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Phụ huynh"
+           leftIcon={<Person />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+       </List>
+       </Drawer>
     )
   }
 }
