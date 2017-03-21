@@ -28,8 +28,10 @@ import Login from './components/Login.jsx'
 import Profile from './components/Profile.jsx'
 import Wall from './components/Wall.jsx'
 import Home from './components/Home.jsx'
-import LeftBar from './components/LeftBar.jsx'
+
+import CreateTest from './components/CreateTest.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
+
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -49,6 +51,7 @@ export class WrapMain extends React.Component{
         );
     }
 }
+
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
@@ -61,6 +64,7 @@ ReactDOM.render(
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
             </Route>
+            <Route path="/createTest" component={CreateTest}/>
           </Route>
         </Router>
       </WrapMain>
