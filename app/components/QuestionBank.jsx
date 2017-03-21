@@ -1,4 +1,6 @@
 import React from 'react';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -41,7 +43,7 @@ class QuestionSetItem extends React.Component {
   }
 }
 
-export default class QuesionBank extends React.Component {
+class QuesionBank extends React.Component {
   // renderQuestionSetList() {
   //
   // }
@@ -86,7 +88,7 @@ const QUESTION_SET_QUERY = gql`
           title
           description
           questionCount
-          questions: {
+          questions {
             _id
             question
             answerSet
@@ -99,7 +101,7 @@ const QUESTION_SET_QUERY = gql`
 export default compose (
     graphql(QUESTION_SET_QUERY, {
         options: ()=> ({
-            variables: {},
+            variables: {userId: 'abc'},
             forceFetch: true
         })
     }),
