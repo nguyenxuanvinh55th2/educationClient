@@ -1,5 +1,5 @@
-h1, h2, h3, h4, h5, h6, label, p, span {
-    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+* {
+    font-family: "Open Sans script=all rev=7", "Roboto", Helvetica, Arial, sans-serif;
 }
 label {
     font-weight: 600 !important;

@@ -11,7 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-import { Modal } from 'react-bootstrap'
+import Dialog from 'material-ui/Dialog';
 
 import Login from './Login.jsx'
 export default class Header extends React.Component {
@@ -63,18 +63,22 @@ export default class Header extends React.Component {
             </div>
           </div>
         </nav>
-        <Modal show={this.state.showModal} onHide={() => this.setState({showModal: false})}>
+        <Dialog
+          modal={true}
+          open={this.state.showModal}
+          contentStyle={{width: 600,maxWidth: 'none'}}
+        >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                <div className="modal-body" style={{height:this.state.height - 226, overflowY: 'auto', overflowX: 'hidden'}}>
+                <div className="modal-body" style={{height:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
                     <Login {...this.props} />
                 </div>
-                {/* <div className="modal-footer" style={{margin: 0}}>
-                    <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Thoát</button>
-                </div> */}
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-default" onClick={() => this.setState({showModal: false})}>Đóng</button>
+                </div>
               </div>
           </div>
-        </Modal>
+        </Dialog>
       </div>
     )
   }

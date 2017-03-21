@@ -4,7 +4,6 @@ import __ from 'lodash'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-import Profile from './profile.jsx';
 import Header from './Header.jsx';
 import NotificationSystem from 'react-notification-system';
 

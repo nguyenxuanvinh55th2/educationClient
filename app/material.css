@@ -95,7 +95,7 @@ body.icons-docs {
   display: none;
 }
 div[data-reactroot] > div > div > div > div{
-  padding: 0;
+  padding: 0!important;
 }
 .menuItem{
   padding: 0!important;
