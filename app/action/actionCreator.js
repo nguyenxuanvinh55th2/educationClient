@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router'
 import { asteroid }  from '../asteroid.js'
 
 export function loginCommand(user){
+  console.log(user);
     return {
         type: 'LOGIN_COMMAND',
         user,

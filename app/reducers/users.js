@@ -1,4 +1,5 @@
 import __ from 'lodash';
+
 function users(state = [], action) {
     switch (action.type) {
         case 'LOGIN_COMMAND':

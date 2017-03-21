@@ -4,7 +4,6 @@ import __ from 'lodash'
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 
-import Profile from './profile.jsx';
 import Header from './Header.jsx';
 import NotificationSystem from 'react-notification-system';
 
@@ -28,13 +27,7 @@ class Main extends React.Component {
     delete childProps.children;
     return (
       <div style={{flexDirection: 'column'}}>
-        <div style={{flexDirection: 'column'}}>
-        {React.cloneElement(<Header/>, this.props)}
-        </div>
-        <div style={{marginTop: 65}}>
           {React.cloneElement(this.props.children, childProps)}
-        </div>
-        {/* <NotificationSystem ref="notificationSystem" /> */}
       </div>
     )
   }

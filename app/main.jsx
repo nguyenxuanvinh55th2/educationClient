@@ -1,5 +1,6 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom'
+import { render } from 'react-dom';
 import {Router, Route, IndexRoute} from 'react-router'
 import store,{history} from './store'
 
@@ -18,32 +19,55 @@ import './ag-pattern.css';
 import './react-tab.css';
 import './react-tree.css';
 import './pattern-fly.css';
-import './main.css';
+import 'ag-grid-root/dist/styles/ag-grid.css';
+import 'ag-grid-root/dist/styles/theme-fresh.css';
 import './customer.css';
 
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
-import Profile from './components/profile.jsx'
-import Wall from './components/wall.jsx'
+import Profile from './components/Profile.jsx'
+import Wall from './components/Wall.jsx'
 import Home from './components/Home.jsx'
-import DashboardSubject from './components/dashboardSubject.jsx'
+
 import CreateTest from './components/CreateTest.jsx'
+import QueryUserPermission from './QueryUserPermission.jsx';
+
+export class WrapMain extends React.Component{
+    constructor(props){
+        super(props);
+        this.token = null;
+        if(localStorage.getItem('keepLogin') === 'true'){
+            this.token = localStorage.getItem('Meteor.loginToken');
+        } else {
+            localStorage.removeItem('Meteor.loginToken');
+        }
+    }
+    render(){
+        return (
+            <div>
+                <QueryUserPermission {...this.props} token={this.token} />
+                {this.props.children}
+            </div>
+        );
+    }
+}
 
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
     <MuiThemeProvider>
-    <Router history={history}>
-      <Route path='/' component={App}>
-        <IndexRoute component={Home}/>
-        <Route path="login" component={Login}/>
-        <Route path="/profile/:id" component={Profile}>
-          <Route path="/profile/:id/wall" component={Wall}/>
-          <Router path="/profile/:id/dashboard/:classInfo" component={DashboardSubject}/>
-        </Route>
-        <Route path="/createTest" component={CreateTest}/>
-      </Route>
-    </Router>
+      <WrapMain>
+        <Router history={history}>
+          <Route path='/' component={App}>
+            <IndexRoute component={Home}/>
+            <Route path="login" component={Login}/>
+            <Route path="/profile/:id" component={Profile}>
+              <IndexRoute component={Wall}/>
+            </Route>
+            <Route path="/createTest" component={CreateTest}/>
+          </Route>
+        </Router>
+      </WrapMain>
     </MuiThemeProvider>
   </ApolloProvider>
 , document.getElementById('root'));

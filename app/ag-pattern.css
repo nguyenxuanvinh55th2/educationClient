@@ -16,7 +16,6 @@ li.ag-action-item:hover{
   cursor: pointer;
 }
 .ag-fresh .ag-ltr .ag-root {
-  font-family: "Open Sans", sans-serif;
   font-size: 12px;
 }
 .ag-fresh .ag-ltr .ag-cell.ag-cell-no-focus{
@@ -142,7 +141,7 @@ li.ag-action-item:hover{
     fill: #39a5dc;
 }
 
-.dropbtn { min-width: 100px; height: 26px !important; box-sizing: border-box }
+.dropbtn { min-width: 100px; height: 26px !important; box-sizing: border-box; font-size: 12px!important; }
 .dropbtn svg {top: 0 !important; right: 0 !important;}
 .dropbtn div {width: 100%; margin: 0 !important; border: 0 !important; line-height: 24px !important;}
 .dropbtn button {margin: 0 !important; padding: 0 !important; right: -10px !important; top: -6px !important;}
