@@ -27,6 +27,7 @@ import Profile from './components/profile.jsx'
 import Wall from './components/wall.jsx'
 import Home from './components/Home.jsx'
 import DashboardSubject from './components/dashboardSubject.jsx'
+import CreateTest from './components/CreateTest.jsx'
 
 injectTapEventPlugin();
 ReactDOM.render(
@@ -40,6 +41,7 @@ ReactDOM.render(
           <Route path="/profile/:id/wall" component={Wall}/>
           <Router path="/profile/:id/dashboard/:classInfo" component={DashboardSubject}/>
         </Route>
+        <Route path="/createTest" component={CreateTest}/>
       </Route>
     </Router>
     </MuiThemeProvider>
