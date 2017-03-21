@@ -79,28 +79,28 @@ export default class QuesionBank extends React.Component {
   }
 }
 
-// const QUESTION_SET_QUERY = gql`
-//     query questionBankUser($userId: String!) {
-//         questionBankUser(userId: $userId) {
-//           _id
-//           title
-//           description
-//           questionCount
-//           questions: {
-//             _id
-//             question
-//             answerSet
-//             correctAnswer
-//             correctRate
-//           }
-//         }
-// }`
-//
-// export default compose (
-//     graphql(QUESTION_SET_QUERY, {
-//         options: ()=> ({
-//             variables: {},
-//             forceFetch: true
-//         })
-//     }),
-// )(QuesionBank);
+const QUESTION_SET_QUERY = gql`
+    query questionBankUser($userId: String!) {
+        questionBankUser(userId: $userId) {
+          _id
+          title
+          description
+          questionCount
+          questions: {
+            _id
+            question
+            answerSet
+            correctAnswer
+            correctRate
+          }
+        }
+}`
+
+export default compose (
+    graphql(QUESTION_SET_QUERY, {
+        options: ()=> ({
+            variables: {},
+            forceFetch: true
+        })
+    }),
+)(QuesionBank);

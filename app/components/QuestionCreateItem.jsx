@@ -14,7 +14,7 @@ class AnswerCreateItem extends React.Component {
   render() {
     let { answer, checked } = this.props;
     return (
-      <div style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+      <div style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '80%', paddingBottom: 10}}>
         <textarea value={ answer.answer } className="col-sm-10" className="form-control" onChange={({target}) => this.props.setAnswer(target.value)}>
         </textarea>
         <div className="col-sm-1">
@@ -121,7 +121,7 @@ export default class QuestionCreateItem extends React.Component {
     let { question }= this.props;
     return (
       <div style={{width: '100%', paddingLeft: '10%'}}>
-        <div>
+        <div style={{marginBottom: 10}}>
           <textarea style={{width: '80%'}} value={ question.question } className="form-control" onChange={({target}) => this.props.setQuestionValue(target.value)}>
           </textarea>
         </div>

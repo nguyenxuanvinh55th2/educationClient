@@ -39,7 +39,6 @@ export default class QuestionReviewItem extends React.Component {
   render() {
     let { question, publicQuestion } = this.props;
     let { showAnswer } = this.state;
-    console.log("question ", showAnswer);
     return (
       <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>

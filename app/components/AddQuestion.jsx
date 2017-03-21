@@ -139,7 +139,6 @@ class AddQuestion extends React.Component {
       description,
       questionCount: questionList.length
     }
-    console.log("questionList ", questionList);
     let questionSetString = [];
     questionSet = JSON.stringify(questionSet);
     __.forEach(questionList, item => {
@@ -155,7 +154,6 @@ class AddQuestion extends React.Component {
   }
 
   render() {
-    console.log("questionList ", this.state.questionList);
     return (
       <Tabs className="secondary">
         <TabList className="modal-header" style={{margin: 0}}>
