@@ -28,10 +28,9 @@ import Login from './components/Login.jsx'
 import Profile from './components/Profile.jsx'
 import Wall from './components/Wall.jsx'
 import Home from './components/Home.jsx'
-
+import ClassList from './components/ClassList.jsx'
 import CreateTest from './components/CreateTest.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
-
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -46,7 +45,7 @@ export class WrapMain extends React.Component{
         return (
             <div>
                 <QueryUserPermission {...this.props} token={this.token} />
-                {this.props.children}
+                {React.cloneElement(this.props.children, this.props)}
             </div>
         );
     }
@@ -63,6 +62,7 @@ ReactDOM.render(
             <Route path="login" component={Login}/>
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
+              <Route path="/profile/:id/createClass" component={ClassList}/>
             </Route>
             <Route path="/createTest" component={CreateTest}/>
           </Route>
