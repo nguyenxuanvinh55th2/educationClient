@@ -4,8 +4,8 @@ function users(state = [], action) {
     switch (action.type) {
         case 'LOGIN_COMMAND':
             return Object.assign({}, state, {
-                userId: action.user?action.user._id:"",
-                currentUser: action.user,
+                userId: action.user ? action.user._id : "",
+                currentUser: action.user ? action.user: {},
             });
         default:
             return state;

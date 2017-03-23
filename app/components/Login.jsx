@@ -22,11 +22,12 @@ class Login extends Component {
     let that = this;
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
     loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
+      if(data){
         let dataUser = JSON.parse(data.loginWithPassword);
         this.props.loginCommand(dataUser.user);
         localStorage.setItem('keepLogin', true);
-        localStorage.setItem('Meteor.loginType', 'account');
         localStorage.setItem('Meteor.loginToken', dataUser.token);
+      }
     }).catch(err=>{
     });
   }
@@ -34,9 +35,8 @@ class Login extends Component {
     if(response){
       if(this.props.loginWithGoogle){
         this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
-          if(data){
+          if(data && data.loginWithGoogle){
             let dataUser =  JSON.parse(data.loginWithGoogle);
-            localStorage.setItem('Meteor.loginType', 'google');
             localStorage.setItem('keepLogin', true);
             localStorage.setItem('Meteor.loginToken', dataUser.token);
             this.props.loginCommand({
@@ -97,10 +97,15 @@ class Login extends Component {
                     response['job'] = '';
                     response['friendList'] = [];
                     this.props.loginWithFacebook(JSON.stringify(response)).then(({data}) => {
-                      let dataUser = JSON.parse(data.loginWithPassword);
-                      localStorage.setItem('keepLogin', true);
-                      localStorage.setItem('Meteor.loginToken', dataUser.token);
-                      this.props.loginCommand(dataUser.user);
+                      if(data && data.loginWithFacebook){
+                        let dataUser = JSON.parse(data.loginWithFacebook);
+                        localStorage.setItem('keepLogin', true);
+                        localStorage.setItem('Meteor.loginToken', dataUser.token);
+                        this.props.loginCommand(dataUser.user);
+                      }
+                      else {
+                        console.log("failed");
+                      }
                     })
                     .catch((error) => {
                       console.log(error);

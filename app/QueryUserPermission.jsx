@@ -20,13 +20,16 @@ class QueryUserPermission extends React.Component{
         //     this.oldToken = localStorage.getItem('Meteor.loginToken');
         // }
     }
-    componentWillReceiveProps(props){
-        let { data } = props;
-        if(data.getInfoUser){
-          let parseData = JSON.parse(data.getInfoUser);
-          // console.log(store, this.props);
-          store.dispatch(loginCommand(parseData));
-        }
+    componentWillReceiveProps(nextProps){
+      let { data } = nextProps;
+      if(data.getInfoUser){
+        let parseData = JSON.parse(data.getInfoUser);
+        // console.log(store, this.props);
+        store.dispatch(loginCommand(parseData));
+      }else {
+        store.dispatch(loginCommand({}));
+      }
+
     }
     componentDidMount(){
         if(localStorage.getItem('keepLogin')!=='true'){
