@@ -5,7 +5,11 @@ import { Link, Router, browserHistory } from 'react-router'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import __ from 'lodash';
+import moment from 'moment';
+import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -25,10 +29,20 @@ import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class LeftBarVinh extends React.Component {
   constructor(props) {
     super(props)
+    this.handleResize = this.handleResize.bind(this);
     this.state = {
       openDialog: false,
       height: window.innerHeight
     }
+  }
+  handleResize(e) {
+      this.setState({height: window.innerHeight});
+  }
+  componentDidMount() {
+      window.addEventListener('resize', this.handleResize);
+  }
+  componentWillUnmount() {
+      window.removeEventListener('resize', this.handleResize);
   }
   handleClose () {
     this.setState({openDialog: false});
@@ -90,7 +104,7 @@ export default class LeftBarVinh extends React.Component {
          open={this.state.openDialog}
          contentStyle={{width: 600,maxWidth: 'none'}}
        >
-         <CreateCoure height={this.state.height -226} handleClose={this.handleClose.bind(this)} />
+         <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
        <button onClick={() => this.setState({openDialog: true})}>Tao moi khoa hoc</button>
        </Drawer>
@@ -98,13 +112,36 @@ export default class LeftBarVinh extends React.Component {
   }
 }
 
-class CreateCoure extends React.Component {
+class CreateCoureForm extends React.Component {
   constructor(props) {
     super(props)
     this.state ={
       name: '',
       dateStart: '',
-      dateEnd: ''
+      dateEnd: '',
+    }
+  }
+  handleSave(type){
+    let data = {
+      name: this.state.name,
+      dateStart : moment(this.state.dateStart, 'YYYY-MM-DD').valueOf(),
+      dateEnd: moment(this.state.dateEnd, 'YYYY-MM-DD').valueOf()
+    }
+    if(type === 'save'){
+      if(this.props.insertCourse){
+        this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
+          if(data.insertCourse){
+            this.props.handleClose();
+            // this.props.addNotification("success","ok")
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
+    }
+    else {
+
     }
   }
   render() {
@@ -114,7 +151,7 @@ class CreateCoure extends React.Component {
             <div className="modal-header">
               <h4 className="modal-title">Tạo mới khóa học</h4>
             </div>
-            <div className="modal-body" style={{height:this.props.height, overflowY: 'auto', overflowX: 'hidden'}}>
+            <div className="modal-body" style={{overflowY: 'auto', overflowX: 'hidden', overflowY: 'auto', overflowX: 'hidden'}}>
               <form className="form-horizontal">
                 <div className="form-group">
                   <label className="col-sm-3 control-label" >Tên khóa học</label>
@@ -137,11 +174,21 @@ class CreateCoure extends React.Component {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
-              <button type="button" className="btn btn-primary">Tạo mới</button>
-              <button type="button" className="btn btn-primary">Tạo mới và tiếp theo</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("save")}>Tạo mới</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
             </div>
           </div>
       </div>
     )
   }
 }
+const INSERT_COURSE = gql`
+ mutation insertCourse($userId:String!,$info:String!){
+   insertCourse(userId:$userId,info:$info)
+ }
+`;
+export const CreateCoure =graphql(INSERT_COURSE,{
+     props:({mutate})=>({
+     insertCourse : (userId,info) =>mutate({variables:{userId,info}})
+   })
+ })(CreateCoureForm)

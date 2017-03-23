@@ -70,7 +70,7 @@ export default class Header extends React.Component {
         >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                <div className="modal-body" style={{height:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
+                <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
                     <Login {...this.props} />
                 </div>
                 <div className="modal-footer">

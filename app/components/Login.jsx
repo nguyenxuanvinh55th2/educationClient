@@ -22,24 +22,32 @@ class Login extends Component {
     let that = this;
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
     loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
+      if(data){
         let dataUser = JSON.parse(data.loginWithPassword);
         this.props.loginCommand(dataUser.user);
-        console.log(dataUser);
         localStorage.setItem('keepLogin', true);
         localStorage.setItem('Meteor.loginToken', dataUser.token);
+      }
     }).catch(err=>{
     });
   }
   handleLoginGoogle(response){
     if(response){
       if(this.props.loginWithGoogle){
-        console.log("d");
         this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
-          console.log(data);
-          // let dataUser =  JSON.parse(data.loginWithGoogle);
-          // localStorage.setItem('keepLogin', true);
-          // localStorage.setItem('Meteor.loginToken', dataUser.token);
-          // this.props.loginCommand(JSON.parse(data.user))
+          if(data && data.loginWithGoogle){
+            let dataUser =  JSON.parse(data.loginWithGoogle);
+            localStorage.setItem('keepLogin', true);
+            localStorage.setItem('Meteor.loginToken', dataUser.token);
+            this.props.loginCommand({
+              _id: dataUser.user._id,
+              friendList: dataUser.user.friendList,
+              googleId: dataUser.user.googleId,
+              profile: dataUser.user.profileObj,
+              services: dataUser.user.services,
+              w3: dataUser.user.w3
+            })
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -89,10 +97,15 @@ class Login extends Component {
                     response['job'] = '';
                     response['friendList'] = [];
                     this.props.loginWithFacebook(JSON.stringify(response)).then(({data}) => {
-                      let dataUser = JSON.parse(data.loginWithPassword);
-                      localStorage.setItem('keepLogin', true);
-                      localStorage.setItem('Meteor.loginToken', dataUser.token);
-                      this.props.loginCommand(dataUser.user);
+                      if(data && data.loginWithFacebook){
+                        let dataUser = JSON.parse(data.loginWithFacebook);
+                        localStorage.setItem('keepLogin', true);
+                        localStorage.setItem('Meteor.loginToken', dataUser.token);
+                        this.props.loginCommand(dataUser.user);
+                      }
+                      else {
+                        console.log("failed");
+                      }
                     })
                     .catch((error) => {
                       console.log(error);

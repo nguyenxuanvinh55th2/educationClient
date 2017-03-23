@@ -24,7 +24,7 @@ import {
   purple500,
 } from 'material-ui/styles/colors';
 const style = {margin: 5};
-class ChatBarVinh extends React.Component {
+class ChatBar extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -86,4 +86,4 @@ graphql(USER_CHAT, {
     }),
     name: 'courses',
 }),
-)(ChatBarVinh);
+)(ChatBar);
