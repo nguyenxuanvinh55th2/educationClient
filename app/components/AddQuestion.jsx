@@ -133,7 +133,7 @@ class AddQuestion extends React.Component {
 
   saveQuestion() {
     let { questionList, title, description } = this.state;
-    let {  getQuestionSetId } = this.props;
+    let {  getQuestionSetId, users } = this.props;
     let questionSet = {
       title,
       description,
@@ -146,7 +146,7 @@ class AddQuestion extends React.Component {
       item.correctAnswer = item.correctAnswer.map(item => item.answer);
       questionSetString.push(JSON.stringify(item));
     });
-    this.props.insertQuestionSet('abc', questionSet,  questionSetString).then(({data}) => {
+    this.props.insertQuestionSet(users.userId, questionSet,  questionSetString).then(({data}) => {
       getQuestionSetId(data.insertQuestionSet);
     }).catch((error) => {
         console.log('there was an error sending the query', error);

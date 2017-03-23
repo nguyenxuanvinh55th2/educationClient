@@ -7,7 +7,7 @@ import Slider from 'material-ui/Slider';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import AddQuestion from './AddQuestion.jsx';
-import QuesionBank from './QuestionBank.jsx';
+import QuestionBank from './QuestionBank.jsx';
 
 class CreateTest extends  React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class CreateTest extends  React.Component {
   }
 
   saveTest() {
-    let { insertExamination } = this.props;
+    let { insertExamination, users } = this.props;
     let newTest = {
       code: this.code,
       name: this.state.name,
@@ -33,11 +33,13 @@ class CreateTest extends  React.Component {
       time: this.state.time
     }
     let info = JSON.stringify(newTest);
-    insertExamination('123', info);
+    insertExamination(users.userId, info);
   }
 
   render() {
     let { time, userCount, getQuestionFrom } = this.state;
+    let { users } = this.props;
+    console.log("message this state ", this.state);
     return (
       <Tabs className="secondary">
         <TabList className="modal-header" style={{margin: 0}}>
@@ -91,8 +93,8 @@ class CreateTest extends  React.Component {
         <TabPanel>
           {
             getQuestionFrom === 'questionCreater' ?
-            <AddQuestion getQuestionSetId={this.getQuestionSetId.bind(this)}/> :
-            <QuesionBank getQuestionSetId={this.getQuestionSetId.bind(this)}/>
+            <AddQuestion { ...this.props } getQuestionSetId={this.getQuestionSetId.bind(this)}/> :
+            <QuestionBank { ...this.props } getQuestionSetId={this.getQuestionSetId.bind(this)}/>
           }
         </TabPanel>
         <TabPanel>

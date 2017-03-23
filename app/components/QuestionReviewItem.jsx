@@ -20,14 +20,14 @@ export default class QuestionReviewItem extends React.Component {
   }
 
   renderAnswerSet(question) {
-    return question.answerSet.map(item => (
-      <AnswerReviewItem key={item._id} answer={item.answer}/>
+    return question.answerSet.map((item, idx) => (
+      <AnswerReviewItem key={item._id + idx} answer={item.answer}/>
     ));
   }
 
   renderCorrectAnswer(question) {
-    return question.correctAnswer.map(item => (
-      <AnswerReviewItem key={item._id} answer={item.answer}/>
+    return question.correctAnswer.map((item, idx) => (
+      <AnswerReviewItem key={item._id + idx} answer={item.answer}/>
     ));
   }
 
