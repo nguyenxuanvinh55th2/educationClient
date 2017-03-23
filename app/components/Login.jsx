@@ -27,8 +27,10 @@ class Login extends Component {
         this.props.loginCommand(dataUser.user);
         localStorage.setItem('keepLogin', true);
         localStorage.setItem('Meteor.loginToken', dataUser.token);
+        this.props.handleClose();
       }
-    }).catch(err=>{
+    }).catch((err)=>{
+      this.props.handleClose();
     });
   }
   handleLoginGoogle(response){
@@ -46,7 +48,8 @@ class Login extends Component {
               profile: dataUser.user.profileObj,
               services: dataUser.user.services,
               w3: dataUser.user.w3
-            })
+            });
+            this.props.handleClose();
           }
         })
         .catch((error) => {
@@ -58,9 +61,14 @@ class Login extends Component {
   render() {
     return (
       <div style={{flexDirection: 'column'}}>
+        {/* <div style={{display: 'flex', flexDirection: 'column', alignSelf: 'center'}}>
+          <img src="/public/imgs/logo.png" alt="Dispute Bills" />
+        </div> */}
+        <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
+          <h2>ĐĂNG NHẬP</h2>
+        </div>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
-          <div style={{flexDirection: 'column', marginTop: 5, width: '70%'}}>
-            <div style={{textAlign: 'center'}}>Đăng nhập với tài khoản Tuielearning</div>
+          <div style={{flexDirection: 'column', marginTop: 5, width: '50%'}}>
             <form className="form-horizontal">
               <div className="form-group">
                 <label className="col-sm-3 control-label" >Tài khoản</label>
@@ -81,7 +89,7 @@ class Login extends Component {
               </div>
           </form>
           </div>
-          <div style={{flexDirection: 'column', marginLeft: 15}}>
+          <div style={{width:'50%',flexDirection: 'column', marginLeft: 15}}>
             <div  style={{textAlign: 'center'}}>
               Hoặc đăng nhập với
             </div>
@@ -102,13 +110,16 @@ class Login extends Component {
                         localStorage.setItem('keepLogin', true);
                         localStorage.setItem('Meteor.loginToken', dataUser.token);
                         this.props.loginCommand(dataUser.user);
+                        this.props.handleClose();
                       }
                       else {
                         console.log("failed");
+                        this.props.handleClose();
                       }
                     })
                     .catch((error) => {
                       console.log(error);
+                      this.props.handleClose();
                     })
                   }
                 }

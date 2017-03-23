@@ -50,14 +50,6 @@ export default class Profile extends React.Component {
       window.removeEventListener('resize', this.mediaQueryChanged);
   }
   render() {
-    console.log(this.props.users);
-    let { users } = this.props.users;
-    if(users){
-      console.log(users.userId);
-    }
-    else {
-      console.log("f");
-    }
     return(
       <div style={{flexDirection: 'column'}}>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true

@@ -4,9 +4,10 @@
   cursor: pointer;
   display: inline-block;
   height: 35px;
-  width: 138px;
+  width: 200px;
   background-color: #4c69ba;
   border: none;
+  font-size: 14px;
 }
 .loginGoogle {
   text-decoration: none;
@@ -14,10 +15,11 @@
   cursor: pointer;
   display: inline-block;
   height: 35px;
-  width: 138px;
+  width: 200px;
   background-color: rgb(209, 72, 54);
   border: none;
   margin-top: 5px;
+  font-size: 14px;
 }
 .fa-facebook {
   padding-right: 5px;
