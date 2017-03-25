@@ -10,18 +10,9 @@ import NotificationSystem from 'react-notification-system';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import Subheader from 'material-ui/Subheader';
-import Person from 'material-ui/svg-icons/social/person';
-import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import Notifications from 'material-ui/svg-icons/social/notifications'
 import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class Profile extends React.Component {
   constructor(props) {
@@ -66,7 +57,7 @@ export default class Profile extends React.Component {
         >
         </IconMenu>
           <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+          iconButtonElement={<IconButton><Notifications /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>

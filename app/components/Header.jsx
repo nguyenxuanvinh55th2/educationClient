@@ -21,7 +21,7 @@ class Header extends React.Component {
     this.handleResize = this.handleResize.bind(this);
     this.state = {
       height: window.innerHeight,
-      showModal: true,
+      showModal: false,
       dialogType: ''
     }
   }
@@ -86,14 +86,14 @@ class Header extends React.Component {
         <Dialog
           modal={true}
           open={this.state.showModal}
-          contentStyle={{width: '70%',maxWidth: 'none'}}
+          contentStyle={{minHeight:'60%'}}
         >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                <div className="modal-header">
-                   <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
-                </div>
                 <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
+                  <div>
+                    <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
+                  </div>
                     <Login {...this.props} handleClose={() => this.setState({showModal: false})}/>
                 </div>
               </div>

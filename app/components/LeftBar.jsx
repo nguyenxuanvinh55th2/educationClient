@@ -14,6 +14,14 @@ import Snackbar from 'material-ui/Snackbar';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import {List, ListItem} from 'material-ui/List';
+
+import School from 'material-ui/svg-icons/social/school';
+import LocalLibary from 'material-ui/svg-icons/maps/local-library';
+import Description from 'material-ui/svg-icons/action/description'
+import Setting from 'material-ui/svg-icons/action/settings'
+import Note from 'material-ui/svg-icons/notification/event-note'
+import Public from 'material-ui/svg-icons/social/public'
+
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
@@ -61,7 +69,7 @@ export default class LeftBarVinh extends React.Component {
         <List>
          <ListItem
            primaryText="Giáo viên"
-           leftIcon={<Person />}
+           leftIcon={<LocalLibary />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            nestedItems={[
@@ -74,7 +82,7 @@ export default class LeftBarVinh extends React.Component {
          />
          <ListItem
            primaryText="Học sinh"
-           leftIcon={<Person />}
+           leftIcon={<School />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            nestedItems={[
@@ -98,6 +106,58 @@ export default class LeftBarVinh extends React.Component {
              />,
            ]}
          />
+         <ListItem
+           primaryText="Danh sách kì thi"
+           leftIcon={<Description />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Thời gian biểu"
+           leftIcon={<Note />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Hướng dẫn"
+           leftIcon={<Public />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Cài đặt"
+           leftIcon={<Setting />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
        </List>
        <Dialog
          modal={true}
@@ -106,7 +166,7 @@ export default class LeftBarVinh extends React.Component {
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
-       <button onClick={() => this.setState({openDialog: true})}>Tao moi khoa hoc</button>
+       {/* <button onClick={() => this.setState({openDialog: true})}>Tao moi khoa hoc</button> */}
        </Drawer>
     )
   }
