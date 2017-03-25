@@ -44,7 +44,7 @@ export default class Profile extends React.Component {
     return(
       <div style={{flexDirection: 'column'}}>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#2b3a41'}}
+        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
           <IconMenu open={false} onTouchTap={() => console.log("f")}
           iconButtonElement={<IconButton><MapsPlace /></IconButton>}

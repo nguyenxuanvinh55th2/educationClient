@@ -66,7 +66,7 @@ export default class LeftBarVinh extends React.Component {
         <div style={{textAlign: 'center'}}>
           <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
         </div>
-        <List>
+        <List style={{color: 'white'}}>
          <ListItem
            primaryText="Giáo viên"
            leftIcon={<LocalLibary />}
@@ -76,7 +76,7 @@ export default class LeftBarVinh extends React.Component {
              <ListItem
                key={1}
                primaryText="Starred"
-               leftIcon={<ActionGrade />}
+              //  leftIcon={<ActionGrade />}
              />,
            ]}
          />
