@@ -78,6 +78,15 @@ export default class LeftBarVinh extends React.Component {
                primaryText="Starred"
               //  leftIcon={<ActionGrade />}
              />,
+             <ListItem
+               key={2}
+               primaryText={
+                 <div>
+                   <button className="btn btn-primary" onClick={() => this.setState({openDialog: true})}>Tạo mới môn học </button>
+                 </div>
+               }
+              //  leftIcon={<ActionGrade />}
+             />,
            ]}
          />
          <ListItem
@@ -166,7 +175,6 @@ export default class LeftBarVinh extends React.Component {
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
-       {/* <button onClick={() => this.setState({openDialog: true})}>Tao moi khoa hoc</button> */}
        </Drawer>
     )
   }

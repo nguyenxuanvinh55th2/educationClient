@@ -18,6 +18,7 @@ class Wall extends React.Component {
   }
   render(){
     let { courses } = this.props;
+    console.log(courses);
     if(courses.loading && courses.error){
       return (
           <div className="spinner spinner-lg"></div>
