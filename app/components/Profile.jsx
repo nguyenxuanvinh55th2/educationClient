@@ -20,7 +20,8 @@ export default class Profile extends React.Component {
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.notificationSystem = null;
     this.state = {
-      sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches
+      sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches,
+      chatBarOpen: false
     }
   }
   addNotification(level,message) {
@@ -61,13 +62,16 @@ export default class Profile extends React.Component {
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
+          <IconMenu open={false} onTouchTap={() => this.setState({chatBarOpen: true})}
           iconButtonElement={<IconButton><MapsPlace /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>
       </AppBar>
-      {/* <ChatBar {...this.props} /> */}
+      <Drawer width={200} openSecondary={true} open={this.state.chatBarOpen} docked={false}
+        onRequestChange={() => this.setState({chatBarOpen: false})} containerStyle={{marginTop: 65}}>
+         <ChatBar {...this.props}/>
+       </Drawer>
       {
         window.matchMedia(`(min-width: 800px)`).matches ?
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
