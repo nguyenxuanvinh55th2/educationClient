@@ -168,6 +168,9 @@ export default class LeftBarVinh extends React.Component {
            ]}
          />
        </List>
+       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+         <button onClick={() => this.setState({openDialog: true})}>tao khoa hoc</button>
+       </div>
        <Dialog
          modal={true}
          open={this.state.openDialog}
@@ -209,7 +212,17 @@ class CreateCoureForm extends React.Component {
       }
     }
     else {
-
+      if(this.props.insertCourse){
+        this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
+          if(data.insertCourse){
+            this.props.handleClose();
+            browserHistory.push('/profile/' + this.props.users.userId + '/createClass')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     }
   }
   render() {

@@ -30,6 +30,7 @@ import Wall from './components/Wall.jsx'
 import Home from './components/Home.jsx'
 import ClassList from './components/ClassList.jsx'
 import CreateTest from './components/CreateTest.jsx'
+import CreateSubject from './components/CreateSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
 export class WrapMain extends React.Component{
     constructor(props){
@@ -63,6 +64,7 @@ ReactDOM.render(
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
               <Route path="/profile/:id/createClass" component={ClassList}/>
+              <Route path="/profile/:id/createSubject" component={CreateSubject}/>
             </Route>
             <Route path="/createTest" component={CreateTest}/>
           </Route>

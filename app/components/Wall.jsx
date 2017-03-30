@@ -18,7 +18,6 @@ class Wall extends React.Component {
   }
   render(){
     let { courses } = this.props;
-    console.log(courses);
     if(courses.loading && courses.error){
       return (
           <div className="spinner spinner-lg"></div>
@@ -29,7 +28,7 @@ class Wall extends React.Component {
         <div style={{flexDirection: 'column'}}>
           <List>
             {
-              __.map(courses.courses,(course,idx) => {
+              __.map(courses.coursesActive,(course,idx) => {
                   return (
                     <ListItem key={idx}
                       primaryText={course.name}
@@ -59,7 +58,7 @@ class Wall extends React.Component {
 
 const MyQuery = gql`
     query courses{
-      courses {
+      coursesActive {
        _id
        name
        dateStart
