@@ -31,8 +31,13 @@ class CreateSubject extends React.Component {
   }
   render(){
     return (
-      <div style={{display: 'flex', flexDirection: 'column'}}>
-        
+      <div className="row">
+        <div className="col-sm-9">
+          
+        </div>
+        <div className="col-sm-3">
+
+        </div>
       </div>
     )
   }
