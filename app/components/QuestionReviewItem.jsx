@@ -21,13 +21,13 @@ export default class QuestionReviewItem extends React.Component {
 
   renderAnswerSet(question) {
     return question.answerSet.map((item, idx) => (
-      <AnswerReviewItem key={item._id + idx} answer={item.answer}/>
+      <AnswerReviewItem key={item + idx} answer={item}/>
     ));
   }
 
   renderCorrectAnswer(question) {
     return question.correctAnswer.map((item, idx) => (
-      <AnswerReviewItem key={item._id + idx} answer={item.answer}/>
+      <AnswerReviewItem key={item + idx} answer={item}/>
     ));
   }
 
@@ -37,7 +37,7 @@ export default class QuestionReviewItem extends React.Component {
   }
 
   render() {
-    let { question, publicQuestion } = this.props;
+    let { question, publicQuestion, questionType } = this.props;
     let { showAnswer } = this.state;
     return (
       <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
@@ -45,14 +45,17 @@ export default class QuestionReviewItem extends React.Component {
           <button className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10}} className="btn btn-default" onClick={this.showAnswer.bind(this)}>
             {question.question}
           </button>
-          <Checkbox
-            label="Public"
-            checked={question.isPublic}
-            onCheck={(_, isInputChecked) => {
-              publicQuestion(isInputChecked)
-            }}
-            style={{width: 75}}
-          />
+          {
+            questionType !== 'publicQuestion' ?
+            <Checkbox
+              label="Public"
+              checked={question.isPublic}
+              onCheck={(_, isInputChecked) => {
+                publicQuestion(isInputChecked)
+              }}
+              style={{width: 75}}
+            /> : null
+          }
         </div>
         {
           showAnswer ?

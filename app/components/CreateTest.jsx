@@ -39,7 +39,6 @@ class CreateTest extends  React.Component {
   render() {
     let { time, userCount, getQuestionFrom } = this.state;
     let { users } = this.props;
-    console.log("message this state ", this.state);
     return (
       <Tabs className="secondary">
         <TabList className="modal-header" style={{margin: 0}}>
