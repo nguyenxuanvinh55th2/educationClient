@@ -10,18 +10,9 @@ import NotificationSystem from 'react-notification-system';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import Subheader from 'material-ui/Subheader';
-import Person from 'material-ui/svg-icons/social/person';
-import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import Notifications from 'material-ui/svg-icons/social/notifications'
 import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class Profile extends React.Component {
   constructor(props) {
@@ -29,7 +20,8 @@ export default class Profile extends React.Component {
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.notificationSystem = null;
     this.state = {
-      sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches
+      sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches,
+      chatBarOpen: false
     }
   }
   addNotification(level,message) {
@@ -50,18 +42,10 @@ export default class Profile extends React.Component {
       window.removeEventListener('resize', this.mediaQueryChanged);
   }
   render() {
-    console.log(this.props.users);
-    let { users } = this.props.users;
-    if(users){
-      console.log(users.userId);
-    }
-    else {
-      console.log("f");
-    }
     return(
       <div style={{flexDirection: 'column'}}>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#2b3a41'}}
+        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
           <IconMenu open={false} onTouchTap={() => console.log("f")}
           iconButtonElement={<IconButton><MapsPlace /></IconButton>}
@@ -74,17 +58,20 @@ export default class Profile extends React.Component {
         >
         </IconMenu>
           <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+          iconButtonElement={<IconButton><Notifications /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
+          <IconMenu open={false} onTouchTap={() => this.setState({chatBarOpen: true})}
           iconButtonElement={<IconButton><MapsPlace /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>
       </AppBar>
-      {/* <ChatBar {...this.props} /> */}
+      <Drawer width={200} openSecondary={true} open={this.state.chatBarOpen} docked={false}
+        onRequestChange={() => this.setState({chatBarOpen: false})} containerStyle={{marginTop: 65}}>
+         <ChatBar {...this.props}/>
+       </Drawer>
       {
         window.matchMedia(`(min-width: 800px)`).matches ?
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>

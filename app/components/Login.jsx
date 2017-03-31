@@ -27,8 +27,10 @@ class Login extends Component {
         this.props.loginCommand(dataUser.user);
         localStorage.setItem('keepLogin', true);
         localStorage.setItem('Meteor.loginToken', dataUser.token);
+        this.props.handleClose();
       }
-    }).catch(err=>{
+    }).catch((err)=>{
+      this.props.handleClose();
     });
   }
   handleLoginGoogle(response){
@@ -46,7 +48,8 @@ class Login extends Component {
               profile: dataUser.user.profileObj,
               services: dataUser.user.services,
               w3: dataUser.user.w3
-            })
+            });
+            this.props.handleClose();
           }
         })
         .catch((error) => {
@@ -58,34 +61,37 @@ class Login extends Component {
   render() {
     return (
       <div style={{flexDirection: 'column'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <img src="/public/imgs/logo_den.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
+          <h4>ĐĂNG NHẬP</h4>
+        </div>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
-          <div style={{flexDirection: 'column', marginTop: 5, width: '70%'}}>
-            <div style={{textAlign: 'center'}}>Đăng nhập với tài khoản Tuielearning</div>
+          <div style={{flexDirection: 'column', marginTop: 5, width: '50%'}}>
             <form className="form-horizontal">
               <div className="form-group">
-                <label className="col-sm-3 control-label" >Tài khoản</label>
-                <div className="col-sm-9">
-                  <input type="text" className="form-control" value={this.state.email} onChange={({target}) => this.setState({email: target.value})}/></div>
+                <div className="col-sm-9 col-sm-offset-3">
+                  <input type="text" className="form-control" placeholder="Email" value={this.state.email} onChange={({target}) => this.setState({email: target.value})}/></div>
               </div>
               <div className="form-group">
-                <label className="col-sm-3 control-label" >Mật khẩu</label>
-                <div className="col-sm-9">
-                  <input type="password" className="form-control" value={this.state.password} onChange={({target}) => this.setState({password: target.value})}/></div>
+                <div className="col-sm-9 col-sm-offset-3">
+                  <input type="password" className="form-control" placeholder="Mật khẩu" value={this.state.password} onChange={({target}) => this.setState({password: target.value})}/></div>
               </div>
               <div className="form-group">
                 <label className="col-sm-3 control-label" ></label>
                 <div className="col-sm-9" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <a style={{color: 'black'}}>Quên mật khẩu</a>
+                  <a className="btn btn-link" style={{color: 'black', fontSize: 10}}>Quên mật khẩu</a>
                   <button className="btn btn-primary" type="button" onClick={this.handleLogin.bind(this)}>Đăng Nhập</button>
                 </div>
               </div>
           </form>
           </div>
-          <div style={{flexDirection: 'column', marginLeft: 15}}>
-            <div  style={{textAlign: 'center'}}>
+          <div style={{width:'50%',flexDirection: 'column', marginLeft: 15}}>
+            <p  style={{textAlign: 'center', fontSize: 13}}>
               Hoặc đăng nhập với
-            </div>
-            <div>
+            </p>
+            <div style={{textAlign: 'center'}}>
               <FacebookLogin
                 appId="265492483877076"
                 autoLoad={false}
@@ -102,13 +108,16 @@ class Login extends Component {
                         localStorage.setItem('keepLogin', true);
                         localStorage.setItem('Meteor.loginToken', dataUser.token);
                         this.props.loginCommand(dataUser.user);
+                        this.props.handleClose();
                       }
                       else {
                         console.log("failed");
+                        this.props.handleClose();
                       }
                     })
                     .catch((error) => {
                       console.log(error);
+                      this.props.handleClose();
                     })
                   }
                 }
@@ -116,7 +125,7 @@ class Login extends Component {
                 icon="fa-facebook"
               />
             </div>
-            <div>
+            <div style={{textAlign: 'center'}}>
               <GoogleLogin
                 clientId="500871646789-sutbet90ovo14nub4f2l190ck6u93cgc.apps.googleusercontent.com"
                 onSuccess={(response) => {
@@ -141,7 +150,6 @@ class Login extends Component {
             </div>
           </div>
         </div>
-        <div>Bạn chưa tài khoản <a> Đăng kí</a></div>
       </div>
     )
   }

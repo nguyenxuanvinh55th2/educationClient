@@ -14,6 +14,14 @@ import Snackbar from 'material-ui/Snackbar';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import {List, ListItem} from 'material-ui/List';
+
+import School from 'material-ui/svg-icons/social/school';
+import LocalLibary from 'material-ui/svg-icons/maps/local-library';
+import Description from 'material-ui/svg-icons/action/description'
+import Setting from 'material-ui/svg-icons/action/settings'
+import Note from 'material-ui/svg-icons/notification/event-note'
+import Public from 'material-ui/svg-icons/social/public'
+
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
@@ -58,23 +66,32 @@ export default class LeftBarVinh extends React.Component {
         <div style={{textAlign: 'center'}}>
           <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
         </div>
-        <List>
+        <List style={{color: 'white'}}>
          <ListItem
            primaryText="Giáo viên"
-           leftIcon={<Person />}
+           leftIcon={<LocalLibary />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            nestedItems={[
              <ListItem
                key={1}
                primaryText="Starred"
-               leftIcon={<ActionGrade />}
+              //  leftIcon={<ActionGrade />}
              />,
+            //  <ListItem
+            //    key={2}
+            //    primaryText={
+            //      <div>
+            //        <button className="btn btn-primary" onClick={() => this.setState({openDialog: true})}>Tạo mới môn học </button>
+            //      </div>
+            //    }
+            //   //  leftIcon={<ActionGrade />}
+            //  />,
            ]}
          />
          <ListItem
            primaryText="Học sinh"
-           leftIcon={<Person />}
+           leftIcon={<School />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            nestedItems={[
@@ -98,7 +115,62 @@ export default class LeftBarVinh extends React.Component {
              />,
            ]}
          />
+         <ListItem
+           primaryText="Danh sách kì thi"
+           leftIcon={<Description />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Thời gian biểu"
+           leftIcon={<Note />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Hướng dẫn"
+           leftIcon={<Public />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
+         <ListItem
+           primaryText="Cài đặt"
+           leftIcon={<Setting />}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+             <ListItem
+               key={1}
+               primaryText="Starred"
+               leftIcon={<ActionGrade />}
+             />,
+           ]}
+         />
        </List>
+       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+         <button onClick={() => this.setState({openDialog: true})}>tao khoa hoc</button>
+       </div>
        <Dialog
          modal={true}
          open={this.state.openDialog}
@@ -106,7 +178,6 @@ export default class LeftBarVinh extends React.Component {
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
-       <button onClick={() => this.setState({openDialog: true})}>Tao moi khoa hoc</button>
        </Drawer>
     )
   }
@@ -141,7 +212,17 @@ class CreateCoureForm extends React.Component {
       }
     }
     else {
-
+      if(this.props.insertCourse){
+        this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
+          if(data.insertCourse){
+            this.props.handleClose();
+            browserHistory.push('/profile/' + this.props.users.userId + '/createClass')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     }
   }
   render() {

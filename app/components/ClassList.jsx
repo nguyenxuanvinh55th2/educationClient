@@ -9,7 +9,7 @@ import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
-export default class ClassList extends React.Component {
+class ClassList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -17,9 +17,21 @@ export default class ClassList extends React.Component {
       name: '',
     }
   }
+  handleSave(type){
+    if(this.props.insertClass){
+      this.props.insertClass(this.props.users.userId,JSON.stringify({code: this.state.code,name: this.state.name})).then(({data}) => {
+        if(data.insertClass){
+          browserHistory.push('/profile/' + this.props.users.userId + '/createSubject');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+  }
   render(){
     return (
-      <div style={{display: 'flex', flexDirection: 'column'}}>
+      <div style={{display: 'flex', flexDirection: 'column', paddingTop: 20, width: '50%'}}>
         <form className="form-horizontal">
           <div className="form-group">
             <label className="col-sm-3 control-label" >Mã lớp học</label>
@@ -29,11 +41,27 @@ export default class ClassList extends React.Component {
           <div className="form-group">
             <label className="col-sm-3 control-label" >Tên lớp học</label>
             <div className="col-sm-9">
-              <button>Tiep tuc</button>
+              <input type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
             </div>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+            <button type="button" className="btn btn-primary" onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
+            <button type="button" className="btn btn-primary" onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
           </div>
         </form>
       </div>
     )
   }
 }
+const INSERT_CLASS = gql`
+ mutation insertClass($userId:String!,$info:String!){
+   insertClass(userId:$userId,info:$info)
+ }
+`;
+export default compose(
+  graphql(INSERT_CLASS,{
+       props:({mutate})=>({
+       insertClass : (userId,info) =>mutate({variables:{userId,info}})
+     })
+   })
+)(ClassList)

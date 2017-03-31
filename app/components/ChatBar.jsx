@@ -30,7 +30,6 @@ class ChatBar extends React.Component {
   }
   render() {
     return (
-    <Drawer open={true} docked={true}>
       <List>
        <ListItem
          disabled={true}
@@ -47,7 +46,7 @@ class ChatBar extends React.Component {
          Image Avatar
        </ListItem>
      </List>
-    </Drawer>
+
     )
   }
 }
