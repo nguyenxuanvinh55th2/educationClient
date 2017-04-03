@@ -9,42 +9,49 @@ import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
+import Combobox from './Combobox.jsx';
 class CreateSubject extends React.Component {
   constructor(props) {
     super(props)
+    this.handleSave = this.handleSave.bind(this);
+    this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
       code: '',
       name: '',
-      discription: ''
+      discription: '',
+      themes: [],
+      joinCourse: false,
+      classId: '',
+      courseId: ''
     }
   }
-  handleSave(type){
-    if(this.props.insertClass){
-      this.props.insertClass(this.props.users.userId,JSON.stringify({code: this.state.code,name: this.state.name})).then(({data}) => {
-        if(data.insertClass){
+  handleSave(){
 
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    }
+  }
+  handleAddTheme(){
+
+  }
+  getClass(value){
+    this.setState({classId: value});
+  }
+  getCourse(value){
+    this.setState({courseId: value});
   }
   render(){
-    let { subjects } = this.props;
-    if(subjects.loading){
+    let { dataSet } = this.props;
+    if(dataSet.loading){
       return (
         <div className="spinner spinner-lg"></div>
       )
     }
     else {
       return (
-        <div className="row">
+        <div className="row" style={{padding: 15}}>
           <div className="col-sm-9">
-            <h2>Mon hoc</h2>
+            <h2>Môn học</h2>
             <div className="column">
               <div>
-                <p>Chon mon hoc</p>
+                <p>Chọn môn học</p>
                 <div>
 
                 </div>
@@ -79,11 +86,25 @@ class CreateSubject extends React.Component {
           <div className="col-sm-3">
             <div>
               <p>Lớp học</p>
-              <input type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
+              <Combobox
+                name="class"
+                data={dataSet.getSubjectByUserId}
+                datalistName="classDataList"
+                label="name"
+                placeholder="Chọn lớp học"
+                value={this.state.classId}
+                getValue={this.getClass.bind(this)}/>
             </div>
             <div>
               <p>Khóa học</p>
-              <input type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
+              <Combobox
+                name="course"
+                data={dataSet.courses}
+                datalistName="courseDataList"
+                label="name"
+                placeholder="Chọn khóa học"
+                value={this.state.courseId}
+                getValue={this.getCourse.bind(this)}/>
             </div>
             <div>
               <p>Thêm thành viên</p>
@@ -92,12 +113,12 @@ class CreateSubject extends React.Component {
             <div>
               <div className="checkbox">
                 <label>
-                  <input type="checkbox" /> Tham gia giảng dạy ngay
+                  <input type="checkbox" checked={this.state.joinCourse} onChange={() => this.setState({joinCourse:!this.state.joinCourse})} /> Tham gia giảng dạy ngay
                 </label>
               </div>
             </div>
             <div>
-              <button type="button" className="btn btn-primary">Hoàn thành</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.handleSave()}>Hoàn thành</button>
             </div>
           </div>
         </div>
@@ -114,6 +135,15 @@ const MyQuery = gql`
     query getSubjectByUserId($userId: String){
       getSubjectByUserId(userId: $userId) {
         _id
+       name
+       ownerId
+       createAt
+      },
+      courses {
+        _id
+        name
+        dateStart
+        dateEnd
       }
     }`
 export default compose(
@@ -122,7 +152,7 @@ export default compose(
         variables: {userId: ownProps.users.userId},
         forceFetch: true
       }),
-      name: 'subjects',
+      name: 'dataSet',
   }),
   graphql(INSERT_CLASS,{
        props:({mutate})=>({
