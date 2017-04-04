@@ -255,8 +255,8 @@ class CreateCoureForm extends React.Component {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("save")}>Tạo mới</button>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("save")}>Tạo mới</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
             </div>
           </div>
       </div>
