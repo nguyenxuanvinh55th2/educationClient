@@ -203,9 +203,6 @@ class CreateCoureForm extends React.Component {
       }
     }
     else {
-<<<<<<< HEAD
-      browserHistory.push('/profile/' + this.props.users.userId + '/createClass');
-=======
       if(this.props.insertCourse){
         this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
           if(data.insertCourse){
@@ -217,7 +214,6 @@ class CreateCoureForm extends React.Component {
           console.log(error);
         })
       }
->>>>>>> b5f1f5fe3f819d79973c3656b5b3c730d4ee6bb2
     }
   }
   render() {
