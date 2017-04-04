@@ -3,6 +3,7 @@ import __ from 'lodash';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Checkbox from 'material-ui/Checkbox';
 
 import QuestionCreateItem from './QuestionCreateItem.jsx';
 import QuestionReviewItem from './QuestionReviewItem.jsx';
@@ -10,7 +11,7 @@ import QuestionReviewItem from './QuestionReviewItem.jsx';
 class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {title: '', description: '', questionCount: '', totalScore: '', questionList: [{
+    this.state = {title: '', description: '', questionCount: '', totalScore: '', isPublic: false, questionList: [{
       _id: (Math.floor(Math.random()*99999) + 10000).toString(),
       question: '',
       answerSet: [{
@@ -19,8 +20,9 @@ class AddQuestion extends React.Component {
       }],
       correctAnswer: [],
       score: 0,
-      isPublic: false
-    }]};
+      isPublic: false,
+      subjectId: '',
+    }], subjectId: ''};
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
   }
 
@@ -118,6 +120,10 @@ class AddQuestion extends React.Component {
     this.setState({questionList});
   }
 
+  getSubject(value) {
+    this.setState({subjectId: value});
+  }
+
   removeQuestion(index) {
     let questionList = this.state.questionList;
     for(let i = 0; i < questionList.length; i++) {
@@ -132,18 +138,21 @@ class AddQuestion extends React.Component {
   }
 
   saveQuestion() {
-    let { questionList, title, description } = this.state;
+    let { questionList, title, description, isPublic, subjectId } = this.state;
     let {  getQuestionSetId, users } = this.props;
     let questionSet = {
       title,
       description,
-      questionCount: questionList.length
+      questionCount: questionList.length,
+      isPublic,
+      subjectId
     }
     let questionSetString = [];
     questionSet = JSON.stringify(questionSet);
     __.forEach(questionList, item => {
       item.answerSet = item.answerSet.map(item => item.answer);
       item.correctAnswer = item.correctAnswer.map(item => item.answer);
+      item.subjectId = subjectId;
       questionSetString.push(JSON.stringify(item));
     });
     this.props.insertQuestionSet(users.userId, questionSet,  questionSetString).then(({data}) => {
@@ -200,6 +209,19 @@ class AddQuestion extends React.Component {
                           <span className="help-block">{this.state.totalScore ? null : 'tổng số điểm là bắt buộc'}</span>
                       </div>
                   </div>
+                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
+                      <label className="col-sm-3 control-label">Chọn môn học</label>
+                      <div className="col-sm-9">
+                        <Combobox
+                          name="subjectss"
+                          data={this.props.data.subjectByUser}
+                          datalistName="subjectsDatalists"
+                          label="name"
+                          placeholder="Chọn môn học"
+                          value={this.state.subjectId}
+                          getValue={this.getSubject.bind(this)}/>
+                      </div>
+                  </div>
                   <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
                       <button type="button" className="btn btn-primary" style={{width: 150}} disabled={!this.state.name}>THÊM NỘI DUNG</button>
                   </div>
@@ -229,6 +251,15 @@ class AddQuestion extends React.Component {
             <div style={{width: '100%'}}>
               { this.renderQuestionReview() }
             </div>
+            <div style={{width: '100%'}}>
+              <Checkbox
+                label="Public bộ câu hỏi"
+                onCheck={(_, isInputChecked) => {
+                  this.setState({isPublic: isInputChecked});
+                }}
+                style={{marginLeft: '35%', width: '30%'}}
+              />
+            </div>
             <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
           </div>
         </TabPanel>
@@ -237,12 +268,26 @@ class AddQuestion extends React.Component {
   }
 }
 
+const ADD_QUESTION_QUERY = gql`
+    query subjectByUser($token: String!) {
+        subjectByUser(token: $token) {
+          _id
+          name
+        }
+}`
+
 const INSERT_QUESTION_SET = gql`
     mutation insertQuestionSet ($userId: String!, $questionSet: String!, $questions: [String]!) {
         insertQuestionSet(userId: $userId, questionSet: $questionSet, questions: $questions)
 }`
 
 export default compose (
+    graphql(ADD_QUESTION_QUERY, {
+        options: (owProps)=> ({
+            variables: {userId: owProps.users.userId, token: localStorage.getItem('Meteor.loginToken')},
+            forceFetch: true
+        })
+    }),
     graphql(INSERT_QUESTION_SET, {
         props: ({mutate})=> ({
             insertQuestionSet : (userId, questionSet, questions) => mutate({variables:{userId, questionSet, questions}})

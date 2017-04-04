@@ -159,7 +159,9 @@ export default class LeftBarVinh extends React.Component {
            ]}
          />
        </List>
-       <button onClick={() => this.setState({openDialog: true})}>Them khoa hoc</button>
+       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+         <button onClick={() => this.setState({openDialog: true})}>tao khoa hoc</button>
+       </div>
        <Dialog
          modal={true}
          open={this.state.openDialog}
@@ -201,7 +203,21 @@ class CreateCoureForm extends React.Component {
       }
     }
     else {
+<<<<<<< HEAD
       browserHistory.push('/profile/' + this.props.users.userId + '/createClass');
+=======
+      if(this.props.insertCourse){
+        this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
+          if(data.insertCourse){
+            this.props.handleClose();
+            browserHistory.push('/profile/' + this.props.users.userId + '/createClass')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
+>>>>>>> b5f1f5fe3f819d79973c3656b5b3c730d4ee6bb2
     }
   }
   render() {
@@ -234,8 +250,8 @@ class CreateCoureForm extends React.Component {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("save")}>Tạo mới</button>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("save")}>Tạo mới</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
             </div>
           </div>
       </div>
