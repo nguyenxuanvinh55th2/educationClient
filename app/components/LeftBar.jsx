@@ -78,15 +78,6 @@ export default class LeftBarVinh extends React.Component {
                primaryText="Starred"
               //  leftIcon={<ActionGrade />}
              />,
-            //  <ListItem
-            //    key={2}
-            //    primaryText={
-            //      <div>
-            //        <button className="btn btn-primary" onClick={() => this.setState({openDialog: true})}>Tạo mới môn học </button>
-            //      </div>
-            //    }
-            //   //  leftIcon={<ActionGrade />}
-            //  />,
            ]}
          />
          <ListItem
@@ -168,6 +159,7 @@ export default class LeftBarVinh extends React.Component {
            ]}
          />
        </List>
+       <button onClick={() => this.setState({openDialog: true})}>Them khoa hoc</button>
        <Dialog
          modal={true}
          open={this.state.openDialog}
@@ -209,7 +201,7 @@ class CreateCoureForm extends React.Component {
       }
     }
     else {
-
+      browserHistory.push('/profile/' + this.props.users.userId + '/createClass');
     }
   }
   render() {

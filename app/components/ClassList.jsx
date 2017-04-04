@@ -24,12 +24,13 @@ export default class ClassList extends React.Component {
           <div className="form-group">
             <label className="col-sm-3 control-label" >Mã lớp học</label>
             <div className="col-sm-9">
-              <input type="text" className="form-control" value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/></div>
+              <input type="text" className="form-control" value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+            </div>
           </div>
           <div className="form-group">
             <label className="col-sm-3 control-label" >Tên lớp học</label>
             <div className="col-sm-9">
-              <button>Tiep tuc</button>
+              <input type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value})}/>
             </div>
           </div>
         </form>
