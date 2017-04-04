@@ -26,10 +26,37 @@ class CreateSubject extends React.Component {
     }
   }
   handleSave(){
+    console.log(this.state);
+    let info = {
+      subject: {
+        code: this.state.code,
+        name: this.state.name,
+        createAt: moment.valueOf(),
+        userId: this.props.users.userId
+      },
+      classeSubject: {
 
+      }
+    };
+    console.log(info);
+    // if(this.props.insertSubject){
+    //   this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
+    //     if(data){
+    //       console.log("success");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    // }
   }
   handleAddTheme(){
-
+    let themes = this.state.themes;
+    themes.push({
+      name: 'Chủ đề ' + ' ' + (this.state.themes.length + 1)
+    });
+    console.log(themes);
+    this.setState({themes: themes});
   }
   getClass(value){
     this.setState({classId: value});
@@ -79,7 +106,23 @@ class CreateSubject extends React.Component {
                 </form>
               </div>
               <div>
-                <button type="button" className="btn btn-primary">Thêm chủ đề</button>
+                <div style={{display: 'flex', flexDirection:'column'}}>
+                  {
+                    __.map(this.state.themes,(theme,idx) => {
+                      return(
+                        <div key={idx}>
+                          <input type="text" value={theme.name} onChange={({target}) => {
+                            let themes = this.state.themes;
+                            themes[idx].name = target.value;
+                            this.setState({themes: themes});
+                          }} />
+                          <span><button>Delete</button></span>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+                <button type="button" className="btn btn-primary" onClick={() => this.handleAddTheme()}>Thêm chủ đề</button>
               </div>
             </div>
           </div>
@@ -118,7 +161,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
             <div>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave()}>Hoàn thành</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>Hoàn thành</button>
             </div>
           </div>
         </div>
@@ -126,9 +169,9 @@ class CreateSubject extends React.Component {
     }
   }
 }
-const INSERT_CLASS = gql`
- mutation insertClass($userId:String!,$info:String!){
-   insertClass(userId:$userId,info:$info)
+const INSERT_SUBJECT = gql`
+ mutation insertSubject($userId:String!,$info:String!){
+   insertSubject(userId:$userId,info:$info)
  }
 `;
 const MyQuery = gql`
@@ -154,9 +197,9 @@ export default compose(
       }),
       name: 'dataSet',
   }),
-  graphql(INSERT_CLASS,{
+  graphql(INSERT_SUBJECT,{
        props:({mutate})=>({
-       insertClass : (userId,info) =>mutate({variables:{userId,info}})
+       insertSubject : (userId,info) =>mutate({variables:{userId,info}})
      })
    })
 )(CreateSubject)
