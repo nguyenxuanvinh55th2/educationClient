@@ -67,11 +67,10 @@ export default class Profile extends React.Component {
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>
-      </AppBar>
-      <Drawer width={200} openSecondary={true} open={this.state.chatBarOpen} docked={false}
-        onRequestChange={() => this.setState({chatBarOpen: false})} containerStyle={{marginTop: 65}}>
-         <ChatBar {...this.props}/>
-       </Drawer>
+        </AppBar>
+        <div style={{width: 200}}>
+           <ChatBar {...this.props}/>
+        </div>
       {
         window.matchMedia(`(min-width: 800px)`).matches ?
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>

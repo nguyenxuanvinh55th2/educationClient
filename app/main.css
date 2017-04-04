@@ -5,16 +5,15 @@
   border-right: 1px solid gray;
   height: 100vh;
   right: 0px;
-  top: 66px;
   padding-left: 20px;
   padding-top: 10px;
-  width: 17%;
+  width: 200px;
   display: inline;
 }
 
 #chatShow {
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   right: 260px;
   bottom: 100px;
   height: 360px;
@@ -305,4 +304,121 @@ ul, li {
 
 .closebtn:hover {
     color: #000;
+}
+
+.chatRoom {
+  border-radius: 5px;
+  float: right;
+  padding-right: 10px;
+  //right: 260px;
+  width: 300px;
+}
+
+.chatImage {
+  height: 30px;
+  width: 30px;
+  border-radius: 20%;
+}
+
+.chat-heading {
+  height: 40px;
+}
+
+.td-message{
+  word-break: break-all;
+  width: 80%;
+}
+
+.message-left {
+  float: left;
+  margin-left: 10px;
+}
+
+.message-right {
+  float: right;
+  margin-right: 10px;
+}
+
+.message-right, .message-left {
+  font-size: 20px;
+  font-weight: 100;
+  background-color: #2f9ce2;
+  color: white;
+  padding: 5px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 17px;
+  //max-width: 80px;
+  // max-width: 50px;
+  // max-height: 100px;
+}
+
+.messageDate {
+  font-size: 11px;
+}
+
+.chat-footer {
+  height: 55px;
+}
+
+.chat-body {
+  height: 280px;
+  overflow: scroll;
+  overflow-x: hidden;
+  width: 99%;
+}
+
+.td-room-name {
+  width: 200px;
+  padding: 0px;
+}
+
+.p-room-name {
+  margin-top: -5px;
+}
+
+.td-room-closing {
+  width: 60px;
+}
+
+.button-chat-closing {
+  background-color: inherit;
+  margin-top: -15px;
+  //margin-left: 20%;
+  //width: 80%;
+  float: right;
+  border: none;
+}
+
+.button-chat-send {
+  // margin-top: -44px;
+  // margin-left: 30px;
+  float: right;
+  //padding-right: 10px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  text-align: center;
+  vertical-align:middle;
+  background-color: inherit;
+}
+
+.input-chat {
+  height: 36px;
+  color: black;
+  width: 200px;
+  margin-left: 5px;
+  //border-radius: 5%;
+  heigth: 48px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border-color: white;
+  color: white;
+
+  //background-color: blue;
+  background-color: inherit;
 }
