@@ -15,11 +15,18 @@ class ClassList extends React.Component {
     this.state = {
       code: '',
       name: '',
+      userClasses: []
     }
   }
   handleSave(type){
+    let info = {
+      class: {
+        code: this.state.code,name: this.state.name
+      },
+      userClasses: this.state.userClasses
+    }
     if(this.props.insertClass){
-      this.props.insertClass(this.props.users.userId,JSON.stringify({code: this.state.code,name: this.state.name})).then(({data}) => {
+      this.props.insertClass(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
         if(data.insertClass){
           browserHistory.push('/profile/' + this.props.users.userId + '/createSubject');
         }

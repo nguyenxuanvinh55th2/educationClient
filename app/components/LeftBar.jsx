@@ -159,8 +159,10 @@ export default class LeftBarVinh extends React.Component {
            ]}
          />
        </List>
-       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-         <button onClick={() => this.setState({openDialog: true})}>tao khoa hoc</button>
+       <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+         <button type="button" className="btn btn-link" onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
+         <button type="button" className="btn btn-link" onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
+         <button type="button" className="btn btn-link" onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
        </div>
        <Dialog
          modal={true}
@@ -207,7 +209,7 @@ class CreateCoureForm extends React.Component {
         this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
           if(data.insertCourse){
             this.props.handleClose();
-            browserHistory.push('/profile/' + this.props.users.userId + '/createClass')
+            browserHistory.push('/profile/' + this.props.users.userId + '/createClass');
           }
         })
         .catch((error) => {
