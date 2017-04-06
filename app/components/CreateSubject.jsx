@@ -16,6 +16,7 @@ class CreateSubject extends React.Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
+      _id: '',
       code: '',
       name: '',
       discription: '',
@@ -26,16 +27,50 @@ class CreateSubject extends React.Component {
     }
   }
   handleSave(){
-
+    let info = {
+      subject: {
+        code: this.state.code,
+        name: this.state.name,
+        createAt: moment.valueOf(),
+        userId: this.props.users.userId
+      },
+      classeSubject: {
+        couseId: this.state.courseId,
+        isOpen: this.state.joinCourse
+      }
+    };
+    console.log(info);
+    // if(this.props.insertSubject){
+    //   this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
+    //     if(data){
+    //       console.log("success");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    // }
   }
   handleAddTheme(){
-
+    let themes = this.state.themes;
+    themes.push({
+      name: 'Chủ đề ' + ' ' + (this.state.themes.length + 1)
+    });
+    this.setState({themes: themes});
   }
   getClass(value){
     this.setState({classId: value});
   }
   getCourse(value){
     this.setState({courseId: value});
+  }
+  getSubject(value){
+    if(value){
+      let idx = __.findIndex(this.props.dataSet.getSubjectByUserId,{_id: value});
+      if(idx > -1){
+        console.log(this.props.dataSet.getSubjectByUserId[idx]);
+      }
+    }
   }
   render(){
     let { dataSet } = this.props;
@@ -53,7 +88,14 @@ class CreateSubject extends React.Component {
               <div>
                 <p>Chọn môn học</p>
                 <div>
-
+                  <Combobox
+                    name="subject"
+                    data={dataSet.getSubjectByUserId}
+                    datalistName="subjectClassList"
+                    label="name"
+                    placeholder="Chọn môn học"
+                    value={this.state._id}
+                    getValue={this.getSubject.bind(this)}/>
                 </div>
               </div>
               <div>
@@ -79,7 +121,27 @@ class CreateSubject extends React.Component {
                 </form>
               </div>
               <div>
-                <button type="button" className="btn btn-primary">Thêm chủ đề</button>
+                <div style={{display: 'flex', flexDirection:'column'}}>
+                  {
+                    __.map(this.state.themes,(theme,idx) => {
+                      return(
+                        <div key={idx}>
+                          <input type="text" value={theme.name} onChange={({target}) => {
+                            let themes = this.state.themes;
+                            themes[idx].name = target.value;
+                            this.setState({themes: themes});
+                          }} />
+                          <span><button type="button" onClick={() => {
+                            let themes = this.state.themes;
+                            themes.splice(idx,1);
+                            this.setState({themes: themes})
+                          }} >Delete</button></span>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+                <button type="button" className="btn btn-primary" onClick={() => this.handleAddTheme()}>Thêm chủ đề</button>
               </div>
             </div>
           </div>
@@ -88,7 +150,7 @@ class CreateSubject extends React.Component {
               <p>Lớp học</p>
               <Combobox
                 name="class"
-                data={dataSet.getSubjectByUserId}
+                data={dataSet.getClassByUserId}
                 datalistName="classDataList"
                 label="name"
                 placeholder="Chọn lớp học"
@@ -118,7 +180,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
             <div>
-              <button type="button" className="btn btn-primary" onClick={() => this.handleSave()}>Hoàn thành</button>
+              <button type="button" className="btn btn-primary" disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>Hoàn thành</button>
             </div>
           </div>
         </div>
@@ -126,9 +188,9 @@ class CreateSubject extends React.Component {
     }
   }
 }
-const INSERT_CLASS = gql`
- mutation insertClass($userId:String!,$info:String!){
-   insertClass(userId:$userId,info:$info)
+const INSERT_SUBJECT = gql`
+ mutation insertSubject($userId:String!,$info:String!){
+   insertSubject(userId:$userId,info:$info)
  }
 `;
 const MyQuery = gql`
@@ -139,6 +201,15 @@ const MyQuery = gql`
        ownerId
        createAt
       },
+      getClassByUserId(userId: $userId) {
+         _id
+         code
+         name
+         currentUserId
+         role
+         createAt
+         createrId
+       },
       courses {
         _id
         name
@@ -154,9 +225,9 @@ export default compose(
       }),
       name: 'dataSet',
   }),
-  graphql(INSERT_CLASS,{
+  graphql(INSERT_SUBJECT,{
        props:({mutate})=>({
-       insertClass : (userId,info) =>mutate({variables:{userId,info}})
+       insertSubject : (userId,info) =>mutate({variables:{userId,info}})
      })
    })
 )(CreateSubject)

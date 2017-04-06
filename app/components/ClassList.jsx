@@ -15,11 +15,18 @@ class ClassList extends React.Component {
     this.state = {
       code: '',
       name: '',
+      userClasses: []
     }
   }
   handleSave(type){
+    let info = {
+      class: {
+        code: this.state.code,name: this.state.name
+      },
+      userClasses: this.state.userClasses
+    }
     if(this.props.insertClass){
-      this.props.insertClass(this.props.users.userId,JSON.stringify({code: this.state.code,name: this.state.name})).then(({data}) => {
+      this.props.insertClass(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
         if(data.insertClass){
           browserHistory.push('/profile/' + this.props.users.userId + '/createSubject');
         }
@@ -36,7 +43,8 @@ class ClassList extends React.Component {
           <div className="form-group">
             <label className="col-sm-3 control-label" >Mã lớp học</label>
             <div className="col-sm-9">
-              <input type="text" className="form-control" value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/></div>
+              <input type="text" className="form-control" value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+            </div>
           </div>
           <div className="form-group">
             <label className="col-sm-3 control-label" >Tên lớp học</label>
