@@ -65,7 +65,6 @@ class ChatBar extends React.Component {
       )
     else {
       var userList = this.searchItem(this.props.data.userChat);
-      console.log('userList ', this.props.data.userChat);
       return userList.map((item) => (
         <ChatItem {...this.props} key={item._id} userId={item._id} image={item.user.image} userName={item.user.name} lastLogin={item.user.lastLogin} chatId={item.contentId} online={item.user.online} chatContent={item.content}/>
       ));
@@ -73,7 +72,6 @@ class ChatBar extends React.Component {
   }
 
   render() {
-    console.log('this.props ', this.props);
     return (
       <div className="chatbar">
         <div className="chatbar-user">

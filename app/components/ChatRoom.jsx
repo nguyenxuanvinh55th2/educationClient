@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
+import __ from 'lodash';
 
 import { Link, Router, browserHistory } from 'react-router'
 // import {FB, FacebookApiException} from 'fb';
@@ -53,9 +54,6 @@ class ChatRoom extends Component {
   constructor(props) {
       super(props);
       this.index = this.props.chatContent.length;
-
-      //id của thẻ div chứa khung chat
-      this.chatRoomId = this.props.id;
   }
 
   renderMessage () {
@@ -65,8 +63,8 @@ class ChatRoom extends Component {
       )
     }
     else {
-      return this.props.chatContent.map((content) => (
-        <Message key={content.index} userId={content.user._id} name={content.user.name} image={content.user.image} text={content.message} date={content.date}/>
+      return this.props.chatContent.map((content, idx) => (
+        <Message {...this.props} key={content.index + idx} userId={content.user._id} name={content.user.name} image={content.user.image} text={content.message} date={content.date}/>
       ));
     }
   }
@@ -80,8 +78,8 @@ class ChatRoom extends Component {
       var count = this.props.chatContent.length - 1;
       var userId = this.props.chatContent[count].userId;
       if(this.props.chatId !== null && this.props.users && userId !== this.props.users.userId) {
-        for(i = 0; i < this.props.number; i ++)
-          Meteor.call('updateChatData', this.props.chatId);
+        let token = localStorage.getItem('Meteor.loginToken');
+        this.props.updateChatContent(token, this.props.chatId);
       }
     }
   }
@@ -137,16 +135,14 @@ class ChatRoom extends Component {
         this.props.insertChatContent(token, item);
     }
 
-    this.props.onSendMess(index, userName, userImage, text, date, userId)
-    this.render();
     ReactDOM.findDOMNode(this.refs.messageInput).value = '';
     node = ReactDOM.findDOMNode(this.refs.chatBody);
     node.scrollTop = 300;
   }
 
   componentDidMount() {
-    node = ReactDOM.findDOMNode(this.refs.chatBody);
-    node.scrollTop = 300;
+    // node = ReactDOM.findDOMNode(this.refs.chatBody);
+    // node.scrollTop = 300;
   }
 
   render() {
@@ -162,9 +158,16 @@ class ChatRoom extends Component {
                   </td>
                   <td className="td-room-closing">
                     <button className="button-chat-closing" onClick= {e => {
-                        document.getElementById('chatroom' + this.chatRoomId).style.display = 'none';
-                        document.getElementById('chatShow').style.display = 'none';
-                        this.prop
+                        document.getElementById('chatroom' + this.props.id).style.display = 'none';
+                        let chatRooms = document.getElementsByClassName('chatRoom');
+                        let childrenCount = 0;
+                        __.forEach(chatRooms, item => {
+                          item.style.display === 'inline';
+                          childrenCount ++;
+                        })
+                        if(childrenCount === 0) {
+                          document.getElementById('chatShow').style.display = 'none';
+                        }
                       }}>X</button>
                   </td>
                 </tr>
@@ -201,6 +204,11 @@ const INSERT_CHAT_CONTENT = gql`
         insertChatContent(token: $token, info: $info)
 }`
 
+const UPDATE_CHAT_CONTENT = gql`
+    mutation updateChatContent ($token: String!, $chatId: String!) {
+        updateChatContent(token: $token, chatId: $chatId)
+}`
+
 export default compose (
     graphql(INSERT_CHAT_DATA, {
         props: ({mutate})=> ({
@@ -210,6 +218,11 @@ export default compose (
     graphql(INSERT_CHAT_CONTENT, {
         props: ({mutate})=> ({
             insertChatContent : (token, info) => mutate({variables:{token, info}})
+        })
+    }),
+    graphql(UPDATE_CHAT_CONTENT, {
+        props: ({mutate})=> ({
+            updateChatContent : (token, chatId) => mutate({variables:{token, chatId}})
         })
     }),
 )(ChatRoom);

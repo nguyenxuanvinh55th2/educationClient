@@ -22,6 +22,7 @@ class ChatNotificate extends Component {
 export default class ChatItem extends Component {
   constructor(props) {
       super(props);
+      this.state = {showChatRoom: false};
   }
 
   renderChatRoom() {
@@ -38,7 +39,11 @@ export default class ChatItem extends Component {
           count --;
         }
       }
-    return (<ChatRoom {...this.props} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
+    if(this.state.showChatRoom) {
+      return (<ChatRoom {...this.props} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
+    } else {
+        return null
+    }
   }
 
   renderNotification() {
@@ -62,28 +67,27 @@ export default class ChatItem extends Component {
   }
 
   openChatRoom(event) {
-    console.log('somthing click');
-    var chatRoom = document.getElementById('chatroom' + this.props.userId);
-    console.log('userId ', this.props.userId);
     var chatShow = document.getElementById('chatShow');
+    this.setState({showChatRoom: true});
 
-    console.log('chatShow display ', chatShow.style.display);
-    if(chatShow.style.display === 'none') {
-      chatShow.style.display = 'inline';
-    }
-
-    if(chatRoom.style.display === 'none') {
-      chatRoom.style.display = 'inline';
-      chatShow.appendChild(chatRoom);
-    }
+    setTimeout(() => {
+      var chatRoom = document.getElementById('chatroom' + this.props.userId);
+      if(chatShow.style.display === 'none') {
+        chatShow.style.display = 'inline';
+      }
+      if(chatRoom.style.display === 'none') {
+        chatRoom.style.display = 'inline';
+        chatShow.appendChild(chatRoom);
+      }
+    }, 50);
   }
 
   render() {
       return (
-          <li onClick={this.openChatRoom.bind(this)}>
+          <li>
             { this.renderNotification() }
             { this.renderChatRoom() }
-            <button style={{background: 'none', border: 'none' }}>
+            <button style={{background: 'none', border: 'none' }} onClick={this.openChatRoom.bind(this)}>
               <table>
                 <tbody>
                   <tr>

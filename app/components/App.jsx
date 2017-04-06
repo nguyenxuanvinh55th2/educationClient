@@ -10,7 +10,6 @@ import NotificationSystem from 'react-notification-system';
 function mapStateToProps(state){
   return {
     users: state.users,
-    messager: state.messager
   }
 }
 
