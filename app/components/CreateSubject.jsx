@@ -32,24 +32,25 @@ class CreateSubject extends React.Component {
         code: this.state.code,
         name: this.state.name,
         createAt: moment.valueOf(),
-        userId: this.props.users.userId
+        userId: this.props.users.userId,
       },
       classeSubject: {
         couseId: this.state.courseId,
-        isOpen: this.state.joinCourse
+        isOpen: this.state.joinCourse,
+        dateStart: moment.valueOf(),
+        dateEnd: moment.valueOf()
       }
     };
-    console.log(info);
-    // if(this.props.insertSubject){
-    //   this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
-    //     if(data){
-    //       console.log("success");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // }
+    if(this.props.insertSubject){
+      this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
+        if(data){
+          browserHistory.push("/profile/" + this.props.users.userId);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
   }
   handleAddTheme(){
     let themes = this.state.themes;

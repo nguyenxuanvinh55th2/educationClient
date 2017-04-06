@@ -34,7 +34,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MenuItem from 'material-ui/MenuItem';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
-export default class LeftBarVinh extends React.Component {
+class LeftBar extends React.Component {
   constructor(props) {
     super(props)
     this.handleResize = this.handleResize.bind(this);
@@ -175,6 +175,40 @@ export default class LeftBarVinh extends React.Component {
     )
   }
 }
+
+const MyQuery = gql`
+    query getSubjectByUserId($userId: String){
+      getSubjectByUserId(userId: $userId) {
+        _id
+       name
+       ownerId
+       createAt
+      },
+      getClassByUserId(userId: $userId) {
+         _id
+         code
+         name
+         currentUserId
+         role
+         createAt
+         createrId
+       },
+      courses {
+        _id
+        name
+        dateStart
+        dateEnd
+      }
+    }`
+export default compose(
+  graphql(MyQuery, {
+      options: (ownProps) => ({
+        variables: {userId: ownProps.users.userId},
+        forceFetch: true
+      }),
+      name: 'dataSet',
+  }),
+)(LeftBar)
 
 class CreateCoureForm extends React.Component {
   constructor(props) {
