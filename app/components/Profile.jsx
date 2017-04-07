@@ -6,6 +6,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import LeftBar from './LeftBar.jsx'
 import ChatBar from './ChatBar.jsx'
+import Notification from './Notification.jsx'
 import NotificationSystem from 'react-notification-system';
 
 import Drawer from 'material-ui/Drawer';
@@ -44,6 +45,7 @@ export default class Profile extends React.Component {
   render() {
     return(
       <div style={{flexDirection: 'column'}}>
+        <Notification/>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
         })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
@@ -58,7 +60,15 @@ export default class Profile extends React.Component {
         >
         </IconMenu>
           <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton><Notifications /></IconButton>}
+          iconButtonElement={<IconButton onClick = {e => {
+              let note = document.getElementById('notification');
+              if(note.style.display === 'none') {
+                  note.style.display = 'inline';
+              } else
+                  if(note.style.display = 'inline') {
+                      note.style.display = 'none';
+                  }
+          }}><Notifications /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
         </IconMenu>

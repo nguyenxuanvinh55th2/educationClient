@@ -422,3 +422,23 @@ ul, li {
   //background-color: blue;
   background-color: inherit;
 }
+
+#notification {
+  position: fixed;
+  z-index: 3;
+  top: 70px;
+  padding-top: 10px;
+  right: 259px;
+  height: 300px;
+  width: 300px;
+  border: 1px solid gray;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: none;
+  background-color: white;
+}
+
+.img-note {
+  height: 60px;
+  width: 60px;
+}
