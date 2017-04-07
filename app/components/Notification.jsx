@@ -108,9 +108,9 @@ class Notification extends Component {
   removeNotification(noteId) {
     this.props.remove(noteId).then(() => {
       this.props.data.refetch();
-    }).catch(err) {
+    }).catch((err) => {
 
-    }
+    });
   }
 
   renderNote() {
