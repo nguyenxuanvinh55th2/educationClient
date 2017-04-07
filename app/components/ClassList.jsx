@@ -38,7 +38,7 @@ class ClassList extends React.Component {
   }
   render(){
     return (
-      <div style={{display: 'flex', flexDirection: 'column', paddingTop: 20, width: '50%'}}>
+      <div style={{display: 'flex', flexDirection: 'column', paddingTop: 20, width: '100%'}}>
         <form className="form-horizontal">
           <div className="form-group">
             <label className="col-sm-3 control-label" >Mã lớp học</label>
@@ -52,9 +52,15 @@ class ClassList extends React.Component {
               <input type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
             </div>
           </div>
+          <div className="col-sm-9 col-sm-offset-3" style={{display: 'flex', justifyContent: 'column'}}>
+            <p>
+              Mới sinh viên tham gia lớp học
+            </p>
+            <input />
+          </div>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-            <button type="button" className="btn btn-primary" onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
-            <button type="button" className="btn btn-primary" onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
+            <button type="button" className="btn btn-primary" disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
+            <button type="button" className="btn btn-primary" disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
           </div>
         </form>
       </div>
