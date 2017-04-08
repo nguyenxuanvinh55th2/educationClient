@@ -22,6 +22,7 @@ import './pattern-fly.css';
 import 'ag-grid-root/dist/styles/ag-grid.css';
 import 'ag-grid-root/dist/styles/theme-fresh.css';
 import './customer.css';
+import './main.css';
 
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
