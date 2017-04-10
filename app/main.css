@@ -193,11 +193,6 @@ ul, li {
   display: inline;
 }
 
-.form-control {
-  width: 40%;
-  margin-bottom: 20px;
-}
-
 .loader {
     border: 5px solid #f3f3f3; /* Light grey */
     border-top: 5px solid green; /* Blue */
