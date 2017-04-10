@@ -15,7 +15,8 @@ var config = {
         utility: [
             'ag-grid', 'ag-grid-enterprise', 'ag-grid-react',
             'quill', 'react-tab-panel', 'react-tabs'
-        ]
+        ],
+        meteor: ['meteor-client']
     },
     devServer: {
         hot: true,
@@ -33,7 +34,7 @@ var config = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vendor', 'utility'],
+            name: ['vendor', 'utility', 'meteor'],
             minChunks: Infinity,
             filename: '[name].[hash].js',
         }),
@@ -68,5 +69,12 @@ var config = {
             // "patternfly-root": __dirname + "/node_modules/patternfly/",
         }
     },
+    // externals: function (context, request, callback) {
+    //   var match = request.match(/^meteor\/(.+)$/);
+    //   var pack = match && match[1];
+    //   if (pack) {
+    //     callback(null, 'Package["' + pack + '"]');
+    //   }
+    // }
 };
 module.exports = config;

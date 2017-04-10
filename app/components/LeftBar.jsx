@@ -34,6 +34,32 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MenuItem from 'material-ui/MenuItem';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
+
+class SubjectItem extends React.Component {
+  renderSubjectTheme() {
+    return this.props.themes.map(item => (
+      <ListItem
+        key={1}
+        primaryText={item.name}
+        leftIcon={<ActionGrade />}
+      />
+    ))
+  }
+  render() {
+    return (
+      <ListItem
+        primaryText={this.props.subject.name}
+        leftIcon={<ActionGrade />}
+        initiallyOpen={false}
+        primaryTogglesNestedList={true}
+        nestedItems={
+          this.renderSubjectTheme()
+        }
+      />
+    )
+  }
+}
+
 class LeftBar extends React.Component {
   constructor(props) {
     super(props)
@@ -55,6 +81,18 @@ class LeftBar extends React.Component {
   handleClose () {
     this.setState({openDialog: false});
   }
+
+  renderClassSubjectTeacher() {
+    let { data } = this.props;
+    if(data.loading) {
+      return []
+    } else {
+        return data.classSubjectsByTeacher.map(item => (
+          <SubjectItem subject={item.subject} themes={item.theme}/>
+        ))
+    }
+  }
+
   render() {
     return (
       <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
@@ -72,13 +110,9 @@ class LeftBar extends React.Component {
            leftIcon={<LocalLibary />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-              //  leftIcon={<ActionGrade />}
-             />,
-           ]}
+           nestedItems={
+            this.renderClassSubjectTeacher()
+           }
          />
          <ListItem
            primaryText="Học sinh"
@@ -176,39 +210,35 @@ class LeftBar extends React.Component {
   }
 }
 
-const MyQuery = gql`
-    query getSubjectByUserId($userId: String){
-      getSubjectByUserId(userId: $userId) {
-        _id
-       name
-       ownerId
-       createAt
-      },
-      getClassByUserId(userId: $userId) {
-         _id
-         code
-         name
-         currentUserId
-         role
-         createAt
-         createrId
-       },
-      courses {
+const CLASS_SUBJECT = gql`
+  query classSubjects($token: String!){
+    classSubjectsByTeacher(token: $token) {
+      _id
+      dateStart
+      dateEnd
+      isOpen
+      publicActivity
+      subject {
         _id
         name
-        dateStart
-        dateEnd
+        ownerId
+        createAt
       }
-    }`
+      theme {
+        _id
+        name
+        activity
+      }
+    }
+}`
 export default compose(
-  graphql(MyQuery, {
-      options: (ownProps) => ({
-        variables: {userId: ownProps.users.userId},
-        forceFetch: true
-      }),
-      name: 'dataSet',
-  }),
-)(LeftBar)
+graphql(CLASS_SUBJECT, {
+    options: () => ({
+      variables: {token: localStorage.getItem('Meteor.loginToken')},
+      forceFetch: true
+    }),
+}),
+)(LeftBar);
 
 class CreateCoureForm extends React.Component {
   constructor(props) {

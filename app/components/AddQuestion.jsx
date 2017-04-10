@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Checkbox from 'material-ui/Checkbox';
+import Combobox from './Combobox.jsx';
 
 import QuestionCreateItem from './QuestionCreateItem.jsx';
 import QuestionReviewItem from './QuestionReviewItem.jsx';

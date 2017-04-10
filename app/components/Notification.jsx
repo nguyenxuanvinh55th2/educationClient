@@ -130,7 +130,7 @@ class Notification extends Component {
   }
 
   render() {
-    console.log('notification ', this.props.data.notification);
+    // console.log('notification ', this.props.data.notification);
     return (
       <div id="notification">
         {this.renderNote()}
