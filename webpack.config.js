@@ -66,7 +66,6 @@ var config = {
             "react-grid-layout-root" : __dirname + "/node_modules/react-grid-layout",
             "react-resizable-root" : __dirname + "/node_modules/react-resizable",
             "rc-slider-root" : __dirname + "/node_modules/rc-slider",
-            "educationServer": "http://localhost:3000"
             // "patternfly-root": __dirname + "/node_modules/patternfly/",
         }
     },
