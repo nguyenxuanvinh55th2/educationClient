@@ -9,6 +9,7 @@ import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
+import MultiSelectEditor from './MultiSelectEditor.jsx'
 class ClassList extends React.Component {
   constructor(props) {
     super(props)
@@ -66,11 +67,11 @@ class ClassList extends React.Component {
           </div>
           <div className="column">
             <label>Mời sinh viên tham gian lớp học</label>
-            <div style={{marginLeft: '25%', paddingLeft: 10, paddingRight: 10}}>
-              <input type="text"/>
+            <div style={{marginLeft: '25%', paddingLeft: 10}}>
+              <MultiSelectEditor value={[]} data={[]} onChangeValue={(value) => console.log(value)}/>
             </div>
-            <div style={{marginLeft: '25%', paddingLeft: 10, paddingRight: 10}}>
-              <textarea rows="2" />
+            <div style={{marginLeft: '25%', paddingLeft: 10}}>
+              <textarea rows="2" style={{width: '100%'}}/>
             </div>
           </div>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
