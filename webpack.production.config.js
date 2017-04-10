@@ -5,7 +5,7 @@ var config = {
     context: __dirname + "/app",
     devtool: 'cheap-module-source-map',
     entry: {
-        app: __dirname + "/app/main.jsx",
+        app: __dirname + "/app/shopOnline.jsx",
         vendor: [
             'react', 'react-dom', 'react-addons-test-utils', 'react-grid-layout', 'react-router',
             'lodash', 'moment', 'redux', 'asteroid',
@@ -14,8 +14,9 @@ var config = {
         ],
         utility: [
             'ag-grid', 'ag-grid-enterprise', 'ag-grid-react',
-            'quill', 'react-tab-panel', 'react-tabs'
-        ]
+            'quill', 'react-tab-panel', 'react-tabs', 'meteor-client'
+        ],
+        meteor: ['meteor-client']
     },
     output: {
         filename: "[name].[hash].js",
@@ -27,7 +28,7 @@ var config = {
     plugins: [
         new webpack.NamedModulesPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vendor', 'utility'],
+            name: ['vendor', 'utility', 'meteor'],
             minChunks: Infinity,
             filename: '[name].[hash].js',
         }),
@@ -64,8 +65,16 @@ var config = {
             "react-grid-layout-root" : __dirname + "/node_modules/react-grid-layout",
             "react-resizable-root" : __dirname + "/node_modules/react-resizable",
             "rc-slider-root" : __dirname + "/node_modules/rc-slider",
+            //"api": "../educationServer"
             // "patternfly-root": __dirname + "/node_modules/patternfly/",
         }
     },
+    // externals: function (context, request, callback) {
+    //   var match = request.match(/^meteor\/(.+)$/);
+    //   var pack = match && match[1];
+    //   if (pack) {
+    //     callback(null, ‘Package[“‘ + pack + ‘“]’);
+    //   }
+    // }
 };
 module.exports = config;

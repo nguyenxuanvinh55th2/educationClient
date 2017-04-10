@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server",
+    "start": "meteor-client bundle && ./node_modules/.bin/webpack-dev-server",
     "build": "webpack -p --config webpack.production.config.js"
   },
   "author": "",

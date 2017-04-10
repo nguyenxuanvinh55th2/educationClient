@@ -34,7 +34,33 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MenuItem from 'material-ui/MenuItem';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
-export default class LeftBarVinh extends React.Component {
+
+class SubjectItem extends React.Component {
+  renderSubjectTheme() {
+    return this.props.themes.map(item => (
+      <ListItem
+        key={1}
+        primaryText={item.name}
+        leftIcon={<ActionGrade />}
+      />
+    ))
+  }
+  render() {
+    return (
+      <ListItem
+        primaryText={this.props.subject.name}
+        leftIcon={<ActionGrade />}
+        initiallyOpen={false}
+        primaryTogglesNestedList={true}
+        nestedItems={
+          this.renderSubjectTheme()
+        }
+      />
+    )
+  }
+}
+
+class LeftBarVinh extends React.Component {
   constructor(props) {
     super(props)
     this.handleResize = this.handleResize.bind(this);
@@ -55,6 +81,18 @@ export default class LeftBarVinh extends React.Component {
   handleClose () {
     this.setState({openDialog: false});
   }
+
+  renderClassSubjectTeacher() {
+    let { data } = this.props;
+    if(data.loading) {
+      return []
+    } else {
+        return data.classSubjectsByTeacher.map(item => (
+          <SubjectItem subject={item.subject} themes={item.theme}/>
+        ))
+    }
+  }
+
   render() {
     return (
       <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
@@ -72,13 +110,9 @@ export default class LeftBarVinh extends React.Component {
            leftIcon={<LocalLibary />}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-              //  leftIcon={<ActionGrade />}
-             />,
-           ]}
+           nestedItems={
+            this.renderClassSubjectTeacher()
+           }
          />
          <ListItem
            primaryText="Học sinh"
@@ -175,6 +209,37 @@ export default class LeftBarVinh extends React.Component {
     )
   }
 }
+
+const CLASS_SUBJECT = gql`
+  query classSubjects($token: String!){
+    classSubjectsByTeacher(token: $token) {
+      _id
+      dateStart
+      dateEnd
+      isOpen
+      publicActivity
+      subject {
+        _id
+        name
+        ownerId
+        createAt
+      }
+      theme {
+        _id
+        name
+        activity
+      }
+    }
+}`
+export default compose(
+graphql(CLASS_SUBJECT, {
+    options: () => ({
+      variables: {token: localStorage.getItem('Meteor.loginToken')},
+      forceFetch: true
+    }),
+}),
+)(LeftBarVinh);
+
 
 class CreateCoureForm extends React.Component {
   constructor(props) {
