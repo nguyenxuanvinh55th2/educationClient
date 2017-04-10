@@ -16,14 +16,8 @@ class CreateSubject extends React.Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
-      _id: '',
-      code: '',
-      name: '',
-      discription: '',
-      themes: [],
-      joinCourse: false,
-      classId: '',
-      courseId: ''
+      _id: '', code: '', name: '', discription: '',  themes: [], joinCourse: false,
+      classId: '', courseId: ''
     }
   }
   handleSave(){
