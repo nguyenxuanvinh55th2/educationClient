@@ -10,6 +10,7 @@ import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
 import Combobox from './Combobox.jsx';
+import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
 class CreateSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -17,8 +18,18 @@ class CreateSubject extends React.Component {
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
       _id: '', code: '', name: '', discription: '',  themes: [], joinCourse: false,
-      classId: '', courseId: ''
+      classId: '', courseId: '', userSubjects: [], userMails: []
     }
+    this.dataTest = [
+      {
+        _id: '1234',
+        name: "vinh nguyen"
+      },
+      {
+        _id: '12345566',
+        name: 'lan nguyen'
+      }
+    ]
   }
   handleSave(){
     let info = {
@@ -165,8 +176,10 @@ class CreateSubject extends React.Component {
             </div>
             <div>
               <p>Thêm thành viên</p>
-              <input type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
-            </div>
+              <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
+                 onChangeValue={(value) => this.setState({userSubjects: value})}/>
+                 <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
+           </div>
             <div>
               <div className="checkbox">
                 <label>

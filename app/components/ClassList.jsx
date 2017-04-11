@@ -9,7 +9,7 @@ import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
-import MultiSelectEditor from './MultiSelectEditor.jsx'
+import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx'
 class ClassList extends React.Component {
   constructor(props) {
     super(props)
@@ -19,6 +19,16 @@ class ClassList extends React.Component {
       userClasses: [],
       userMails: []
     }
+    this.dataTest = [
+      {
+        _id: '1234',
+        name: "vinh nguyen"
+      },
+      {
+        _id: '12345566',
+        name: 'lan nguyen'
+      }
+    ]
   }
   handleSave(type){
     let info = {
@@ -46,6 +56,7 @@ class ClassList extends React.Component {
     }
   }
   render(){
+    let that = this;
     return (
       <div style={{display: 'flex', flexDirection: 'column', paddingTop: 20, width: '100%'}}>
         <div className="column">
@@ -68,10 +79,11 @@ class ClassList extends React.Component {
           <div className="column">
             <label>Mời sinh viên tham gian lớp học</label>
             <div style={{marginLeft: '25%', paddingLeft: 10}}>
-              <MultiSelectEditor value={[]} data={[]} onChangeValue={(value) => console.log(value)}/>
+              <MultiSelectEditor value={this.state.userClasses} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
+                 onChangeValue={(value) => this.setState({userClasses: value})}/>
             </div>
             <div style={{marginLeft: '25%', paddingLeft: 10}}>
-              <textarea rows="2" style={{width: '100%'}}/>
+              <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
             </div>
           </div>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
