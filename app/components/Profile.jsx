@@ -7,12 +7,14 @@ import gql from 'graphql-tag';
 import LeftBar from './LeftBar.jsx'
 import ChatBar from './ChatBar.jsx'
 import Notification from './Notification.jsx'
+import JoinExamDialog from './JoinExamDialog.jsx'
 import NotificationSystem from 'react-notification-system';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
 import Notifications from 'material-ui/svg-icons/social/notifications'
 import MapsPlace from 'material-ui/svg-icons/maps/place';
 export default class Profile extends React.Component {
@@ -22,7 +24,8 @@ export default class Profile extends React.Component {
     this.notificationSystem = null;
     this.state = {
       sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches,
-      chatBarOpen: false
+      chatBarOpen: false,
+      showModal: false,
     }
   }
   addNotification(level,message) {
@@ -49,7 +52,7 @@ export default class Profile extends React.Component {
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
         })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
+          <IconMenu open={false} onTouchTap={() => this.setState({showModal: true})}
           iconButtonElement={<IconButton><MapsPlace /></IconButton>}
           iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
         >
@@ -99,6 +102,22 @@ export default class Profile extends React.Component {
           {React.cloneElement(this.props.children, this.props)}
         </div>
       }
+        <Dialog
+          modal={true}
+          open={this.state.showModal}
+          contentStyle={{minHeight:'40%'}}
+        >
+          <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+              <div className="modal-content">
+                <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
+                  <div>
+                    <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
+                  </div>
+                    <JoinExamDialog {...this.props}/>
+                </div>
+              </div>
+          </div>
+        </Dialog>
       </div>
     )
   }

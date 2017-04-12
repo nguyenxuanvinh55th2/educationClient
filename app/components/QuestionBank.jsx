@@ -6,8 +6,13 @@ import __ from 'lodash';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Checkbox from 'material-ui/Checkbox';
+import Drawer from 'material-ui/Drawer';
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 import QuestionReviewItem from './QuestionReviewItem.jsx';
+
+import '../react_tabs_custom.css'
+
 import Combobox from './Combobox.jsx';
 
 class AnswerItem extends React.Component {
@@ -28,7 +33,7 @@ class SelectQuestionInputForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.data.questionBySubject.length > 0 && !this.state.getNew) {
+    if(nextProps.data.questionBySubject && nextProps.data.questionBySubject.length > 0 && !this.state.getNew) {
       this.props.getQuestionBySubject(nextProps.data.questionBySubject);
       this.setState({getNew: true});
     }
@@ -199,7 +204,7 @@ class QuestionSetItem extends React.Component {
             </button>
           </div>
           <div className="col-sm-2" style={{padding: '5px 5px 0px 0px'}}>
-            <button className="btn btn-primary" style={{width: '100%'}} onClick={() => getQuestionSet(questionSet)}>Chọn bộ câu hỏi</button>
+            <button className="btn btn-primary" style={{width: '100%'}} onClick={() => getQuestionSet(questionSet)}>Chọn</button>
           </div>
           <div className="col-sm-1" style={{padding: '5px 5px 0px 0px'}}>
             <button className="btn btn-danger" style={{width: '100%'}}>
@@ -221,7 +226,7 @@ class QuestionSetItem extends React.Component {
 class QuesionBank extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {questionList: [], questionSet: null, questionType: null, subjectId: null, easyQuestionCount: 0, normalQuestionCount: 0, hardQuestionCount: 0, questionBySubject: null};
+    this.state = {questionList: [], questionSet: null, questionType: null, subjectId: null, easyQuestionCount: 0, normalQuestionCount: 0, hardQuestionCount: 0, questionBySubject: null, showQuestionBank: 'personal', openDrawer: true, showReview: false, bankType: 'sequence'};
   }
 
   addQuestion(question) {
@@ -237,6 +242,10 @@ class QuesionBank extends React.Component {
       let subject = data.subjectByUser[0];
       this.setState({subjectId: subject._id})
     }
+  }
+
+  componentDidMount() {
+    Tabs.setUseDefaultStyles(false);
   }
 
   getQuestionSet(questionSet) {
@@ -356,7 +365,7 @@ class QuesionBank extends React.Component {
   }
 
   saveQuestion() {
-    let { questionType, subjectId, questionList } = this.state;
+    let { questionType, subjectId, questionList, questionSet } = this.state;
     let { getQuestionSetId } = this.props;
     if(questionType === 'questionSet') {
       getQuestionSetId(questionSet._id);
@@ -370,9 +379,11 @@ class QuesionBank extends React.Component {
         }
         let questionSetString = [];
         questionSet = JSON.stringify(questionSet);
+        questionList = __.cloneDeep(questionList);
+        console.log('questionList ', questionList);
         __.forEach(questionList, item => {
-          item.answerSet = item.answerSet.map(item => item.answer);
-          item.correctAnswer = item.correctAnswer.map(item => item.answer);
+          item.answerSet = item.answerSet;
+          item.correctAnswer = item.correctAnswer;
           item.subjectId = subjectId;
           questionSetString.push(JSON.stringify(item));
         });
@@ -387,99 +398,130 @@ class QuesionBank extends React.Component {
     }
   }
 
-  render() {
-    let { data, getQuestionSetId } = this.props;
-    if(data.loading) {
-        return (
-            <div className="spinner spinner-lg"></div>
-        );
-    } else {
-      return(
+  drawerContent() {
+    let { showQuestionBank, showReview, bankType } = this.state;
+    let { data } = this.props;
+    if(showQuestionBank === 'personal') {
+      return (
         <Tabs className="secondary">
-          <TabList className="modal-header" style={{margin: 0}}>
-              <Tab>
-                  <h4 className="modal-title">CÁ NHÂN</h4>
+          <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}} onClick={() => {
+                if(bankType !== 'sequence') {
+                  this.setState({bankType: 'sequence'})
+                }
+              }}>
+                <input checked={bankType === 'sequence' && 'checked'} type="radio" name="uBankType" onChange={({target}) => {
+                    if(bankType !== 'sequence') {
+                      this.setState({bankType: 'sequence'})
+                    }
+                  }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Lần lượt</p>
               </Tab>
-              <Tab>
-                  <h4 className="modal-title">CỘNG ĐỒNG</h4>
+              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}  onClick={() => {
+                if(bankType !== 'random') {
+                  this.setState({bankType: 'random'})
+                }
+              }}>
+                <input checked={bankType === 'random' && 'checked'} type="radio" name="uBankType" onChange={({target}) => {
+                    if(bankType !== 'random') {
+                      this.setState({bankType: 'random'})
+                    }
+                  }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
               </Tab>
-              <Tab>
-                  <h4 className="modal-title">XEM LẠI</h4>
+              <Tab style={{float: 'right'}}>
+                <button className="btn btn-primary" onClick={() => {
+                    this.setState({showReview: true})
+                  }}>XEM LẠI</button>
               </Tab>
           </TabList>
           <TabPanel>
-            <Tabs className="secondary">
-              <TabList className="modal-header" style={{margin: 0}}>
-                  <Tab>
-                      <h4 className="modal-title">LẦN LƯỢT</h4>
-                  </Tab>
-                  <Tab>
-                      <h4 className="modal-title">NGẪU NHIÊN</h4>
-                  </Tab>
-              </TabList>
-              <TabPanel>
-                <div style={{width: '100%', paddingLeft: '10%'}}>
-                  {
-                    data.questionSetBankUser.map(item => (
-                      <QuestionSetItem
-                        key={item._id}
-                        questionSet={item}
-                        getQuestionSet={this.getQuestionSet.bind(this)}
-                        addQuestion={this.addQuestion.bind(this)}
-                        removeQuestion={this.removeQuestion.bind(this)}
-                        questionList={this.state.questionList}/>
-                    ))
-                  }
-                </div>
-              </TabPanel>
-              <TabPanel>
-                <div style={{width: '60%', marginLeft: '20%'}}>
-                    <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-                      <div style={{width: '100%', border: '1px solid gray', paddingTop: 50, paddingBottom: 30}}>
-                        {
-                          data.subjectByUser ?
-                          <div style={{width: '100%'}}>
-                            <div style={{width: '100%', paddingBottom: 10}} className="form-group">
-                                <label className="col-sm-3 control-label">Chọn môn học</label>
-                                <div className="col-sm-9">
-                                  <Combobox
-                                    name="subject"
-                                    data={data.subjectByUser}
-                                    datalistName="subjectDatalist"
-                                    label="name"
-                                    placeholder="Chọn môn học"
-                                    value={this.state.subjectId}
-                                    getValue={this.getSubject.bind(this)}/>
-                                </div>
-                            </div>
-                            <SelectQuestionInputFormWithData
-                              subjectId={this.state.subjectId}
-                              easyQuestionCount={this.state.easyQuestionCount}
-                              normalQuestionCount={this.state.normalQuestionCount}
-                              hardQuestionCount={this.state.hardQuestionCount}
-                              getQuestionTypeCount={this.getQuestionTypeCount.bind(this)}
-                              getQuestionBySubject={this.getQuestionBySubject.bind(this)}
-                              questionBySubject={this.state.questionBySubject}
-                              type={'personal'}/>
-                            <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                                <button type="button" className="btn btn-primary" style={{width: 150}} onClick={this.getQuestionListByRate.bind(this, 'personalQuestion')}>TIẾP TỤC</button>
-                            </div>
-                          </div> : null
-                        }
-                      </div>
-                    </form>
-                </div>
-              </TabPanel>
-            </Tabs>
+            <div style={{width: '100%', paddingLeft: '10%'}}>
+              {
+                data.questionSetBankUser.map(item => (
+                  <QuestionSetItem
+                    key={item._id}
+                    questionSet={item}
+                    getQuestionSet={this.getQuestionSet.bind(this)}
+                    addQuestion={this.addQuestion.bind(this)}
+                    removeQuestion={this.removeQuestion.bind(this)}
+                    questionList={this.state.questionList}/>
+                ))
+              }
+            </div>
           </TabPanel>
           <TabPanel>
+            <div style={{width: '60%', marginLeft: '20%'}}>
+                <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+                  <div style={{width: '100%', paddingTop: 50, paddingBottom: 30}}>
+                    {
+                      data.subjectByUser ?
+                      <div style={{width: '100%'}}>
+                        <div style={{width: '100%', paddingBottom: 10}} className="form-group">
+                            <label className="col-sm-3 control-label">Chọn môn học</label>
+                            <div className="col-sm-9">
+                              <Combobox
+                                name="subject"
+                                data={data.subjectByUser}
+                                datalistName="subjectDatalist"
+                                label="name"
+                                placeholder="Chọn môn học"
+                                value={this.state.subjectId}
+                                getValue={this.getSubject.bind(this)}/>
+                            </div>
+                        </div>
+                        <SelectQuestionInputFormWithData
+                          subjectId={this.state.subjectId}
+                          easyQuestionCount={this.state.easyQuestionCount}
+                          normalQuestionCount={this.state.normalQuestionCount}
+                          hardQuestionCount={this.state.hardQuestionCount}
+                          getQuestionTypeCount={this.getQuestionTypeCount.bind(this)}
+                          getQuestionBySubject={this.getQuestionBySubject.bind(this)}
+                          questionBySubject={this.state.questionBySubject}
+                          type={'personal'}/>
+                        <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
+                            <button type="button" className="btn btn-primary" style={{width: 150}} onClick={this.getQuestionListByRate.bind(this, 'personalQuestion')}>TIẾP TỤC</button>
+                        </div>
+                      </div> : null
+                    }
+                  </div>
+                </form>
+            </div>
+          </TabPanel>
+          <TabPanel>
+          {
+            showReview ?
+            <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
+              <div style={{width: '100%'}}>
+                { this.renderQuestionReview() }
+              </div>
+              <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+            </div> : null
+          }
+          </TabPanel>
+        </Tabs>
+      )
+    } else
+        if(showQuestionBank === 'public') {
+          return (
             <Tabs className="secondary">
-              <TabList className="modal-header" style={{margin: 0}}>
-                  <Tab>
-                      <h4 className="modal-title">LẦN LƯỢT</h4>
+              <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    <input checked={bankType === 'sequence' && 'checked'} type="radio" name="pBankType" onChange={({target}) => {
+                        if(bankType !== 'sequence') {
+                          this.setState({bankType: 'sequence'})
+                        }
+                      }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Lần lượt</p>
                   </Tab>
-                  <Tab>
-                      <h4 className="modal-title">NGẪU NHIÊN</h4>
+                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    <input checked={bankType === 'random' && 'checked'} type="radio" name="pBankType" onChange={({target}) => {
+                        if(bankType !== 'random') {
+                          this.setState({bankType: 'random'})
+                        }
+                      }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
+                  </Tab>
+                  <Tab style={{float: 'right'}}>
+                    <button className="btn btn-primary" onClick={() => {
+                        this.setState({showReview: true})
+                      }}>XEM LẠI</button>
                   </Tab>
               </TabList>
               <TabPanel>
@@ -499,7 +541,7 @@ class QuesionBank extends React.Component {
               <TabPanel>
                 <div style={{width: '60%', marginLeft: '20%'}}>
                     <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-                      <div style={{width: '100%', border: '1px solid gray', paddingTop: 50, paddingBottom: 30}}>
+                      <div style={{width: '100%', paddingTop: 50, paddingBottom: 30}}>
                         {
                           data.subjects ?
                           <div style={{width: '100%'}}>
@@ -534,17 +576,55 @@ class QuesionBank extends React.Component {
                     </form>
                 </div>
               </TabPanel>
+              <TabPanel>
+              {
+                showReview ?
+                <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
+                  <div style={{width: '100%'}}>
+                    { this.renderQuestionReview() }
+                  </div>
+                  <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+                </div> : null
+              }
+              </TabPanel>
             </Tabs>
-          </TabPanel>
-          <TabPanel>
-            <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-              <div style={{width: '100%'}}>
-                { this.renderQuestionReview() }
-              </div>
-              <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
-            </div>
-          </TabPanel>
-        </Tabs>
+          )
+        }
+  }
+
+  render() {
+    let { data, getQuestionSetId } = this.props;
+    let { openDrawer, showQuestionBank } = this.state;
+    console.log('show review ', this.state.showReview);
+    if(data.loading) {
+        return (
+            <div className="spinner spinner-lg"></div>
+        );
+    } else {
+      return(
+        <div>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+            <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+              <input checked={showQuestionBank === 'personal' && 'checked'} type="radio" name="optradio" onChange={({target}) => {
+                  if(showQuestionBank === 'public') {
+                    this.setState({showQuestionBank: 'personal', openDrawer: true});
+                  }
+                }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Cá nhân</p>
+            </label>
+            <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+              <input checked={showQuestionBank === 'public' && 'checked'} type="radio" name="optradio" onChange={({target}) => {
+                  if(showQuestionBank === 'personal') {
+                    this.setState({showQuestionBank: 'public', openDrawer: true});
+                  }
+                }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Cộng đồng</p>
+            </label>
+          </div>
+          <Drawer docked={false} width={800} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
+            {
+              this.drawerContent()
+            }
+          </Drawer>
+        </div>
       )
     }
   }

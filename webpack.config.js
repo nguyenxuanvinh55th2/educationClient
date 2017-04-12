@@ -66,15 +66,18 @@ var config = {
             "react-grid-layout-root" : __dirname + "/node_modules/react-grid-layout",
             "react-resizable-root" : __dirname + "/node_modules/react-resizable",
             "rc-slider-root" : __dirname + "/node_modules/rc-slider",
+            "educationServer" : path.resolve(__dirname, '../educationServer/collections')
             // "patternfly-root": __dirname + "/node_modules/patternfly/",
         }
     },
-    // externals: function (context, request, callback) {
-    //   var match = request.match(/^meteor\/(.+)$/);
-    //   var pack = match && match[1];
-    //   if (pack) {
-    //     callback(null, 'Package["' + pack + '"]');
-    //   }
-    // }
+    externals: [
+      function resolveMeteor(context, request, callback) {
+        var match = request.match(/^meteor\/(.+)$/);
+        var pack = match && match[1];
+        var locator = pack && 'Package["' + pack + '"]';
+
+        return locator ? callback(null, locator) : callback();
+      }
+    ],
 };
 module.exports = config;

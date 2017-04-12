@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Checkbox from 'material-ui/Checkbox';
+import Drawer from 'material-ui/Drawer';
 import Combobox from './Combobox.jsx';
 
 import QuestionCreateItem from './QuestionCreateItem.jsx';
@@ -23,8 +24,63 @@ class AddQuestion extends React.Component {
       score: 0,
       isPublic: false,
       subjectId: '',
-    }], subjectId: ''};
+    }], openDrawer: false, subjectId: '', showReview: false};
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
+  }
+
+  drawerContent() {
+    let { showReview } = this.state;
+    return (
+      <Tabs className="secondary">
+        <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Tab>
+                <h4 className="modal-title">THÊM NỘI DUNG</h4>
+            </Tab>
+            <Tab style={{float: 'right'}}>
+              <button className="btn btn-primary" onClick={() => {
+                  this.setState({showReview: true})
+                }}>XEM LẠI</button>
+            </Tab>
+        </TabList>
+        <TabPanel>
+          <div style={{width: '100%', paddingLeft: '10%'}}>
+            <div style={{width: '80%'}}>
+              { this.renderQuestionCreate() }
+            </div>
+            <div style={{width: '80%', paddingLeft: '35%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'center'}}>
+              <button className="btn btn-primary" style={{width: '30%'}} onClick={this.addNewQuestion.bind(this)}>
+                Thêm câu hỏi
+              </button>
+              <span style={{height: 10}}>
+              </span>
+              <button className="btn btn-primary" style={{width: '30%'}}>
+                Hoàn thành
+              </button>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel>
+          {
+            showReview ?
+            <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
+              <div style={{width: '100%'}}>
+                { this.renderQuestionReview() }
+              </div>
+              <div style={{width: '100%'}}>
+                <Checkbox
+                  label="Public bộ câu hỏi"
+                  onCheck={(_, isInputChecked) => {
+                    this.setState({isPublic: isInputChecked});
+                  }}
+                  style={{marginLeft: '35%', width: '30%'}}
+                />
+              </div>
+              <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+            </div> : null
+          }
+        </TabPanel>
+      </Tabs>
+    )
   }
 
   renderQuestionCreate() {
@@ -164,107 +220,67 @@ class AddQuestion extends React.Component {
   }
 
   render() {
+    let { openDrawer } = this.state;
+    console.log('openDrawer ', openDrawer);
     return (
-      <Tabs className="secondary">
-        <TabList className="modal-header" style={{margin: 0}}>
-            <Tab>
-                <h4 className="modal-title">BẮT ĐẦU</h4>
-            </Tab>
-            <Tab>
-                <h4 className="modal-title">THÊM NỘI DUNG</h4>
-            </Tab>
-            <Tab>
-                <h4 className="modal-title">XEM LẠI</h4>
-            </Tab>
-        </TabList>
-        <TabPanel>
-          <div style={{width: '60%', marginLeft: '20%'}}>
-              <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-                <div style={{width: '100%', border: '1px solid gray', paddingTop: 50, paddingBottom: 30}}>
-                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.name ? 'form-group' : 'form-group has-error'}>
-                      <label className="col-sm-3 control-label">Tiêu đề câu hỏi</label>
-                      <div className="col-sm-9">
-                          <input style={{width: '80%'}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
-                          <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
-                      </div>
-                  </div>
-                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
-                      <label className="col-sm-3 control-label">Mô tả</label>
-                      <div className="col-sm-9">
-                          <textarea style={{width: '80%'}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
-                          </textarea>
-                          <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
-                      </div>
-                  </div>
-                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.questionCount ? 'form-group' : 'form-group has-error'}>
-                      <label className="col-sm-3 control-label">Số lượng câu hỏi</label>
-                      <div className="col-sm-9">
-                          <input style={{width: '80%'}} type="number" className="form-control" value={this.state.questionCount} onChange={({target}) => this.setState({questionCount: target.value})}/>
-                          <span className="help-block">{this.state.questionCount ? null : 'số lượng câu hỏi là bắt buộc'}</span>
-                      </div>
-                  </div>
-                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
-                      <label className="col-sm-3 control-label">Tổng số điểm</label>
-                      <div className="col-sm-9">
-                          <input style={{width: '80%'}} type="number" className="form-control" value={this.state.totalScore} onChange={({target}) => this.setState({totalScore: target.value})}/>
-                          <span className="help-block">{this.state.totalScore ? null : 'tổng số điểm là bắt buộc'}</span>
-                      </div>
-                  </div>
-                  <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
-                      <label className="col-sm-3 control-label">Chọn môn học</label>
-                      <div className="col-sm-9">
-                        <Combobox
-                          name="subjectss"
-                          data={this.props.data.subjectByUser}
-                          datalistName="subjectsDatalists"
-                          label="name"
-                          placeholder="Chọn môn học"
-                          value={this.state.subjectId}
-                          getValue={this.getSubject.bind(this)}/>
-                      </div>
-                  </div>
-                  <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                      <button type="button" className="btn btn-primary" style={{width: 150}} disabled={!this.state.name}>THÊM NỘI DUNG</button>
-                  </div>
+      <div>
+        <div style={{width: '60%', marginLeft: '20%'}}>
+            <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+              <div style={{width: '100%', border: '1px solid gray', paddingTop: 50, paddingBottom: 30}}>
+                <div style={{width: '100%', paddingBottom: 10}} className={this.state.name ? 'form-group' : 'form-group has-error'}>
+                    <label className="col-sm-3 control-label">Tiêu đề câu hỏi</label>
+                    <div className="col-sm-9">
+                        <input style={{width: '80%'}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
+                        <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                    </div>
                 </div>
-              </form>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div style={{width: '100%', paddingLeft: '10%'}}>
-            <div style={{width: '80%'}}>
-              { this.renderQuestionCreate() }
-            </div>
-            <div style={{width: '80%', paddingLeft: '35%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'center'}}>
-              <button className="btn btn-primary" style={{width: '30%'}} onClick={this.addNewQuestion.bind(this)}>
-                Thêm câu hỏi
-              </button>
-              <span style={{height: 10}}>
-              </span>
-              <button className="btn btn-primary" style={{width: '30%'}}>
-                Hoàn thành
-              </button>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-            <div style={{width: '100%'}}>
-              { this.renderQuestionReview() }
-            </div>
-            <div style={{width: '100%'}}>
-              <Checkbox
-                label="Public bộ câu hỏi"
-                onCheck={(_, isInputChecked) => {
-                  this.setState({isPublic: isInputChecked});
-                }}
-                style={{marginLeft: '35%', width: '30%'}}
-              />
-            </div>
-            <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
-          </div>
-        </TabPanel>
-      </Tabs>
+                <div style={{width: '100%', paddingBottom: 10}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
+                    <label className="col-sm-3 control-label">Mô tả</label>
+                    <div className="col-sm-9">
+                        <textarea style={{width: '80%'}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
+                        </textarea>
+                        <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%', paddingBottom: 10}} className={this.state.questionCount ? 'form-group' : 'form-group has-error'}>
+                    <label className="col-sm-3 control-label">Số lượng câu hỏi</label>
+                    <div className="col-sm-9">
+                        <input style={{width: '80%'}} type="number" className="form-control" value={this.state.questionCount} onChange={({target}) => this.setState({questionCount: target.value})}/>
+                        <span className="help-block">{this.state.questionCount ? null : 'số lượng câu hỏi là bắt buộc'}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
+                    <label className="col-sm-3 control-label">Tổng số điểm</label>
+                    <div className="col-sm-9">
+                        <input style={{width: '80%'}} type="number" className="form-control" value={this.state.totalScore} onChange={({target}) => this.setState({totalScore: target.value})}/>
+                        <span className="help-block">{this.state.totalScore ? null : 'tổng số điểm là bắt buộc'}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
+                    <label className="col-sm-3 control-label">Chọn môn học</label>
+                    <div className="col-sm-9">
+                      <Combobox
+                        name="subjectss"
+                        data={this.props.data.subjectByUser}
+                        datalistName="subjectsDatalists"
+                        label="name"
+                        placeholder="Chọn môn học"
+                        value={this.state.subjectId}
+                        getValue={this.getSubject.bind(this)}/>
+                    </div>
+                </div>
+                <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
+                    <button type="button" className="btn btn-primary" style={{width: 150}} disabled={!this.state.title} onClick={() => this.setState({openDrawer: true})}>THÊM NỘI DUNG</button>
+                </div>
+              </div>
+            </form>
+        </div>
+        <Drawer docked={false} width={800} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
+          {
+            this.drawerContent()
+          }
+        </Drawer>
+      </div>
     )
   }
 }

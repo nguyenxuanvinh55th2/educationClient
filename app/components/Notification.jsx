@@ -1,7 +1,6 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import { Link, Router, browserHistory } from 'react-router'
 import { graphql, compose } from 'react-apollo';
-import {ListGroup, ListGroupItem, Button, Glyphicon, Row, Col} from 'react-bootstrap'
 
 import gql from 'graphql-tag';
 

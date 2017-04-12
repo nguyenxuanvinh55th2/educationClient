@@ -33,6 +33,8 @@ import ClassList from './components/ClassList.jsx'
 import CreateTest from './components/CreateTest.jsx'
 import CreateSubject from './components/CreateSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
+import WaitExam from './components/WaitExam.jsx';
+
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -68,6 +70,7 @@ ReactDOM.render(
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
             </Route>
             <Route path="/createTest" component={CreateTest}/>
+            <Route path="/waitExam/:id" component={WaitExam}/>
           </Route>
         </Router>
       </WrapMain>

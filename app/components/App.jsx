@@ -17,11 +17,11 @@ function mapDispathToProps(dispatch) {
   return bindActionCreators(actionCreator, dispatch);
 }
 
-
 class Main extends React.Component {
   constructor(props){
     super(props);
   }
+
   render(){
     let childProps = __.cloneDeep(this.props);
     delete childProps.children;

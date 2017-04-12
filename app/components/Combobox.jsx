@@ -51,6 +51,7 @@ class Combobox extends React.Component {
         }
     }
     render() {
+        console.log('tasks ', this.props.tasks);
         let { data, label } = this.props;
         let filterData = [], i;
         for (i in data) {
@@ -64,9 +65,9 @@ class Combobox extends React.Component {
             }
         }
         return (
-            <div>
+            <div style={{width: '100%'}}>
                 <input ref={this.props.name} className="combobox form-control" placeholder={this.props.placeholder} type="text" list={this.props.datalistName}
-                        style={{width: '100%'}} onChange={({target}) => this.handleOnChange(target.value)}/>
+                        style={{width: '80%'}} onChange={({target}) => this.handleOnChange(target.value)}/>
                 <datalist id={this.props.datalistName} ref={this.props.datalistName}>
                     {
                         filterData.map((item) => {
