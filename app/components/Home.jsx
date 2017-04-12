@@ -13,6 +13,9 @@ import Header from './Header.jsx';
 export default class Home extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      height: window.innerHeight
+    }
   }
   render() {
     let imgUrlTop = 'public/imgs/home-page_01.png';
@@ -21,11 +24,13 @@ export default class Home extends React.Component {
       <div>
         <Header {...this.props}/>
         <div style={{flexDirection:'column', width:'auto', marginTop: 65}}>
-          <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover'}}>
-            <img src="/public/imgs/text.png" className="img-responsive" />
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <input type="text" placeholder="NHẬP MÃ CODE" />
-              <button type="button">THAM GIA THI</button>
+          <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', padding: '65px 0px', height: this.state.height - 65}}>
+            <div style={{paddingBottom: 60}}>
+              <img src="/public/imgs/text.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" />
+                <button type="button" className="btn" style={{backgroundColor: '#35bcbf', borderRadius: 25, width: 250, height: 45, color: 'white', marginTop: 15}}>THAM GIA THI</button>
+              </div>
             </div>
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
