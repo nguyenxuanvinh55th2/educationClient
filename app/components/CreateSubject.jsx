@@ -17,7 +17,7 @@ class CreateSubject extends React.Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
-      _id: '', code: '', name: '', discription: '',  themes: [], joinCourse: false,
+      _id: '', code: '', name: '', description: '',  themes: [], joinCourse: false,
       classId: '', courseId: '', userSubjects: [], userMails: []
     }
     this.dataTest = [
@@ -33,18 +33,24 @@ class CreateSubject extends React.Component {
   }
   handleSave(){
     let info = {
+      _id: this.state._id,
       subject: {
         code: this.state.code,
         name: this.state.name,
+        description: this.state.description,
         createAt: moment.valueOf(),
         userId: this.props.users.userId,
       },
       classeSubject: {
         couseId: this.state.courseId,
-        isOpen: this.state.joinCourse,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf()
-      }
+      },
+      userSubjects: this.state.userSubjects,
+      userMails: this.state.userMails,
+      joinCourse: this.state.joinCourse,
+      themes: this.state.themes,
+      classId: this.state.classId
     };
     if(this.props.insertSubject){
       this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
