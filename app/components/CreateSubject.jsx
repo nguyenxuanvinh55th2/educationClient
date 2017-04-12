@@ -10,51 +10,64 @@ import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
 import Combobox from './Combobox.jsx';
+import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
 class CreateSubject extends React.Component {
   constructor(props) {
     super(props)
     this.handleSave = this.handleSave.bind(this);
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
-      _id: '',
-      code: '',
-      name: '',
-      discription: '',
-      themes: [],
-      joinCourse: false,
-      classId: '',
-      courseId: ''
+      _id: '', code: '', name: '', description: '',  themes: [], joinCourse: false,
+      classId: '', courseId: '', userSubjects: [], userMails: []
     }
+    this.dataTest = [
+      {
+        _id: '1234',
+        name: "vinh nguyen"
+      },
+      {
+        _id: '12345566',
+        name: 'lan nguyen'
+      }
+    ]
   }
   handleSave(){
     let info = {
+      _id: this.state._id,
       subject: {
         code: this.state.code,
         name: this.state.name,
+        description: this.state.description,
         createAt: moment.valueOf(),
-        userId: this.props.users.userId
+        userId: this.props.users.userId,
       },
       classeSubject: {
         couseId: this.state.courseId,
-        isOpen: this.state.joinCourse
-      }
+        dateStart: moment.valueOf(),
+        dateEnd: moment.valueOf()
+      },
+      userSubjects: this.state.userSubjects,
+      userMails: this.state.userMails,
+      joinCourse: this.state.joinCourse,
+      themes: this.state.themes,
+      classId: this.state.classId
     };
-    console.log(info);
-    // if(this.props.insertSubject){
-    //   this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
-    //     if(data){
-    //       console.log("success");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // }
+    if(this.props.insertSubject){
+      this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
+        if(data){
+          browserHistory.push("/profile/" + this.props.users.userId);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
   }
   handleAddTheme(){
     let themes = this.state.themes;
     themes.push({
-      name: 'Chủ đề ' + ' ' + (this.state.themes.length + 1)
+      _id: '',
+      name: 'Chủ đề ' + ' '
     });
     this.setState({themes: themes});
   }
@@ -68,7 +81,14 @@ class CreateSubject extends React.Component {
     if(value){
       let idx = __.findIndex(this.props.dataSet.getSubjectByUserId,{_id: value});
       if(idx > -1){
-        console.log(this.props.dataSet.getSubjectByUserId[idx]);
+        let data = this.props.dataSet.getSubjectByUserId[idx];
+        this.setState({
+          _id: data._id,
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          themes: [],
+        })
       }
     }
   }
@@ -83,71 +103,80 @@ class CreateSubject extends React.Component {
       return (
         <div className="row" style={{padding: 15}}>
           <div className="col-sm-9">
-            <h2>Môn học</h2>
+            <h3 style={{textAlign: 'center', color: "#35bcbf"}}>MÔN HỌC</h3>
             <div className="column">
-              <div>
-                <p>Chọn môn học</p>
-                <div>
-                  <Combobox
-                    name="subject"
-                    data={dataSet.getSubjectByUserId}
-                    datalistName="subjectClassList"
-                    label="name"
-                    placeholder="Chọn môn học"
-                    value={this.state._id}
-                    getValue={this.getSubject.bind(this)}/>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div className="radio">
+                  <label><input type="radio" defaultChecked={true} name="optradio" />Chọn môn học</label>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 20}}>
+                  <p style={{width: '20%'}}>Chọn môn học</p>
+                  <div style={{width: '80%'}}>
+                    <Combobox
+                      name="subject"
+                      data={dataSet.getSubjectByUserId}
+                      datalistName="subjectClassList"
+                      label="name"
+                      placeholder="Chọn môn học"
+                      value={this.state._id}
+                      getValue={this.getSubject.bind(this)}/>
+                  </div>
                 </div>
               </div>
-              <div>
-                <form className="form-horizontal">
-                  <div className="form-group">
-                    <label className="col-sm-3 control-label">Mã môn học</label>
-                    <div className="col-sm-9">
-                      <input type="text" className="form-control" value={this.state.code} onChange={({target}) => this.setState({code: target.value})} />
-                    </div>
+              <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
+                <div className="radio">
+                  <label><input type="radio" defaultChecked={true} name="create" />Tạo mới môn học</label>
+                </div>
+                <div style={{paddingLeft: 20}}>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    <label style={{width: '20%'}}>Mã môn học</label>
+                    <input type="text" style={{width: '80%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})} />
                   </div>
-                  <div className="form-group">
-                    <label className="col-sm-3 control-label">Tên môn học</label>
-                    <div className="col-sm-9">
-                      <input type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
-                    </div>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 7}}>
+                    <label style={{width: '20%'}}>Tên môn học</label>
+                    <input type="text" style={{width: '80%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
                   </div>
-                  <div className="form-group">
-                    <label className="col-sm-3 control-label">Mô tả</label>
-                    <div className="col-sm-9">
-                      <input type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
-                    </div>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 7}}>
+                    <label style={{width: '20%'}}>Mô tả</label>
+                    <input type="text" style={{width: '80%'}} value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
                   </div>
-                </form>
+                </div>
               </div>
-              <div>
-                <div style={{display: 'flex', flexDirection:'column'}}>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                <p>Các chủ đề của môn học</p>
+                <div style={{display: 'flex', flexDirection:'column', paddingLeft: 20}}>
                   {
                     __.map(this.state.themes,(theme,idx) => {
                       return(
-                        <div key={idx}>
-                          <input type="text" value={theme.name} onChange={({target}) => {
-                            let themes = this.state.themes;
-                            themes[idx].name = target.value;
-                            this.setState({themes: themes});
-                          }} />
-                          <span><button type="button" onClick={() => {
-                            let themes = this.state.themes;
-                            themes.splice(idx,1);
-                            this.setState({themes: themes})
-                          }} >Delete</button></span>
-                        </div>
+                        <div key={idx} className="input-group" style={{width :'100%', marginTop: 5}}>
+                           <input type="text" className="form-control" value={theme.name} style={{height: 40}} onChange={({target}) => {
+                             let themes = this.state.themes;
+                             themes[idx].name = target.value;
+                             this.setState({themes: themes});
+                           }} />
+                           <span className="input-group-addon btn btn-default" style={{background:'none', color:'red', boxShadow:'none'}}
+                             onClick={() => {
+                               let themes = this.state.themes;
+                               themes.splice(idx,1);
+                               this.setState({themes: themes})
+                             }}>
+                                <span className="glyphicon glyphicon-remove"></span>
+                            </span>
+                         </div>
                       )
                     })
                   }
+                  <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
+                     onClick={() => this.handleAddTheme()}>
+                    <span className="glyphicon glyphicon-plus"></span> Thêm chủ đề
+                  </button>
                 </div>
-                <button type="button" className="btn btn-primary" onClick={() => this.handleAddTheme()}>Thêm chủ đề</button>
               </div>
             </div>
           </div>
           <div className="col-sm-3">
-            <div>
-              <p>Lớp học</p>
+            <div style={{backgroundColor: 'gray', padding: 10}}>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
               <Combobox
                 name="class"
                 data={dataSet.getClassByUserId}
@@ -157,8 +186,8 @@ class CreateSubject extends React.Component {
                 value={this.state.classId}
                 getValue={this.getClass.bind(this)}/>
             </div>
-            <div>
-              <p>Khóa học</p>
+            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
               <Combobox
                 name="course"
                 data={dataSet.courses}
@@ -168,19 +197,25 @@ class CreateSubject extends React.Component {
                 value={this.state.courseId}
                 getValue={this.getCourse.bind(this)}/>
             </div>
-            <div>
-              <p>Thêm thành viên</p>
-              <input type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
-            </div>
-            <div>
+            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10, minHeight: 150}}>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Thêm thành viên</h4>
+              <div style={{height: '100%'}}>
+                <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
+                   onChangeValue={(value) => this.setState({userSubjects: value})}/>
+                 <div style={{marginTop: 15}}>
+                   <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
+                 </div>
+              </div>
+           </div>
+            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
               <div className="checkbox">
                 <label>
                   <input type="checkbox" checked={this.state.joinCourse} onChange={() => this.setState({joinCourse:!this.state.joinCourse})} /> Tham gia giảng dạy ngay
                 </label>
               </div>
             </div>
-            <div>
-              <button type="button" className="btn btn-primary" disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>Hoàn thành</button>
+            <div style={{width: '100%', marginTop: 10}}>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
             </div>
           </div>
         </div>

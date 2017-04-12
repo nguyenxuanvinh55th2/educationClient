@@ -21,13 +21,30 @@ export default class Home extends React.Component {
       <div>
         <Header {...this.props}/>
         <div style={{flexDirection:'column', width:'auto', marginTop: 65}}>
-          <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover'}}>
+          <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover'}}>
             <img src="/public/imgs/text.png" className="img-responsive" />
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <input type="text" placeholder="NHẬP MÃ CODE" />
+              <button type="button">THAM GIA THI</button>
+            </div>
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
             <div className="col-sm-12 col-md-6 col-lg-6">
+              <h2>TUIELEARNING dành cho những ai?</h2>
               <p style={{paddingRight: 50}}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                - Đội ngủ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
+              </p>
+              <p>
+                - Sinh viên được học tập trong môi trường chủ động.
+              </p>
+              <p>
+                - Một nhóm sinh viên có thể trao đổi việc học và thi với nhau.
+              </p>
+              <p>
+                - Tất cả sinh viên có thể tham gian các trò chơi, trả lời câu hỏi một cách vui nhộn, vừa học vừa chơi.
+              </p>
+              <p>
+                Phụ huynh có thể theo dõi việc học tập của con em mình
               </p>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
@@ -43,7 +60,12 @@ export default class Home extends React.Component {
                   </span>
                 </div>
                 <div className="col-sm-6">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  <p>
+                    - Tính năng đơn giản
+                  </p>
+                  <p>
+                    - Thích hợp cho mọi đối tượng sử dụng
+                  </p>
                 </div>
               </div>
             </div>
@@ -54,7 +76,12 @@ export default class Home extends React.Component {
                   </span>
                 </div>
                 <div className="col-sm-6">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  <p>
+                    - Vừa học vừa chơi.
+                  </p>
+                  <p>
+                    - Học ở bất cứ đâu chỉ cần kết nối internet.
+                  </p>
                 </div>
               </div>
             </div>
@@ -65,7 +92,12 @@ export default class Home extends React.Component {
                   </span>
                 </div>
                 <div className="col-sm-6">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  <p>
+                    - Sử dụng mà không cần cài đặt.
+                  </p>
+                  <p>
+                    - Giao diện dễ sử dụng.
+                  </p>
                 </div>
               </div>
             </div>
@@ -75,8 +107,12 @@ export default class Home extends React.Component {
               <img src="/public/imgs/anh3.png" className="img-responsive" />
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
+              <h3>Rèn luyện tính tự lập cho sinh viên</h3>
               <p style={{paddingRight: 50}}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Sinh viên có thể quản lý thời gian học tập một cách chủ động bằng cách lập thời gian biểu cho từng bài học hoặc bài tập của minh.
+              </p>
+              <p style={{paddingRight: 50}}>
+                Chương trình ôn luyện phù hợp với nhiều mức học đối với mỗi sinh viên khác nhau.
               </p>
             </div>
           </div>
