@@ -103,7 +103,7 @@ class CreateSubject extends React.Component {
       return (
         <div className="row" style={{padding: 15}}>
           <div className="col-sm-9">
-            <h3 style={{textAlign: 'center', color: "#20B2AA"}}>MÔN HỌC</h3>
+            <h3 style={{textAlign: 'center', color: "#35bcbf"}}>MÔN HỌC</h3>
             <div className="column">
               <div style={{display: 'flex', flexDirection: 'column'}}>
                 <div className="radio">
@@ -166,7 +166,7 @@ class CreateSubject extends React.Component {
                       )
                     })
                   }
-                  <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #20B2AA', color: '#20B2AA', marginTop: 5, height: 40}}
+                  <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
                      onClick={() => this.handleAddTheme()}>
                     <span className="glyphicon glyphicon-plus"></span> Thêm chủ đề
                   </button>
@@ -176,7 +176,7 @@ class CreateSubject extends React.Component {
           </div>
           <div className="col-sm-3">
             <div style={{backgroundColor: 'gray', padding: 10}}>
-              <h4 style={{textAlign: 'center', color: "#20B2AA"}}>Lớp học</h4>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
               <Combobox
                 name="class"
                 data={dataSet.getClassByUserId}
@@ -187,7 +187,7 @@ class CreateSubject extends React.Component {
                 getValue={this.getClass.bind(this)}/>
             </div>
             <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
-              <h4 style={{textAlign: 'center', color: "#20B2AA"}}>Khóa học</h4>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
               <Combobox
                 name="course"
                 data={dataSet.courses}
@@ -198,7 +198,7 @@ class CreateSubject extends React.Component {
                 getValue={this.getCourse.bind(this)}/>
             </div>
             <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10, minHeight: 150}}>
-              <h4 style={{textAlign: 'center', color: "#20B2AA"}}>Thêm thành viên</h4>
+              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Thêm thành viên</h4>
               <div style={{height: '100%'}}>
                 <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
                    onChangeValue={(value) => this.setState({userSubjects: value})}/>
@@ -215,7 +215,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
             <div style={{width: '100%', marginTop: 10}}>
-              <button type="button" className="btn" style={{backgroundColor: '#20B2AA', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
             </div>
           </div>
         </div>

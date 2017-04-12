@@ -23,18 +23,11 @@ import Note from 'material-ui/svg-icons/notification/event-note'
 import Public from 'material-ui/svg-icons/social/public'
 
 import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import Subheader from 'material-ui/Subheader';
 import Person from 'material-ui/svg-icons/social/person';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import MenuItem from 'material-ui/MenuItem';
-import MapsPlace from 'material-ui/svg-icons/maps/place';
-
+import Avatar from 'material-ui/Avatar';
+import AccountCircle from 'material-ui/svg-icons/action/account-circle';
+import ActionInfo from 'material-ui/svg-icons/action/info';
 class SubjectItem extends React.Component {
   renderSubjectTheme() {
     return this.props.themes.map(item => (
@@ -102,23 +95,38 @@ class LeftBar extends React.Component {
           }
         }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
         <div style={{textAlign: 'center'}}>
-          <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
+          <img src="/public/imgs/logo.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
-        <List style={{color: 'white'}}>
+        <List>
+          <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}}
+            innerDivStyle={{padding: '5px 16px 5px 50px'}}
+             leftAvatar={<Avatar icon={<AccountCircle />} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
+             primaryText={
+               <p>
+                 Huynh Thi Lo Thi Lieu Dao
+               </p>
+             }
+             secondaryText={
+               <p style={{fontSize: 10}}>hellokitty1024@gmail.com</p>
+             }
+           />
          <ListItem
            primaryText="Giáo viên"
-           leftIcon={<LocalLibary />}
+           leftIcon={<LocalLibary color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
+           nestedListStyle={{color: 'red', backgroundColor: 'red'}}
            nestedItems={
             this.renderClassSubjectTeacher()
            }
          />
          <ListItem
            primaryText="Học sinh"
-           leftIcon={<School />}
+           leftIcon={<School color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -129,9 +137,10 @@ class LeftBar extends React.Component {
          />
          <ListItem
            primaryText="Phụ huynh"
-           leftIcon={<Person />}
+           leftIcon={<Person color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -142,9 +151,10 @@ class LeftBar extends React.Component {
          />
          <ListItem
            primaryText="Danh sách kì thi"
-           leftIcon={<Description />}
+           leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -155,9 +165,10 @@ class LeftBar extends React.Component {
          />
          <ListItem
            primaryText="Thời gian biểu"
-           leftIcon={<Note />}
+           leftIcon={<Note color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -168,9 +179,10 @@ class LeftBar extends React.Component {
          />
          <ListItem
            primaryText="Hướng dẫn"
-           leftIcon={<Public />}
+           leftIcon={<Public color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -181,9 +193,10 @@ class LeftBar extends React.Component {
          />
          <ListItem
            primaryText="Cài đặt"
-           leftIcon={<Setting />}
+           leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
            nestedItems={[
              <ListItem
                key={1}
@@ -194,9 +207,9 @@ class LeftBar extends React.Component {
          />
        </List>
        <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-         <button type="button" className="btn btn-link" style={{color: '#20B2AA'}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
-         <button type="button" className="btn btn-link" style={{color: '#20B2AA'}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
-         <button type="button" className="btn btn-link" style={{color: '#20B2AA'}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
        </div>
        <Dialog
          modal={true}
@@ -312,8 +325,8 @@ class CreateCoureForm extends React.Component {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
-              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("save")}>Tạo mới</button>
-              <button type="button" className="btn btn-primary" disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd}  onClick={() => this.handleSave("save")}>Tạo mới</button>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
             </div>
           </div>
       </div>

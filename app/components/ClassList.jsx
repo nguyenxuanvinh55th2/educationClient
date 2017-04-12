@@ -58,38 +58,37 @@ class ClassList extends React.Component {
   render(){
     let that = this;
     return (
-      <div style={{display: 'flex', flexDirection: 'column', paddingTop: 20, width: '100%'}}>
+      <div className="column" style={{padding: 15}}>
+        <h3 style={{textAlign: 'center', color: "#35bcbf"}}>LỚP HỌC</h3>
+        <div className="row" style={{marginTop: 5}}>
+          <div className="col-sm-3">
+            <label >Mã lớp học</label>
+          </div>
+          <div className="col-sm-9">
+            <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+          </div>
+        </div>
+        <div className="row" style={{marginTop: 5}}>
+          <div className="col-sm-3">
+            <label >Tên lớp học</label>
+          </div>
+          <div className="col-sm-9">
+            <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
+          </div>
+        </div>
         <div className="column">
-          <div className="row">
-            <div className="col-sm-3">
-              <label >Mã lớp học</label>
-            </div>
-            <div className="col-sm-9">
-              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
-            </div>
+          <label>Mời sinh viên tham gian lớp học</label>
+          <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+            <MultiSelectEditor value={this.state.userClasses} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
+               onChangeValue={(value) => this.setState({userClasses: value})}/>
           </div>
-          <div className="row">
-            <div className="col-sm-3">
-              <label >Tên lớp học</label>
-            </div>
-            <div className="col-sm-9">
-              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
-            </div>
+          <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+            <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
           </div>
-          <div className="column">
-            <label>Mời sinh viên tham gian lớp học</label>
-            <div style={{marginLeft: '25%', paddingLeft: 10}}>
-              <MultiSelectEditor value={this.state.userClasses} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
-                 onChangeValue={(value) => this.setState({userClasses: value})}/>
-            </div>
-            <div style={{marginLeft: '25%', paddingLeft: 10}}>
-              <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
-            </div>
-          </div>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-            <button type="button" className="btn btn-primary" disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
-            <button type="button" className="btn btn-primary" disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
-          </div>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
+          <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
+          <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', marginLeft: 10}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
         </div>
       </div>
     )
