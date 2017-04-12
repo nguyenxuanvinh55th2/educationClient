@@ -33,12 +33,8 @@ import ClassList from './components/ClassList.jsx'
 import CreateTest from './components/CreateTest.jsx'
 import CreateSubject from './components/CreateSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
-<<<<<<< HEAD
 import WaitExam from './components/WaitExam.jsx';
-
-=======
 import ManagerSubject from './components/ManagerSubject.jsx'
->>>>>>> 9944b5c2af30a2cae3be91b19bd98f673279695c
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);

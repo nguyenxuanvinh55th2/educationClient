@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import  { UserExams } from 'educationServer/userExam'
-import  { Players } from 'educationServer/player'
-import  { GroupPlayers } from 'educationServer/groupPlayer'
-import  { PersonalPlayers } from 'educationServer/personalPlayer'
+// import  { UserExams } from 'educationServer/userExam'
+// import  { Players } from 'educationServer/player'
+// import  { GroupPlayers } from 'educationServer/groupPlayer'
+// import  { PersonalPlayers } from 'educationServer/personalPlayer'
 
 import { browserHistory } from 'react-router';
 
@@ -158,11 +158,11 @@ class WaitExam extends React.Component {
 }
 
 export default createContainer((ownProps) => {
-  Meteor.subscribe("userExams");
-  Meteor.subscribe("players");
-  Meteor.subscribe("groupPlayers");
-  Meteor.subscribe("personalPlayers");
-  Meteor.subscribe("users");
+  // Meteor.subscribe("userExams");
+  // Meteor.subscribe("players");
+  // Meteor.subscribe("groupPlayers");
+  // Meteor.subscribe("personalPlayers");
+  // Meteor.subscribe("users");
 
   // let examId = ownProps.params.id;
   // let playerIds = UserExams.find({examId}).map(item => item.playerId);

@@ -52,20 +52,6 @@ export default class Profile extends React.Component {
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
         })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
-<<<<<<< HEAD
-          <IconMenu open={false} onTouchTap={() => this.setState({showModal: true})}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-          iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
-        >
-        </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-          iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
-        >
-        </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton onClick = {e => {
-=======
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}}>Thi</button>
           </div>
@@ -73,7 +59,6 @@ export default class Profile extends React.Component {
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}}>Tạo kì thi</button>
           </div>
           <IconButton onClick = {e => {
->>>>>>> 9944b5c2af30a2cae3be91b19bd98f673279695c
               let note = document.getElementById('notification');
               if(note.style.display === 'none') {
                   note.style.display = 'inline';
