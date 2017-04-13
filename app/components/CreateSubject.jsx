@@ -66,7 +66,6 @@ class CreateSubject extends React.Component {
   handleAddTheme(){
     let themes = this.state.themes;
     themes.push({
-      _id: '',
       name: 'Chủ đề ' + ' '
     });
     this.setState({themes: themes});
