@@ -41,8 +41,8 @@ class CreateSubject extends React.Component {
         createAt: moment.valueOf(),
         userId: this.props.users.userId,
       },
-      classeSubject: {
-        couseId: this.state.courseId,
+      classSubject: {
+        courseId: this.state.courseId,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf()
       },
@@ -174,7 +174,7 @@ class CreateSubject extends React.Component {
             </div>
           </div>
           <div className="col-sm-3">
-            <div style={{backgroundColor: 'gray', padding: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
               <Combobox
                 name="class"
@@ -185,7 +185,7 @@ class CreateSubject extends React.Component {
                 value={this.state.classId}
                 getValue={this.getClass.bind(this)}/>
             </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
               <Combobox
                 name="course"
@@ -196,7 +196,7 @@ class CreateSubject extends React.Component {
                 value={this.state.courseId}
                 getValue={this.getCourse.bind(this)}/>
             </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10, minHeight: 150}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10, minHeight: 150}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Thêm thành viên</h4>
               <div style={{height: '100%'}}>
                 <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
@@ -206,7 +206,7 @@ class CreateSubject extends React.Component {
                  </div>
               </div>
            </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10}}>
               <div className="checkbox">
                 <label>
                   <input type="checkbox" checked={this.state.joinCourse} onChange={() => this.setState({joinCourse:!this.state.joinCourse})} /> Tham gia giảng dạy ngay

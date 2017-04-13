@@ -65,7 +65,8 @@ class Header extends React.Component {
               <ul className="nav navbar-nav navbar-right" style={{paddingRight: 20}}>
                 {
                   users.userId &&
-                  <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}><img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/16426027_418458195167949_5207480932126967924_n.jpg?oh=5d44daf1fdce71f9758f4cbf64fe2f75&oe=5968CFBA" alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>Vinh Nguyen</span></a></li>
+                  <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
+                  <img src={users.currentUser.image ? users.currentUser.image : '/public/imgs/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
                 }
                 {
                   !users.userId &&
