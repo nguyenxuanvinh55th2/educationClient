@@ -137,7 +137,7 @@ class CreateSubject extends React.Component {
                   </div>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 7}}>
                     <label style={{width: '20%'}}>Mô tả</label>
-                    <input type="text" style={{width: '80%'}} value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
+                    <textarea rows="4" style={{width: '80%'}} value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
                   </div>
                 </div>
               </div>
@@ -214,7 +214,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
             <div style={{width: '100%', marginTop: 10}}>
-              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name || !this.state.description} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
             </div>
           </div>
         </div>
