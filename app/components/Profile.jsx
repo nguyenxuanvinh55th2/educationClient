@@ -52,28 +52,13 @@ export default class Profile extends React.Component {
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
         })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
           >
-<<<<<<< HEAD
-          <IconMenu open={false} onTouchTap={() => this.setState({showModal: true})}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-          iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
-        >
-        </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton><MapsPlace /></IconButton>}
-          iconStyle={{ fill: 'rgba(0, 0, 0, 0.87)' }}
-        >
-        </IconMenu>
-          <IconMenu open={false} onTouchTap={() => console.log("f")}
-          iconButtonElement={<IconButton onClick = {e => {
-=======
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}}>Thi</button>
+            <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}} onClick={() => this.setState({showModal: true})}>Thi</button>
           </div>
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}}>Tạo kì thi</button>
           </div>
           <IconButton onClick = {e => {
->>>>>>> 9944b5c2af30a2cae3be91b19bd98f673279695c
               let note = document.getElementById('notification');
               if(note.style.display === 'none') {
                   note.style.display = 'inline';
@@ -116,7 +101,7 @@ export default class Profile extends React.Component {
         >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
+                <div className="modal-body" style={{overflowY: 'auto', overflowX: 'hidden'}}>
                   <div>
                     <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                   </div>

@@ -15,7 +15,22 @@ import QuestionBank from './QuestionBank.jsx';
 class CreateTest extends  React.Component {
   constructor(props) {
     super(props);
-    this.state ={name:'',code:'',rate:'',_id:'',tabActive:'insert', description: '', time: 60, userCount: 50, questionSetId: null, getQuestionFrom: null, stepIndex: 0, isTest: false};
+    this.state = {
+      name:'',
+      code:'',
+      rate:'',
+      _id:'',
+      tabActive:'insert',
+      description: '',
+      time: 60,
+      userCount: 50,
+      questionSetId: null,
+      getQuestionFrom: null,
+      stepIndex: 0,
+      isTest: false,
+      isClassStyle: true,
+      openTest: false,
+    };
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
   }
 
@@ -38,7 +53,7 @@ class CreateTest extends  React.Component {
   }
 
   renderStepActions(stepIndex) {
-    let { time, userCount, getQuestionFrom, isTest } = this.state;
+    let { time, userCount, getQuestionFrom, isTest, isClassStyle, openTest } = this.state;
     switch (stepIndex) {
       case 0:
         return (
@@ -134,6 +149,40 @@ class CreateTest extends  React.Component {
                         }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Kiểm tra</p>
                     </label>
                   </div>
+                  <label className="col-sm-12" style={{paddingLeft: 0}}>Hình thức thi</label>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={isClassStyle && 'checked'} type="radio" name="optradio1" onChange={({target}) => {
+                          if(!isClassStyle) {
+                            this.setState({isClassStyle: true})
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Trên lớp</p>
+                    </label>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={!isClassStyle && 'checked'} type="radio" name="optradio1" onChange={({target}) => {
+                          if(isClassStyle) {
+                            this.setState({isClassStyle: false});
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Tại nhà</p>
+                    </label>
+                  </div>
+                  <label className="col-sm-12" style={{paddingLeft: 0}}>Được sử dụng tài liệu?</label>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={!openTest && 'checked'} type="radio" name="optradio2" onChange={({target}) => {
+                          if(openTest) {
+                            this.setState({openTest: false})
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Không</p>
+                    </label>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={openTest && 'checked'} type="radio" name="optradio2" onChange={({target}) => {
+                          if(!openTest) {
+                            this.setState({openTest: true});
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Có</p>
+                    </label>
+                  </div>
                   <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
                       <button type="button" className="btn btn-primary" style={{width: '100%'}} onClick={this.saveTest.bind(this)}>HOÀN TẤT</button>
                   </div>
@@ -148,15 +197,21 @@ class CreateTest extends  React.Component {
 
   saveTest() {
     let { insertExamination, users } = this.props;
+    let { isClassStyle } = this.state;
     let newTest = {
       code: this.code,
       name: this.state.name,
       description: this.state.description,
-      isTest: this.isTest,
+      isTest: this.state.isTest,
+      openTest: this.state.openTest,
       questionSetId: this.state.questionSetId,
       userCount: this.state.userCount,
       time: this.state.time
     }
+
+    let testStyle = isClassStyle ? 'isClassStyle' : 'isHomeStyle';
+    newTest[testStyle] = true;
+
     let info = JSON.stringify(newTest);
     insertExamination(users.userId, info).then(({data}) => {
       let _id = data.insertExamination;

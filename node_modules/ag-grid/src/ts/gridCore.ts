@@ -174,7 +174,9 @@ export class GridCore {
         }
 
         var statusBarEnabled = this.statusBar && this.gridOptionsWrapper.isEnableStatusBar();
-        var paginationPanelEnabled = this.gridOptionsWrapper.isRowModelPagination()
+        let isPaging = this.gridOptionsWrapper.isPagination() ||
+            this.gridOptionsWrapper.isRowModelServerPagination();
+        var paginationPanelEnabled = isPaging
             && !this.gridOptionsWrapper.isForPrint()
             && !this.gridOptionsWrapper.isSuppressPaginationPanel();
 
@@ -274,7 +276,7 @@ export class GridCore {
             throw 'Cannot use ensureNodeVisible when doing virtual paging, as we cannot check rows that are not in memory';
         }
         // look for the node index we want to display
-        var rowCount = this.rowModel.getRowCount();
+        var rowCount = this.rowModel.getPageLastRow() + 1;
         var comparatorIsAFunction = typeof comparator === 'function';
         var indexToSelect = -1;
         // go through all the nodes, find the one we want to show
@@ -302,6 +304,14 @@ export class GridCore {
         // need to do layout first, as drawVirtualRows and setPinnedColHeight
         // need to know the result of the resizing of the panels.
         var sizeChanged = this.eRootPanel.doLayout();
+        // not sure why, this is a hack, but if size changed, it may need to be called
+        // again - as the size change can change whether scrolls are visible or not (i think).
+        // to see why, take this second 'doLayout' call out, and see example in docs for
+        // width & height, the grid will flicker as it doesn't get laid out correctly with
+        // one call to doLayout()
+        if (sizeChanged) {
+            this.eRootPanel.doLayout();
+        }
         // both of the two below should be done in gridPanel, the gridPanel should register 'resize' to the panel
         if (sizeChanged) {
             this.rowRenderer.drawVirtualRowsWithLock();

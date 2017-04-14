@@ -14,7 +14,9 @@ import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import Dialog from 'material-ui/Dialog';
 
-import Login from './Login.jsx'
+import Login from './Login.jsx';
+import JoinExamDialog from './JoinExamDialog.jsx';
+
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -47,6 +49,7 @@ class Header extends React.Component {
   }
   render() {
     let { users } = this.props;
+    let { dialogType } = this.state;
     return(
       <div style={{flexDirection:'column', width:'auto'}}>
         <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0}}>
@@ -94,7 +97,9 @@ class Header extends React.Component {
                   <div>
                     <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                   </div>
+                  {
                     <Login {...this.props} handleClose={() => this.setState({showModal: false})}/>
+                  }
                 </div>
               </div>
           </div>
