@@ -88,6 +88,7 @@ class LeftBar extends React.Component {
 
   render() {
     let { users } = this.props;
+    console.log(this.props.data);
     return (
       <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
         onRequestChange={() => {

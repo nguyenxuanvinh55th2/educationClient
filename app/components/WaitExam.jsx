@@ -2,11 +2,11 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 
-import  { UserExams } from 'educationServer/userExam'
-import  { Players } from 'educationServer/player'
-import  { GroupPlayers } from 'educationServer/groupPlayer'
-import  { PersonalPlayers } from 'educationServer/personalPlayer'
-import  { Examinations } from 'educationServer/examination'
+// import  { UserExams } from 'educationServer/userExam'
+// import  { Players } from 'educationServer/player'
+// import  { GroupPlayers } from 'educationServer/groupPlayer'
+// import  { PersonalPlayers } from 'educationServer/personalPlayer'
+// import  { Examinations } from 'educationServer/examination'
 
 
 import { browserHistory } from 'react-router';

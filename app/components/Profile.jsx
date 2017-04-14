@@ -51,7 +51,7 @@ export default class Profile extends React.Component {
       <div style={{flexDirection: 'column'}}>
         <Notification/>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9', height: 47, position: 'fixed'}}
+        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#ebebeb', height: 47, position: 'fixed'}}
           >
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}} onClick={() => this.setState({showModal: true})}>Thi</button>
