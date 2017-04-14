@@ -16,6 +16,7 @@ class Wall extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      height: window.innerHeight,
       courses: []
     }
   }
@@ -34,12 +35,12 @@ class Wall extends React.Component {
     }
     else {
       return (
-        <div style={{flexDirection: 'column', padding: 20, height: window.innerHeight - 47}}>
+        <div style={{flexDirection: 'column', padding: 20}}>
           <div style={{display: 'flex', flexDirection :'column', alignItems: 'center'}}>
             <div className="input-group col-sm-8 col-md-8 col-lg-6">
-              <input type="text" className="form-control" placeholder="Search for..." style={{height: 35, borderRadius: 5}} />
+              <input type="text" className="form-control" placeholder="Search for..." style={{height: 35, borderRadius: 5, zIndex: 1}} />
               <span className="input-group-btn">
-                <button className="btn btn-secondary" type="button" style={{backgroundColor: '#35bcbf', color: 'white', height: 35, width: 50, borderRadius: 5, left: -10, zIndex: 50}}><span className="glyphicon glyphicon-search"></span></button>
+                <button className="btn btn-secondary" type="button" style={{backgroundColor: '#35bcbf', color: 'white', height: 35, width: 50, borderRadius: 5, left: -10, zIndex: 2}}><span className="glyphicon glyphicon-search"></span></button>
               </span>
             </div>
           </div>
@@ -69,7 +70,7 @@ class Wall extends React.Component {
                               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                                   <p style={{fontSize: 25}} >&bull;</p>
-                                  <p style={{paddingTop: 10, paddingLeft: 5 }}> {classSubject.subject.name} - GV NGuyen xuan vinh</p>
+                                  <p style={{paddingTop: 10, paddingLeft: 5 }}> {classSubject.subject.name} - 55Th2 - GV NGuyen xuan vinh</p>
                                 </div>
                                 <button type="button" className="btn btn-sm" onClick={() => {
                                   let courses = dataState.courses;

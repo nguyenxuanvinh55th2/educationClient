@@ -171,7 +171,7 @@ export class InviteUser extends React.Component {
                 return that.renderChip(val,idx);
             })}
         </div>
-        <input ref="userMails" type="text" placeholder="Nhập email và nhấn enter để gửi mail mới sinh viên"
+        <input ref="userMails" type="text" placeholder="Nhập email và enter để gửi mail mới sinh viên"
           onBlur={() => that.props.onChangeValue(this.state.userMails)}
           onKeyPress={(event)=>this.handleKeyPress(event)}
             style={{width: '100%', border: 0, borderTop: this.state.userMails.length ? '1px solid grey': 0 , minHeight: 70, padding: 5}}/>

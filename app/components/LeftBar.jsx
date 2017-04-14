@@ -99,7 +99,7 @@ class LeftBar extends React.Component {
           <img src="/public/imgs/logo.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
         <List>
-          <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}}
+          <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}} onClick={() => browserHistory.push("/profile/" + users.userId)}
             innerDivStyle={{padding: '5px 16px 5px 50px'}}
              leftAvatar={<Avatar src={users.currentUser && users.currentUser.image ? users.currentUser.image : '/public/imgs/userImage.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
              primaryText={
@@ -171,11 +171,6 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
          <ListItem
@@ -185,11 +180,6 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
          <ListItem
@@ -199,11 +189,6 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
        </List>
