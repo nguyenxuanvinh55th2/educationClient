@@ -207,7 +207,7 @@ class LeftBar extends React.Component {
            ]}
          />
        </List>
-       <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+       <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>

@@ -39,7 +39,7 @@ class CreateSubject extends React.Component {
         name: this.state.name,
         description: this.state.description,
         createAt: moment.valueOf(),
-        userId: this.props.users.userId,
+        ownerId: this.props.users.userId,
       },
       classSubject: {
         courseId: this.state.courseId,
