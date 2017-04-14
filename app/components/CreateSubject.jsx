@@ -39,10 +39,10 @@ class CreateSubject extends React.Component {
         name: this.state.name,
         description: this.state.description,
         createAt: moment.valueOf(),
-        userId: this.props.users.userId,
+        ownerId: this.props.users.userId,
       },
-      classeSubject: {
-        couseId: this.state.courseId,
+      classSubject: {
+        courseId: this.state.courseId,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf()
       },
@@ -66,7 +66,6 @@ class CreateSubject extends React.Component {
   handleAddTheme(){
     let themes = this.state.themes;
     themes.push({
-      _id: '',
       name: 'Chủ đề ' + ' '
     });
     this.setState({themes: themes});
@@ -138,7 +137,7 @@ class CreateSubject extends React.Component {
                   </div>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 7}}>
                     <label style={{width: '20%'}}>Mô tả</label>
-                    <input type="text" style={{width: '80%'}} value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
+                    <textarea rows="4" style={{width: '80%'}} value={this.state.description} onChange={({target}) => this.setState({description: target.value})} />
                   </div>
                 </div>
               </div>
@@ -175,7 +174,7 @@ class CreateSubject extends React.Component {
             </div>
           </div>
           <div className="col-sm-3">
-            <div style={{backgroundColor: 'gray', padding: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
               <Combobox
                 name="class"
@@ -186,7 +185,7 @@ class CreateSubject extends React.Component {
                 value={this.state.classId}
                 getValue={this.getClass.bind(this)}/>
             </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
               <Combobox
                 name="course"
@@ -197,7 +196,7 @@ class CreateSubject extends React.Component {
                 value={this.state.courseId}
                 getValue={this.getCourse.bind(this)}/>
             </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10, minHeight: 150}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10, minHeight: 150}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Thêm thành viên</h4>
               <div style={{height: '100%'}}>
                 <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
@@ -207,7 +206,7 @@ class CreateSubject extends React.Component {
                  </div>
               </div>
            </div>
-            <div style={{backgroundColor: 'gray', padding: 10, marginTop: 10}}>
+            <div style={{backgroundColor: 'white', padding: 10, marginTop: 10}}>
               <div className="checkbox">
                 <label>
                   <input type="checkbox" checked={this.state.joinCourse} onChange={() => this.setState({joinCourse:!this.state.joinCourse})} /> Tham gia giảng dạy ngay
@@ -215,7 +214,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
             <div style={{width: '100%', marginTop: 10}}>
-              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
+              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name || !this.state.description} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
             </div>
           </div>
         </div>

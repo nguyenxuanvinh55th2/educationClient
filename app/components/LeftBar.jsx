@@ -87,6 +87,7 @@ class LeftBar extends React.Component {
   }
 
   render() {
+    let { users } = this.props;
     return (
       <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
         onRequestChange={() => {
@@ -98,16 +99,16 @@ class LeftBar extends React.Component {
           <img src="/public/imgs/logo.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
         <List>
-          <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}}
+          <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}} onClick={() => browserHistory.push("/profile/" + users.userId)}
             innerDivStyle={{padding: '5px 16px 5px 50px'}}
-             leftAvatar={<Avatar icon={<AccountCircle />} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
+             leftAvatar={<Avatar src={users.currentUser && users.currentUser.image ? users.currentUser.image : '/public/imgs/userImage.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
              primaryText={
                <p>
-                 Huynh Thi Lo Thi Lieu Dao
+                 {users.currentUser ? users.currentUser.name : ''}
                </p>
              }
              secondaryText={
-               <p style={{fontSize: 10}}>hellokitty1024@gmail.com</p>
+               <p style={{fontSize: 10}}>{users.currentUser ? users.currentUser.email: ''}</p>
              }
            />
          <ListItem
@@ -170,11 +171,6 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
          <ListItem
@@ -184,11 +180,6 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
          <ListItem
@@ -198,18 +189,13 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
            ]}
          />
        </List>
-       <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
-         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
-         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
+       <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
        </div>
        <Dialog
          modal={true}

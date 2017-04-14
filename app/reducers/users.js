@@ -6,7 +6,6 @@ function users(state = [], action) {
             return Object.assign({}, state, {
                 userId: action.user ? action.user._id : "",
                 currentUser: action.user ? action.user: {},
-                image: action.user.image ? action.user.image : action.user.profile ? action.user.profile.imageUrl : action.user.picture ? action.user.picture.data.url: ''
             });
         default:
             return state;

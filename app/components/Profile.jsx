@@ -23,6 +23,7 @@ export default class Profile extends React.Component {
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.notificationSystem = null;
     this.state = {
+      height: window.innerHeight,
       sidebarOpen: window.matchMedia(`(min-width: 800px)`).matches,
       chatBarOpen: false,
       showModal: false,
@@ -36,7 +37,7 @@ export default class Profile extends React.Component {
   }
   mediaQueryChanged(e) {
     var mql = window.matchMedia(`(min-width: 800px)`);
-    this.setState({sidebarOpen: mql.matches});
+    this.setState({sidebarOpen: mql.matches, height: window.innerHeight});
   }
   componentDidMount() {
       window.addEventListener('resize', this.mediaQueryChanged);
@@ -50,7 +51,7 @@ export default class Profile extends React.Component {
       <div style={{flexDirection: 'column'}}>
         <Notification/>
         <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
-        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9'}}
+        })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#EEE9E9', height: 47, position: 'fixed'}}
           >
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}} onClick={() => this.setState({showModal: true})}>Thi</button>
@@ -82,7 +83,7 @@ export default class Profile extends React.Component {
           <div style={{width: 256}}>
             <LeftBar {...this.props} addNotification={this.addNotification.bind(this)} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
           </div>
-          <div style={{width: window.innerWidth -(2*256)}}>
+          <div style={{width: window.innerWidth -(2*256), marginTop: 47, minHeight: this.state.height - 47}}>
             {React.cloneElement(this.props.children, this.props)}
           </div>
           <div style={{width: 256}}>
