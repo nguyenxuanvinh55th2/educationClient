@@ -1,5 +1,6 @@
 import React from 'react';
 import __ from 'lodash';
+import { browserHistory } from 'react-router';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Webcam from 'react-webcam';
@@ -23,6 +24,8 @@ class JoinExamDialog extends React.Component {
       } else
           if(data.insertUserToExam === 'canNotJoin') {
             console.log("kì thi này hiện chưa bắt đầu hoặc đã kết thúc");
+          } else {
+              browserHistory.push('/waitExam/' + data.insertUserToExam);
           }
     }).catch((err) => {
 

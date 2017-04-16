@@ -366,7 +366,7 @@ class QuesionBank extends React.Component {
 
   saveQuestion() {
     let { questionType, subjectId, questionList, questionSet } = this.state;
-    let { getQuestionSetId } = this.props;
+    let { getQuestionSetId, increaseStepIndex } = this.props;
     if(questionType === 'questionSet') {
       getQuestionSetId(questionSet._id);
     } else {
@@ -392,6 +392,7 @@ class QuesionBank extends React.Component {
         console.log('token ', localStorage.getItem('Meteor.loginToken'));
         this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
           getQuestionSetId(data.insertQuestionSet);
+          increaseStepIndex();
         }).catch((error) => {
             console.log('there was an error sending the query', error);
         });

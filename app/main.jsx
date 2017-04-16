@@ -34,6 +34,7 @@ import CreateTest from './components/CreateTest.jsx'
 import CreateSubject from './components/CreateSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
 import WaitExam from './components/WaitExam.jsx';
+import StartedExam from './components/StartedExam.jsx';
 import ManagerSubject from './components/ManagerSubject.jsx'
 
 export class WrapMain extends React.Component{
@@ -73,6 +74,7 @@ ReactDOM.render(
             </Route>
             <Route path="/createTest" component={CreateTest}/>
             <Route path="/waitExam/:id" component={WaitExam}/>
+            <Route path="/startedExam/:id" component={StartedExam}/>
           </Route>
         </Router>
       </WrapMain>

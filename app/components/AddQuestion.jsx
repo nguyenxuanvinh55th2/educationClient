@@ -6,6 +6,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Checkbox from 'material-ui/Checkbox';
 import Drawer from 'material-ui/Drawer';
 import Combobox from './Combobox.jsx';
+import Dropzone from 'react-dropzone';
 
 import QuestionCreateItem from './QuestionCreateItem.jsx';
 import QuestionReviewItem from './QuestionReviewItem.jsx';
@@ -13,7 +14,7 @@ import QuestionReviewItem from './QuestionReviewItem.jsx';
 class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {title: '', description: '', questionCount: '', totalScore: '', isPublic: false, questionList: [{
+    this.state = {title: '', description: '', questionCount: '', score: '', isPublic: false, questionList: [{
       _id: (Math.floor(Math.random()*99999) + 10000).toString(),
       question: '',
       answerSet: [{
@@ -24,8 +25,26 @@ class AddQuestion extends React.Component {
       score: 0,
       isPublic: false,
       subjectId: '',
-    }], openDrawer: false, subjectId: '', showReview: false};
+    }], openDrawer: false, subjectId: '', showReview: false, questionFile: null};
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
+  }
+
+  addQuestionFromFile() {
+    let { questionList, title, description, isPublic, subjectId, questionFile } = this.state;
+    let {  getQuestionSetId, users, addQuestionFromFile } = this.props;
+    let token = localStorage.getItem('Meteor.loginToken');
+    let questionSet = {
+      title,
+      description,
+      questionCount: questionList.length,
+      isPublic,
+      subjectId
+    }
+    questionSet = JSON.stringify(questionSet);
+    console.log('somthing 001');
+    addQuestionFromFile(token, questionSet, questionFile).then(({data}) => {
+      getQuestionSetId(data.addQuestionFromFile);
+    });
   }
 
   drawerContent() {
@@ -81,6 +100,10 @@ class AddQuestion extends React.Component {
         </TabPanel>
       </Tabs>
     )
+  }
+
+  getFiles(files){
+    console.log('file ', files);
   }
 
   renderQuestionCreate() {
@@ -181,6 +204,22 @@ class AddQuestion extends React.Component {
     this.setState({subjectId: value});
   }
 
+  onDrop(files) {
+    let file = files[0];
+    var reader = new FileReader();
+    reader.readAsText(file);
+    let that = this;
+
+    reader.onload = function () {
+      let content = reader.result;
+      that.setState({questionFile: content});
+    };
+
+    reader.onerror = function (error) {
+     console.log('Error: ', error);
+    };
+  }
+
   removeQuestion(index) {
     let questionList = this.state.questionList;
     for(let i = 0; i < questionList.length; i++) {
@@ -196,7 +235,7 @@ class AddQuestion extends React.Component {
 
   saveQuestion() {
     let { questionList, title, description, isPublic, subjectId } = this.state;
-    let {  getQuestionSetId, users } = this.props;
+    let {  getQuestionSetId, users, increaseStepIndex } = this.props;
     let questionSet = {
       title,
       description,
@@ -214,67 +253,72 @@ class AddQuestion extends React.Component {
     });
     this.props.insertQuestionSet(users.userId, questionSet,  questionSetString).then(({data}) => {
       getQuestionSetId(data.insertQuestionSet);
+      increaseStepIndex();
     }).catch((error) => {
         console.log('there was an error sending the query', error);
     });
   }
 
   render() {
-    let { openDrawer } = this.state;
-    console.log('openDrawer ', openDrawer);
+    let { openDrawer, questionFile } = this.state;
+    console.log('openDrawer ', questionFile);
     return (
-      <div>
-        <div style={{width: '60%', marginLeft: '20%'}}>
-            <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-              <div style={{width: '100%', border: '1px solid gray', paddingTop: 50, paddingBottom: 30}}>
-                <div style={{width: '100%', paddingBottom: 10}} className={this.state.name ? 'form-group' : 'form-group has-error'}>
-                    <label className="col-sm-3 control-label">Tiêu đề câu hỏi</label>
-                    <div className="col-sm-9">
-                        <input style={{width: '80%'}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
-                        <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
-                    </div>
-                </div>
-                <div style={{width: '100%', paddingBottom: 10}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
-                    <label className="col-sm-3 control-label">Mô tả</label>
-                    <div className="col-sm-9">
-                        <textarea style={{width: '80%'}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
-                        </textarea>
-                        <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
-                    </div>
-                </div>
-                <div style={{width: '100%', paddingBottom: 10}} className={this.state.questionCount ? 'form-group' : 'form-group has-error'}>
-                    <label className="col-sm-3 control-label">Số lượng câu hỏi</label>
-                    <div className="col-sm-9">
-                        <input style={{width: '80%'}} type="number" className="form-control" value={this.state.questionCount} onChange={({target}) => this.setState({questionCount: target.value})}/>
-                        <span className="help-block">{this.state.questionCount ? null : 'số lượng câu hỏi là bắt buộc'}</span>
-                    </div>
-                </div>
-                <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
-                    <label className="col-sm-3 control-label">Tổng số điểm</label>
-                    <div className="col-sm-9">
-                        <input style={{width: '80%'}} type="number" className="form-control" value={this.state.totalScore} onChange={({target}) => this.setState({totalScore: target.value})}/>
-                        <span className="help-block">{this.state.totalScore ? null : 'tổng số điểm là bắt buộc'}</span>
-                    </div>
-                </div>
-                <div style={{width: '100%', paddingBottom: 10}} className={this.state.totalScore ? 'form-group' : 'form-group has-error'}>
-                    <label className="col-sm-3 control-label">Chọn môn học</label>
-                    <div className="col-sm-9">
-                      <Combobox
-                        name="subjectss"
-                        data={this.props.data.subjectByUser}
-                        datalistName="subjectsDatalists"
-                        label="name"
-                        placeholder="Chọn môn học"
-                        value={this.state.subjectId}
-                        getValue={this.getSubject.bind(this)}/>
-                    </div>
-                </div>
-                <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                    <button type="button" className="btn btn-primary" style={{width: 150}} disabled={!this.state.title} onClick={() => this.setState({openDrawer: true})}>THÊM NỘI DUNG</button>
+      <div style={{width: '100%'}}>
+        <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+          <div style={{width: '100%', paddingTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <div style={{width: '70%'}}>
+              <div style={{width: '100%'}} className={this.state.title ? 'form-group' : 'form-group has-error'}>
+                  <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Tiêu đề</label>
+                  <div className="col-sm-9">
+                      <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
+                      <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                  </div>
+              </div>
+              <div style={{width: '100%'}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
+                  <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Mô tả</label>
+                  <div className="col-sm-9">
+                      <textarea style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
+                      </textarea>
+                      <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                  </div>
+              </div>
+              <div style={{width: '100%'}} className={this.state.score ? 'form-group' : 'form-group has-error'}>
+                  <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Điểm số</label>
+                  <div className="col-sm-9">
+                      <input style={{width: '100%', margin: 0}} type="number" className="form-control" value={this.state.score} onChange={({target}) => this.setState({score: target.value})}/>
+                      <span className="help-block">{this.state.score ? null : 'điểm số là bắt buộc'}</span>
+                  </div>
+              </div>
+              <div style={{width: '100%'}} className="form-group">
+                  <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Môn học</label>
+                  <div className="col-sm-9">
+                    <Combobox
+                      name="subjectss"
+                      data={this.props.data.subjectByUser}
+                      datalistName="subjectsDatalists"
+                      label="name"
+                      placeholder="Chọn môn học"
+                      value={this.state.subjectId}
+                      getValue={this.getSubject.bind(this)}/>
+                  </div>
+              </div>
+              <div style={{width: '100%'}} className="form-group">
+                <div className="col-sm-9 col-sm-offset-3">
+                  <Dropzone onDrop={this.onDrop.bind(this)} style={{height: 50, border: '1px solid gray', borderRadius: 10, padding: '13px 7px'}}>
+                    <div style={{textAlign: 'center'}}>Thêm câu hỏi từ file của bạn</div>
+                  </Dropzone>
                 </div>
               </div>
-            </form>
-        </div>
+            </div>
+            <div style={{width: '30%'}}>
+            {
+              questionFile ?
+              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={this.addQuestionFromFile.bind(this)}>Hoàn thành</button> :
+              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
+            }
+            </div>
+          </div>
+        </form>
         <Drawer docked={false} width={800} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
           {
             this.drawerContent()
@@ -298,6 +342,11 @@ const INSERT_QUESTION_SET = gql`
         insertQuestionSet(userId: $userId, questionSet: $questionSet, questions: $questions)
 }`
 
+const ADD_QUESTION_FROM_FILE = gql`
+    mutation addQuestionFromFile ($token: String!, $questionSet: String!, $questionFile: String!) {
+        addQuestionFromFile(token: $token, questionSet: $questionSet, questionFile: $questionFile)
+}`
+
 export default compose (
     graphql(ADD_QUESTION_QUERY, {
         options: (owProps)=> ({
@@ -308,6 +357,11 @@ export default compose (
     graphql(INSERT_QUESTION_SET, {
         props: ({mutate})=> ({
             insertQuestionSet : (userId, questionSet, questions) => mutate({variables:{userId, questionSet, questions}})
+        })
+    }),
+    graphql(ADD_QUESTION_FROM_FILE, {
+        props: ({mutate})=> ({
+            addQuestionFromFile : (token, questionSet, questionFile) => mutate({variables:{token, questionSet, questionFile}})
         })
     }),
 )(AddQuestion);
