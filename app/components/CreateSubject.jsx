@@ -32,6 +32,14 @@ class CreateSubject extends React.Component {
     ]
   }
   handleSave(){
+    let nameClassSubject = '';
+    nameClassSubject += this.state.name;
+    if(this.state.classId){
+      let index = __.findIndex(this.props.getClassByUserId, {_id: this.state.classId});
+      if(index > -1){
+        nameClassSubject += this.props.getClassByUserId[index].name;
+      }
+    }
     let info = {
       _id: this.state._id,
       subject: {
@@ -42,6 +50,7 @@ class CreateSubject extends React.Component {
         ownerId: this.props.users.userId,
       },
       classSubject: {
+        name: nameClassSubject,
         courseId: this.state.courseId,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf()
@@ -78,14 +87,15 @@ class CreateSubject extends React.Component {
   }
   getSubject(value){
     if(value){
-      let idx = __.findIndex(this.props.dataSet.getSubjectByUserId,{_id: value});
+      let idx = __.findIndex(this.props.dataSet.classSubjectsByTeacher,{_id: value});
       if(idx > -1){
-        let data = this.props.dataSet.getSubjectByUserId[idx];
+        let data = this.props.dataSet.classSubjectsByTeacher[idx];
+        console.log(data);
         this.setState({
-          _id: data._id,
-          code: data.code,
-          name: data.name,
-          description: data.description,
+          _id: data.subject._id,
+          code: data.subject.code,
+          name: data.subject.name,
+          description: data.subject.description,
           themes: [],
         })
       }
@@ -113,7 +123,7 @@ class CreateSubject extends React.Component {
                   <div style={{width: '80%'}}>
                     <Combobox
                       name="subject"
-                      data={dataSet.getSubjectByUserId}
+                      data={dataSet.classSubjectsByTeacher}
                       datalistName="subjectClassList"
                       label="name"
                       placeholder="Chọn môn học"
@@ -228,12 +238,18 @@ const INSERT_SUBJECT = gql`
  }
 `;
 const MyQuery = gql`
-    query getSubjectByUserId($userId: String){
-      getSubjectByUserId(userId: $userId) {
+    query getSubjectByUserId($userId: String, $token: String!){
+      classSubjectsByTeacher(token: $token) {
         _id
-       name
-       ownerId
-       createAt
+        name
+        theme {
+          _id
+          name
+          activity
+        }
+        subject {
+          _id code name description
+        }
       },
       getClassByUserId(userId: $userId) {
          _id
@@ -254,7 +270,7 @@ const MyQuery = gql`
 export default compose(
   graphql(MyQuery, {
       options: (ownProps) => ({
-        variables: {userId: ownProps.users.userId},
+        variables: {userId: ownProps.users.userId, token: localStorage.getItem('Meteor.loginToken')},
         forceFetch: true
       }),
       name: 'dataSet',
