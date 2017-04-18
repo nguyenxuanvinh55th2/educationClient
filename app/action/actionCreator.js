@@ -9,6 +9,12 @@ export function loginCommand(user){
         user,
     }
 }
+export function subjectClassMutation(detail){
+    return {
+        type: 'SUBJECT_CLASS_MUTATION',
+        detail,
+    }
+}
 
 //action xử lý việc tìm kiếm của user
 //---------------------------------------------------------------------------------//

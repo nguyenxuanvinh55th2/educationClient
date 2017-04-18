@@ -10,6 +10,7 @@ import NotificationSystem from 'react-notification-system';
 function mapStateToProps(state){
   return {
     users: state.users,
+    subjectClass: state.subjectClass
   }
 }
 

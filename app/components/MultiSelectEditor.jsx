@@ -11,12 +11,12 @@ export default class MultiSelectEditor extends React.Component {
         super(props);
         this.state = {value: props.value || [], filterValue: ''};
     }
-    componentDidMount() {
-        let that = this;
-        setTimeout(() => {
-            that.refs.selectEditor.focus();
-        }, 10);
-    }
+    // componentDidMount() {
+    //     let that = this;
+    //     setTimeout(() => {
+    //         that.refs.selectEditor.focus();
+    //     }, 10);
+    // }
     getValue() {
         return this.state.value;
     }

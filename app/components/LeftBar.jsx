@@ -76,19 +76,26 @@ class LeftBar extends React.Component {
   }
 
   renderClassSubjectTeacher() {
-    let { data } = this.props;
-    if(data.loading) {
+    let { data, subjectClass, subjectClassMutation  } = this.props;
+    if(data.loading && ! data.classSubjectsByTeacher) {
       return []
     } else {
-        return data.classSubjectsByTeacher.map(item => (
-          <SubjectItem subject={item.subject} themes={item.theme}/>
-        ))
+      if (!subjectClass.fetchData) {
+          setTimeout(()=>{
+              subjectClassMutation({
+                  fetchData: true,
+                  classSubjectsByTeacher:data.classSubjectsByTeacher
+              });
+          }, 500);
+      }
+      return __.map(data.classSubjectsByTeacher,(item,idx) =>(
+        <SubjectItem subject={item.subject} themes={item.theme}/>
+      ))
     }
   }
 
   render() {
-    let { users } = this.props;
-    console.log(this.props.data);
+    let { users} = this.props;
     return (
       <Drawer open={this.props.sidebarOpen}  docked={window.matchMedia(`(min-width: 800px)`).matches}
         onRequestChange={() => {
@@ -213,21 +220,13 @@ class LeftBar extends React.Component {
 const CLASS_SUBJECT = gql`
   query classSubjects($token: String!){
     classSubjectsByTeacher(token: $token) {
-      _id
-      dateStart
-      dateEnd
-      isOpen
-      publicActivity
+      _id name dateStart  dateEnd
+      isOpen  publicActivity
       subject {
-        _id
-        name
-        ownerId
-        createAt
+        _id code name ownerId  createAt
       }
       theme {
-        _id
-        name
-        activity
+        _id  name  activity
       }
     }
 }`
