@@ -82,7 +82,35 @@ const QuestionContentWithData = compose (
 class StartedExam extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {currentQuestion: null, userExams: null};
+    this.state =  {currentQuestion: null, userExams: null, startCountDown: false};
+  }
+
+  componentDidUpdate() {
+    let { data, users, finishExamination } = this.props;
+    let { startCountDown } = this.state;
+    if(!startCountDown && data.examById) {
+      if(data.examById.createdBy._id === users.userId) {
+        console.log("message");
+        let time = data.examById.time * 60 * 1000;
+        let countDown = time
+        let token = localStorage.getItem('Meteor.loginToken');
+        if(data.examById.status === 99) {
+          let interval = setInterval(() => {
+            countDown -= 1000
+            console.log('time ', countDown.toString());
+          }, 1000);
+          setTimeout(() => {
+            finishExamination(token, data.examById._id).then(() => {
+              console.log("ki thi da ket thuc");
+              clearInterval(interval);
+            }).catch((err) => {
+              console.log("error ", err);
+            });
+          }, time);
+        }
+      }
+      this.setState({startCountDown: true});
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,10 +133,16 @@ class StartedExam extends React.Component {
     return playerList.map((item, idx) => (
       <tr key={idx}>
         <td>
-          <img style={{width: 75, height: 75}} src={item.player.user.checkOutImage[0].link}/>
+          { idx + 1 }
+        </td>
+        <td>
+          <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
         </td>
         <td>
           <p>{item.player.user.name}</p>
+        </td>
+        <td>
+          <p>{item.player.user.email}</p>
         </td>
         <td>
           <div className="progress" style={{width: 200, height: 15, marginTop: 3}}>
@@ -137,12 +171,31 @@ class StartedExam extends React.Component {
             item['process'] = ( resultCount / questionCount ) * 100;
           })
           return (
-            <div>
-              <table>
-                <tbody>
-                  { this.renderPlayerList(playerList) }
-                </tbody>
-              </table>
+            <div style={{backgroundColor: 'white'}}>
+              <div style={{textAlign: 'center', paddingBottom: 20}}>
+                <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+                <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userCount } </font></p>
+              </div>
+              <div className="col-sm-12" style={{padding: '0px 20%'}}>
+                <table style={{width: '100%'}}>
+                  <thead>
+                    <th>
+                      STT
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                      Tên người dùng
+                    </th>
+                    <th>
+                      Email
+                    </th>
+                  </thead>
+                  <tbody>
+                    { this.renderPlayerList(playerList) }
+                  </tbody>
+                </table>
+              </div>
             </div>
           )
         } else {
@@ -227,13 +280,23 @@ const QUESTION_BY_EXAM = gql`
     }
   }`
 
+const FINISH_EXAMINATION = gql`
+    mutation finishExamination ($token: String!, $_id: String!) {
+      finishExamination(token: $token, _id: $_id)
+}`
+
 const StartedExamWithData = compose (
     graphql(QUESTION_BY_EXAM, {
         options: (owProps)=> ({
             variables: {examId: owProps.params.id},
             forceFetch: true
         })
-    })
+    }),
+    graphql(FINISH_EXAMINATION, {
+        props: ({mutate})=> ({
+            finishExamination : (token, _id) => mutate({variables:{token, _id}})
+        })
+    }),
 )(StartedExam);
 
 export default createContainer((ownProps) => {

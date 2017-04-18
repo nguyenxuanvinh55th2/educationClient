@@ -53,6 +53,7 @@ class CreateTest extends  React.Component {
   }
 
   increaseStepIndex() {
+    console.log("message increaseStepIndex");
     this.setState({ stepIndex: 2 });
   }
 

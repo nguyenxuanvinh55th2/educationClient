@@ -31,8 +31,7 @@ class AddQuestion extends React.Component {
 
   addQuestionFromFile() {
     let { questionList, title, description, isPublic, subjectId, questionFile } = this.state;
-    let {  getQuestionSetId, users, addQuestionFromFile } = this.props;
-    let token = localStorage.getItem('Meteor.loginToken');
+    let {  getQuestionSetId, users } = this.props;
     let questionSet = {
       title,
       description,
@@ -40,11 +39,41 @@ class AddQuestion extends React.Component {
       isPublic,
       subjectId
     }
-    questionSet = JSON.stringify(questionSet);
-    console.log('somthing 001');
-    addQuestionFromFile(token, questionSet, questionFile).then(({data}) => {
-      getQuestionSetId(data.addQuestionFromFile);
-    });
+    let questionFromFile = [];
+    let array = questionFile.split(/\r?\n/);
+    __.forEach(array, (item, idx) => {
+      if(item === '') {
+        array.splice(idx, 1);
+      }
+    })
+    for(let i = 0; i < array.length - 1; i++) {
+      if(array[i].indexOf('Câu') > -1) {
+        let question = {
+          question: array[i],
+          answerSet: [],
+          correctAnswer: [],
+          score: 0,
+          isPublic: false,
+          subjectId: '',
+        }
+        let j = i + 1;
+        while(array[j].indexOf('Câu') < 0 && j < array.length - 1) {
+          let answerId = (Math.floor(Math.random()*99999) + 10000).toString();
+          let answer = {
+            _id: answerId,
+            answer: array[j].replace(/(dapan)/gi, '')
+          }
+          question.answerSet.push(answer);
+          if(array[j].toLowerCase().indexOf('dapan') > -1 || array[j].toLowerCase().indexOf('dapan') > -1) {
+            question.correctAnswer.push(answer);
+          }
+          j++;
+        }
+        questionFromFile.push(question);
+      }
+    }
+    console.log('questionFromFile ', questionFromFile);
+    this.setState({questionList: questionFromFile, openDrawer: true});
   }
 
   drawerContent() {
@@ -124,7 +153,7 @@ class AddQuestion extends React.Component {
   renderQuestionReview() {
     let { questionList } = this.state;
     return questionList.map((item, idx) => (
-      <QuestionReviewItem key={item._id} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)}/>
+      <QuestionReviewItem getReviewFrom={'questionCreater'} key={item._id} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)}/>
     ))
   }
 
@@ -261,7 +290,7 @@ class AddQuestion extends React.Component {
 
   render() {
     let { openDrawer, questionFile } = this.state;
-    console.log('openDrawer ', questionFile);
+    console.log('openDrawer ', this.state.questionList);
     return (
       <div style={{width: '100%'}}>
         <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
@@ -313,7 +342,7 @@ class AddQuestion extends React.Component {
             <div style={{width: '30%'}}>
             {
               questionFile ?
-              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={this.addQuestionFromFile.bind(this)}>Hoàn thành</button> :
+              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
               <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
             }
             </div>
