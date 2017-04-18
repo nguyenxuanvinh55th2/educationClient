@@ -32,6 +32,14 @@ class CreateSubject extends React.Component {
     ]
   }
   handleSave(){
+    let nameClassSubject = '';
+    nameClassSubject += this.state.name;
+    if(this.state.classId){
+      let index = __.findIndex(this.props.getClassByUserId, {_id: this.state.classId});
+      if(index > -1){
+        nameClassSubject += this.props.getClassByUserId[index].name;
+      }
+    }
     let info = {
       _id: this.state._id,
       subject: {
@@ -42,6 +50,7 @@ class CreateSubject extends React.Component {
         ownerId: this.props.users.userId,
       },
       classSubject: {
+        name: nameClassSubject,
         courseId: this.state.courseId,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf()
@@ -76,23 +85,24 @@ class CreateSubject extends React.Component {
   getCourse(value){
     this.setState({courseId: value});
   }
-  getSubject(value){
+  getClassSubject(value){
     if(value){
-      let idx = __.findIndex(this.props.dataSet.getSubjectByUserId,{_id: value});
+      let idx = __.findIndex(this.props.subjectClass.classSubjectsByTeacher,{_id: value});
       if(idx > -1){
-        let data = this.props.dataSet.getSubjectByUserId[idx];
+        let data = this.props.subjectClass.classSubjectsByTeacher[idx];
+        console.log(data);
         this.setState({
-          _id: data._id,
-          code: data.code,
-          name: data.name,
-          description: data.description,
-          themes: [],
+          _id: data.subject._id,
+          code: data.subject.code,
+          name: data.subject.name,
+          description: data.subject.description,
+          themes: data.theme,
         })
       }
     }
   }
   render(){
-    let { dataSet } = this.props;
+    let { dataSet, subjectClass } = this.props;
     if(dataSet.loading){
       return (
         <div className="spinner spinner-lg"></div>
@@ -113,12 +123,12 @@ class CreateSubject extends React.Component {
                   <div style={{width: '80%'}}>
                     <Combobox
                       name="subject"
-                      data={dataSet.getSubjectByUserId}
+                      data={subjectClass.classSubjectsByTeacher}
                       datalistName="subjectClassList"
                       label="name"
                       placeholder="Chọn môn học"
                       value={this.state._id}
-                      getValue={this.getSubject.bind(this)}/>
+                      getValue={this.getClassSubject.bind(this)}/>
                   </div>
                 </div>
               </div>
@@ -229,12 +239,6 @@ const INSERT_SUBJECT = gql`
 `;
 const MyQuery = gql`
     query getSubjectByUserId($userId: String){
-      getSubjectByUserId(userId: $userId) {
-        _id
-       name
-       ownerId
-       createAt
-      },
       getClassByUserId(userId: $userId) {
          _id
          code

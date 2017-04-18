@@ -132,10 +132,10 @@ class StartedExam extends React.Component {
   renderPlayerList(playerList) {
     return playerList.map((item, idx) => (
       <tr key={idx}>
-        <td>
+        <td rowspan="2">
           { idx + 1 }
         </td>
-        <td>
+        <td rowspan="2">
           <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
         </td>
         <td>
@@ -143,6 +143,14 @@ class StartedExam extends React.Component {
         </td>
         <td>
           <p>{item.player.user.email}</p>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="2">
+          { idx + 1 }
+        </td>
+        <td rowspan="2">
+          <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
         </td>
         <td>
           <div className="progress" style={{width: 200, height: 15, marginTop: 3}}>
