@@ -30,21 +30,27 @@ import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 class SubjectItem extends React.Component {
   renderSubjectTheme() {
-    return this.props.themes.map(item => (
-      <ListItem
-        key={1}
-        primaryText={item.name}
-        leftIcon={<ActionGrade />}
-      />
-    ))
+    return __.map(this.props.themes,(theme,idx) => {
+      return (
+        <ListItem
+          key={idx}
+          style={{color: 'white', fontSize: 10}}
+          primaryText={theme.name}
+        />
+      )
+    })
   }
   render() {
     return (
       <ListItem
-        primaryText={this.props.subject.name}
-        leftIcon={<ActionGrade />}
+        primaryText={
+          <div>
+            <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.userId + '/' + this.props.subject._id)}>{this.props.subject.name}</a>
+          </div>
+        }
         initiallyOpen={false}
         primaryTogglesNestedList={true}
+        style={{color: 'white', fontSize: 13}}
         nestedItems={
           this.renderSubjectTheme()
         }
@@ -89,7 +95,7 @@ class LeftBar extends React.Component {
           }, 500);
       }
       return __.map(data.classSubjectsByTeacher,(item,idx) =>(
-        <SubjectItem subject={item.subject} themes={item.theme}/>
+        <SubjectItem key={idx} subject={item.subject} themes={item.theme} userId={this.props.users.userId}/>
       ))
     }
   }
@@ -125,7 +131,7 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
-           nestedListStyle={{color: 'red', backgroundColor: 'red'}}
+           nestedListStyle={{marginLeft: 25}}
            nestedItems={
             this.renderClassSubjectTeacher()
            }
