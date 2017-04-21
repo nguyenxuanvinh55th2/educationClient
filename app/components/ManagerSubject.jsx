@@ -39,13 +39,36 @@ export default class ManagerSubject extends React.Component {
               </Tab>
           </TabList>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
-            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-              
+            <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
+              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10}}>
+                <p>Chu de 1</p>
+              </div>
+              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10, marginTop: 10}}>
+                <p>Chu de 2</p>
+              </div>
+              <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
+                 onClick={() => this.handleAddTheme()}>
+                <span className="glyphicon glyphicon-plus"></span> Thêm chủ đề
+              </button>
+            </div>
+            <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
+              <div style={{backgroundColor: 'white', padding: 20}}>
+                <input type="text" placeholder="Tên chủ đề" style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}}/>
+                <div style={{border: '1px solid #f0f0f0', height: 100, padding: 10, marginTop: 15}}>
+                  <textarea rows="2" placeholder="Thêm nội dung chủ đề" style={{border: 'none', height: 55, width: '100%'}}/>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
+                  </div>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+                  <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}}>Mở rộng</button>
+                </div>
+              </div>
             </div>
           </TabPanel>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-              <div style={{border: '1px solid black', height: 150, borderRadius: 10, padding: 10}}>
+              <div style={{border: '1px solid #f0f0f0', height: 150, borderRadius: 10, padding: 10}}>
                 <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{border: 'none', height: 100, width: '100%'}}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                   <div>
