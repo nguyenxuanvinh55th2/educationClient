@@ -10,11 +10,80 @@ import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 
-export default class ManagerSubject extends React.Component {
+class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      subjectId: props.params.subjectId,
+      dataForum: {
+        isForum: true,
+        content: '',
+        images: []
+      },
+      dataTheme: {
+        isTheme: true,
+        images: []
+      },
+      dataAssign: {
+        isAssignment: true,
+        images: []
+      }
+    }
+  }
+  handleAddForum(){
+    let info = this.state.dataForum;
+    info.subjectId = this.state.subjectId;
+    this.props.insertForum(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+      console.log(data);
+    })
+  }
+  handleAddImage(files,type){
+    let that = this;
+    let dataState = this.state;
+    __.forEach(files,file => {
+      if(file.size <= 1024*1000*2){
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            if(e.target.result){
+              if(type === 'isForum'){
+                dataState.dataForum.images.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataForum: dataState.dataForum});
+              }
+              else if (type === 'isAssignment') {
+                dataState.dataAssign.images.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataAssign: dataState.dataAssign});
+              }
+              else if (type === 'isTheme') {
+                dataState.dataTheme.images.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataTheme: dataState.dataTheme});
+              }
+            }
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+      }
+      else {
+        alert('File nhỏ hơn 2MB!');
+      }
+    });
   }
   render(){
+    // console.log(this.props.dataSet);
+    console.log(this.state.dataForum);
     return (
       <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <Tabs className="secondary" >
@@ -39,6 +108,35 @@ export default class ManagerSubject extends React.Component {
               </Tab>
           </TabList>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
+              <div style={{border: '1px solid #f0f0f0', height: 150, borderRadius: 10, padding: 10}}>
+                <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{border: 'none', height: 100, width: '100%'}} value={this.state.dataForum.content} onChange={({target}) => {
+                  let dataForum = this.state.dataForum;
+                  dataForum.content = target.value;
+                  this.setState({dataForum: dataForum})
+                }}/>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <div>
+                    <button type="button" className="btn" style={{width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getImageForum").click()}>+ Ảnh</button>
+                    <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getVideoForum").click()}>+ Video</button>
+                    <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileForum").click()}>+ Tệp</button>
+                    <input type="file" id="getImageForum" accept="image/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddImage(target.files,"isForum")} />
+                    <input type="file" id="getVideoForum" accept="video/*,audio/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddVideo(target.files,"isForum")} />
+                    <input type="file" id="getFileForum" accept="image/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddImage(target.files,"isForum")} />
+                  </div>
+                  <div>
+                    <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.dataForum.content} onClick={this.handleAddForum.bind(this)}>Đăng</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
+              <div style={{backgroundColor: 'white'}}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+            </div>
+          </TabPanel>
+          <TabPanel style={{backgroundColor: '#f0f0f0'}}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
               <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10}}>
                 <p>Chu de 1</p>
@@ -61,33 +159,41 @@ export default class ManagerSubject extends React.Component {
                   </div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
-                  <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}}>Mở rộng</button>
+                  <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}}>Thêm chủ đề</button>
                 </div>
               </div>
             </div>
           </TabPanel>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
-            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-              <div style={{border: '1px solid #f0f0f0', height: 150, borderRadius: 10, padding: 10}}>
-                <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{border: 'none', height: 100, width: '100%'}}/>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <div>
-                    <button type="button" className="btn" style={{width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}}>+ Ảnh</button>
-                    <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}}>+ Video</button>
-                    <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}}>+ Tệp</button>
+            <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
+              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10}}>
+                <p>Bài tập chủ đề 1</p>
+              </div>
+              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10, marginTop: 10}}>
+                <p>Bài tập chủ đề 1</p>
+              </div>
+              <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
+                 onClick={() => this.handleAddTheme()}>
+                <span className="glyphicon glyphicon-plus"></span> Tải file bài tập
+              </button>
+            </div>
+            <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
+              <div style={{backgroundColor: 'white', padding: 20}}>
+                <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Tạo mới bài tập tự luận</button>
+                <input type="text" placeholder="Tên bài tập" style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}}/>
+                <div style={{border: '1px solid #f0f0f0', height: 100, padding: 10, marginTop: 15}}>
+                  <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 55, width: '100%'}}/>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                   </div>
-                  <div>
-                    <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}}>Đăng</button>
-                  </div>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+                  <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}}>Thêm bài tập</button>
                 </div>
               </div>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
-              <div style={{backgroundColor: 'white'}}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </div>
-            </div>
           </TabPanel>
+
           <TabPanel>
             3
           </TabPanel>
@@ -97,11 +203,43 @@ export default class ManagerSubject extends React.Component {
           <TabPanel>
             4
           </TabPanel>
-          <TabPanel>
-            5
-          </TabPanel>
         </Tabs>
       </div>
     )
   }
 }
+const INSERT_FORUM = gql`
+ mutation insertForum($token:String!,$info:String){
+   insertForum(token:$token,info:$info)
+ }
+`;
+const MyQuery = gql`
+    query getData($subjectId: String!){
+      getForumBySubject(subjectId: $subjectId) {
+         _id
+         memberReply {
+          _id
+          owner {
+            _id name  image email
+          }
+          files {
+            _id filename  filetype  link
+          }
+          content
+        }
+       }
+    }`
+export default compose(
+  graphql(MyQuery, {
+      options: (ownProps) => ({
+        variables: {subjectId: ownProps.params.subjectId},
+        forceFetch: true
+      }),
+      name: 'dataSet',
+  }),
+  graphql(INSERT_FORUM,{
+       props:({mutate})=>({
+       insertForum : (token,info) =>mutate({variables:{token,info}})
+     })
+   })
+)(ManagerSubject)
