@@ -18,26 +18,33 @@ class ManagerSubject extends React.Component {
       dataForum: {
         isForum: true,
         content: '',
-        images: []
+        files: [],
       },
       dataTheme: {
         isTheme: true,
-        images: []
+        files: []
       },
       dataAssign: {
         isAssignment: true,
-        images: []
+        files: []
       }
     }
   }
   handleAddForum(){
-    let info = this.state.dataForum;
-    info.subjectId = this.state.subjectId;
+    let info = {
+      data: {
+        isForum: true,
+        content: this.state.dataForum.content,
+        subjectId: this.state.subjectId
+      },
+      files: this.state.dataForum.files
+    }
+    console.log(info);
     this.props.insertForum(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
       console.log(data);
     })
   }
-  handleAddImage(files,type){
+  handleAddMedia(files,filetype,type){
     let that = this;
     let dataState = this.state;
     __.forEach(files,file => {
@@ -47,7 +54,7 @@ class ManagerSubject extends React.Component {
         reader.onload = function (e) {
             if(e.target.result){
               if(type === 'isForum'){
-                dataState.dataForum.images.push({
+                dataState.dataForum.files.push({
                   file:e.target.result,
                   fileName: file.name,
                   type: file.type
@@ -55,7 +62,7 @@ class ManagerSubject extends React.Component {
                 that.setState({dataForum: dataState.dataForum});
               }
               else if (type === 'isAssignment') {
-                dataState.dataAssign.images.push({
+                dataState.dataAssign.files.push({
                   file:e.target.result,
                   fileName: file.name,
                   type: file.type
@@ -63,7 +70,77 @@ class ManagerSubject extends React.Component {
                 that.setState({dataAssign: dataState.dataAssign});
               }
               else if (type === 'isTheme') {
-                dataState.dataTheme.images.push({
+                dataState.dataTheme.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataTheme: dataState.dataTheme});
+              }
+            }
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+      }
+      else if (file.size <= 1024*1000*20 && filetype == 'file') {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            if(e.target.result){
+              if(type === 'isForum'){
+                dataState.dataForum.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataForum: dataState.dataForum});
+              }
+              else if (type === 'isAssignment') {
+                dataState.dataAssign.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataAssign: dataState.dataAssign});
+              }
+              else if (type === 'isTheme') {
+                dataState.dataTheme.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataTheme: dataState.dataTheme});
+              }
+            }
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+      }
+      else if (filetype == 'audioVideo' && file.size <= 1024*1000*50) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            if(e.target.result){
+              if(type === 'isForum'){
+                dataState.dataForum.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataForum: dataState.dataForum});
+              }
+              else if (type === 'isAssignment') {
+                dataState.dataAssign.files.push({
+                  file:e.target.result,
+                  fileName: file.name,
+                  type: file.type
+                })
+                that.setState({dataAssign: dataState.dataAssign});
+              }
+              else if (type === 'isTheme') {
+                dataState.dataTheme.files.push({
                   file:e.target.result,
                   fileName: file.name,
                   type: file.type
@@ -77,13 +154,12 @@ class ManagerSubject extends React.Component {
         };
       }
       else {
-        alert('File nhỏ hơn 2MB!');
+        alert('File nhỏ hơn!');
       }
     });
   }
   render(){
     // console.log(this.props.dataSet);
-    console.log(this.state.dataForum);
     return (
       <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <Tabs className="secondary" >
@@ -120,9 +196,9 @@ class ManagerSubject extends React.Component {
                     <button type="button" className="btn" style={{width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getImageForum").click()}>+ Ảnh</button>
                     <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getVideoForum").click()}>+ Video</button>
                     <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileForum").click()}>+ Tệp</button>
-                    <input type="file" id="getImageForum" accept="image/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddImage(target.files,"isForum")} />
-                    <input type="file" id="getVideoForum" accept="video/*,audio/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddVideo(target.files,"isForum")} />
-                    <input type="file" id="getFileForum" accept="image/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddImage(target.files,"isForum")} />
+                    <input type="file" id="getImageForum" accept="image/*" multiple={true} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"image","isForum")} />
+                    <input type="file" id="getVideoForum" accept="video/*,audio/*" multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"audioVideo","isForum")} />
+                    <input type="file" id="getFileForum"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isForum")} />
                   </div>
                   <div>
                     <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.dataForum.content} onClick={this.handleAddForum.bind(this)}>Đăng</button>
