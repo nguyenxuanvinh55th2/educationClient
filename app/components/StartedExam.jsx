@@ -9,7 +9,7 @@ import  { UserExams } from 'educationServer/userExam'
 
 class QuestionContent extends React.Component {
   render() {
-    let { question, data, examId } = this.props;
+    let { question, data, examId, getCurrentQuestion, questionSetId } = this.props;
     let userResults = {};
     if(data.playerResultByUser && data.playerResultByUser.length > 0) {
       __.forEach(data.playerResultByUser, item => {
@@ -20,7 +20,7 @@ class QuestionContent extends React.Component {
       });
     }
     return (
-      <div>
+      <div style={{backgroundColor: '#F1F1F1'}}>
         <div>
           <h3>{ question.question }</h3>
         </div>
@@ -30,13 +30,14 @@ class QuestionContent extends React.Component {
               <label key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 <input checked={userResults[question._id] && (userResults[question._id].answer.indexOf(item) > -1 && 'checked')} type="radio" name="optradio" onChange={({target}) => {
                     let token = localStorage.getItem('Meteor.loginToken');
-                    this.props.answerQuestion(token, examId, question._id, item).then(() => {
+                    this.props.answerQuestion(token, examId, questionSetId, question._id, item).then(() => {
+                      getCurrentQuestion(question);
                       this.props.data.refetch()
                     }).catch((err) => {
 
                     });
                   }}/>
-                <button className="btn btn-default" style={{width: 300, marginRight: 50, marginBottom: 10}}>{ item }</button>
+                <div style={{width: 300, marginRight: 50, marginBottom: 10, marginLeft: 10, height: 50, backgroundColor: 'white', padding: 15, fontWeight: 'lighter'}}>{ item }</div>
               </label>
             ))
           }
@@ -60,8 +61,8 @@ const PLAYER_RESULT_BY_USER = gql`
 }`
 
 const ANSWER_QUESTION = gql`
-    mutation answerQuestion ($token: String!, $examId: String!, $questionId: String!, $answer: String!) {
-      answerQuestion(token: $token, examId: $examId, questionId: $questionId, answer: $answer)
+    mutation answerQuestion ($token: String!, $examId: String!, $questionSetId: String!, $questionId: String!, $answer: String!) {
+      answerQuestion(token: $token, examId: $examId, questionSetId: $questionSetId, questionId: $questionId, answer: $answer)
 }`
 
 const QuestionContentWithData = compose (
@@ -73,7 +74,7 @@ const QuestionContentWithData = compose (
     }),
     graphql(ANSWER_QUESTION, {
         props: ({mutate})=> ({
-          answerQuestion : (token, examId, questionId, answer) => mutate({variables: {token, examId, questionId, answer}})
+          answerQuestion : (token, examId, questionSetId, questionId, answer) => mutate({variables: {token, examId, questionSetId, questionId, answer}})
         })
     }),
 )(QuestionContent);
@@ -82,7 +83,7 @@ const QuestionContentWithData = compose (
 class StartedExam extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {currentQuestion: null, userExams: null, startCountDown: false};
+    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null};
   }
 
   componentDidUpdate() {
@@ -96,8 +97,12 @@ class StartedExam extends React.Component {
         let token = localStorage.getItem('Meteor.loginToken');
         if(data.examById.status === 99) {
           let interval = setInterval(() => {
-            countDown -= 1000
-            console.log('time ', countDown.toString());
+            countDown -= 1000;
+            let time = countDown / 1000;
+            let hour = Math.floor(time / 3600);
+            let minute = Math.floor((time - hour * 3600) / 60);
+            let second = Math.floor(time - hour * 3600 - minute * 60);
+            this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()})
           }, 1000);
           setTimeout(() => {
             finishExamination(token, data.examById._id).then(() => {
@@ -113,11 +118,22 @@ class StartedExam extends React.Component {
     }
   }
 
+  getCurrentQuestion(question) {
+    let { questionSet } = this.state;
+    let currentQuestion = questionSet[question.index];
+    this.setState({currentQuestion});
+  }
+
   componentWillReceiveProps(nextProps) {
     let { data }= nextProps;
     if(data.examById)  {
       let currentQuestion = data.examById.questionSet.questions[0];
       this.setState({currentQuestion});
+      let questionSet = __.cloneDeep(data.examById.questionSet.questions);
+      __.forEach(questionSet, (item, idx) => {
+        item['index'] = idx + 1;
+      });
+      this.setState({questionSet});
     }
   }
 
@@ -131,78 +147,93 @@ class StartedExam extends React.Component {
 
   renderPlayerList(playerList) {
     return playerList.map((item, idx) => (
-      <tr key={idx}>
-        <td rowspan="2">
-          { idx + 1 }
-        </td>
-        <td rowspan="2">
-          <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
-        </td>
-        <td>
-          <p>{item.player.user.name}</p>
-        </td>
-        <td>
-          <p>{item.player.user.email}</p>
-        </td>
-      </tr>
-      <tr>
-        <td rowspan="2">
-          { idx + 1 }
-        </td>
-        <td rowspan="2">
-          <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
-        </td>
-        <td>
-          <div className="progress" style={{width: 200, height: 15, marginTop: 3}}>
-            <div className="progress-bar" role="progressbar" aria-valuenow={item.process.toString()}
-             aria-valuemin="0" aria-valuemax="100" style={{backgroundColor: '#fcb826', width: item.process.toString() + '%'}}>
+      <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
+        <tr style={{height: 15, borderTop: '1px solid gray'}}>
+        </tr>
+        <tr>
+          <td rowSpan="2">
+            { idx + 1 }
+          </td>
+          <td rowSpan="2">
+            <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
+          </td>
+          <td>
+            <p>{item.player.user.name}</p>
+          </td>
+          <td>
+            <p>{item.player.user.email}</p>
+          </td>
+          <td rowSpan="2">
+            <p>{item.totalScore}</p>
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="2">
+            <div className="progress" style={{width: '100%', height: 10, marginTop: 3}}>
+              <div className="progress-bar" role="progressbar" aria-valuenow={item.process.toString()}
+               aria-valuemin="0" aria-valuemax="100" style={{backgroundColor: '#68C0BC', width: item.process.toString() + '%'}}>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
+          </td>
+        </tr>
+        <tr style={{height: 15, borderBottom: '1px solid gray'}}>
+        </tr>
+      </tbody>
     ));
   }
 
   render() {
     let { data, params, users } = this.props;
-    let { currentQuestion } = this.state;
+    let { currentQuestion, questionSet, timeString } = this.state;
     if(data.loading) {
       return (
         <div className="loader"></div>
       )
     } else {
+        console.log('user exam ', data.examById.userExams);
         if(data.examById.createdBy._id === users.userId) {
           let questionCount = data.examById.questionSet.questions.length;
           let playerList = __.cloneDeep(data.examById.userExams);
           __.forEach(playerList, item => {
             let resultCount = item.results.length;
             item['process'] = ( resultCount / questionCount ) * 100;
-          })
+            let totalScore = 0;
+            __.forEach(item.results, item => totalScore += item.score);
+            item['totalScore'] = totalScore;
+          });
           return (
             <div style={{backgroundColor: 'white'}}>
               <div style={{textAlign: 'center', paddingBottom: 20}}>
                 <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
                 <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userCount } </font></p>
               </div>
-              <div className="col-sm-12" style={{padding: '0px 20%'}}>
-                <table style={{width: '100%'}}>
+              <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
+                <table>
                   <thead>
-                    <th>
+                    <th style={{width: 50, color: '#68C0BC', fontSize: 14}}>
                       STT
                     </th>
-                    <th>
+                    <th style={{width: 75, color: '#68C0BC', fontSize: 14}}>
                     </th>
-                    <th>
+                    <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
                       Tên người dùng
                     </th>
-                    <th>
+                    <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
                       Email
                     </th>
+                    <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                      Điểm
+                    </th>
                   </thead>
-                  <tbody>
-                    { this.renderPlayerList(playerList) }
-                  </tbody>
+                  { this.renderPlayerList(playerList) }
                 </table>
+              </div>
+              <div className="col-sm-12" style={{height: 120}}>
+              </div>
+              <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
+                <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
+                  { 'Thời gian còn lại: ' + timeString }
+                </button>
               </div>
             </div>
           )
@@ -212,15 +243,15 @@ class StartedExam extends React.Component {
                 <div className="col-sm-12">
                   <div className="col-sm-3" style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
                     {
-                      data.examById.questionSet.questions.map((item, idx) => (
+                      questionSet.map((item, idx) => (
                         <button key={idx} style={{borderRadius: '100%', width: 30, height: 30, margin: 10}} className={item._id === currentQuestion._id ? 'btn btn-primary' : 'btn btn-default'} onClick={() => {
                             this.setState({currentQuestion: item})
-                          }}>{(idx + 1).toString()}</button>
+                          }}>{item.index}</button>
                         ))
                       }
                     </div>
                     <div className="col-sm-9">
-                      <QuestionContentWithData question={currentQuestion} examId={params.id}/>
+                      <QuestionContentWithData question={currentQuestion} questionSetId={data.examById.questionSet._id} getCurrentQuestion={this.getCurrentQuestion.bind(this)} examId={params.id}/>
                     </div>
                   </div>
               </div>

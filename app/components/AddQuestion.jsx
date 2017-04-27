@@ -30,7 +30,7 @@ class AddQuestion extends React.Component {
   }
 
   addQuestionFromFile() {
-    let { questionList, title, description, isPublic, subjectId, questionFile } = this.state;
+    let { questionList, title, description, isPublic, subjectId, questionFile, score } = this.state;
     let {  getQuestionSetId, users } = this.props;
     let questionSet = {
       title,
@@ -49,10 +49,11 @@ class AddQuestion extends React.Component {
     for(let i = 0; i < array.length - 1; i++) {
       if(array[i].indexOf('Câu') > -1) {
         let question = {
+          _id: (Math.floor(Math.random()*99999) + 10000).toString(),
           question: array[i],
           answerSet: [],
           correctAnswer: [],
-          score: 0,
+          score,
           isPublic: false,
           subjectId: '',
         }
@@ -213,6 +214,7 @@ class AddQuestion extends React.Component {
   }
 
   addNewQuestion() {
+    let { score } = this.state;
     let questionList = this.state.questionList;
     let item = {
       _id: (Math.floor(Math.random()*99999) + 10000).toString(),
@@ -222,7 +224,7 @@ class AddQuestion extends React.Component {
         answer: '',
       }],
       correctAnswer: [],
-      score: 0,
+      score,
       isPublic: false
     };
     questionList.push(item);
@@ -263,7 +265,7 @@ class AddQuestion extends React.Component {
   }
 
   saveQuestion() {
-    let { questionList, title, description, isPublic, subjectId } = this.state;
+    let { questionList, title, description, isPublic, subjectId, score } = this.state;
     let {  getQuestionSetId, users, increaseStepIndex } = this.props;
     let questionSet = {
       title,
@@ -275,12 +277,17 @@ class AddQuestion extends React.Component {
     let questionSetString = [];
     questionSet = JSON.stringify(questionSet);
     __.forEach(questionList, item => {
+      if(!item.score || item.score === '' || item.score === '0') {
+        item.score = score;
+      } else {
+          item.score = parseInt(item.score);
+      }
       item.answerSet = item.answerSet.map(item => item.answer);
       item.correctAnswer = item.correctAnswer.map(item => item.answer);
       item.subjectId = subjectId;
       questionSetString.push(JSON.stringify(item));
     });
-    this.props.insertQuestionSet(users.userId, questionSet,  questionSetString).then(({data}) => {
+    this.props.insertQuestionSet(users.userId, questionSet, questionSetString).then(({data}) => {
       getQuestionSetId(data.insertQuestionSet);
       increaseStepIndex();
     }).catch((error) => {
@@ -290,7 +297,6 @@ class AddQuestion extends React.Component {
 
   render() {
     let { openDrawer, questionFile } = this.state;
-    console.log('openDrawer ', this.state.questionList);
     return (
       <div style={{width: '100%'}}>
         <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
@@ -314,7 +320,11 @@ class AddQuestion extends React.Component {
               <div style={{width: '100%'}} className={this.state.score ? 'form-group' : 'form-group has-error'}>
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Điểm số</label>
                   <div className="col-sm-9">
-                      <input style={{width: '100%', margin: 0}} type="number" className="form-control" value={this.state.score} onChange={({target}) => this.setState({score: target.value})}/>
+                      <input style={{width: '100%', margin: 0}} type="number" className="form-control" value={this.state.score} onChange={({target}) => {
+                          let questionList = this.state.questionList;
+                          questionList[0].score = target.value;
+                          this.setState({score: target.value, questionList});
+                        }}/>
                       <span className="help-block">{this.state.score ? null : 'điểm số là bắt buộc'}</span>
                   </div>
               </div>
