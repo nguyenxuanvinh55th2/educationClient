@@ -360,15 +360,16 @@ class QuesionBank extends React.Component {
     let { questionList, questionSet, questionType } = this.state;
     let questionReviewList = questionType === 'questionSet' ? questionSet.questions : questionList;
     return questionReviewList.map((item, idx) => (
-      <QuestionReviewItem key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType}/>
+      <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType}/>
     ))
   }
 
   saveQuestion() {
     let { questionType, subjectId, questionList, questionSet } = this.state;
-    let { getQuestionSetId } = this.props;
+    let { getQuestionSetId, increaseStepIndex } = this.props;
     if(questionType === 'questionSet') {
       getQuestionSetId(questionSet._id);
+      increaseStepIndex();
     } else {
         let questionSet = {
           title: 'câu hỏi từ ngân hàng',
@@ -392,6 +393,7 @@ class QuesionBank extends React.Component {
         console.log('token ', localStorage.getItem('Meteor.loginToken'));
         this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
           getQuestionSetId(data.insertQuestionSet);
+          increaseStepIndex();
         }).catch((error) => {
             console.log('there was an error sending the query', error);
         });

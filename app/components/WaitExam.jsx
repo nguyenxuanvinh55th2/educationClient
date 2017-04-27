@@ -2,11 +2,11 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 
-// import  { UserExams } from 'educationServer/userExam'
-// import  { Players } from 'educationServer/player'
-// import  { GroupPlayers } from 'educationServer/groupPlayer'
-// import  { PersonalPlayers } from 'educationServer/personalPlayer'
-// import  { Examinations } from 'educationServer/examination'
+import  { UserExams } from 'educationServer/userExam'
+import  { Players } from 'educationServer/player'
+import  { GroupPlayers } from 'educationServer/groupPlayer'
+import  { PersonalPlayers } from 'educationServer/personalPlayer'
+import  { Examinations } from 'educationServer/examination'
 
 
 import { browserHistory } from 'react-router';
@@ -113,6 +113,15 @@ class WaitExam extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    let { params } = this.props;
+    if(nextProps.examination && nextProps.examination.status === 99) {
+      browserHistory.push('/startedExam/' + params.id);
+      return false
+    }
+    return true;
+  }
+
   componentDidMount() {
       window.addEventListener('resize', this.handleResize.bind(this));
       this.setState({refetch: false});
@@ -135,7 +144,7 @@ class WaitExam extends React.Component {
   }
 
   render(){
-    let { users, examination } = this.props;
+    let { users, examination, startExamination, params } = this.props;
     let { players } = this.state;
     // if (!players || players.length === 0) {
     //     return (
@@ -207,7 +216,11 @@ class WaitExam extends React.Component {
                   </button>
                 </div>
                 <div className="col-sm-6" style={{paddingLeft: 5}}>
-                  <button className="btn btn-primary" style={{width: '100%'}}>
+                  <button className="btn btn-primary" style={{width: '100%'}} onClick={() => {
+                      let token= localStorage.getItem('Meteor.loginToken');
+                      let _id = params.id;
+                      startExamination(token, _id);
+                    }}>
                     Bắt đầu
                   </button>
                 </div>
@@ -238,6 +251,19 @@ class WaitExam extends React.Component {
   }
 }
 
+const START_EXAMINATION = gql`
+    mutation startExamination ($token: String!, $_id: String!) {
+      startExamination(token: $token, _id: $_id)
+}`
+
+const WaitExamWithMutaion = compose (
+    graphql(START_EXAMINATION, {
+        props: ({mutate})=> ({
+          startExamination : (token, _id) => mutate({variables: {token, _id}})
+        })
+    }),
+)(WaitExam);
+
 export default createContainer((ownProps) => {
   Meteor.subscribe("userExams");
   Meteor.subscribe("players");
@@ -259,4 +285,4 @@ export default createContainer((ownProps) => {
     userIds,
     examination
   };
-}, WaitExam);
+}, WaitExamWithMutaion);

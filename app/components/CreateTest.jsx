@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Slider from 'material-ui/Slider';
-import { Step, Stepper, StepButton, StepContent } from 'material-ui/Stepper';
+import { Step, Stepper, StepButton, StepContent, StepLabel } from 'material-ui/Stepper';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -52,12 +52,17 @@ class CreateTest extends  React.Component {
     }
   }
 
+  increaseStepIndex() {
+    console.log("message increaseStepIndex");
+    this.setState({ stepIndex: 2 });
+  }
+
   renderStepActions(stepIndex) {
     let { time, userCount, getQuestionFrom, isTest, isClassStyle, openTest } = this.state;
     switch (stepIndex) {
       case 0:
         return (
-          <div style={{width: '60%'}}>
+          <div style={{width: '100%'}}>
               <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                 <div style={{width: '100%', paddingTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                   <div style={{width: '70%'}}>
@@ -84,13 +89,13 @@ class CreateTest extends  React.Component {
                     </div>
                   </div>
                   <div style={{width: '30%'}}>
-                      <button type="button" style={{fontSize: 14}} className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
-                          this.setState({getQuestionFrom: 'questionBank'})
+                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
+                          this.setState({getQuestionFrom: 'questionBank', stepIndex: 1})
                         }}>Ngân hàng câu hỏi</button>
                       <div style={{height: 10}}>
                       </div>
-                      <button type="button" style={{fontSize: 14}} className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
-                          this.setState({getQuestionFrom: 'questionCreater'})
+                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
+                          this.setState({getQuestionFrom: 'questionCreater', stepIndex: 1})
                         }}>Câu hỏi tự tạo</button>
                   </div>
                 </div>
@@ -100,16 +105,16 @@ class CreateTest extends  React.Component {
       case 1:
         if(getQuestionFrom === 'questionCreater') {
           return (
-            <AddQuestion { ...this.props } getQuestionSetId={this.getQuestionSetId.bind(this)}/>
+            <AddQuestion { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
           )
         } else {
           return (
-            <QuestionBank { ...this.props } getQuestionSetId={this.getQuestionSetId.bind(this)}/>
+            <QuestionBank { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
           )
         }
       case 2:
         return (
-          <div style={{width: '60%'}}>
+          <div style={{width: '100%'}}>
               <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                 <div style={{width: '100%', paddingTop: 15}}>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Tổng thời gian cho kì thi</label>
@@ -226,33 +231,35 @@ class CreateTest extends  React.Component {
     let { users } = this.props;
     return (
       <div style={{width: window.innerWidth - (2 * 256), marginLeft: 256}}>
-        <h3 style={{width: '60%', textAlign: 'center'}}>TẠO KÌ THI</h3>
-        <Stepper orientation="vertical" linear={false} activeStep={stepIndex}>
-          <Step>
-            <StepButton onClick={() => this.setState({stepIndex: 0})}>
-              TẠO KÌ THI
-            </StepButton>
-            <StepContent style={{paddingLeft: 0}}>
-              {this.renderStepActions(0)}
-            </StepContent>
-          </Step>
-          <Step>
-            <StepButton onClick={() => this.setState({stepIndex: 1})}>
-              THÊM CÂU HỔI
-            </StepButton>
-            <StepContent>
-              {this.renderStepActions(1)}
-            </StepContent>
-          </Step>
-          <Step>
-            <StepButton onClick={() => this.setState({stepIndex: 2})}>
-              HOÀN TẤT
-            </StepButton>
-            <StepContent style={{paddingLeft: 0}}>
-              {this.renderStepActions(2)}
-            </StepContent>
-          </Step>
-        </Stepper>
+        <div style={{width: '60%', backgroundColor: 'white', paddingTop: 10}}>
+          <h3 style={{width: '100%', textAlign: 'center', color: '#00BCD4', marginBottom: 0}}>TẠO KÌ THI</h3>
+          <Stepper orientation="vertical" linear={false} activeStep={stepIndex}>
+            <Step>
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
+                Tạo kì thi
+              </StepLabel>
+              <StepContent style={{paddingLeft: 0}}>
+                {this.renderStepActions(0)}
+              </StepContent>
+            </Step>
+            <Step>
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
+                Thêm câu hỏi
+              </StepLabel>
+              <StepContent>
+                {this.renderStepActions(1)}
+              </StepContent>
+            </Step>
+            <Step>
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
+                Hoàn tất
+              </StepLabel>
+              <StepContent style={{paddingLeft: 0}}>
+                {this.renderStepActions(2)}
+              </StepContent>
+            </Step>
+          </Stepper>
+        </div>
       </div>
     )
   }

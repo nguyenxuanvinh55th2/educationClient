@@ -20,14 +20,16 @@ export default class QuestionReviewItem extends React.Component {
   }
 
   renderAnswerSet(question) {
+    let { getReviewFrom } = this.props;
     return question.answerSet.map((item, idx) => (
-      <AnswerReviewItem key={item + idx} answer={item}/>
+      <AnswerReviewItem key={item + idx} answer={getReviewFrom === 'questionBank' ? item : item.answer}/>
     ));
   }
 
   renderCorrectAnswer(question) {
+    let { getReviewFrom } = this.props;
     return question.correctAnswer.map((item, idx) => (
-      <AnswerReviewItem key={item + idx} answer={item}/>
+      <AnswerReviewItem key={item + idx} answer={getReviewFrom === 'questionBank' ? item : item.answer}/>
     ));
   }
 
@@ -42,9 +44,9 @@ export default class QuestionReviewItem extends React.Component {
     return (
       <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <button className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10}} className="btn btn-default" onClick={this.showAnswer.bind(this)}>
+          <div className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}
-          </button>
+          </div>
           {
             questionType !== 'publicQuestion' ?
             <Checkbox
