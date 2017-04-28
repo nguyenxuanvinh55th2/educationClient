@@ -118,16 +118,16 @@ class StartedExam extends React.Component {
           let minute = Math.floor((time - hour * 3600) / 60);
           let second = Math.floor(time - hour * 3600 - minute * 60);
           console.log("countDown ", countDown);
-          this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()})
+          this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()});
+          if(countDown <= 0 && users.userId === data.examById.createdBy._id) {
+            finishExamination(token, data.examById._id).then(() => {
+              console.log("ki thi da ket thuc");
+              clearInterval(interval);
+            }).catch((err) => {
+              console.log("error ", err);
+            });
+          }
         }, 1000);
-        setTimeout(() => {
-          finishExamination(token, data.examById._id).then(() => {
-            console.log("ki thi da ket thuc");
-            clearInterval(interval);
-          }).catch((err) => {
-            console.log("error ", err);
-          });
-        }, time);
       }
       this.setState({startCountDown: true});
     }
@@ -412,7 +412,7 @@ const StartedExamWithData = compose (
     }),
     graphql(SCREEN_SHOT, {
         props: ({mutate})=> ({
-            finishExamination : (token, link) => mutate({variables:{token, link}})
+            screenShot : (token, link) => mutate({variables:{token, link}})
         })
     }),
 )(StartedExam);
