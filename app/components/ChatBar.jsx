@@ -74,15 +74,15 @@ class ChatBar extends React.Component {
   render() {
     return (
       <div className="chatbar">
-        <div className="chatbar-user">
+        <div className="chatbar-user" style={{paddingTop: 50}}>
           <ul className="userList">
             { this.renderChat() }
           </ul>
         </div>
         <div className="chatbar-search">
-          <form className="form-horizontal">
-              <div className="form-group">
-                <div className="col-sm-10">
+          <form>
+              <div className="form-group" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                <div className="col-sm-10" style={{paddingRight: 0}}>
                   <input type="text" id="modalInput" className="form-control"onChange={e => {
                       if(e !== null) {
                         this.setState({sItem: this.renderSearchString(e.target.value)})

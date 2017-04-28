@@ -47,6 +47,7 @@ export default class Profile extends React.Component {
       window.removeEventListener('resize', this.mediaQueryChanged);
   }
   render() {
+    let { users } = this.props;
     return(
       <div style={{flexDirection: 'column'}}>
         <Notification/>
@@ -57,7 +58,9 @@ export default class Profile extends React.Component {
             <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}} onClick={() => this.setState({showModal: true})}>Thi</button>
           </div>
           <div style={{height: 48, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
-            <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}}>Tạo kì thi</button>
+            <button type="button" className="btn" style={{width: 90, backgroundColor: '#EEE9E9', border: '1px solid #35bcbf'}} onClick={() => {
+                browserHistory.push('/profile/' + users.userId + '/createTest')
+              }}>Tạo kì thi</button>
           </div>
           <IconButton onClick = {e => {
               let note = document.getElementById('notification');
