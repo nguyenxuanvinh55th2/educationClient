@@ -36,7 +36,6 @@ import QueryUserPermission from './QueryUserPermission.jsx';
 import WaitExam from './components/WaitExam.jsx';
 import StartedExam from './components/StartedExam.jsx';
 import ManagerSubject from './components/ManagerSubject.jsx'
-
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -49,7 +48,7 @@ export class WrapMain extends React.Component{
     }
     render(){
         return (
-            <div>
+            <div style={{flexDirection: 'column', width: '100%', height:'100%'}}>
                 <QueryUserPermission {...this.props} token={this.token} />
                 {React.cloneElement(this.props.children, this.props)}
             </div>

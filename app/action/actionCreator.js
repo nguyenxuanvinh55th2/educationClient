@@ -15,6 +15,12 @@ export function subjectClassMutation(detail){
         detail,
     }
 }
+export function addNotificationMute(detail){
+    return {
+        type: 'ADD_NOTIFICATION',
+        detail
+    }
+}
 
 //action xử lý việc tìm kiếm của user
 //---------------------------------------------------------------------------------//

@@ -6,7 +6,11 @@ import {routerReducer, syncHistoryWithStore} from 'react-router-redux'
 import { browserHistory} from 'react-router'
 import { socketEndpoint } from './config';
 const defaultState = {
-  users: {}
+  users: {},
+  notification: {
+    fetchData: false,
+    level: '', message: ''
+  }
 }
 
 const store = createStore(

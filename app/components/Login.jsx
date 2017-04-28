@@ -18,6 +18,7 @@ class Login extends Component {
     }
   }
   handleLogin(){
+    this.props.addNotificationMute({fetchData: true, message: 'localStorage', level: 'success'})
     let { loginWithPassword } = this.props;
     let that = this;
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
