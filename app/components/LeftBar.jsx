@@ -45,7 +45,7 @@ class SubjectItem extends React.Component {
       <ListItem
         primaryText={
           <div>
-            <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.userId + '/' + this.props.subject._id)}>{this.props.subject.name}</a>
+            <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.userId + '/' + this.props._id)}>{this.props.subject.name}</a>
           </div>
         }
         initiallyOpen={false}
@@ -95,7 +95,7 @@ class LeftBar extends React.Component {
           }, 500);
       }
       return __.map(data.classSubjectsByTeacher,(item,idx) =>(
-        <SubjectItem key={idx} subject={item.subject} themes={item.theme} userId={this.props.users.userId}/>
+        <SubjectItem key={idx} subject={item.subject} _id={item._id} themes={item.theme} userId={this.props.users.userId}/>
       ))
     }
   }
@@ -204,7 +204,7 @@ class LeftBar extends React.Component {
            style={{color: 'white', fontSize: 13}}
            nestedItems={this.renderExamination()}
          />
-         <ListItem
+         {/* <ListItem
            primaryText="Thời gian biểu"
            leftIcon={<Note color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
@@ -212,8 +212,8 @@ class LeftBar extends React.Component {
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
            ]}
-         />
-         <ListItem
+         /> */}
+         {/* <ListItem
            primaryText="Hướng dẫn"
            leftIcon={<Public color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
@@ -221,7 +221,7 @@ class LeftBar extends React.Component {
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
            ]}
-         />
+         /> */}
          <ListItem
            primaryText="Cài đặt"
            leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
