@@ -24,40 +24,7 @@ import Dialog from 'material-ui/Dialog';
 
 import { createContainer } from 'react-meteor-data';
 
-class PlayerImage extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { showModal: false };
-    }
-
-    render() {
-      let { checkOutImage } = this.props.data;
-      return (
-        <div style={{width: 50, height: 50}}>
-          <img style={{height: 50, width: 50, maxWidth: '100%', maxHeight: '100%'}} src={checkOutImage} onClick={() => {
-              this.setState({showModal: true});
-            }}/>
-          <Dialog
-            modal={true}
-            open={this.state.showModal}
-            contentStyle={{height: 300, width: 245}}
-          >
-            <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
-                <div className="modal-content">
-                  <div className="modal-body" style={{overflowY: 'auto', overflowX: 'hidden'}}>
-                    <div>
-                      <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
-                    </div>
-                      <img style={{height: 200, width: 200, maxWidth: '100%', maxHeight: '100%'}} src={checkOutImage}/>
-                  </div>
-                </div>
-            </div>
-          </Dialog>
-        </div>
-      )
-    }
-}
-
+import PlayerImage from './PlayerImage.jsx';
 
 class WaitExam extends React.Component {
   constructor(props){
@@ -143,113 +110,96 @@ class WaitExam extends React.Component {
     this.setState({playerImage, showModal: true})
   }
 
+  renderPlayerList(playerList) {
+    return playerList.map((item, idx) => (
+      <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
+        <tr>
+          <td>
+            { idx + 1 }
+          </td>
+          <td>
+            <PlayerImage checkOutImage = {item.checkOutImage}/>
+          </td>
+          <td>
+            <p>{item.profileObj ? item.profileObj.name : item.name ? item.name : item.username}</p>
+          </td>
+          <td>
+            <p>{item.profileObj ? item.profileObj.email : item.email ? item.email : item.emails[0].address}</p>
+          </td>
+        </tr>
+      </tbody>
+    ));
+  }
+
   render(){
-    let { users, examination, startExamination, params } = this.props;
+    let { users, examination, startExamination, params, data } = this.props;
     let { players } = this.state;
-    // if (!players || players.length === 0) {
-    //     return (
-    //         <div className="spinner spinner-lg"></div>
-    //     );
-    // } else {
-        let index = 1;
-        __.forEach(players, item => {
-            item['index'] = index;
-            index ++;
-        });
-        let columnDefs= [
-            {
-                headerName: 'STT', field: "index", width: 75, editable: (params) => {
-                    if (params.node.data.gridType == 'footer') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },  cellStyle: function(params) {
-                        if (params.node.data.gridType == 'footer') {
-                            //mark police cells as red
-                            return {fontWeight: 'bold'};
-                        } else {
-                            return null;
-                        }
-                    }, suppressMenu: true, required: true
-            },
-            {
-                cellRendererFramework: PlayerImage, headerName: "hình ảnh", field: "checkOutImage", cellClass: 'agaction',
-                minWidth: 50, width: 50, maxWidth: 50, editable: false, suppressMenu: true
-            },
-            {
-                headerName: 'Tên thí sinh', field: "name", width: this.state.width, editable: (params) => {
-                    if (params.node.data.gridType == 'footer') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }, suppressMenu: true, required: true
-            },
-            {
-                headerName: 'địa chỉ email', field: "email", width: this.state.width, editable: (params) => {
-                    if (params.node.data.gridType == 'footer') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }, suppressMenu: true, required: false
-            },
-            {
-                headerName: 'trạng thái', field: "status", width: this.state.width, editable: (params) => {
-                    if (params.node.data.gridType == 'footer') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }, suppressMenu: true, required: false
-            },
-        ];
+    console.log('players ', players);
+    if (!players || !data.examById) {
         return (
-          <div style={{flexDirection: 'column'}}>
-            {
-              examination && examination.createdById === users.userId ?
-              <div style={{width: '100%', paddingRight: 10, paddingLeft: 10, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                <div className="col-sm-6" style={{paddingRight: 5}}>
-                  <button className="btn btn-primary" style={{width: '100%'}}>
-                    Xem điểm
-                  </button>
-                </div>
-                <div className="col-sm-6" style={{paddingLeft: 5}}>
-                  <button className="btn btn-primary" style={{width: '100%'}} onClick={() => {
-                      let token= localStorage.getItem('Meteor.loginToken');
-                      let _id = params.id;
-                      startExamination(token, _id);
-                    }}>
-                    Bắt đầu
-                  </button>
-                </div>
-              </div> : null
-            }
-            <div style={{height: this.state.height-275}} className="ag-fresh">
-                <AgGridReact
-                    gridOptions={this.gridOptions}
-                    columnDefs={columnDefs}
-                    rowData={players}
-                    enableColResize="true"
-                    enableSorting="true"
-                    enableFilter="true"
-                />
+            <div className="spinner spinner-lg"></div>
+        );
+    } else {
+        return (
+          <div style={{backgroundColor: 'white'}}>
+            <div style={{textAlign: 'center', paddingBottom: 20}}>
+              <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+              <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
             </div>
-            <div style={{height: 45}} className="ag-fresh">
-                <AgGridReact
-                    rowClass="grid-bottom"
-                    gridOptions={this.gridOptionFooter}
-                    columnDefs={columnDefs}
-                    rowData={this.renderFooterData(players)}
-                    enableColResize="true"
-                />
+            <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
+              <table>
+                <thead>
+                  <th style={{width: 50, color: '#68C0BC', fontSize: 14}}>
+                    STT
+                  </th>
+                  <th style={{width: 75, color: '#68C0BC', fontSize: 14}}>
+                  </th>
+                  <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                    Tên người dùng
+                  </th>
+                  <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                    Email
+                  </th>
+                </thead>
+                { this.renderPlayerList(players) }
+              </table>
+            </div>
+            <div className="col-sm-12" style={{height: 120}}>
+            </div>
+            <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
+              {
+                users.userId === data.examById.createdBy._id ?
+                <button className="btn btn-primary" style={{width: '100%'}} onClick={() => {
+                    let token= localStorage.getItem('Meteor.loginToken');
+                    let _id = params.id;
+                    startExamination(token, _id);
+                  }}>
+                  Bắt đầu
+                </button> : null
+              }
             </div>
           </div>
-      )
-    //}
+        )
+    }
   }
 }
+
+const QUESTION_BY_EXAM = gql`
+  query examById($examId: String!) {
+    examById(_id: $examId) {
+      _id
+      code
+      name
+      description
+      createdBy {
+        _id
+        name
+      }
+      userExams {
+        _id
+      }
+    }
+  }`
 
 const START_EXAMINATION = gql`
     mutation startExamination ($token: String!, $_id: String!) {
@@ -257,6 +207,12 @@ const START_EXAMINATION = gql`
 }`
 
 const WaitExamWithMutaion = compose (
+    graphql(QUESTION_BY_EXAM, {
+        options: (owProps)=> ({
+            variables: {examId: owProps.params.id},
+            forceFetch: true
+        })
+    }),
     graphql(START_EXAMINATION, {
         props: ({mutate})=> ({
           startExamination : (token, _id) => mutate({variables: {token, _id}})

@@ -1,15 +1,21 @@
 import React from 'react';
 import __ from 'lodash';
+import moment from 'moment';
 import gql from 'graphql-tag';
+import Webcam from 'react-webcam';
+
+import Drawer from 'material-ui/Drawer';
 
 import { graphql, compose } from 'react-apollo';
 import { createContainer } from 'react-meteor-data';
 
 import  { UserExams } from 'educationServer/userExam'
 
+import PlayerImage from './PlayerImage.jsx';
+
 class QuestionContent extends React.Component {
   render() {
-    let { question, data, examId, getCurrentQuestion, questionSetId } = this.props;
+    let { question, data, examId, getNextQuestion, getPreviosQuestion, questionSetId } = this.props;
     let userResults = {};
     if(data.playerResultByUser && data.playerResultByUser.length > 0) {
       __.forEach(data.playerResultByUser, item => {
@@ -20,9 +26,9 @@ class QuestionContent extends React.Component {
       });
     }
     return (
-      <div style={{backgroundColor: '#F1F1F1'}}>
+      <div style={{backgroundColor: '#F1F1F1', padding: 15}}>
         <div>
-          <h3>{ question.question }</h3>
+          <h3 style={{marginTop: 0, marginBottom: 15}}>{ question.question }</h3>
         </div>
         <div style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
           {
@@ -31,16 +37,19 @@ class QuestionContent extends React.Component {
                 <input checked={userResults[question._id] && (userResults[question._id].answer.indexOf(item) > -1 && 'checked')} type="radio" name="optradio" onChange={({target}) => {
                     let token = localStorage.getItem('Meteor.loginToken');
                     this.props.answerQuestion(token, examId, questionSetId, question._id, item).then(() => {
-                      getCurrentQuestion(question);
                       this.props.data.refetch()
                     }).catch((err) => {
 
                     });
                   }}/>
-                <div style={{width: 300, marginRight: 50, marginBottom: 10, marginLeft: 10, height: 50, backgroundColor: 'white', padding: 15, fontWeight: 'lighter'}}>{ item }</div>
+                <div style={{width: 300, marginRight: 50, marginBottom: 10, marginLeft: 10, height: 50, backgroundColor: 'white', padding: 15, fontWeight: 'lighter', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>{ item }</div>
               </label>
             ))
           }
+          <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 35%'}}>
+            <button className="btn btn-primary" style={{width: 100}} onClick={() => getPreviosQuestion(question)}>Trước</button>
+            <button className="btn btn-primary" style={{width: 100}} onClick={() => getNextQuestion(question)}>Tiếp</button>
+          </div>
         </div>
       </div>
     )
@@ -83,45 +92,67 @@ const QuestionContentWithData = compose (
 class StartedExam extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null};
+    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: []};
   }
 
   componentDidUpdate() {
-    let { data, users, finishExamination } = this.props;
+    let { data, users, finishExamination, screenShot } = this.props;
     let { startCountDown } = this.state;
+    let token = localStorage.getItem('Meteor.loginToken');
+    let randomNuber = Math.floor((Math.random() * 10) + 40);
     if(!startCountDown && data.examById) {
-      if(data.examById.createdBy._id === users.userId) {
-        console.log("message");
-        let time = data.examById.time * 60 * 1000;
-        let countDown = time
-        let token = localStorage.getItem('Meteor.loginToken');
-        if(data.examById.status === 99) {
-          let interval = setInterval(() => {
-            countDown -= 1000;
-            let time = countDown / 1000;
-            let hour = Math.floor(time / 3600);
-            let minute = Math.floor((time - hour * 3600) / 60);
-            let second = Math.floor(time - hour * 3600 - minute * 60);
-            this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()})
-          }, 1000);
-          setTimeout(() => {
-            finishExamination(token, data.examById._id).then(() => {
-              console.log("ki thi da ket thuc");
-              clearInterval(interval);
-            }).catch((err) => {
-              console.log("error ", err);
-            });
-          }, time);
-        }
+      let timeLeft = moment().valueOf() - data.examById.timeStart;
+      let time = (data.examById.time * 60 * 1000) - timeLeft;
+      let countDown = time
+      let token = localStorage.getItem('Meteor.loginToken');
+      if(data.examById.status === 99) {
+        let interval = setInterval(() => {
+          countDown -= 1000;
+          if(countDown % randomNuber === 0) {
+            playerImage = this.refs.webcam.getScreenshot();
+            screenShot(token, playerImage);
+          }
+          data.refetch();
+          let time = countDown / 1000;
+          let hour = Math.floor(time / 3600);
+          let minute = Math.floor((time - hour * 3600) / 60);
+          let second = Math.floor(time - hour * 3600 - minute * 60);
+          console.log("countDown ", countDown);
+          this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()})
+        }, 1000);
+        setTimeout(() => {
+          finishExamination(token, data.examById._id).then(() => {
+            console.log("ki thi da ket thuc");
+            clearInterval(interval);
+          }).catch((err) => {
+            console.log("error ", err);
+          });
+        }, time);
       }
       this.setState({startCountDown: true});
     }
   }
 
-  getCurrentQuestion(question) {
+  getNextQuestion(question) {
     let { questionSet } = this.state;
-    let currentQuestion = questionSet[question.index];
-    this.setState({currentQuestion});
+    if(question.index < questionSet.length) {
+      let currentQuestion = questionSet[question.index];
+      this.setState({currentQuestion});
+    } else {
+        let currentQuestion = questionSet[0];
+        this.setState({currentQuestion});
+    }
+  }
+
+  getPreviosQuestion(question) {
+    let { questionSet } = this.state;
+    if(question.index >= 2) {
+      let currentQuestion = questionSet[question.index - 2];
+      this.setState({currentQuestion});
+    } else {
+        let currentQuestion = questionSet[questionSet.length - 1];
+        this.setState({currentQuestion});
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -147,7 +178,9 @@ class StartedExam extends React.Component {
 
   renderPlayerList(playerList) {
     return playerList.map((item, idx) => (
-      <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
+      <tbody key = {idx} style={{borderTop: '1px solid gray'}} onClick={() => {
+          this.setState({openDrawer: true, currentPlayerCheckoutImage: item.player.user.checkOutImage});
+        }}>
         <tr style={{height: 15, borderTop: '1px solid gray'}}>
         </tr>
         <tr>
@@ -155,15 +188,15 @@ class StartedExam extends React.Component {
             { idx + 1 }
           </td>
           <td rowSpan="2">
-            <img style={{width: 47, height: 50, borderRadius: '100%'}} src={item.player.user.checkOutImage[0].link}/>
+            <PlayerImage checkOutImage = {item.player.user.checkOutImage[0].link}/>
           </td>
-          <td>
+          <td style={{textAlign: 'center'}}>
             <p>{item.player.user.name}</p>
           </td>
           <td>
             <p>{item.player.user.email}</p>
           </td>
-          <td rowSpan="2">
+          <td rowSpan="2" style={{textAlign: 'center'}}>
             <p>{item.totalScore}</p>
           </td>
         </tr>
@@ -184,14 +217,14 @@ class StartedExam extends React.Component {
 
   render() {
     let { data, params, users } = this.props;
-    let { currentQuestion, questionSet, timeString } = this.state;
+    let { currentQuestion, questionSet, timeString, currentPlayerCheckoutImage, openDrawer } = this.state;
+    console.log('timeString ', timeString);
     if(data.loading) {
       return (
         <div className="loader"></div>
       )
     } else {
-        console.log('user exam ', data.examById.userExams);
-        if(data.examById.createdBy._id === users.userId) {
+        if(data.examById.createdBy._id === users.userId || data.examById.status === 100) {
           let questionCount = data.examById.questionSet.questions.length;
           let playerList = __.cloneDeep(data.examById.userExams);
           __.forEach(playerList, item => {
@@ -201,11 +234,18 @@ class StartedExam extends React.Component {
             __.forEach(item.results, item => totalScore += item.score);
             item['totalScore'] = totalScore;
           });
+          playerList.sort((a, b) => {
+            if (a.totalScore < b.totalScore)
+              return 1;
+            if (a.totalScore > b.totalScore)
+              return -1;
+            return 0;
+          });
           return (
             <div style={{backgroundColor: 'white'}}>
               <div style={{textAlign: 'center', paddingBottom: 20}}>
                 <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
-                <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userCount } </font></p>
+                <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
               </div>
               <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
                 <table>
@@ -218,10 +258,10 @@ class StartedExam extends React.Component {
                     <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
                       Tên người dùng
                     </th>
-                    <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                    <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'center'}}>
                       Email
                     </th>
-                    <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                    <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'center'}}>
                       Điểm
                     </th>
                   </thead>
@@ -230,16 +270,28 @@ class StartedExam extends React.Component {
               </div>
               <div className="col-sm-12" style={{height: 120}}>
               </div>
-              <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
-                <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
-                  { 'Thời gian còn lại: ' + timeString }
-                </button>
-              </div>
+              {
+                data.examById.status !== 100 ?
+                <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
+                  <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
+                    { 'Thời gian còn lại: ' + timeString }
+                  </button>
+                </div> : null
+              }
+              <Drawer docked={false} width={300} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
+                {
+                  currentPlayerCheckoutImage.map(item => <img style={{width: '100%', padding: '30px 30px 0px 30px'}} src={item.link}/>)
+                }
+              </Drawer>
             </div>
           )
         } else {
             return (
               <div>
+                <div style={{textAlign: 'center', paddingBottom: 20}}>
+                  <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+                  <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
+                </div>
                 <div className="col-sm-12">
                   <div className="col-sm-3" style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
                     {
@@ -251,8 +303,24 @@ class StartedExam extends React.Component {
                       }
                     </div>
                     <div className="col-sm-9">
-                      <QuestionContentWithData question={currentQuestion} questionSetId={data.examById.questionSet._id} getCurrentQuestion={this.getCurrentQuestion.bind(this)} examId={params.id}/>
+                      <QuestionContentWithData
+                        question={currentQuestion}
+                        questionSetId={data.examById.questionSet._id}
+                        getNextQuestion={this.getNextQuestion.bind(this)}
+                        getPreviosQuestion={this.getPreviosQuestion.bind(this)}
+                        examId={params.id}
+                      />
                     </div>
+                  </div>
+                  <div className="col-sm-12" style={{height: 250}}>
+                  </div>
+                  <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
+                    <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
+                      { 'Thời gian còn lại: ' + timeString }
+                    </button>
+                  </div>
+                  <div style={{position: 'absolute', right: 20, bottom: 20}}>
+                    <Webcam ref="webcam" audio={false} screenshotFormat="image/webp" height={200} width={200}/>
                   </div>
               </div>
             )
@@ -266,6 +334,7 @@ const QUESTION_BY_EXAM = gql`
     examById(_id: $examId) {
       _id
       code
+      timeStart
       createdBy {
         _id
         name
@@ -324,6 +393,11 @@ const FINISH_EXAMINATION = gql`
       finishExamination(token: $token, _id: $_id)
 }`
 
+const SCREEN_SHOT = gql`
+    mutation screenShot($token: String!, $link: String!) {
+      screenShot(token: $token, link: $link)
+}`
+
 const StartedExamWithData = compose (
     graphql(QUESTION_BY_EXAM, {
         options: (owProps)=> ({
@@ -334,6 +408,11 @@ const StartedExamWithData = compose (
     graphql(FINISH_EXAMINATION, {
         props: ({mutate})=> ({
             finishExamination : (token, _id) => mutate({variables:{token, _id}})
+        })
+    }),
+    graphql(SCREEN_SHOT, {
+        props: ({mutate})=> ({
+            finishExamination : (token, link) => mutate({variables:{token, link}})
         })
     }),
 )(StartedExam);

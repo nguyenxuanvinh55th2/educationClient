@@ -100,6 +100,38 @@ class LeftBar extends React.Component {
     }
   }
 
+  readyExamination(_id) {
+    let { readyExamination } = this.props;
+    let token = localStorage.getItem('Meteor.loginToken');
+    readyExamination(token, _id).then(() => {
+      browserHistory.push('/waitExam/' + _id)
+    })
+  }
+
+  renderExamination() {
+    let { data, users } = this.props;
+    if(data.loading && ! data.examByUser) {
+      return []
+    } else {
+        return __.map(data.examByUser, (item, idx) =>(
+          <ListItem key={idx}
+            primaryText={
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <p style={{color: 'white', fontSize: 13}}>{ item.name }</p>
+                {
+                  item.status === 0 ?
+                  <button className="btn btn-primary" onClick={this.readyExamination.bind(this, item._id)}>Bắt đầu</button> :
+                  <button className="btn btn-primary" onClick={() => {
+                    browserHistory.push('/waitExam/' + item._id)
+                  }}>Xem laị</button>
+                }
+              </div>
+            }
+          />
+        ))
+    }
+  }
+
   render() {
     let { users} = this.props;
     return (
@@ -170,13 +202,7 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
-           nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
-           ]}
+           nestedItems={this.renderExamination()}
          />
          <ListItem
            primaryText="Thời gian biểu"
@@ -235,13 +261,34 @@ const CLASS_SUBJECT = gql`
         _id  name  activity
       }
     }
+    examByUser(token: $token) {
+      _id
+      code
+      name
+      description
+      userCount
+      time
+      createdAt
+      status
+    }
 }`
+
+const READY_EXAMINATION = gql`
+    mutation readytExamination ($token: String!, $_id: String!) {
+      readyExamination(token: $token, _id: $_id)
+}`
+
 export default compose(
 graphql(CLASS_SUBJECT, {
     options: () => ({
       variables: {token: localStorage.getItem('Meteor.loginToken')},
       forceFetch: true
     }),
+}),
+graphql(READY_EXAMINATION , {
+    props: ({mutate})=> ({
+      readyExamination : (token, _id) => mutate({variables: {token, _id}})
+    })
 }),
 )(LeftBar);
 
@@ -325,11 +372,15 @@ class CreateCoureForm extends React.Component {
     )
   }
 }
+
+
 const INSERT_COURSE = gql`
  mutation insertCourse($userId:String!,$info:String!){
    insertCourse(userId:$userId,info:$info)
  }
 `;
+
+
 export const CreateCoure =graphql(INSERT_COURSE,{
      props:({mutate})=>({
      insertCourse : (userId,info) =>mutate({variables:{userId,info}})

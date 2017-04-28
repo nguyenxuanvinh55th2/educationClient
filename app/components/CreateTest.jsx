@@ -230,8 +230,8 @@ class CreateTest extends  React.Component {
     let { stepIndex } = this.state;
     let { users } = this.props;
     return (
-      <div style={{width: window.innerWidth - (2 * 256), marginLeft: 256}}>
-        <div style={{width: '60%', backgroundColor: 'white', paddingTop: 10}}>
+      <div style={{width: window.innerWidth - (2 * 256), height: window.innerHeight -50}}>
+        <div style={{width: '60%', backgroundColor: 'white', paddingTop: 10, height: '100%'}}>
           <h3 style={{width: '100%', textAlign: 'center', color: '#00BCD4', marginBottom: 0}}>TẠO KÌ THI</h3>
           <Stepper orientation="vertical" linear={false} activeStep={stepIndex}>
             <Step>

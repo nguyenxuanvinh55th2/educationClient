@@ -70,9 +70,9 @@ ReactDOM.render(
               <IndexRoute component={Wall}/>
               <Route path="/profile/:id/createClass" component={ClassList}/>
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
+              <Route path="/profile/:id/createTest" component={CreateTest}/>
               <Route path="/profile/:id/:subjectId" component={ManagerSubject} />
             </Route>
-            <Route path="/createTest" component={CreateTest}/>
             <Route path="/waitExam/:id" component={WaitExam}/>
             <Route path="/startedExam/:id" component={StartedExam}/>
           </Route>
