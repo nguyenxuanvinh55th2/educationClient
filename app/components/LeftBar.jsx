@@ -312,10 +312,11 @@ class CreateCoureForm extends React.Component {
         this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
           if(data.insertCourse){
             this.props.handleClose();
-            // this.props.addNotification("success","ok")
+            this.props.addNotificationMute({fetchData: true, message: 'Tạo khóa học mới thành công', level:'success'});
           }
         })
         .catch((error) => {
+          this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
           console.log(error);
         })
       }
@@ -325,10 +326,12 @@ class CreateCoureForm extends React.Component {
         this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
           if(data.insertCourse){
             this.props.handleClose();
+            this.props.addNotificationMute({fetchData: true, message: 'Tạo khóa học mới thành công', level:'success'});
             browserHistory.push('/profile/' + this.props.users.userId + '/createClass');
           }
         })
         .catch((error) => {
+          this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
           console.log(error);
         })
       }

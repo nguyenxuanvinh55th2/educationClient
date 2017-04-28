@@ -19,16 +19,6 @@ class ClassList extends React.Component {
       userClasses: [],
       userMails: []
     }
-    this.dataTest = [
-      {
-        _id: '1234',
-        name: "vinh nguyen"
-      },
-      {
-        _id: '12345566',
-        name: 'lan nguyen'
-      }
-    ]
   }
   handleSave(type){
     let info = {
@@ -48,50 +38,59 @@ class ClassList extends React.Component {
           else {
             browserHistory.push('/profile/' + this.props.users.userId);
           }
+        this.props.addNotificationMute({fetchData: true, message: 'Tạo lớp học mới thành công', level:'success'});
         }
       })
       .catch((error) => {
+        this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
         console.log(error);
       })
     }
   }
   render(){
-    let that = this;
-    return (
-      <div className="column" style={{padding: 15}}>
-        <h3 style={{textAlign: 'center', color: "#35bcbf"}}>LỚP HỌC</h3>
-        <div className="row" style={{marginTop: 5}}>
-          <div className="col-sm-3">
-            <label >Mã lớp học</label>
+    let { dataSet } = this.props;
+    if(dataSet.loading && !dataSet.user){
+      return (
+        <div className="spinner spinner-lg"></div>
+      )
+    }
+    else {
+      return (
+        <div className="column" style={{padding: 15}}>
+          <h3 style={{textAlign: 'center', color: "#35bcbf"}}>LỚP HỌC</h3>
+          <div className="row" style={{marginTop: 5}}>
+            <div className="col-sm-3">
+              <label >Mã lớp học</label>
+            </div>
+            <div className="col-sm-9">
+              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+            </div>
           </div>
-          <div className="col-sm-9">
-            <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+          <div className="row" style={{marginTop: 5}}>
+            <div className="col-sm-3">
+              <label >Tên lớp học</label>
+            </div>
+            <div className="col-sm-9">
+              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
+            </div>
+          </div>
+          <div className="column">
+            <label>Mời sinh viên tham gian lớp học</label>
+            <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+              <MultiSelectEditor value={this.state.userClasses} data={dataSet.user.userFriendsUser} label={"name"} placeholder="Tìm kiếm sinh viên"
+                 onChangeValue={(value) => this.setState({userClasses: value})}/>
+            </div>
+            <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+              <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
+            </div>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
+            <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
+            <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', marginLeft: 10}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
           </div>
         </div>
-        <div className="row" style={{marginTop: 5}}>
-          <div className="col-sm-3">
-            <label >Tên lớp học</label>
-          </div>
-          <div className="col-sm-9">
-            <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
-          </div>
-        </div>
-        <div className="column">
-          <label>Mời sinh viên tham gian lớp học</label>
-          <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
-            <MultiSelectEditor value={this.state.userClasses} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
-               onChangeValue={(value) => this.setState({userClasses: value})}/>
-          </div>
-          <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
-            <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
-          </div>
-        </div>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
-          <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
-          <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', marginLeft: 10}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
-        </div>
-      </div>
-    )
+      )
+    }
   }
 }
 const INSERT_CLASS = gql`
@@ -99,7 +98,23 @@ const INSERT_CLASS = gql`
    insertClass(userId:$userId,info:$info)
  }
 `;
+const MyQuery = gql`
+    query getData($userId: String){
+      user(userId:$userId) {
+       _id name
+       userFriendsUser {
+          _id name image  email
+        }
+     }
+    }`
 export default compose(
+  graphql(MyQuery, {
+      options: (ownProps) => ({
+        variables: {userId: ownProps.users.userId},
+        forceFetch: true
+      }),
+      name: 'dataSet',
+  }),
   graphql(INSERT_CLASS,{
        props:({mutate})=>({
        insertClass : (userId,info) =>mutate({variables:{userId,info}})

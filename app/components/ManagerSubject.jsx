@@ -46,7 +46,13 @@ class ManagerSubject extends React.Component {
       files: this.state.dataForum.files
     }
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
-      console.log(data);
+      if(data){
+        this.props.addNotificationMute({fetchData: true, message: 'Thêm bài viết mới thành công', level:'success'});
+      }
+    })
+    .catch((error) => {
+      this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+      console.log(error);
     })
   }
   handleAddTheme(){
@@ -62,7 +68,14 @@ class ManagerSubject extends React.Component {
       classSubjectId: this.state.subjectId
     }
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+      if(data){
+        this.props.addNotificationMute({fetchData: true, message: 'Thêm chủ đề mới thành công', level:'success'});
+      }
       console.log(data);
+    })
+    .catch((error) => {
+      this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+      console.log(error);
     })
   }
   handleAddAss(){
@@ -75,7 +88,13 @@ class ManagerSubject extends React.Component {
       classSubjectId: this.state.subjectId,
     }
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
-      console.log(data);
+      if(data){
+        this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công mới thành công', level:'success'});
+      }
+    })
+    .catch((error) => {
+      this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+      console.log(error);
     })
   }
   handleAddMedia(files,filetype,type){
@@ -115,6 +134,7 @@ class ManagerSubject extends React.Component {
         };
         reader.onerror = function (error) {
           console.log('Error: ', error);
+          that.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
         };
       }
       else if (file.size <= 1024*1000*20 && filetype == 'file') {

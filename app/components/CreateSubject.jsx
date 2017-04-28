@@ -20,16 +20,6 @@ class CreateSubject extends React.Component {
       _id: '', code: '', name: '', description: '',  themes: [], joinCourse: false,
       classId: '', courseId: '', userSubjects: [], userMails: []
     }
-    this.dataTest = [
-      {
-        _id: '1234',
-        name: "vinh nguyen"
-      },
-      {
-        _id: '12345566',
-        name: 'lan nguyen'
-      }
-    ]
   }
   handleSave(){
     let nameClassSubject = '';
@@ -64,10 +54,12 @@ class CreateSubject extends React.Component {
     if(this.props.insertSubject){
       this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
         if(data){
+          this.props.addNotificationMute({fetchData: true, message: 'Tạo môn học mới thành công', level:'success'});
           browserHistory.push("/profile/" + this.props.users.userId);
         }
       })
       .catch((error) => {
+        this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
         console.log(error);
       })
     }
@@ -209,7 +201,7 @@ class CreateSubject extends React.Component {
             <div style={{backgroundColor: 'white', padding: 10, marginTop: 10, minHeight: 150}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Thêm thành viên</h4>
               <div style={{height: '100%'}}>
-                <MultiSelectEditor value={this.state.userSubjects} data={this.dataTest} label={"name"} placeholder="Tìm kiếm sinh viên"
+                <MultiSelectEditor value={this.state.userSubjects} data={dataSet.user.userFriendsUser} label={"name"} placeholder="Tìm kiếm sinh viên"
                    onChangeValue={(value) => this.setState({userSubjects: value})}/>
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
@@ -253,7 +245,13 @@ const MyQuery = gql`
         name
         dateStart
         dateEnd
-      }
+      },
+      user(userId:$userId) {
+       _id name
+       userFriendsUser {
+          _id name image  email
+        }
+     }
     }`
 export default compose(
   graphql(MyQuery, {

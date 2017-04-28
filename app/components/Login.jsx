@@ -18,7 +18,6 @@ class Login extends Component {
     }
   }
   handleLogin(){
-    this.props.addNotificationMute({fetchData: true, message: 'localStorage', level: 'success'})
     let { loginWithPassword } = this.props;
     let that = this;
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
@@ -28,9 +27,11 @@ class Login extends Component {
         this.props.loginCommand(dataUser.user);
         localStorage.setItem('keepLogin', true);
         localStorage.setItem('Meteor.loginToken', dataUser.token);
+        this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
         this.props.handleClose();
       }
     }).catch((err)=>{
+      this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})
       this.props.handleClose();
     });
   }
