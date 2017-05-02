@@ -33,7 +33,15 @@ class ManagerSubject extends React.Component {
         title: '',
         content: '',
         files: []
-      }
+      },
+      dataSetForum: []
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.props.dataSet.loading != nextProps.dataSet.loading && nextProps.dataSet.loading == false){
+      this.setState({
+        dataSetForum: __.cloneDeep(nextProps.dataSet.getActivityForum)
+      })
     }
   }
   handleAddForum(){
@@ -212,8 +220,29 @@ class ManagerSubject extends React.Component {
       }
     });
   }
+  handleAddComment(event,topicId, idValue){
+    let value = event.target.value;
+    if(value && event.charCode === 13 || event.keyCode === 13){
+      if(this.props.insertCommentForum){
+        let info = {
+          content: value,
+          topicId: topicId
+        }
+        this.props.insertCommentForum(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+          if(data){
+            document.getElementById(idValue).value = '';
+            this.props.addNotificationMute({fetchData: true, message: 'Gửi bình luận thành công', level:'success'});
+          }
+        })
+        .catch((error) => {
+          this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+          console.log(error);
+        })
+      }
+    }
+  }
   render(){
-    let { dataSet } = this.props;
+    let { dataSet, users } = this.props;
     if(dataSet.loading && !dataSet.getActivityForum){
       return (
         <div className="spinner spinner-lg"></div>
@@ -268,8 +297,9 @@ class ManagerSubject extends React.Component {
             </div>
             <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
               {
-                __.map(dataSet.getActivityForum,(active,idx) => {
+                __.map(this.state.dataSetForum,(active,idx) => {
                   let topic = active.topic;
+                  let idValue = 'comment' + '-' + idx;
                   return (
                     <div key={idx} style={{backgroundColor: 'white', marginTop: 10, padding: 10}}>
                       <ListItem style={{fontSize: 13}}
@@ -288,7 +318,32 @@ class ManagerSubject extends React.Component {
                        />
                        <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                          <p>{topic.content}</p>
-                         <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}}>Bình luận</button>
+                         <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
+                           let dataValueForum = this.state.dataSetForum;
+                           dataValueForum[idx].openComment = dataValueForum[idx].openComment ? !dataValueForum[idx].openComment : true;
+                           this.setState({dataSetForum: dataValueForum})
+                         }}>Bình luận</button>
+                         {
+                           active.openComment &&
+                           <div>
+                             {
+                               __.map(topic.memberReply,(reply, index) => {
+                                 return (
+                                   <div key={index} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
+                                     <img src={reply.owner && reply.owner.image ? reply.owner.image : '/public/imgs/userImage.jpg'} width="30" height="30" />
+                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 15}}>
+                                       <p style={{color: '#35bcbf'}}>{reply.owner && reply.owner.name ? reply.owner.name : 'Vô danh'}</p> <p>&nbsp;</p> <p>{reply.content}</p>
+                                     </div>
+                                   </div>
+                                 )
+                               })
+                             }
+                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
+                               <img src="/public/imgs/userImage.jpg" width="30" height="30" style={{marginTop: 7}} />
+                               <input type="text" id={idValue} className="form-control" style={{marginTop: 10, marginLeft: 15}} onKeyPress={(event)=>this.handleAddComment(event,topic._id,idValue)} />
+                             </div>
+                           </div>
+                         }
                        </div>
                     </div>
                   )
@@ -393,26 +448,31 @@ const INSERT_FORUM = gql`
    insertTopic(token:$token,info:$info)
  }
 `;
+const INSERT_COMMENT = gql`
+ mutation insertCommentForum($token:String!,$info:String){
+   insertCommentForum(token:$token,info:$info)
+ }
+`;
 const MyQuery = gql`
     query getData($classSubjectId: String!){
       getActivityForum(classSubjectId: $classSubjectId) {
         _id
-   topic {
-     _id title content links createdAt
-     owner {
-        _id name  image  email
-      }
-     memberReply {
-       _id
-       owner {
-         _id name image email
+       topic {
+         _id title content links createdAt
+         owner {
+            _id name  image  email
+          }
+         memberReply {
+           _id
+           owner {
+             _id name image email
+           }
+           content
+         }
+         files {
+           _id   filename filetype   link
+         }
        }
-       content
-     }
-     files {
-       _id   filename filetype   link
-     }
-   }
        }
     }`
 export default compose(
@@ -426,6 +486,11 @@ export default compose(
   graphql(INSERT_FORUM,{
        props:({mutate})=>({
        insertTopic : (token,info) =>mutate({variables:{token,info}})
+     })
+   }),
+  graphql(INSERT_COMMENT,{
+       props:({mutate})=>({
+       insertCommentForum : (token,info) =>mutate({variables:{token,info}})
      })
    })
 )(ManagerSubject)
