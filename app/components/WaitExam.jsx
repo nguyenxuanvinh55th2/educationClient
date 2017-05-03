@@ -82,7 +82,7 @@ class WaitExam extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState){
     let { params } = this.props;
-    if(nextProps.examination && nextProps.examination.status === 99) {
+    if(nextProps.examination && nextProps.examination.status >= 99) {
       browserHistory.push('/startedExam/' + params.id);
       return false
     }
