@@ -3,7 +3,7 @@ import __ from 'lodash';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import Webcam from 'react-webcam';
-
+var PieChart = require("react-chartjs").Pie;
 import Drawer from 'material-ui/Drawer';
 
 import { graphql, compose } from 'react-apollo';
@@ -13,6 +13,13 @@ import printExamResult from './printExamResult';
 import  { UserExams } from 'educationServer/userExam'
 
 import PlayerImage from './PlayerImage.jsx';
+
+class ScoreChat extends React.Component {
+  render() {
+    return <PieChart data={chartData} options={chartOptions}/>
+  }
+}
+
 
 class QuestionContent extends React.Component {
   render() {
