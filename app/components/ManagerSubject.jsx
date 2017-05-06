@@ -34,13 +34,16 @@ class ManagerSubject extends React.Component {
         content: '',
         files: []
       },
-      dataSetForum: []
+      dataSetForum: [],
+      dataSetTheme: []
     }
   }
   componentWillReceiveProps(nextProps){
     if(this.props.dataSet.loading != nextProps.dataSet.loading && nextProps.dataSet.loading == false){
       this.setState({
-        dataSetForum: __.cloneDeep(nextProps.dataSet.getActivityForum)
+        dataSetForum: __.cloneDeep(nextProps.dataSet.getActivityForum),
+        dataSetTheme: __.cloneDeep(nextProps.dataSet.getActivityTheme),
+        dataSetAss: __.cloneDeep(nextProps.dataSet.getActivityAssignment)
       })
     }
   }
@@ -67,11 +70,10 @@ class ManagerSubject extends React.Component {
     let info = {
       data: {
         isTheme: true,
-        title: this.state.dataTheme.title,
         content: this.state.dataTheme.content,
       },
       theme: {
-        name: this.state.dataTheme.name
+        name: this.state.dataTheme.title
       },
       classSubjectId: this.state.subjectId
     }
@@ -97,7 +99,7 @@ class ManagerSubject extends React.Component {
     }
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
       if(data){
-        this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công mới thành công', level:'success'});
+        this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công', level:'success'});
       }
     })
     .catch((error) => {
@@ -353,12 +355,26 @@ class ManagerSubject extends React.Component {
           </TabPanel>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
-              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10}}>
-                <p>Chu de 1</p>
-              </div>
-              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10, marginTop: 10}}>
-                <p>Chu de 2</p>
-              </div>
+              {
+                __.map(this.state.dataSetTheme,(theme,idx) => {
+                  return (
+                    <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}
+                      onClick={() => {
+                        let dataValueTheme = this.state.dataSetTheme;
+                        dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
+                        this.setState({dataSetTheme: dataValueTheme})
+                      }}>
+                      <p>{theme.theme.name}</p>
+                      {
+                        theme.openDetail &&
+                        <div>
+                          <p>{theme.topic.content}</p>
+                        </div>
+                      }
+                    </div>
+                  )
+                })
+              }
               <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
                  onClick={() => {
                    let dataTheme = this.state.dataTheme;
@@ -396,12 +412,26 @@ class ManagerSubject extends React.Component {
           </TabPanel>
           <TabPanel style={{backgroundColor: '#f0f0f0'}}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
-              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10}}>
-                <p>Bài tập chủ đề 1</p>
-              </div>
-              <div style={{border: '1px solid #f0f0f0', height: 40, padding: 10, marginTop: 10}}>
-                <p>Bài tập chủ đề 1</p>
-              </div>
+              {
+                __.map(this.state.dataSetAss,(ass,idx) => {
+                  return (
+                    <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}
+                      onClick={() => {
+                        let dataValueAss = this.state.dataSetAss;
+                        dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
+                        this.setState({dataSetAss: dataValueAss})
+                      }}>
+                      <p>{ass.topic.title}</p>
+                      {
+                        ass.openDetail &&
+                        <div>
+                          <p>{ass.topic.content}</p>
+                        </div>
+                      }
+                    </div>
+                  )
+                })
+              }
               <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
                  onClick={() => this.handleAddTheme()}>
                 <span className="glyphicon glyphicon-plus"></span> Tải file bài tập
@@ -473,7 +503,38 @@ const MyQuery = gql`
            _id   filename filetype   link
          }
        }
+     },
+     getActivityTheme(classSubjectId: $classSubjectId) {
+        _id
+        theme {
+          _id  name
+        }
+        topic {
+         _id content
        }
+     },
+     getActivityAssignment(classSubjectId: $classSubjectId) {
+        _id
+        theme {
+          _id  name
+        }
+        topic {
+          _id title content links createdAt
+          owner {
+             _id name  image  email
+           }
+          memberReply {
+            _id
+            owner {
+              _id name image email
+            }
+            content
+          }
+          files {
+            _id   filename filetype   link
+          }
+        }
+      }
     }`
 export default compose(
   graphql(MyQuery, {
