@@ -320,7 +320,18 @@ class ManagerSubject extends React.Component {
                        />
                        <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                          <p>{topic.content}</p>
-                         <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
+                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                           {
+                             __.map(topic.files,(file, fileIdx) => {
+                               return (
+                                 <div key={fileIdx} style={{padding: 5}}>
+                                   <img src={file.file} className="img-responsive"/>
+                                 </div>
+                               )
+                             })
+                           }
+                         </div>
+                         <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => {
                            let dataValueForum = this.state.dataSetForum;
                            dataValueForum[idx].openComment = dataValueForum[idx].openComment ? !dataValueForum[idx].openComment : true;
                            this.setState({dataSetForum: dataValueForum})
@@ -500,7 +511,7 @@ const MyQuery = gql`
            content
          }
          files {
-           _id   filename filetype   link
+           _id  file type  fileName
          }
        }
      },
@@ -531,7 +542,7 @@ const MyQuery = gql`
             content
           }
           files {
-            _id   filename filetype   link
+            _id  file type  fileName
           }
         }
       }
