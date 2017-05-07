@@ -250,7 +250,7 @@ class ManagerSubject extends React.Component {
         <div className="spinner spinner-lg"></div>
       )
     }
-    // console.log(this.props.dataSet);
+    console.log(this.props.dataSet);
     return (
       <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <Tabs className="secondary" >
@@ -540,7 +540,7 @@ export default compose(
   graphql(MyQuery, {
       options: (ownProps) => ({
         variables: {classSubjectId: ownProps.params.subjectId},
-        forceFetch: true
+        fetchPolicy: 'cache-only'
       }),
       name: 'dataSet',
   }),
