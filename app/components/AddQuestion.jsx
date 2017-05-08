@@ -118,7 +118,7 @@ class AddQuestion extends React.Component {
           {
             showReview ?
             <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-              <div style={{width: '100%'}}>
+              <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                 { this.renderQuestionReview() }
               </div>
               <div style={{width: '100%'}}>

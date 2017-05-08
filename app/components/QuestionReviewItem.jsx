@@ -42,7 +42,7 @@ export default class QuestionReviewItem extends React.Component {
     let { question, publicQuestion, questionType } = this.props;
     let { showAnswer } = this.state;
     return (
-      <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
+      <div style={{width: '100%'}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
           <div className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}

@@ -61,24 +61,33 @@ class WaitExam extends React.Component {
       this.setState({width: this.state.width})
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.userIds) {
-      let userIds = nextProps.userIds;
-      Meteor.call('getUserExam', userIds, (err, result) => {
-        if(err) {
-          console.log("lay du lieu loi ", err);
-        } else {
-            __.forEach(result, item => {
-              item['name'] = item.profileObj ? item.profileObj.name : item.name ? item.name : item.username;
-              item['email'] = item.profileObj ? item.profileObj.email : item.email ? item.email : item.emails[0].address;
-              item['checkOutImage'] = item.checkOutImage[0].link;
-            })
-            let players = result;
-            this.setState({players});
-        }
-      })
+  componentWillUpdate(nextProps, nextState) {
+    let { userExams } = this.state;
+    if(nextProps.userExams !== userExams) {
+      this.props.data.refetch();
+      //this.setState({userExams: nextProps.userExams});
     }
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if(nextProps.userIds) {
+  //     let userIds = nextProps.userIds;
+  //     Meteor.call('getUserExam', userIds, (err, result) => {
+  //       if(err) {
+  //         console.log("lay du lieu loi ", err);
+  //       } else {
+  //           console.log("result ", result);
+  //           __.forEach(result, item => {
+  //             item['name'] = item.profileObj ? item.profileObj.name : item.name ? item.name : item.username;
+  //             item['email'] = item.profileObj ? item.profileObj.email : item.email ? item.email : item.emails[0].address;
+  //             item['checkOutImage'] = item.checkOutImage[0].link;
+  //           })
+  //           let players = result;
+  //           this.setState({players});
+  //       }
+  //     })
+  //   }
+  // }
 
   shouldComponentUpdate(nextProps, nextState){
     let { params } = this.props;
@@ -111,6 +120,7 @@ class WaitExam extends React.Component {
   }
 
   renderPlayerList(playerList) {
+    console.log('playerList ', playerList);
     return playerList.map((item, idx) => (
       <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
         <tr>
@@ -118,13 +128,13 @@ class WaitExam extends React.Component {
             { idx + 1 }
           </td>
           <td>
-            <PlayerImage checkOutImage = {item.checkOutImage}/>
+            <PlayerImage checkOutImage = {item.player.user.checkOutImage[0].link}/>
           </td>
           <td>
-            <p>{item.profileObj ? item.profileObj.name : item.name ? item.name : item.username}</p>
+            <p>{item.player.user.name}</p>
           </td>
           <td>
-            <p>{item.profileObj ? item.profileObj.email : item.email ? item.email : item.emails[0].address}</p>
+            <p>{item.player.user.email}</p>
           </td>
         </tr>
       </tbody>
@@ -132,14 +142,13 @@ class WaitExam extends React.Component {
   }
 
   render(){
-    let { users, examination, startExamination, params, data } = this.props;
-    let { players } = this.state;
-    console.log('players ', players);
-    if (!players || !data.examById) {
+    let { users, startExamination, params, data } = this.props;
+    if (!data.examById) {
         return (
             <div className="spinner spinner-lg"></div>
         );
     } else {
+        let playerList = __.cloneDeep(data.examById.userExams);
         return (
           <div style={{backgroundColor: 'white'}}>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
@@ -161,7 +170,7 @@ class WaitExam extends React.Component {
                     Email
                   </th>
                 </thead>
-                { this.renderPlayerList(players) }
+                { this.renderPlayerList(playerList) }
               </table>
             </div>
             <div className="col-sm-12" style={{height: 120}}>
@@ -172,7 +181,11 @@ class WaitExam extends React.Component {
                 <button className="btn btn-primary" style={{width: '100%'}} onClick={() => {
                     let token= localStorage.getItem('Meteor.loginToken');
                     let _id = params.id;
-                    startExamination(token, _id);
+                    startExamination(token, _id).then(() => {
+                      console.log("message");
+                    }).catch((err) => {
+                      console.log("loi ", err);
+                    });
                   }}>
                   Bắt đầu
                 </button> : null
@@ -197,6 +210,23 @@ const QUESTION_BY_EXAM = gql`
       }
       userExams {
         _id
+        player {
+          _id
+          isUser
+          user {
+            _id
+            name
+            image
+            email
+            social
+            online
+            lastLogin
+            checkOutImage {
+              link
+              time
+            }
+          }
+        }
       }
     }
   }`
@@ -228,17 +258,19 @@ export default createContainer((ownProps) => {
   Meteor.subscribe("users");
   Meteor.subscribe("examinations");
 
-  let examId = ownProps.params.id;
-  let examination = Examinations.findOne({_id: examId});
-  let playerIds = UserExams.find({examId}).map(item => item.playerId);
-  let userIds = Players.find({_id: {$in: playerIds}, isUser: true}).map(item => item.userId);
+  // let playerIds = UserExams.find({examId}).map(item => item.playerId);
+  // let userIds = Players.find({_id: {$in: playerIds}, isUser: true}).map(item => item.userId);
   // let groupIds = Players.find({_id: {$in: playerIds}, isGroup: true}).map(item => item.userId);
   // let personalIds = Players.find({_id: {$in: playerIds}, isPersonal: true}).map(item => item.userId);
 
   // let userList = Meteor.users.find({_id: {$in: userIds}}).fetch();
   // let personalList = PersonalPlayers.find({_id: {$in: personalIds}}).fetch();
+  let examId = ownProps.params.id;
+  let examination = Examinations.findOne({_id: examId});
+  let userExams = UserExams.find({examId}).fetch();
+
   return {
-    userIds,
-    examination
+    examination,
+    userExams
   };
 }, WaitExamWithMutaion);

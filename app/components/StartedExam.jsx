@@ -201,8 +201,10 @@ class StartedExam extends React.Component {
     let { data }= nextProps;
     if(data.examById)  {
       if(!data.examById.isClassStyle) {
-        let currentQuestion = data.examById.questionSet.questions[0];
-        this.setState({currentQuestion});
+        if(!this.state.currentQuestion) {
+          let currentQuestion = data.examById.questionSet.questions[0];
+          this.setState({currentQuestion});
+        }
       }
       let questionSet = __.cloneDeep(data.examById.questionSet.questions);
       __.forEach(questionSet, (item, idx) => {

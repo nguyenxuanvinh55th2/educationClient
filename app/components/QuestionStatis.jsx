@@ -4,11 +4,13 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import __ from 'lodash';
 
+import Drawer from 'material-ui/Drawer';
+
 import PieChart from './PieChart.jsx';
 import BarChart from './BarChart.jsx';
+import QuestionReviewItem from './QuestionReviewItem.jsx';
 
 const statisScore = (scoreArray) => {
-  scoreArray = __.concat(scoreArray, [0, 1, 3, 4, 5, 0, 2, 3, 5, 7, 8, 0, 1, 2, 3, 4, 5, 9]);
   scoreArray.sort();
   scoreArray.push('');
   //   return (b.score - a.score)
@@ -45,7 +47,7 @@ const statisScore = (scoreArray) => {
 
 const statisQuestion = (questionArray, correctRate) => {
   return {
-      labels: questionArray.map((item, idx) => 'Câu ' + (idx + 1).toString()),
+      labels: questionArray.map((item, idx) => item.question.substring(0, 6) + '...'),
       datasets: [{
           label: '# of Votes',
           data: questionArray.map((item, idx) => Math.round(item[correctRate] * 100)),
@@ -59,9 +61,28 @@ const statisQuestion = (questionArray, correctRate) => {
 class QuestionStatis extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showQuestion: false,
+      openDrawer: false
+    }
   }
+
+  showQuestion() {
+    let showQuestion = this.state.showQuestion;
+    this.setState({showQuestion: !showQuestion});
+  }
+
+  renderQuestionReview() {
+    let { data } = this.props;
+    let questionSet = __.cloneDeep(data.questionSetById.questions)
+    return questionSet.map((item, idx) => {
+      return <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id} question={item}/>
+    })
+  }
+
   render() {
     let { data } = this.props;
+    let { openDrawer } = this.state;
     console.log("data ", this.props);
     if (!data.examinationByQuestionSet || !data.questionSetById) {
         return (
@@ -70,7 +91,10 @@ class QuestionStatis extends React.Component {
     } else {
         return (
           <div style={{padding: '10px 50px'}}>
-            <h2 style={{width: '100%', textAlign: 'center'}}>BỘ CÂU HỎI ABC</h2>
+            <h2 style={{width: '100%', textAlign: 'center'}}>{ data.questionSetById.title }</h2>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+              <button className="btn btn-default" style={{boxShadow: 'none'}} onClick={() => this.setState({openDrawer: true})}>Nội dung</button>
+            </div>
             <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
               <h3 style={{width: '100%', textAlign: 'center'}}>Điểm số</h3>
               {
@@ -112,6 +136,13 @@ class QuestionStatis extends React.Component {
                 </div>
               </div>
             </div>
+            <Drawer docked={false} width={400} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
+              <div style={{width: '100%', padding: 20}}>
+                <div style={{width: '100%'}}>
+                  { this.renderQuestionReview() }
+                </div>
+              </div>
+            </Drawer>
           </div>
         )
     }
@@ -153,6 +184,9 @@ const QUESTION_STATIS = gql`
       questionCount
       questions {
         _id
+        question
+        answerSet
+        correctAnswer
         correctRate
       }
     }
