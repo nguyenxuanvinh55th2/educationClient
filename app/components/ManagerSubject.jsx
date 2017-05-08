@@ -39,13 +39,16 @@ class ManagerSubject extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps){
-    if(this.props.dataSet.loading != nextProps.dataSet.loading && nextProps.dataSet.loading == false){
+    if(nextProps.dataSet.getActivityForum && nextProps.dataSet.getActivityTheme && nextProps.dataSet.getActivityAssignment){
       this.setState({
         dataSetForum: __.cloneDeep(nextProps.dataSet.getActivityForum),
         dataSetTheme: __.cloneDeep(nextProps.dataSet.getActivityTheme),
         dataSetAss: __.cloneDeep(nextProps.dataSet.getActivityAssignment)
       })
     }
+  }
+  refreshData(){
+    this.props.dataSet.refetch();
   }
   handleAddForum(){
     let info = {
@@ -59,6 +62,7 @@ class ManagerSubject extends React.Component {
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài viết mới thành công', level:'success'});
+        this.refreshData();
       }
     })
     .catch((error) => {
@@ -80,6 +84,7 @@ class ManagerSubject extends React.Component {
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm chủ đề mới thành công', level:'success'});
+        this.refreshData();
       }
       console.log(data);
     })
@@ -100,6 +105,7 @@ class ManagerSubject extends React.Component {
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công', level:'success'});
+        this.refreshData();
       }
     })
     .catch((error) => {
@@ -234,6 +240,7 @@ class ManagerSubject extends React.Component {
           if(data){
             document.getElementById(idValue).value = '';
             this.props.addNotificationMute({fetchData: true, message: 'Gửi bình luận thành công', level:'success'});
+            this.refreshData();
           }
         })
         .catch((error) => {
@@ -250,7 +257,6 @@ class ManagerSubject extends React.Component {
         <div className="spinner spinner-lg"></div>
       )
     }
-    console.log(this.props.dataSet);
     return (
       <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <Tabs className="secondary" >
@@ -414,7 +420,11 @@ class ManagerSubject extends React.Component {
                       <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                     </div> */}
                   </div>
-                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+                    <div>
+                      <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileTheme").click()}>+ Tệp</button>
+                      <input type="file" id="getFileTheme"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isTheme")} />
+                    </div>
                     <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataTheme.title || !this.state.dataTheme.content} onClick={() => this.handleAddTheme()}>Thêm chủ đề</button>
                   </div>
                 </div>
@@ -466,7 +476,11 @@ class ManagerSubject extends React.Component {
                     <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                   </div> */}
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+                  <div>
+                    <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileAss").click()}>+ Tệp</button>
+                    <input type="file" id="getFileAss"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isAssignment")} />
+                  </div>
                   <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataAssign.title || !this.state.dataAssign.content} onClick={() => this.handleAddAss()}>Thêm bài tập</button>
                 </div>
               </div>
