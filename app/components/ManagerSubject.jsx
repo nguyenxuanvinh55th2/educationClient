@@ -252,6 +252,7 @@ class ManagerSubject extends React.Component {
   }
   render(){
     let { dataSet, users } = this.props;
+    console.log(dataSet);
     if(dataSet.loading && !dataSet.getActivityForum){
       return (
         <div className="spinner spinner-lg"></div>
@@ -329,11 +330,37 @@ class ManagerSubject extends React.Component {
                          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                            {
                              __.map(topic.files,(file, fileIdx) => {
-                               return (
+                               if(file.type.includes('image')){
+                                 return (
+                                   <div key={fileIdx} style={{padding: 5}}>
+                                     <img src={file.file} className="img-responsive"/>
+                                   </div>
+                                 )
+                               }
+                               else if (file.type.includes('audio')) {
+                                 return (
+                                   <div key={fileIdx} style={{padding: 5}}>
+                                     <audio src={file.file} controls/>
+                                   </div>
+                                 )
+                               }
+                               else if (file.type.includes('video')) {
                                  <div key={fileIdx} style={{padding: 5}}>
-                                   <img src={file.file} className="img-responsive"/>
+                                   <video controls src={file.file}/>
                                  </div>
-                               )
+                               }
+                               else {
+                                 let stringValue = 'http://docs.google.com/gview?url=';
+                                //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
+
+                                 stringValue += file.file;
+                                 stringValue += '&embedded=true';
+                                 return (
+                                   <div key={fileIdx} style={{padding: 5}}>
+                                     <iframe src={stringValue}></iframe>
+                                   </div>
+                                 )
+                               }
                              })
                            }
                          </div>
@@ -386,6 +413,41 @@ class ManagerSubject extends React.Component {
                         theme.openDetail &&
                         <div>
                           <p>{theme.topic.content}</p>
+                          {
+                            __.map(theme.topic.files,(file, fileIdx) => {
+                              if(file.type.includes('image')){
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <img src={file.file} className="img-responsive"/>
+                                  </div>
+                                )
+                              }
+                              else if (file.type.includes('audio')) {
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <audio src={file.file} controls/>
+                                  </div>
+                                )
+                              }
+                              else if (file.type.includes('video')) {
+                                <div key={fileIdx} style={{padding: 5}}>
+                                  <video controls src={file.file}/>
+                                </div>
+                              }
+                              else {
+                                let stringValue = 'http://docs.google.com/gview?url=';
+                               //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
+
+                                stringValue += file.file;
+                                stringValue += '&embedded=true';
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <iframe src={stringValue}></iframe>
+                                  </div>
+                                )
+                              }
+                            })
+                          }
                         </div>
                       }
                     </div>
@@ -447,6 +509,41 @@ class ManagerSubject extends React.Component {
                         ass.openDetail &&
                         <div>
                           <p>{ass.topic.content}</p>
+                          {
+                            __.map(ass.topic.files,(file, fileIdx) => {
+                              if(file.type.includes('image')){
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <img src={file.file} className="img-responsive"/>
+                                  </div>
+                                )
+                              }
+                              else if (file.type.includes('audio')) {
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <audio src={file.file} controls/>
+                                  </div>
+                                )
+                              }
+                              else if (file.type.includes('video')) {
+                                <div key={fileIdx} style={{padding: 5}}>
+                                  <video controls src={file.file}/>
+                                </div>
+                              }
+                              else {
+                                let stringValue = 'http://docs.google.com/gview?url=';
+                               //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
+
+                                stringValue += file.file;
+                                stringValue += '&embedded=true';
+                                return (
+                                  <div key={fileIdx} style={{padding: 5}}>
+                                    <iframe src={stringValue}></iframe>
+                                  </div>
+                                )
+                              }
+                            })
+                          }
                         </div>
                       }
                     </div>
@@ -536,6 +633,9 @@ const MyQuery = gql`
         }
         topic {
          _id content
+         files {
+           _id  file type  fileName
+         }
        }
      },
      getActivityAssignment(classSubjectId: $classSubjectId) {
