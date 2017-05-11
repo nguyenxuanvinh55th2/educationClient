@@ -492,7 +492,7 @@ class QuesionBank extends React.Component {
           {
             showReview ?
             <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-              <div style={{width: '100%'}}>
+              <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                 { this.renderQuestionReview() }
               </div>
               <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
@@ -582,7 +582,7 @@ class QuesionBank extends React.Component {
               {
                 showReview ?
                 <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-                  <div style={{width: '100%'}}>
+                  <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                     { this.renderQuestionReview() }
                   </div>
                   <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>

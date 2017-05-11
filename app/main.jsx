@@ -35,7 +35,9 @@ import CreateSubject from './components/CreateSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
 import WaitExam from './components/WaitExam.jsx';
 import StartedExam from './components/StartedExam.jsx';
-import ManagerSubject from './components/ManagerSubject.jsx'
+import ManagerSubject from './components/ManagerSubject.jsx';
+import QuestionStatis from './components/QuestionStatis.jsx';
+
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -69,6 +71,7 @@ ReactDOM.render(
               <IndexRoute component={Wall}/>
               <Route path="/profile/:id/createClass" component={ClassList}/>
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
+              <Route path="/profile/:id/questionSet/:questionSetId" component={QuestionStatis}/>
               <Route path="/profile/:id/createTest" component={CreateTest}/>
               <Route path="/profile/:id/:subjectId" component={ManagerSubject} />
             </Route>

@@ -177,6 +177,28 @@ class LeftBar extends React.Component {
     }
   }
 
+  renderQuestionSet() {
+    let { data, users } = this.props;
+    if(data.loading && ! data.questionSetBankUser) {
+      return []
+    } else {
+        return __.map(data.questionSetBankUser, (item, idx) =>(
+          <ListItem key={idx}
+            primaryText={
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <p style={{color: 'white', fontSize: 13}}>{ item.title }</p>
+                {
+                  <button className="btn btn-primary" onClick={() => {
+                    browserHistory.push('/profile/' + users.userId + '/questionSet/' + item._id)
+                  }}>Xem</button>
+                }
+              </div>
+            }
+          />
+        ))
+    }
+  }
+
   render() {
     let { users} = this.props;
     return (
@@ -240,6 +262,14 @@ class LeftBar extends React.Component {
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
            nestedItems={this.renderExamination()}
+         />
+         <ListItem
+           primaryText="Bộ câu hỏi"
+           leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
+           nestedItems={this.renderQuestionSet()}
          />
          {/* <ListItem
            primaryText="Thời gian biểu"
@@ -323,6 +353,10 @@ const CLASS_SUBJECT = gql`
      childrents {
         _id name image  email
       }
+    }
+    questionSetBankUser(userId: $userId) {
+      _id
+      title
     }
 }`
 

@@ -23,6 +23,9 @@ class AddQuestion extends React.Component {
       }],
       correctAnswer: [],
       score: 0,
+      anserCount: 0,
+      correctCount: 0,
+      correctRate: 0,
       isPublic: false,
       subjectId: '',
     }], openDrawer: false, subjectId: '', showReview: false, questionFile: null};
@@ -53,6 +56,9 @@ class AddQuestion extends React.Component {
           question: array[i],
           answerSet: [],
           correctAnswer: [],
+          anserCount: 0,
+          correctCount: 0,
+          correctRate: 0,
           score,
           isPublic: false,
           subjectId: '',
@@ -112,7 +118,7 @@ class AddQuestion extends React.Component {
           {
             showReview ?
             <div style={{width: '100%', paddingLeft: '10%', paddingRight: '10%'}}>
-              <div style={{width: '100%'}}>
+              <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                 { this.renderQuestionReview() }
               </div>
               <div style={{width: '100%'}}>
@@ -223,6 +229,9 @@ class AddQuestion extends React.Component {
         _id: (Math.floor(Math.random()*99999) + 10000).toString(),
         answer: '',
       }],
+      answerCount: 0,
+      correctCount: 0,
+      correctRate: 0,
       correctAnswer: [],
       score,
       isPublic: false
