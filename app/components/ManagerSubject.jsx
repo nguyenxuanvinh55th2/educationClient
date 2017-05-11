@@ -606,7 +606,7 @@ const INSERT_COMMENT = gql`
  }
 `;
 const MyQuery = gql`
-    query getData($classSubjectId: String!){
+    query getData($userId: String,$classSubjectId: String!){
       getActivityForum(classSubjectId: $classSubjectId) {
         _id
        topic {
@@ -659,12 +659,16 @@ const MyQuery = gql`
             _id  file type  fileName
           }
         }
+      },
+      getRolesUserClass(userId: $userId, objectId: $classSubjectId){
+        _id
+        roles
       }
     }`
 export default compose(
   graphql(MyQuery, {
       options: (ownProps) => ({
-        variables: {classSubjectId: ownProps.params.subjectId},
+        variables: {userId: ownProps.users.userId,classSubjectId: ownProps.params.subjectId},
         fetchPolicy: 'cache-only'
       }),
       name: 'dataSet',

@@ -99,7 +99,52 @@ class LeftBar extends React.Component {
       ))
     }
   }
-
+  renderClassSubjectStudent() {
+    let { data, subjectClass, subjectClassMutation  } = this.props;
+    if(data.loading && ! data.classSubjectsByStudent) {
+      return []
+    } else {
+      if (!subjectClass.fetchData) {
+          setTimeout(()=>{
+              subjectClassMutation({
+                  fetchData: true,
+                  classSubjectsByStudent:data.classSubjectsByStudent
+              });
+          }, 500);
+      }
+      return __.map(data.classSubjectsByStudent,(item,idx) =>(
+        <SubjectItem key={idx} subject={item.subject} _id={item._id} themes={item.theme} userId={this.props.users.userId}/>
+      ))
+    }
+  }
+  renderChildrent() {
+    let { data, subjectClass, subjectClassMutation  } = this.props;
+    if(data.loading && ! data.user) {
+      return []
+    } else {
+      if (!subjectClass.fetchData) {
+          setTimeout(()=>{
+              subjectClassMutation({
+                  fetchData: true,
+                  childrents:data.user.childrents
+              });
+          }, 500);
+      }
+      return __.map(data.user.childrents,(item,idx) =>(
+        <ListItem
+          key={idx}
+          primaryText={
+            <div>
+              <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + item._id)}>{item.name}</a>
+            </div>
+          }
+          initiallyOpen={false}
+          primaryTogglesNestedList={true}
+          style={{color: 'white', fontSize: 13}}
+        />
+      ))
+    }
+  }
   readyExamination(_id) {
     let { readyExamination } = this.props;
     let token = localStorage.getItem('Meteor.loginToken');
@@ -174,13 +219,9 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
-           nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
-           ]}
+           nestedItems={
+            this.renderClassSubjectStudent()
+           }
          />
          <ListItem
            primaryText="Phụ huynh"
@@ -188,13 +229,9 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
-           nestedItems={[
-             <ListItem
-               key={1}
-               primaryText="Starred"
-               leftIcon={<ActionGrade />}
-             />,
-           ]}
+           nestedItems={
+            this.renderChildrent()
+           }
          />
          <ListItem
            primaryText="Danh sách kì thi"
@@ -250,7 +287,7 @@ class LeftBar extends React.Component {
 }
 
 const CLASS_SUBJECT = gql`
-  query classSubjects($token: String!){
+  query classSubjects($userId: String,$token: String!){
     classSubjectsByTeacher(token: $token) {
       _id name dateStart  dateEnd
       isOpen  publicActivity
@@ -260,7 +297,17 @@ const CLASS_SUBJECT = gql`
       theme {
         _id  name  activity
       }
-    }
+    },
+    classSubjectsByStudent(token: $token) {
+      _id name dateStart  dateEnd
+      isOpen  publicActivity
+      subject {
+        _id code name ownerId  createAt
+      }
+      theme {
+        _id  name  activity
+      }
+    },
     examByUser(token: $token) {
       _id
       code
@@ -270,6 +317,12 @@ const CLASS_SUBJECT = gql`
       time
       createdAt
       status
+    },
+    user(userId:$userId) {
+     _id name
+     childrents {
+        _id name image  email
+      }
     }
 }`
 
@@ -280,8 +333,8 @@ const READY_EXAMINATION = gql`
 
 export default compose(
 graphql(CLASS_SUBJECT, {
-    options: () => ({
-      variables: {token: localStorage.getItem('Meteor.loginToken')},
+    options: (ownProps) => ({
+      variables: {userId: ownProps.users.userId,token: localStorage.getItem('Meteor.loginToken')},
       forceFetch: true
     }),
 }),
