@@ -126,11 +126,11 @@ class LeftBar extends React.Component {
           setTimeout(()=>{
               subjectClassMutation({
                   fetchData: true,
-                  childrents:data.user.childrents
+                  childrents:data.user.childrents ? data.user.childrents : []
               });
           }, 500);
       }
-      return __.map(data.user.childrents,(item,idx) =>(
+      return __.map(data.user.childrents ? data.user.childrents : [] ,(item,idx) =>(
         <ListItem
           key={idx}
           primaryText={
