@@ -135,9 +135,9 @@ class QuestionItem extends React.Component {
     return (
       <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <button className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10}} className="btn btn-default" onClick={this.showAnswer.bind(this)}>
+          <div className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}
-          </button>
+          </div>
           <Checkbox
             label="Chọn câu hỏi"
             checked={this.state.checked}
@@ -196,7 +196,7 @@ class QuestionSetItem extends React.Component {
     let { questionSet, getQuestionSet } = this.props;
     let { showQuestion } = this.state;
     return (
-      <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
+      <div style={{width: '100%', paddingLeft: 15, paddingRight: 15, paddingTop: 15}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
           <div className="col-sm-9" style={{padding: '5px 5px 0px 0px'}}>
             <button className="btn btn-default" style={{width: '100%'}} onClick={this.showQuestion.bind(this)}>
@@ -214,7 +214,7 @@ class QuestionSetItem extends React.Component {
         </div>
         {
           showQuestion ?
-          <div style={{width: '60%', marginBottom: 15}}>
+          <div style={{width: '80%', marginBottom: 15}}>
             { this.renderQuestionSet(questionSet) }
           </div> : null
         }
@@ -230,6 +230,8 @@ class QuesionBank extends React.Component {
   }
 
   addQuestion(question) {
+    question = __.cloneDeep(question);
+    question['score'] = 1;
     let questionList = this.state.questionList;
     questionList.push(question);
     this.setState({questionList});
@@ -249,6 +251,8 @@ class QuesionBank extends React.Component {
   }
 
   getQuestionSet(questionSet) {
+    questionSet = __.cloneDeep(questionSet);
+    __.forEach(questionSet.questions, item => item['score'] = 1)
     if(questionSet) {
       this.setState({questionSet});
       this.setState({questionType: 'questionSet'});
@@ -356,11 +360,34 @@ class QuesionBank extends React.Component {
     this.setState({questionType: 'question'});
   }
 
+  getScore(_id, score) {
+    let { questionList, questionType } = this.state;
+    if(questionType === 'questionSet') {
+      let questionSet = this.state.questionSet;
+      for(let i = 0; i < questionSet.questions.length; i++) {
+        if(questionSet.questions[i]._id  === _id) {
+          questionSet.questions[i].score = parseInt(score);
+          break;
+        }
+      }
+      this.setState({questionSet});
+    } else {
+        for(let i = 0; i < questionList.length; i++) {
+          if(questionList[i]._id  === _id) {
+            questionList[i].score = parseInt(score);
+            break;
+          }
+        }
+    }
+    this.setState({questionList});
+  }
+
   renderQuestionReview() {
     let { questionList, questionSet, questionType } = this.state;
     let questionReviewList = questionType === 'questionSet' ? questionSet.questions : questionList;
+    console.log('questionReviewList ', questionReviewList);
     return questionReviewList.map((item, idx) => (
-      <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType}/>
+      <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)}/>
     ))
   }
 

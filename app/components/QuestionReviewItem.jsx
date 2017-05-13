@@ -39,7 +39,7 @@ export default class QuestionReviewItem extends React.Component {
   }
 
   render() {
-    let { question, publicQuestion, questionType } = this.props;
+    let { question, publicQuestion, questionType, getReviewFrom, getScore } = this.props;
     let { showAnswer } = this.state;
     return (
       <div style={{width: '100%'}}>
@@ -70,9 +70,9 @@ export default class QuestionReviewItem extends React.Component {
             { this.renderAnswerSet(question) }
             <font style={{color: 'blue', fontWeight: 'bold'}}>Câu trả đúng:</font>
             { this.renderCorrectAnswer(question) }
-            <font style={{color: 'blue', fontWeight: 'bold'}}>Điểm số: </font>
-            <div style={{width: '100%'}}>
-              { question.score }
+            <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+              <font style={{color: 'blue', fontWeight: 'bold', paddingRight: 10}}>Điểm số: </font>
+              <input style={{width: 50, borderRadius: 3, border: 0, marginTop: -5}} type="number" value={ question.score } onChange={({target}) => getScore(question._id, target.value)}/>
             </div>
           </div> : null
         }

@@ -8,5 +8,4 @@ switch(caseProto){
         title = 'Hệ thống đào tạo trực tuyến';
         break;
 }
-
 module.exports = {graphqlUrl, socketEndpoint, title};
