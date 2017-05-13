@@ -160,7 +160,7 @@ class AddQuestion extends React.Component {
   renderQuestionReview() {
     let { questionList } = this.state;
     return questionList.map((item, idx) => (
-      <QuestionReviewItem getReviewFrom={'questionCreater'} key={item._id} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)}/>
+      <QuestionReviewItem getReviewFrom={'questionCreater'} key={item._id} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} getScore={this.setScoreValue.bind(this)}/>
     ))
   }
 

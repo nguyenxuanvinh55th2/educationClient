@@ -1,5 +1,5 @@
 //dev
-const graphqlUrl = 'http://localhost:3000/graphql';
+const graphqlUrl = 'http://localhost:8080/graphql';
 const socketEndpoint = 'ws://localhost:3000';
 const title = 'Localhost';
 //kmart

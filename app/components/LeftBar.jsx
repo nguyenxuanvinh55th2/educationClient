@@ -317,7 +317,7 @@ class LeftBar extends React.Component {
 }
 
 const CLASS_SUBJECT = gql`
-  query classSubjects($userId: String,$token: String!){
+  query classSubjects($userId: String!,$token: String!){
     classSubjectsByTeacher(token: $token) {
       _id name dateStart  dateEnd
       isOpen  publicActivity
