@@ -5,7 +5,7 @@ var config = {
     context: __dirname + "/app",
     devtool: 'cheap-module-source-map',
     entry: {
-        app: __dirname + "/app/shopOnline.jsx",
+        app: __dirname + "/app/main.jsx",
         vendor: [
             'react', 'react-dom', 'react-addons-test-utils', 'react-grid-layout', 'react-router',
             'lodash', 'moment', 'redux', 'asteroid',
@@ -45,11 +45,9 @@ var config = {
         rules: [
           {
             test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            options:{
-              "presets": [["es2015",{"modules": false}], "react"]
-            }
+            exclude: "/node_modules",
+            use: ['babel-loader'],
+            include: path.join(__dirname, 'app')
           },
           { test: /\.css$/i, use: ['style-loader', 'css-loader'] },
         //   {

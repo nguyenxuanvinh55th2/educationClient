@@ -61,7 +61,7 @@ class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <img src="/public/imgs/logo.png" alt="Dispute Bills" />
+                <img src="/images/logo.png" alt="Dispute Bills" />
               </a>
             </div>
             <div className="collapse navbar-collapse" id="myNavbar">
@@ -69,7 +69,7 @@ class Header extends React.Component {
                 {
                   users.userId &&
                   <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                  <img src={users.currentUser.image ? users.currentUser.image : '/public/imgs/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                  <img src={users.currentUser.image ? users.currentUser.image : '/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
                 }
                 {
                   !users.userId &&

@@ -313,7 +313,7 @@ class ManagerSubject extends React.Component {
                     <div key={idx} style={{backgroundColor: 'white', marginTop: 10, padding: 10}}>
                       <ListItem style={{fontSize: 13}}
                         innerDivStyle={{padding: '5px 16px 5px 50px'}}
-                         leftAvatar={<Avatar src={topic.owner && topic.owner.image ? topic.owner.image : '/public/imgs/userImage.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
+                         leftAvatar={<Avatar src={topic.owner && topic.owner.image ? topic.owner.image : '/images/userImage.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
                          primaryText={
                            <p>
                             {
@@ -376,7 +376,7 @@ class ManagerSubject extends React.Component {
                                __.map(topic.memberReply,(reply, index) => {
                                  return (
                                    <div key={index} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
-                                     <img src={reply.owner && reply.owner.image ? reply.owner.image : '/public/imgs/userImage.jpg'} width="30" height="30" />
+                                     <img src={reply.owner && reply.owner.image ? reply.owner.image : '/images/userImage.jpg'} width="30" height="30" />
                                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 15}}>
                                        <p style={{color: '#35bcbf'}}>{reply.owner && reply.owner.name ? reply.owner.name : 'Vô danh'}</p> <p>&nbsp;</p> <p>{reply.content}</p>
                                      </div>
@@ -385,7 +385,7 @@ class ManagerSubject extends React.Component {
                                })
                              }
                              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
-                               <img src="/public/imgs/userImage.jpg" width="30" height="30" style={{marginTop: 7}} />
+                               <img src="/images/userImage.jpg" width="30" height="30" style={{marginTop: 7}} />
                                <input type="text" id={idValue} className="form-control" style={{marginTop: 10, marginLeft: 15}} onKeyPress={(event)=>this.handleAddComment(event,topic._id,idValue)} />
                              </div>
                            </div>
