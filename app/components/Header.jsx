@@ -15,6 +15,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import Dialog from 'material-ui/Dialog';
 
 import Login from './Login.jsx';
+import Register from './Register.jsx';
 import JoinExamDialog from './JoinExamDialog.jsx';
 
 class Header extends React.Component {
@@ -77,7 +78,7 @@ class Header extends React.Component {
                 }
                 {
                   !users.userId &&
-                  <li style={{marginRight: 20}}><a href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
+                  <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
                 }
                 {
                   users.userId &&
@@ -99,7 +100,9 @@ class Header extends React.Component {
                     <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                   </div>
                   {
-                    <Login {...this.props} handleClose={() => this.setState({showModal: false})}/>
+                    dialogType === 'register'  ?
+                    <Register {...this.props} handleClose={() => this.setState({showModal: false})}/> :
+                    <Login {...this.props} handleClose={() => this.setState({showModal: false, dialogType: ''})}/>
                   }
                 </div>
               </div>
