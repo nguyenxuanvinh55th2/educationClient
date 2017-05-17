@@ -1,7 +1,6 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import {asteroid} from '../asteroid'
 
 import { Link, Router, browserHistory } from 'react-router'
 import CryptoJS from "crypto-js";
