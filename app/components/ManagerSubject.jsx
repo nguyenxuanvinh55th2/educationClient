@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Link, Router, browserHistory } from 'react-router'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import {AgGridReact} from 'ag-grid-react';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -258,7 +259,6 @@ class ManagerSubject extends React.Component {
         )
       }
       else {
-        console.log(dataSet.getUserByClassSucbject);
         return (
           <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
             <Tabs className="secondary" >
@@ -588,8 +588,41 @@ class ManagerSubject extends React.Component {
                 </div>
               </TabPanel>
 
-              <TabPanel>
-                3
+              <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
+                  {
+                    __.map(dataSet.getTeacherByClassSubject, (infoUser,idx) => {
+                      return (
+                        <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
+                          <div>
+                            <img src={infoUser.image ? infoUser.image : '/images/userImage.jpg'} height="100" width="100" className="img-responsive"/>
+                          </div>
+                          <div style={{paddingLeft: 10}}>
+                            <h3>{infoUser.name}</h3>
+                            <h4>{infoUser.email}</h4>
+                            <h5>Teacher</h5>
+                          </div>
+                        </div>
+                      )
+                    })
+                  }
+                  {
+                    __.map(dataSet.getUserByClassSucbject, (infoUser,idx) => {
+                      return (
+                        <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
+                          <div>
+                            <img src={infoUser.image ? infoUser.image : '/images/userImage.jpg'} height="100" width="100" className="img-responsive"/>
+                          </div>
+                          <div style={{paddingLeft: 10}}>
+                            <h3>{infoUser.name}</h3>
+                            <h4>{infoUser.email}</h4>
+                            <h5>Student</h5>
+                          </div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </TabPanel>
               <TabPanel>
                 3
@@ -671,7 +704,10 @@ const MyQuery = gql`
       },
       getUserByClassSucbject(classSubjectId: $classSubjectId){
         _id name image email
-      }
+      },
+      getTeacherByClassSubject(classSubjectId: $classSubjectId){
+        _id name image email
+      },
     }`
 export default compose(
   graphql(MyQuery, {
