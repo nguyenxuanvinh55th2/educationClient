@@ -54,7 +54,7 @@ export default class Home extends React.Component {
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
               <img src="https://tuielearning.s2corp.vn/images/anh1.png" className="img-responsive" />
-              <img src="https://tuielearning.s2corp.vn/images/anh2.png" className="img-responsive" />
+              <img src="https://tuielearning.s2corp.vn/images/anh2New.png" className="img-responsive" />
             </div>
           </div>
           <div className="row" style={{margin: 40}}>
