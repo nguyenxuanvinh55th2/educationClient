@@ -18,8 +18,8 @@ export default class Home extends React.Component {
     }
   }
   render() {
-    let imgUrlTop = 'images/home-page_01.png';
-    let imgUrlCenter = 'images/home-page_15.png';
+    let imgUrlTop = 'https://tuielearning.s2corp.vn/images/home-page_01.png';
+    let imgUrlCenter = 'https://tuielearning.s2corp.vn/images/home-page_15.png';
     return(
       <div>
         <Header {...this.props}/>
