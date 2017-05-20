@@ -18,15 +18,15 @@ export default class Home extends React.Component {
     }
   }
   render() {
-    let imgUrlTop = 'public/imgs/home-page_01.png';
-    let imgUrlCenter = 'public/imgs/home-page_15.png';
+    let imgUrlTop = 'images/home-page_01.png';
+    let imgUrlCenter = 'images/home-page_15.png';
     return(
       <div>
         <Header {...this.props}/>
         <div style={{flexDirection:'column', width:'auto', marginTop: 65}}>
           <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', padding: '65px 0px', height: this.state.height - 65}}>
             <div style={{paddingBottom: 60}}>
-              <img src="/public/imgs/text.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
+              <img src="/images/text.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" />
                 <button type="button" className="btn" style={{backgroundColor: '#35bcbf', borderRadius: 25, width: 250, height: 45, color: 'white', marginTop: 15}}>THAM GIA THI</button>
@@ -53,8 +53,8 @@ export default class Home extends React.Component {
               </p>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="/public/imgs/anh1.png" className="img-responsive" />
-              <img src="/public/imgs/anh2.png" className="img-responsive" />
+              <img src="/images/anh1.png" className="img-responsive" />
+              <img src="/images/anh2.png" className="img-responsive" />
             </div>
           </div>
           <div className="row" style={{margin: 40}}>
@@ -109,7 +109,7 @@ export default class Home extends React.Component {
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="/public/imgs/anh3.png" className="img-responsive" />
+              <img src="/images/anh3.png" className="img-responsive" />
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
               <h3>Rèn luyện tính tự lập cho sinh viên</h3>
@@ -152,7 +152,7 @@ export default class Home extends React.Component {
           </div>
           <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
             <div className="col-sm-12 col-md-5 col-lg-4 col-md-offset-1 col-lg-offset-1" style={{flexDirection: 'column', alignItems: 'center'}}>
-              <img src="/public/imgs/logo.png" alt="Dispute Bills" style={{height: 40}} />
+              <img src="/images/logo.png" alt="Dispute Bills" style={{height: 40}} />
               <div>
                 <p>LIÊN HỆ</p>
                 <p>Tuielearning.com.vn <span className="glyphicon glyphicon-home pull-left" style={{paddingRight: 10, top: 3}}></span></p>

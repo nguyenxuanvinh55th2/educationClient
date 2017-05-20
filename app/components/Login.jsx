@@ -1,7 +1,6 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import {asteroid} from '../asteroid'
 
 import { Link, Router, browserHistory } from 'react-router'
 import CryptoJS from "crypto-js";
@@ -21,7 +20,7 @@ class Login extends Component {
     let { loginWithPassword } = this.props;
     let that = this;
     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
-    loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
+    loginWithPassword(that.state.email, encrypted.toString()).then(({data})=>{
       if(data){
         let dataUser = JSON.parse(data.loginWithPassword);
         this.props.loginCommand(dataUser.user);
@@ -31,6 +30,7 @@ class Login extends Component {
         this.props.handleClose();
       }
     }).catch((err)=>{
+      console.log(err);
       this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})
       this.props.handleClose();
     });
@@ -64,7 +64,7 @@ class Login extends Component {
     return (
       <div style={{flexDirection: 'column'}}>
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <img src="/public/imgs/logo_den.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+          <img src="/images/logo_den.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
         </div>
         <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
           <h4>ĐĂNG NHẬP</h4>

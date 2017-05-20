@@ -8,8 +8,6 @@ import __ from 'lodash';
 import { Link, Router, browserHistory } from 'react-router'
 // import {FB, FacebookApiException} from 'fb';
 
-import { asteroid } from '../asteroid'
-
 class Message extends Component {
   render() {
     if(this.props.users && this.props.userId !== this.props.users.userId) {
