@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import CryptoJS from "crypto-js";
 
 class Register extends React.Component {
 
@@ -26,32 +27,48 @@ class Register extends React.Component {
 
     //---------------------mail services-------------------------------//
     this.msMail = {};
-    this.state = ({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: '', msMail: ''});
+    this.state = ({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: '', msMail: '', existsUser: false, existEmail: false});
   }
 
   handleChange(e) {
-    if(e.target.id === 'email')
+    if(e.target.id === 'email') {
       this.setState({ email: e.target.value });
-    else
-      if(e.target.id === 'password')
-        this.setState({ password: e.target.value });
-      else
-        if(e.target.id === 'passwordRetype')
-          this.setState({ passwordRetype: e.target.value });
+      this.props.getExistEmail(e.target.value).then(({data}) => {
+        if(data.getExistEmail) {
+          console.log("message ", data.getExistEmail);
+          this.setState({existEmail: true});
+        } else {
+            this.setState({existEmail: false});
+        }
+      });
+    } else
+        if(e.target.id === 'password')
+          this.setState({ password: e.target.value });
         else
-          if(e.target.id === 'name')
-            this.setState({ name: e.target.value });
+          if(e.target.id === 'passwordRetype')
+            this.setState({ passwordRetype: e.target.value });
           else
             if(e.target.id === 'old')
               this.setState({ old: e.target.value });
             else
-              if(e.target.id === 'address')
-                this.setState({ address: e.target.value });
-              else
-                if(e.target.id === 'msMail')
-                  this.setState({ msMail: e.target.value });
-                else
-                  this.setState({ phone: e.target.value });
+              if(e.target.id === 'name') {
+                this.setState({ name: e.target.value });
+                this.props.getExistUserName(e.target.value).then(({data}) => {
+                  console.log("message ", data.getExistUserName);
+                  if(data.getExistUserName) {
+                    this.setState({existUser: true});
+                  } else {
+                      this.setState({existUser: false});
+                  }
+                });
+              } else
+                  if(e.target.id === 'address')
+                    this.setState({ address: e.target.value });
+                  else
+                    if(e.target.id === 'msMail')
+                      this.setState({ msMail: e.target.value });
+                    else
+                      this.setState({ phone: e.target.value });
   }
 
   getEmailValidation() {
@@ -114,7 +131,7 @@ class Register extends React.Component {
             <input id='email' type="text" className="form-control" placeholder="Nhập mật khẩu" placeholder="Email" ref={node => this.email = node } onChange={this.handleChange.bind(this)}/>
           </div>
           <div className="col-sm-8 col-sm-offset-3">
-            <span className="help-block">{this.getEmailValidation() !== 'success' && 'Địa chỉ mail rỗng hoặc không hợp lệ'}</span>
+            <span className="help-block">{this.state.existEmail ? 'Địa chỉ email đã tồn tại trong hệ thống' : this.getEmailValidation() !== 'success' && 'Địa chỉ mail rỗng hoặc không hợp lệ'}</span>
           </div>
         </div>
 
@@ -124,7 +141,7 @@ class Register extends React.Component {
             <input id='name' type="text" className="form-control" placeholder="Tên của bạn" ref={ node => this.name = node } onChange={this.handleChange.bind(this)}/>
           </div>
           <div className="col-sm-8 col-sm-offset-3">
-            <span className="help-block">{this.getNameValidation() !== 'success' && 'Tên của bạn là bắt buộc'}</span>
+            <span className="help-block">{this.state.existUser ? 'username đã tồn tại trong hệ thống' : this.getNameValidation() !== 'success' && 'Tên của bạn là bắt buộc'}</span>
           </div>
         </div>
 
@@ -187,23 +204,27 @@ class Register extends React.Component {
         </div>
 
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <button className="btn btn-primary" style={{width: 150}} onClick={e => {
+          <button disabled={!(this.getEmailValidation() === 'success' &&
+            this.getPasswordValidation() === 'success' &&
+            this.getPasswordRetypeValidation() === 'success' &&
+            this.getNameValidation() === 'success' &&
+            this.getAddressValidation() === 'success' && !this.state.existEmail && !this.state.existsUser)} className="btn btn-primary" style={{width: 150}} onClick={e => {
             e.preventDefault();
             if( this.getEmailValidation() === 'success' &&
               this.getPasswordValidation() === 'success' &&
               this.getPasswordRetypeValidation() === 'success' &&
               this.getNameValidation() === 'success' &&
-              this.getAddressValidation() === 'success' ) {
+              this.getAddressValidation() === 'success' && !this.state.existEmail && !this.state.existsUser ) {
                 let email = this.state.email;
                 let password = this.state.password;
-                let name = this.state.name;
+                let username = this.state.name;
                 let old = this.state.old;
                 let gender = this.gender.value;
                 let address = this.state.address;
                 let info = {
                   email,
                   password,
-                  name,
+                  username,
                   old,
                   gender,
                   address,
@@ -211,15 +232,30 @@ class Register extends React.Component {
                 info = JSON.stringify(info);
                 this.props.register(info).then(() => {
                   this.props.handleClose();
+                  let that = this;
+                  var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
+                  this.props.loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
+                    if(data){
+                      let dataUser = JSON.parse(data.loginWithPassword);
+                      this.props.loginCommand(dataUser.user);
+                      localStorage.setItem('keepLogin', true);
+                      localStorage.setItem('Meteor.loginToken', dataUser.token);
+                      this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
+                      this.props.handleClose();
+                      this.setState({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: ''});
+                      // ReactDOM.findDOMNode(this.email).value = '';
+                      // ReactDOM.findDOMNode(this.password).value = '';
+                      // ReactDOM.findDOMNode(this.name).value = '';
+                      // ReactDOM.findDOMNode(this.old).value = '';
+                      // this.gender.value = true;
+                      // ReactDOM.findDOMNode(this.address).value = '';
+                      // ReactDOM.findDOMNode(this.phone).value = '';
+                    }
+                  }).catch((err)=>{
+                    this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})
+                    this.props.handleClose();
+                  });
                 });
-                // ReactDOM.findDOMNode(this.email).value = '';
-                // ReactDOM.findDOMNode(this.password).value = '';
-                // ReactDOM.findDOMNode(this.name).value = '';
-                // ReactDOM.findDOMNode(this.old).value = '';
-                // this.gender.value = true;
-                // ReactDOM.findDOMNode(this.address).value = '';
-                // ReactDOM.findDOMNode(this.phone).value = '';
-                this.setState({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: ''});
               }
         }}>
             Đăng ký
@@ -234,6 +270,25 @@ const REGISTER = gql`
     mutation register($info: String!){
         register(info: $info)
 }`
+const GET_EXIST_USER_NAME = gql`
+    mutation getExistUserName($value: String!){
+        getExistUserName(value: $value) {
+          _id
+        }
+}`
+const GET_EXIST_EMAIL = gql`
+    mutation getExistEmail($value: String!){
+        getExistEmail(value: $value) {
+          _id
+        }
+}`
+
+const LOGIN = gql`
+  mutation loginWithPassword($username: String, $password: String) {
+    loginWithPassword(username: $username, password: $password)
+  }
+`;
+
 
 
 export default compose (
@@ -242,4 +297,19 @@ export default compose (
           register : (info) => mutate({variables:{info}})
         })
     }),
+    graphql(GET_EXIST_USER_NAME, {
+        props: ({mutate})=> ({
+          getExistUserName : (value) => mutate({variables:{value}})
+        })
+    }),
+    graphql(GET_EXIST_EMAIL, {
+        props: ({mutate})=> ({
+          getExistEmail : (value) => mutate({variables:{value}})
+        })
+    }),
+    graphql(LOGIN,{
+        props:({mutate})=>({
+        loginWithPassword : (username,password) =>mutate({variables:{username,password}})
+      })
+    })
 )(Register);

@@ -37,6 +37,7 @@ import WaitExam from './components/WaitExam.jsx';
 import StartedExam from './components/StartedExam.jsx';
 import ManagerSubject from './components/ManagerSubject.jsx';
 import QuestionStatis from './components/QuestionStatis.jsx';
+import Authenticate from './components/Authenticate.jsx';
 
 export class WrapMain extends React.Component{
     constructor(props){
@@ -67,6 +68,7 @@ ReactDOM.render(
           <Route path='/' component={App}>
             <IndexRoute component={Home}/>
             <Route path="login" component={Login}/>
+            <Route path="/authenticate/:id/:code" component={Authenticate}/>
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
               <Route path="/profile/:id/createClass" component={ClassList}/>
