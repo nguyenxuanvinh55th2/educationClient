@@ -12,9 +12,19 @@ import moment from 'moment';
 import accounting from 'accounting';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
+import Chip from 'material-ui/Chip';
 class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
+    this.styles = {
+      chip: {
+        margin: 4
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+    };
     this.state = {
       subjectId: props.params.subjectId,
       dataForum: {
@@ -284,12 +294,35 @@ class ManagerSubject extends React.Component {
               </TabList>
               <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                 <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-                  <div style={{border: '1px solid #f0f0f0', height: 150, borderRadius: 10, padding: 10}}>
-                    <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{border: 'none', height: 100, width: '100%'}} value={this.state.dataForum.content} onChange={({target}) => {
+                  <div style={{border: '1px solid #f0f0f0', minHeight: 150, borderRadius: 10, padding: 10}}>
+                    <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{ height: 100, width: '100%'}} value={this.state.dataForum.content} onChange={({target}) => {
                       let dataForum = this.state.dataForum;
                       dataForum.content = target.value;
                       this.setState({dataForum: dataForum})
                     }}/>
+                    {
+                      this.state.dataForum.files.length ?
+                      <div style={this.styles.wrapper}>
+                        {
+                          __.map(this.state.dataForum.files,(file,idx) => {
+                            return(
+                              <Chip
+                                  key={idx}
+                                  onRequestDelete={() => {
+                                    this.setState((prevState) => {
+                                      prevState.dataForum.files.splice(idx,1);
+                                      return prevState;
+                                    });
+                                  }}
+                                  style={this.styles.chip}
+                                >
+                                  {file.fileName}
+                                </Chip>
+                            )
+                          })
+                        }
+                      </div> : <div></div>
+                    }
                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                       <div>
                         <button type="button" className="btn" style={{width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getImageForum").click()}>+ Ảnh</button>
@@ -476,8 +509,8 @@ class ManagerSubject extends React.Component {
                         dataTheme.title = target.value;
                         this.setState({dataTheme: dataTheme});
                       }}/>
-                      <div style={{border: '1px solid #f0f0f0', height: 100, padding: 10, marginTop: 15}}>
-                        <textarea rows="2" placeholder="Thêm nội dung chủ đề" style={{border: 'none', height: 55, width: '100%'}} onChange={({target}) => {
+                      <div style={{border: '1px solid #f0f0f0', minHeight: 100, padding: 10, marginTop: 15}}>
+                        <textarea rows="2" placeholder="Thêm nội dung chủ đề" style={{ height: 100, width: '100%'}} onChange={({target}) => {
                           let dataTheme = this.state.dataTheme;
                           dataTheme.content = target.value;
                           this.setState({dataTheme: dataTheme});
@@ -485,6 +518,29 @@ class ManagerSubject extends React.Component {
                         {/* <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
                           <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                         </div> */}
+                        {
+                          this.state.dataTheme.files.length ?
+                          <div style={this.styles.wrapper}>
+                            {
+                              __.map(this.state.dataTheme.files,(file,idx) => {
+                                return(
+                                  <Chip
+                                      key={idx}
+                                      onRequestDelete={() => {
+                                        this.setState((prevState) => {
+                                          prevState.dataTheme.files.splice(idx,1);
+                                          return prevState;
+                                        });
+                                      }}
+                                      style={this.styles.chip}
+                                    >
+                                      {file.fileName}
+                                    </Chip>
+                                )
+                              })
+                            }
+                          </div> : <div></div>
+                        }
                       </div>
                       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                         <div>
@@ -567,12 +623,35 @@ class ManagerSubject extends React.Component {
                       dataAssign.title = target.value;
                       this.setState({dataAssign: dataAssign});
                     }}/>
-                    <div style={{border: '1px solid #f0f0f0', height: 100, padding: 10, marginTop: 15}}>
-                      <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 55, width: '100%'}} onChange={({target}) => {
+                    <div style={{border: '1px solid #f0f0f0', minHeighth: 100, padding: 10, marginTop: 15}}>
+                      <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 100, width: '100%'}} onChange={({target}) => {
                         let dataAssign = this.state.dataAssign;
                         dataAssign.content = target.value;
                         this.setState({dataAssign: dataAssign});
                       }}/>
+                      {
+                        this.state.dataAssign.files.length ?
+                        <div style={this.styles.wrapper}>
+                          {
+                            __.map(this.state.dataAssign.files,(file,idx) => {
+                              return(
+                                <Chip
+                                    key={idx}
+                                    onRequestDelete={() => {
+                                      this.setState((prevState) => {
+                                        prevState.dataAssign.files.splice(idx,1);
+                                        return prevState;
+                                      });
+                                    }}
+                                    style={this.styles.chip}
+                                  >
+                                    {file.fileName}
+                                  </Chip>
+                              )
+                            })
+                          }
+                        </div> : <div></div>
+                      }
                       {/* <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                       </div> */}

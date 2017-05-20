@@ -13,6 +13,7 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import Dialog from 'material-ui/Dialog';
+import Drawer from 'material-ui/Drawer';
 
 import Login from './Login.jsx';
 import Register from './Register.jsx';
@@ -25,7 +26,8 @@ class Header extends React.Component {
     this.state = {
       height: window.innerHeight,
       showModal: false,
-      dialogType: ''
+      dialogType: '',
+      isOpenDrawer: false
     }
   }
   handleResize(e) {
@@ -56,7 +58,7 @@ class Header extends React.Component {
         <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0}}>
           <div className="container-fluid">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <button type="button" className="navbar-toggle" onClick={() => this.setState({isOpenDrawer: !this.state.isOpenDrawer})}>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
@@ -65,32 +67,61 @@ class Header extends React.Component {
                 <img src="https://tuielearning.s2corp.vn/images/logo.png" alt="Dispute Bills" />
               </a>
             </div>
-            <div className="collapse navbar-collapse" id="myNavbar">
-              <ul className="nav navbar-nav navbar-right" style={{paddingRight: 20}}>
-                {
-                  users.userId &&
-                  <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                  <img src={users.currentUser.image ? users.currentUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
-                }
-                {
-                  !users.userId &&
-                  <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
-                }
-                {
-                  !users.userId &&
-                  <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
-                }
-                {
-                  users.userId &&
-                  <li><a onClick={() => this.handleLogout()} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng xuất</a></li>
-                }
-              </ul>
-            </div>
+            {
+              !this.state.isOpenDrawer &&
+              <div className="collapse navbar-collapse" id="myNavbar">
+                <ul className="nav navbar-nav navbar-right" style={{paddingRight: 20}}>
+                  {
+                    users.userId &&
+                    <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
+                    <img src={users.currentUser.image ? users.currentUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                  }
+                  {
+                    !users.userId &&
+                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true,  dialogType: 'login'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
+                  }
+                  {
+                    !users.userId &&
+                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
+                  }
+                  {
+                    users.userId &&
+                    <li><a onClick={() => this.handleLogout()} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng xuất</a></li>
+                  }
+                </ul>
+              </div>
+            }
           </div>
         </nav>
+        <Drawer  docked={false} width={"80%"} style={{backgroundColor: '#2b3a41'}} openSecondary={true} open={this.state.isOpenDrawer} onRequestChange={() => this.setState({isOpenDrawer: !this.state.isOpenDrawer})} >
+          <div style={{display: 'flex', flexDirection :'column'}}>
+            <button onClick={() => this.setState({isOpenDrawer: !this.state.isOpenDrawer})}>Close</button>
+            <ul className="nav" style={{backgroundColor: '#2b3a41'}}>
+              {
+                users.userId &&
+                <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
+                <img src={users.currentUser.image ? users.currentUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+              }
+              {
+                !users.userId &&
+                <li style={{width: '100%', backgroundColor: '#2b3a41'}}><a onClick={() => this.setState({showModal: true})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
+              }
+              {
+                !users.userId &&
+                <li style={{width: '100%', backgroundColor: '#2b3a41'}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} href="#" className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
+              }
+              {
+                users.userId &&
+                <li style={{width: '100%', backgroundColor: '#2b3a41'}}><a onClick={() => this.handleLogout()} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng xuất</a></li>
+              }
+            </ul>
+          </div>
+        </Drawer>
         <Dialog
           modal={true}
           open={this.state.showModal}
+          autoDetectWindowHeight={false}
+          autoScrollBodyContent={false}
           contentStyle={{minHeight:'60%'}}
         >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
