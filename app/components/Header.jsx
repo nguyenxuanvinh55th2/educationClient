@@ -64,7 +64,7 @@ class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <img src="https://tuielearning.s2corp.vn/images/logo.png" alt="Dispute Bills" />
+                <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
               </a>
             </div>
             {
@@ -74,7 +74,7 @@ class Header extends React.Component {
                   {
                     users.userId &&
                     <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                    <img src={users.currentUser.image ? users.currentUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                    <img src={users.currentUser.image ? users.currentUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
                   }
                   {
                     !users.userId &&
@@ -100,7 +100,7 @@ class Header extends React.Component {
               {
                 users.userId &&
                 <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                <img src={users.currentUser.image ? users.currentUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                <img src={users.currentUser.image ? users.currentUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
               }
               {
                 !users.userId &&

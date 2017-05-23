@@ -347,7 +347,7 @@ class ManagerSubject extends React.Component {
                         <div key={idx} style={{backgroundColor: 'white', marginTop: 10, padding: 10}}>
                           <ListItem style={{fontSize: 13}}
                             innerDivStyle={{padding: '5px 16px 5px 50px'}}
-                             leftAvatar={<Avatar src={topic.owner && topic.owner.image ? topic.owner.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
+                             leftAvatar={<Avatar src={topic.owner && topic.owner.image ? topic.owner.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
                              primaryText={
                                <p>
                                 {
@@ -410,7 +410,7 @@ class ManagerSubject extends React.Component {
                                    __.map(topic.memberReply,(reply, index) => {
                                      return (
                                        <div key={index} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
-                                         <img src={reply.owner && reply.owner.image ? reply.owner.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} width="30" height="30" />
+                                         <img src={reply.owner && reply.owner.image ? reply.owner.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} width="30" height="30" />
                                          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 15}}>
                                            <p style={{color: '#35bcbf'}}>{reply.owner && reply.owner.name ? reply.owner.name : 'Vô danh'}</p> <p>&nbsp;</p> <p>{reply.content}</p>
                                          </div>
@@ -419,7 +419,7 @@ class ManagerSubject extends React.Component {
                                    })
                                  }
                                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingTop: 10}}>
-                                   <img src="https://tuielearning.s2corp.vn/images/userImage.jpg" width="30" height="30" style={{marginTop: 7}} />
+                                   <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg" width="30" height="30" style={{marginTop: 7}} />
                                    <input type="text" id={idValue} className="form-control" style={{marginTop: 10, marginLeft: 15}} onKeyPress={(event)=>this.handleAddComment(event,topic._id,idValue)} />
                                  </div>
                                </div>
@@ -674,7 +674,7 @@ class ManagerSubject extends React.Component {
                       return (
                         <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
                           <div>
-                            <img src={infoUser.image ? infoUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} height="100" width="100" className="img-responsive"/>
+                            <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
                           </div>
                           <div style={{paddingLeft: 10}}>
                             <h3>{infoUser.name}</h3>
@@ -690,7 +690,7 @@ class ManagerSubject extends React.Component {
                       return (
                         <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
                           <div>
-                            <img src={infoUser.image ? infoUser.image : 'https://tuielearning.s2corp.vn/images/userImage.jpg'} height="100" width="100" className="img-responsive"/>
+                            <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
                           </div>
                           <div style={{paddingLeft: 10}}>
                             <h3>{infoUser.name}</h3>
