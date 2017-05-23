@@ -54,7 +54,7 @@ class Header extends React.Component {
     let { users } = this.props;
     let { dialogType } = this.state;
     return(
-      <div style={{flexDirection:'column', width:'auto'}}>
+      <div style={{flexDirection:'column', width:'auto', height: 40, maxHeight: 40}}>
         <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0}}>
           <div className="container-fluid">
             <div className="navbar-header">

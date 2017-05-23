@@ -135,7 +135,7 @@ class LeftBar extends React.Component {
           key={idx}
           primaryText={
             <div>
-              <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + item._id)}>{item.name}</a>
+              <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.users.userId + '/children/' + item._id )}>{item.name}</a>
             </div>
           }
           initiallyOpen={false}

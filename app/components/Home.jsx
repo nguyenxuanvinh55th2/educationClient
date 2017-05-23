@@ -21,10 +21,10 @@ export default class Home extends React.Component {
     let imgUrlTop = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/home-page_01_zpsty0reykt.png';
     let imgUrlCenter = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/home-page_15_zpsjp7fq1qu.png';
     return(
-      <div>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
         <Header {...this.props}/>
-        <div style={{flexDirection:'column', width:'auto', marginTop: 65}}>
-          <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', padding: '65px 0px', height: this.state.height - 65}}>
+        <div style={{flexDirection:'column', width:'auto'}}>
+          <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', height: this.state.height - 65, paddingTop: 10}}>
             <div style={{paddingBottom: 60}}>
               <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/text_zpsumkavrgr.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

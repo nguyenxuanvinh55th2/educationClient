@@ -261,6 +261,43 @@ class ManagerSubject extends React.Component {
       }
     }
   }
+  renderActivityUser(){
+    let userInClass = __.cloneDeep(this.props.dataSet.getUserByClassSucbject);
+    __.forEach(userInClass,(user,idx) => {
+      user.forum = [];
+      __.forEach(this.props.dataSet.getActivityForum,(forum) => {
+        if(forum.topic.owner._id == user._id){
+          user.forum.push(forum)
+        }
+      })
+    });
+    return(
+      <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Tên học viên</th>
+              <th>Email</th>
+              <th>Số lượng tương tác Forum</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              __.map(userInClass,(userClass,idx) => {
+                return (
+                  <tr key={idx}>
+                    <td>{userClass.name}</td>
+                    <td>{userClass.email}</td>
+                    <td>{userClass.forum.length}</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
   render(){
     let { dataSet, users } = this.props;
       if(dataSet.loading && !dataSet.getActivityForum){
@@ -703,8 +740,10 @@ class ManagerSubject extends React.Component {
                   }
                 </div>
               </TabPanel>
-              <TabPanel>
-                3
+              <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+                {
+                  this.renderActivityUser()
+                }
               </TabPanel>
             </Tabs>
           </div>
