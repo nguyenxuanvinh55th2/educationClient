@@ -164,7 +164,7 @@ class LeftBar extends React.Component {
               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <p style={{color: 'white', fontSize: 13}}>{ item.name }</p>
                 {
-                  item.status === 0 ?
+                  (item.status === 0 || item.status === 1) ?
                   <button className="btn btn-primary" onClick={this.readyExamination.bind(this, item._id)}>Bắt đầu</button> :
                   <button className="btn btn-primary" onClick={() => {
                     browserHistory.push('/waitExam/' + item._id)

@@ -42,6 +42,22 @@ class QuestionContent extends React.Component {
             <h3 style={{marginTop: 0, marginBottom: 15}}>{ question.question }</h3>
           }
         </div>
+        {
+          question.file && (
+            question.file.type.includes('image') ?
+            <img style={{height: 300, margin: 15, marginLeft: 0, marginTop: 0}} src={question.file.link}/> :
+            question.file.type.includes('video') ?
+            <video height="300" style={{margin: 15}} controls>
+              <source src={question.file.link} type={question.file.type}/>
+              Your browser does not support the video tag.
+            </video> :
+            question.file.type.includes('audio') ?
+            <audio style={{margin: 15}} controls>
+              <source src={question.file.link} type={question.file.type}/>
+              Your browser does not support the audio tag.
+            </audio> : null
+          )
+        }
         <div style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
           {
             question.answerSet.map((item, idx) => (
@@ -297,7 +313,6 @@ class StartedExam extends React.Component {
     let hour = Math.floor(time / 3600);
     let minute = Math.floor((time - hour * 3600) / 60);
     let second = Math.floor(time - hour * 3600 - minute * 60);
-    console.log('currentQuestion ', currentQuestion);
     if(!currentQuestion && data.examById.status !== 100) {
       return (
         <div className="spinner spinner-lg"></div>
@@ -307,6 +322,7 @@ class StartedExam extends React.Component {
           <div style={{backgroundColor: 'white'}}>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
               <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+              <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
               <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
             </div>
             <div className="col-sm-12">
@@ -353,6 +369,7 @@ class StartedExam extends React.Component {
       <div style={{backgroundColor: 'white'}}>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+          <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
           <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
         </div>
         <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
@@ -518,6 +535,10 @@ const QUESTION_BY_EXAM = gql`
           _id
           question
           answerSet
+          file {
+            link
+            type
+          }
           correctAnswer
           correctRate
         }

@@ -40,6 +40,7 @@ export default class QuestionReviewItem extends React.Component {
 
   render() {
     let { question, publicQuestion, questionType, getReviewFrom, getScore } = this.props;
+    console.log('question ', question);
     let { showAnswer } = this.state;
     return (
       <div style={{width: '100%'}}>
@@ -66,6 +67,23 @@ export default class QuestionReviewItem extends React.Component {
             <div style={{width: '100%'}}>
               {question.question}
             </div>
+            {
+              question.file && (
+                question.file.type.includes('image') ?
+                <img style={{height: 300, maxWidth: '100%', margin: 15, marginLeft: 0, marginTop: 0}} src={question.file.link}/> :
+                question.file.type.includes('video') ?
+                <video width="100%" height="300" controls>
+                  <source src={question.file.link} type={question.file.type}/>
+                  Your browser does not support the video tag.
+                </video> :
+                question.file.type.includes('audio') ?
+                <audio controls>
+                  <source src={question.file.link} type={question.file.type}/>
+                  Your browser does not support the audio tag.
+                </audio> : null
+              )
+            }
+
             <font style={{color: 'blue', fontWeight: 'bold'}}>Câu trả lời:</font>
             { this.renderAnswerSet(question) }
             <font style={{color: 'blue', fontWeight: 'bold'}}>Câu trả đúng:</font>

@@ -672,6 +672,10 @@ const QUESTION_SET_QUERY = gql`
             answerSet
             correctAnswer
             correctRate
+            file {
+              link
+              type
+            }
           }
         }
         questionSetBankPublic {
@@ -685,6 +689,10 @@ const QUESTION_SET_QUERY = gql`
             answerSet
             correctAnswer
             correctRate
+            file {
+              link
+              type
+            }
           }
         }
         subjectByUser(token: $token) {

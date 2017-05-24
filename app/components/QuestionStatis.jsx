@@ -15,7 +15,6 @@ const statisScore = (scoreArray) => {
   scoreArray.push('');
   //   return (b.score - a.score)
   // });
-  console.log("scoreArray ", scoreArray);
   let countArray = [];
   let count = 1;
   let dem = 1;
@@ -63,7 +62,9 @@ class QuestionStatis extends React.Component {
     super(props);
     this.state = {
       showQuestion: false,
-      openDrawer: false
+      openDrawer: false,
+      scoreShowAll: false,
+      rateShowAll: false,
     }
   }
 
@@ -82,8 +83,7 @@ class QuestionStatis extends React.Component {
 
   render() {
     let { data } = this.props;
-    let { openDrawer } = this.state;
-    console.log("data ", this.props);
+    let { openDrawer, scoreShowAll, rateShowAll, allRateShowAll } = this.state;
     if (!data.examinationByQuestionSet || !data.questionSetById) {
         return (
             <div className="spinner spinner-lg"></div>
@@ -91,42 +91,64 @@ class QuestionStatis extends React.Component {
     } else {
         return (
           <div style={{padding: '10px 50px'}}>
-            <h2 style={{width: '100%', textAlign: 'center'}}>{ data.questionSetById.title }</h2>
+            <h2 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>{ data.questionSetById.title }</h2>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
               <button className="btn btn-default" style={{boxShadow: 'none'}} onClick={() => this.setState({openDrawer: true})}>Nội dung</button>
             </div>
-            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
-              <h3 style={{width: '100%', textAlign: 'center'}}>Điểm số</h3>
+            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+              <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê dựa trên điểm số:</h3>
               {
-                data.examinationByQuestionSet.map((item, idx) => (
-                  <div key={idx} style={{width: 300, padding: 10}}>
-                    <PieChart chartData={statisScore(item.userExams.map(item => item.score))} chartOptions={{
-                        animatable: true,
-                      }}/>
-                    <div style={{width: '100%', textAlign: 'center'}}>
-                      {item.name}
-                    </div>
-                  </div>
-                ))
+                data.examinationByQuestionSet.map((item, idx) => {
+                  let length = scoreShowAll ? data.examinationByQuestionSet.length : 2;
+                  if(idx < length) {
+                    return (
+                      <div key={idx} style={{width: 300, padding: 10}}>
+                        <PieChart chartData={statisScore(item.userExams.map(item => item.score))} chartOptions={{
+                            animatable: true,
+                          }}/>
+                        <div style={{width: '100%', textAlign: 'center'}}>
+                          {item.name}
+                        </div>
+                      </div>
+                    )
+                  }
+                })
               }
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                <button className="btn btn-default" onClick={() => {
+                    let scoreShowAll = !this.state.scoreShowAll;
+                    this.setState({scoreShowAll});
+                  }}>{scoreShowAll ? "Thu gọn" : "Hiện tất cả"}</button>
+              </div>
             </div>
-            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
-              <h3 style={{width: '100%', textAlign: 'center'}}>Tỉ lệ trả lời đúng</h3>
+            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+              <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê dựa trên tỉ lệ trả lời đúng:</h3>
               {
-                data.examinationByQuestionSet.map((item, idx) => (
-                  <div key={idx} style={{width: 300, padding: 10}}>
-                    <BarChart chartData={statisQuestion(item.questionSet.questions, 'correctRateByExam')} chartOptions={{
-                         enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
-                    }}/>
-                    <div style={{width: '100%', textAlign: 'center'}}>
-                      {item.name}
-                    </div>
-                  </div>
-                ))
+                data.examinationByQuestionSet.map((item, idx) => {
+                  let length = rateShowAll ? data.examinationByQuestionSet.length : 2;
+                  if(idx < length) {
+                    return (
+                      <div key={idx} style={{width: 300, padding: 10}}>
+                        <BarChart chartData={statisQuestion(item.questionSet.questions, 'correctRateByExam')} chartOptions={{
+                             enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
+                        }}/>
+                        <div style={{width: '100%', textAlign: 'center'}}>
+                          {item.name}
+                        </div>
+                      </div>
+                    )
+                  }
+                })
               }
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                <button className="btn btn-default" onClick={() => {
+                    let rateShowAll = !this.state.allRateShowAll;
+                    this.setState({allRateShowAll});
+                  }}>{rateShowAll ? "Thu gọn" : "Hiện tất cả"}</button>
+              </div>
             </div>
-            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
-              <h3 style={{width: '100%', textAlign: 'center'}}>Tỉ lệ trả lời đúng trên toàn bộ kì thi</h3>
+            <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+              <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê trên toàn bộ kì thi:</h3>
               <div style={{width: 300, padding: 10}}>
                 <BarChart chartData={statisQuestion(data.questionSetById.questions, 'correctRate')} chartOptions={{
                      enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
@@ -173,6 +195,10 @@ const QUESTION_STATIS = gql`
           question
           correctRate
           correctRateByExam
+          file {
+            link
+            type
+          }
         }
       }
     }
