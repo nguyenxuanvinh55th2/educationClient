@@ -328,7 +328,7 @@ const CLASS_SUBJECT = gql`
         _id  name  activity
       }
     },
-    classSubjectsByStudent(token: $token) {
+    classSubjectsByStudent(userId: $userId) {
       _id name dateStart  dateEnd
       isOpen  publicActivity
       subject {

@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
-export default class ManagerUserParent extends React.Component {
+class ManagerUserParent extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -33,3 +33,25 @@ export default class ManagerUserParent extends React.Component {
     )
   }
 }
+const CLASS_SUBJECT = gql`
+  query classSubjects($userId: String!){
+    classSubjectsByStudent(userId: $userId) {
+      _id name dateStart  dateEnd
+      isOpen  publicActivity
+      subject {
+        _id code name ownerId  createAt
+      }
+      theme {
+        _id  name  activity
+      }
+    },
+}`
+
+export default compose(
+graphql(CLASS_SUBJECT, {
+    options: (ownProps) => ({
+      variables: {userId: ownProps.users.userId},
+      forceFetch: true
+    }),
+}),
+)(ManagerUserParent);
