@@ -308,6 +308,9 @@ class ManagerSubject extends React.Component {
       else {
         return (
           <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
+            <div>
+              
+            </div>
             <Tabs className="secondary" >
               <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
                   <Tab>
@@ -826,6 +829,12 @@ const MyQuery = gql`
       getTeacherByClassSubject(classSubjectId: $classSubjectId){
         _id name image email
       },
+      getInfoClassSubject(classSubjectId:"u3dTRXsZCsBTuSZv5") {
+          _id  name
+          teacher {
+            _id name  image  email
+          }
+        }
     }`
 export default compose(
   graphql(MyQuery, {

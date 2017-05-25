@@ -59,7 +59,7 @@ export default compose(
     graphql(QUERY_USER_INFO, {
       options: ({token}) => ({
           variables: {token},
-          pollInterval: 10000
+          pollInterval: 30000
       }),
     }),
     graphql(LOGOUT, {
