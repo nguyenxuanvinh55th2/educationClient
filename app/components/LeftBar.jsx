@@ -13,6 +13,7 @@ import Snackbar from 'material-ui/Snackbar';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
+import Popover from 'material-ui/Popover';
 import {List, ListItem} from 'material-ui/List';
 
 import School from 'material-ui/svg-icons/social/school';
@@ -65,7 +66,8 @@ class LeftBar extends React.Component {
     this.handleResize = this.handleResize.bind(this);
     this.state = {
       openDialog: false,
-      height: window.innerHeight
+      height: window.innerHeight,
+      open: false
     }
   }
   handleResize(e) {
@@ -162,14 +164,27 @@ class LeftBar extends React.Component {
           <ListItem key={idx}
             primaryText={
               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <p style={{color: 'white', fontSize: 13}}>{ item.name }</p>
+                <p style={{color: 'white', fontSize: 13, width: 150}}>{ item.name }</p>
                 {
                   (item.status === 0 || item.status === 1) ?
-                  <button className="btn btn-primary" onClick={this.readyExamination.bind(this, item._id)}>Bắt đầu</button> :
-                  <button className="btn btn-primary" onClick={() => {
+                  <button style={{height: 30}} className="btn btn-primary" onClick={this.readyExamination.bind(this, item._id)}>Bắt đầu</button> :
+                  <button style={{height: 30}} className="btn btn-primary" onClick={() => {
                     browserHistory.push('/waitExam/' + item._id)
                   }}>Xem laị</button>
                 }
+                <button id={'remove' + idx} className="btn btn-danger" style={{borderWidth: 0, borderLeftWidth: 1, width: 25, height: 30}} onClick={() => {
+                      let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
+                      if(remove) {
+                        let token = localStorage.getItem('Meteor.loginToken');
+                        console.log("message ", item._id);
+                        this.props.removeExamination(token, item._id).then(() => {
+                          this.props.data.refetch();
+                          console.log("thanh cong");
+                        }).catch((err) => {
+                          console.log("message ", err);
+                        });
+                      }
+                    }}>X</button>
               </div>
             }
           />
@@ -177,8 +192,17 @@ class LeftBar extends React.Component {
     }
   }
 
+  handleTouchTap(event){
+      event.preventDefault();
+      this.setState({
+          open: true,
+          anchorEl: event.currentTarget,
+      });
+  }
+
   renderQuestionSet() {
     let { data, users } = this.props;
+    let { open, anchorEl } = this.state;
     if(data.loading && ! data.questionSetBankUser) {
       return []
     } else {
@@ -186,12 +210,23 @@ class LeftBar extends React.Component {
           <ListItem key={idx}
             primaryText={
               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <p style={{color: 'white', fontSize: 13}}>{ item.title }</p>
-                {
-                  <button className="btn btn-primary" onClick={() => {
+                <p style={{color: 'white', fontSize: 13, width: 150}}>{ item.title }</p>
+                  <button style={{height: 30}} className="btn btn-primary" onClick={() => {
                     browserHistory.push('/profile/' + users.userId + '/questionSet/' + item._id)
                   }}>Xem</button>
-                }
+                <button id={'remove' + idx} className="btn btn-danger" style={{borderWidth: 0, borderLeftWidth: 1, width: 25, height: 30}} onClick={() => {
+                      let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
+                      if(remove) {
+                        let token = localStorage.getItem('Meteor.loginToken');
+                        console.log("message ", item._id);
+                        this.props.removeQuestionSet(token, item._id).then(() => {
+                          this.props.data.refetch();
+                          console.log("thanh cong");
+                        }).catch((err) => {
+                          console.log("message ", err);
+                        });
+                      }
+                    }}>X</button>
               </div>
             }
           />
@@ -365,6 +400,16 @@ const READY_EXAMINATION = gql`
       readyExamination(token: $token, _id: $_id)
 }`
 
+const REMOVE_QUESTION_SET = gql`
+    mutation removeQuestionSet ($token: String!, $_id: String!) {
+      removeQuestionSet(token: $token, _id: $_id)
+}`
+
+const REMOVE_EXAMINATION = gql`
+    mutation removeExamination ($token: String!, $_id: String!) {
+      removeExamination(token: $token, _id: $_id)
+}`
+
 export default compose(
 graphql(CLASS_SUBJECT, {
     options: (ownProps) => ({
@@ -375,6 +420,16 @@ graphql(CLASS_SUBJECT, {
 graphql(READY_EXAMINATION , {
     props: ({mutate})=> ({
       readyExamination : (token, _id) => mutate({variables: {token, _id}})
+    })
+}),
+graphql(REMOVE_QUESTION_SET, {
+    props: ({mutate})=> ({
+        removeQuestionSet : (token, _id) => mutate({variables:{token, _id}})
+    })
+}),
+graphql(REMOVE_EXAMINATION , {
+    props: ({mutate})=> ({
+        removeExamination : (token, _id) => mutate({variables:{token, _id}})
     })
 }),
 )(LeftBar);

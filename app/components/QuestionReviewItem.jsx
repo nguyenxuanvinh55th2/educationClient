@@ -70,7 +70,7 @@ export default class QuestionReviewItem extends React.Component {
             {
               question.file && (
                 question.file.type.includes('image') ?
-                <img style={{height: 300, maxWidth: '100%', margin: 15, marginLeft: 0, marginTop: 0}} src={question.file.link}/> :
+                <img style={{height: 250, margin: 15, marginLeft: 0, marginTop: 0}} src={question.file.link}/> :
                 question.file.type.includes('video') ?
                 <video width="100%" height="300" controls>
                   <source src={question.file.link} type={question.file.type}/>

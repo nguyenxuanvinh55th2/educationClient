@@ -83,6 +83,7 @@ class QuestionStatis extends React.Component {
 
   render() {
     let { data } = this.props;
+    console.log('data ', data);
     let { openDrawer, scoreShowAll, rateShowAll, allRateShowAll } = this.state;
     if (!data.examinationByQuestionSet || !data.questionSetById) {
         return (
@@ -195,10 +196,6 @@ const QUESTION_STATIS = gql`
           question
           correctRate
           correctRateByExam
-          file {
-            link
-            type
-          }
         }
       }
     }
@@ -214,6 +211,10 @@ const QUESTION_STATIS = gql`
         answerSet
         correctAnswer
         correctRate
+        file {
+          link
+          type
+        }
       }
     }
   }`

@@ -195,6 +195,7 @@ class QuestionSetItem extends React.Component {
   render() {
     let { questionSet, getQuestionSet } = this.props;
     let { showQuestion } = this.state;
+    console.log('this.props ', this.props);
     return (
       <div style={{width: '100%', paddingLeft: 15, paddingRight: 15, paddingTop: 15}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -207,7 +208,16 @@ class QuestionSetItem extends React.Component {
             <button className="btn btn-primary" style={{width: '100%'}} onClick={() => getQuestionSet(questionSet)}>Chọn</button>
           </div>
           <div className="col-sm-1" style={{padding: '5px 5px 0px 0px'}}>
-            <button className="btn btn-danger" style={{width: '100%'}}>
+            <button className="btn btn-danger" style={{width: '100%'}} onClick={() => {
+                let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
+                if(remove) {
+                  let token = localStorage.getItem('Meteor.loginToken');
+                  console.log("message ",  questionSet._id);
+                  this.props.removeQuestionSet(token, questionSet._id).then(() => {
+                    this.props.refetch();
+                  });
+                }
+              }}>
               <i className="fa fa-times" aria-hidden="true"></i>
             </button>
           </div>
@@ -222,6 +232,21 @@ class QuestionSetItem extends React.Component {
     )
   }
 }
+
+const REMOVE_QUESTION_SET = gql`
+    mutation removeQuestionSet ($token: String!, $_id: String!) {
+      removeQuestionSet(token: $token, _id: $_id)
+}`
+
+const QuestionSetItemMutate = compose (
+    graphql(REMOVE_QUESTION_SET, {
+        props: ({mutate})=> ({
+            removeQuestionSet : (token, _id) => mutate({variables:{token, _id}})
+        })
+    }),
+)(QuestionSetItem);
+
+
 
 class QuesionBank extends React.Component {
   constructor(props) {
@@ -466,13 +491,14 @@ class QuesionBank extends React.Component {
             <div style={{width: '100%', paddingLeft: '10%'}}>
               {
                 data.questionSetBankUser.map(item => (
-                  <QuestionSetItem
+                  <QuestionSetItemMutate
                     key={item._id}
                     questionSet={item}
                     getQuestionSet={this.getQuestionSet.bind(this)}
                     addQuestion={this.addQuestion.bind(this)}
                     removeQuestion={this.removeQuestion.bind(this)}
-                    questionList={this.state.questionList}/>
+                    questionList={this.state.questionList}
+                    refetch={this.props.data.refetch}/>
                 ))
               }
             </div>
