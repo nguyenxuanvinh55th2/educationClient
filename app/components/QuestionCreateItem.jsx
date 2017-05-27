@@ -4,6 +4,7 @@ import __ from 'lodash';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import Dropzone from 'react-dropzone';
 
 class AnswerCreateItem extends React.Component {
   constructor(props) {
@@ -117,14 +118,55 @@ export default class QuestionCreateItem extends React.Component {
     this.props.setAnswerSet(answerList);
   }
 
+  onDropAccepted(acceptedFiles,event) {
+    let that = this;
+    if(acceptedFiles.length){
+        let reader = new FileReader();
+        let file = acceptedFiles[0];
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            if(reader.result) {
+              console.log('that.props ', that.props);
+              that.props.getFile(reader.result, file.type);
+            }
+        }
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        }
+    }
+  }
+
+  onDropRejected(rejectedFiles){
+    if(rejectedFiles.length && rejectedFiles[0].size > 1024*1000*8){
+      alert('File nhỏ hơn 2MB!');
+    }
+  }
+
   render() {
     let { question }= this.props;
+    console.log('this.props ', this.props);
     return (
       <div style={{width: '100%', paddingLeft: '10%'}}>
         <div style={{marginBottom: 10}}>
           <textarea style={{width: '80%'}} value={ question.question } className="form-control" onChange={({target}) => this.props.setQuestionValue(target.value)}>
           </textarea>
         </div>
+        {
+          question.file && (
+            question.file.type.includes('image') ?
+            <img style={{height: 300, maxWidth: '100%', margin: 15, marginLeft: 0, marginTop: 0}} src={question.file.link}/> :
+            question.file.type.includes('video') ?
+            <video width="100%" height="300" controls>
+              <source src={question.file.link} type={question.file.type}/>
+              Your browser does not support the video tag.
+            </video> :
+            question.file.type.includes('audio') ?
+            <audio controls>
+              <source src={question.file.link} type={question.file.type}/>
+              Your browser does not support the audio tag.
+            </audio> : null
+          )
+        }
         <div>
           {
             this.renderAnswer()
@@ -135,7 +177,11 @@ export default class QuestionCreateItem extends React.Component {
         </div>
         <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
           <button type="button" className="btn btn-primary" style={{width: 150, marginRight:  20}} onClick={this.addNewAnswer.bind(this)}>Thêm lựa chọn</button>
-          <button type="button" className="btn btn-primary" style={{width: 150, marginRight:  20}}>Thêm media</button>
+            <Dropzone style={{padiing: 0, textAlign:'center', width: 150, height: 25, marginRight:  20, border: '1px solid #00659c', backgroundColor: '#0088ce', backgroundImage: 'linear-gradient(to bottom, #39a5dc 0%, #0088ce 100%)', backgroundRepeat: 'repeat-x', color: '#fff', boxShadow: '0 2px 3px rgba(3, 3, 3, 0.1)'}} onDropAccepted={this.onDropAccepted.bind(this)} onDropRejected={this.onDropRejected} accept="audio/*,video/*,image/*" maxSize={1024*8*1000} multiple={false}>
+              <div style={{paddingTop: 2}}>
+                <p style={{color: 'white', fontWeight: 'bold'}}>Chọn file</p>
+              </div>
+            </Dropzone>
           <button type="button" className="btn btn-danger" style={{width: 150, marginRight:  20}} onClick={() => this.props.removeQuestion()}>Xóa câu hỏi</button>
         </div>
       </div>

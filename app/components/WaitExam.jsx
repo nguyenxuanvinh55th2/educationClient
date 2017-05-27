@@ -153,6 +153,7 @@ class WaitExam extends React.Component {
           <div style={{backgroundColor: 'white'}}>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
               <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+              <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
               <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
             </div>
             <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>

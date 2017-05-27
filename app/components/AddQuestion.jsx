@@ -106,11 +106,6 @@ class AddQuestion extends React.Component {
               <button className="btn btn-primary" style={{width: '30%'}} onClick={this.addNewQuestion.bind(this)}>
                 Thêm câu hỏi
               </button>
-              <span style={{height: 10}}>
-              </span>
-              <button className="btn btn-primary" style={{width: '30%'}}>
-                Hoàn thành
-              </button>
             </div>
           </div>
         </TabPanel>
@@ -148,6 +143,7 @@ class AddQuestion extends React.Component {
       <QuestionCreateItem
         key = { idx }
         index = { item }
+        getFile = { this.getFile.bind(this, item) }
         removeQuestion = { this.removeQuestion.bind(this, item) }
         setQuestionValue = { this.setQuestionValue.bind(this, item._id) }
         setScoreValue = { this.setScoreValue.bind(this, item._id) }
@@ -270,6 +266,20 @@ class AddQuestion extends React.Component {
       }
     }
     questionList.splice(questionList.length - 1, 1);
+    this.setState({questionList});
+  }
+
+  getFile(index, file, type) {
+    let questionList = this.state.questionList;
+    for(let i = 0; i < questionList.length; i++) {
+      if(questionList[i] === index) {
+        questionList[i]['file'] = {
+          link: file,
+          type
+        }
+        break;
+      }
+    }
     this.setState({questionList});
   }
 

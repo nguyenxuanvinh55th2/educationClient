@@ -55,7 +55,36 @@ class ManagerUserParent extends React.Component {
               </table>
             </div>
           </TabPanel>
-          <TabPanel style={{backgroundColor: '#f0f0f0'}}></TabPanel>
+          <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
+              <table className="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tên kì thì</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    __.map(this.props.data.getAllPlayperExamByUser,(exam,idx) => {
+                      return(
+                        <tr key={idx}>
+                          <td>{idx + 1}</td>
+                          <td>{exam.name}</td>
+                          <td>
+                            {
+                              exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
+                            }
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+            </div>
+          </TabPanel>
         </Tabs>
       </div>
     )
@@ -72,6 +101,18 @@ const CLASS_SUBJECT = gql`
         _id  name  image  email
       }
     },
+    getAllPlayperExamByUser(userId:$userId) {
+     _id
+     code
+     timeStart
+     name
+     description
+     userCount
+     time
+     createdAt
+     status
+     isClassStyle
+   }
 }`
 
 export default compose(
