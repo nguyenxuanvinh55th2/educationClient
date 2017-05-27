@@ -35,6 +35,7 @@ class AddQuestion extends React.Component {
   addQuestionFromFile() {
     let { questionList, title, description, isPublic, subjectId, questionFile, score } = this.state;
     let {  getQuestionSetId, users } = this.props;
+    console.log("message ", questionFromFile);
     let questionSet = {
       title,
       description,
@@ -51,9 +52,11 @@ class AddQuestion extends React.Component {
     })
     for(let i = 0; i < array.length - 1; i++) {
       if(array[i].indexOf('Câu') > -1) {
+        let index = array[i].indexOf('//');
+        console.log('index ', index);
         let question = {
           _id: (Math.floor(Math.random()*99999) + 10000).toString(),
-          question: array[i],
+          question: array[i].replace(array[i].substring(0, index + 2), ''),
           answerSet: [],
           correctAnswer: [],
           anserCount: 0,
@@ -156,7 +159,7 @@ class AddQuestion extends React.Component {
   renderQuestionReview() {
     let { questionList } = this.state;
     return questionList.map((item, idx) => (
-      <QuestionReviewItem getReviewFrom={'questionCreater'} key={item._id} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} getScore={this.setScoreValue.bind(this)}/>
+      <QuestionReviewItem getReviewFrom={'questionCreater'} key={item._id} index={parseInt(idx) + 1} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} getScore={this.setScoreValue.bind(this)}/>
     ))
   }
 
@@ -242,12 +245,14 @@ class AddQuestion extends React.Component {
 
   onDrop(files) {
     let file = files[0];
+    console.log('file ', file);
     var reader = new FileReader();
     reader.readAsText(file);
     let that = this;
 
     reader.onload = function () {
       let content = reader.result;
+      console.log('content ', content);
       that.setState({questionFile: content});
     };
 
@@ -371,8 +376,8 @@ class AddQuestion extends React.Component {
             <div style={{width: '30%'}}>
             {
               questionFile ?
-              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
-              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.title} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
+              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
+              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
             }
             </div>
           </div>

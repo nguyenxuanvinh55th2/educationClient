@@ -412,7 +412,7 @@ class QuesionBank extends React.Component {
     let questionReviewList = questionType === 'questionSet' ? questionSet.questions : questionList;
     console.log('questionReviewList ', questionReviewList);
     return questionReviewList.map((item, idx) => (
-      <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)}/>
+      <QuestionReviewItem index={parseInt(idx) + 1} getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)}/>
     ))
   }
 

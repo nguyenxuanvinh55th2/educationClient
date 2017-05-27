@@ -46,7 +46,14 @@ class ChatBar extends React.Component {
 
   searchItem(userList) {
     let searchList = [];
-    if(this.state.sItem !== '') {
+    if(this.state.sItem && this.state.sItem !== '') {
+      // this.props.searchUser(this.state.sItem).then(({data}) => {
+      //   console.log("message ", data.searchUser);
+      //   data.searchUser.forEach(item => {
+      //     searchList.push(item);
+      //   })
+      // })
+      //console.log('searchList ', searchList);
       for(let i = 0; i < userList.length; i++) {
         var lowerCase = this.renderSearchString(userList[i].user.name);
         if(lowerCase.indexOf(this.state.sItem) !== -1)
@@ -54,6 +61,7 @@ class ChatBar extends React.Component {
       }
       return searchList;
     } else {
+      console.log('userList ', userList);
       return userList;
     }
   }
@@ -128,11 +136,31 @@ const USER_CHAT = gql`
       }
     },
 }`
+
+const FIND_USER = gql`
+    mutation searchUser($keyWord: String!) {
+        searchUser(keyWord: $keyWord) {
+          _id
+          name
+          image
+          online
+          lastLogin
+          email
+          social
+        }
+}`
+
 export default compose(
 graphql(USER_CHAT, {
     options: (ownProps) => ({
       variables: { userId: ownProps.users ? ownProps.users.userId : null},
+      pollInterval: 1000,
       forceFetch: true
     }),
+}),
+graphql(FIND_USER, {
+    props: ({mutate})=> ({
+        searchUser : (keyWord) => mutate({variables:{keyWord}})
+    })
 }),
 )(ChatBar);

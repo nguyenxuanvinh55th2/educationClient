@@ -12,6 +12,8 @@ import FlatButton from 'material-ui/FlatButton';
 import AddQuestion from './AddQuestion.jsx';
 import QuestionBank from './QuestionBank.jsx';
 
+import { Link, Router, browserHistory } from 'react-router'
+
 class CreateTest extends  React.Component {
   constructor(props) {
     super(props);
@@ -89,12 +91,12 @@ class CreateTest extends  React.Component {
                     </div>
                   </div>
                   <div style={{width: '30%'}}>
-                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
+                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
                           this.setState({getQuestionFrom: 'questionBank', stepIndex: 1})
                         }}>Ngân hàng câu hỏi</button>
                       <div style={{height: 10}}>
                       </div>
-                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!this.state.name} onClick={() => {
+                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
                           this.setState({getQuestionFrom: 'questionCreater', stepIndex: 1})
                         }}>Câu hỏi tự tạo</button>
                   </div>
@@ -220,7 +222,7 @@ class CreateTest extends  React.Component {
     let info = JSON.stringify(newTest);
     insertExamination(users.userId, info).then(({data}) => {
       let _id = data.insertExamination;
-      browserHistory.push('/waitExam/' + _id);
+      browserHistory.push('/profile/' + this.props.users.userId);
     }).catch((err) => {
 
     });

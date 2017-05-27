@@ -24,7 +24,7 @@ class ScoreChat extends React.Component {
 
 class QuestionContent extends React.Component {
   render() {
-    let { question, data, examId, getNextQuestion, getPreviosQuestion, questionSetId, isClassStyle } = this.props;
+    let { question, data, examId, getNextQuestion, getPreviosQuestion, questionSetId, isClassStyle, index } = this.props;
     let userResults = {};
     if(data.playerResultByUser && data.playerResultByUser.length > 0) {
       __.forEach(data.playerResultByUser, item => {
@@ -39,7 +39,7 @@ class QuestionContent extends React.Component {
         <div>
           {
             !isClassStyle &&
-            <h3 style={{marginTop: 0, marginBottom: 15}}>{ question.question }</h3>
+            <h3 style={{marginTop: 0, marginBottom: 15}}>{ 'Câu ' + index + ': ' + question.question }</h3>
           }
         </div>
         {
@@ -123,7 +123,7 @@ const QuestionContentWithData = compose (
 class StartedExam extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: [], questionCountDown: 0};
+    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: [], questionCountDown: 0, index: 1, firstRender: true};
   }
 
   componentDidUpdate() {
@@ -198,10 +198,10 @@ class StartedExam extends React.Component {
     let currentQuestion;
     if(question.index < questionSet.length) {
       currentQuestion = questionSet[question.index];
-      this.setState({currentQuestion});
+      this.setState({currentQuestion, index: question.index});
     } else {
         currentQuestion = questionSet[0];
-        this.setState({currentQuestion});
+        this.setState({currentQuestion, index: question.index});
     }
     if(data.examById.isClassStyle) {
       console.log('selection');
@@ -218,10 +218,10 @@ class StartedExam extends React.Component {
     if(question.index >= 2) {
       currentQuestion = questionSet[question.index - 2];
       console.log('currentQuestion 1', currentQuestion);
-      this.setState({currentQuestion});
+      this.setState({currentQuestion, index: question.index});
     } else {
         currentQuestion = questionSet[questionSet.length - 1];
-        this.setState({currentQuestion});
+        this.setState({currentQuestion, index: question.index});
     }
     if(data.examById.isClassStyle) {
       console.log('currentQuestion pre ', currentQuestion);
@@ -234,9 +234,9 @@ class StartedExam extends React.Component {
   componentWillReceiveProps(nextProps) {
     let { data, users }= nextProps;
     if(data.examById)  {
-      if(!this.state.currentQuestion) {
+      if(!this.state.currentQuestion && this.state.firstRender) {
         let currentQuestion = data.examById.questionSet.questions[0];
-        this.setState({currentQuestion});
+        this.setState({currentQuestion, firstRender: false});
       }
       let questionSet = __.cloneDeep(data.examById.questionSet.questions);
       __.forEach(questionSet, (item, idx) => {
@@ -448,6 +448,7 @@ class StartedExam extends React.Component {
             <div className="col-sm-9">
               <QuestionContentWithData
                 question={currentQuestion}
+                index={this.state.index}
                 questionSetId={data.examById.questionSet._id}
                 getNextQuestion={this.getNextQuestion.bind(this)}
                 getPreviosQuestion={this.getPreviosQuestion.bind(this)}

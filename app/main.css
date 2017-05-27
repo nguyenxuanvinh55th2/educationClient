@@ -14,8 +14,8 @@
 #chatShow {
   position: absolute;
   z-index: 0;
-  right: 260px;
-  bottom: 100px;
+  right: 210px;
+  bottom: 20px;
   height: 360px;
   width: 600px;
   display: none;

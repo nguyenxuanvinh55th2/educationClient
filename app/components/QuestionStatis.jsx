@@ -77,7 +77,7 @@ class QuestionStatis extends React.Component {
     let { data } = this.props;
     let questionSet = __.cloneDeep(data.questionSetById.questions)
     return questionSet.map((item, idx) => {
-      return <QuestionReviewItem getReviewFrom={'questionBank'} key={item._id} question={item}/>
+      return <QuestionReviewItem index={parseInt(idx) + 1} getReviewFrom={'questionBank'} key={item._id} question={item}/>
     })
   }
 
