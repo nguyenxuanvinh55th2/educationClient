@@ -122,8 +122,15 @@ export default class Home extends React.Component {
             </div>
           </div>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', background: 'url(' + imgUrlCenter + ') no-repeat', backgroundSize: 'cover', minHeight: 454}}>
-            <div className="col-sm-12 col-md-6 col-lg-3" style={{flex: 'left',color: 'white'}}>
-              <p style={{paddingRight: 50}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div className="col-sm-12 col-md-7 col-lg-5" style={{flex: 'left',color: 'white'}}>
+              <div style={{padding: 50, marginRight: 20, backgroundColor: 'rgba(12,0,0,0.5)'}}>
+                <p>Tính năng đơn giản, thích hợp cho mọi đối tượng sử dụng</p>
+                <p>Vừa học vừa chơi, học ở bất cứ đâu chỉ cần laptop kết nối internet</p>
+                <p>Sử dụng mà không cần cài đặt, giao diện dễ sử dụng</p>
+                <p>Quản lý việc học tập một cách đơn giản và hiệu quả</p>
+                <p>Đánh giá khả năng học tập của sinh viên một cách đơn giản và nhanh chóng</p>
+                <p>Phụ huynh có thể theo dõi việc học tập của con em mình</p>
+              </div>
             </div>
           </div>
           <div className="row" style={{margin: 0}}>
@@ -145,9 +152,10 @@ export default class Home extends React.Component {
                   </div>
                 </div>
             </div>
-            <div className="col-sm-10 col-md-7 col-lg-6">
-              <p style={{textAlign: 'center'}}>Nguyen Xuan Vinh</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div className="col-sm-10 col-md-7 col-lg-4">
+              <h2 style={{textAlign: 'center'}}>Nguyễn Xuân Vinh</h2>
+              <p>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lới và trao đổi nhiều hơn đối với
+              giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
             </div>
           </div>
           <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
