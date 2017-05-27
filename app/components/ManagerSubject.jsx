@@ -719,11 +719,11 @@ class ManagerSubject extends React.Component {
                 </TabPanel>
 
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
-                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
+                  <div style={{display: 'flex', flexDirection: 'column',}}>
                     {
                       __.map(dataSet.getTeacherByClassSubject, (infoUser,idx) => {
                         return (
-                          <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
+                          <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
                               <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
                             </div>
@@ -739,7 +739,7 @@ class ManagerSubject extends React.Component {
                     {
                       __.map(dataSet.getUserByClassSucbject, (infoUser,idx) => {
                         return (
-                          <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '50%', border: '2px solid white', padding: 10}}>
+                          <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
                               <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
                             </div>
@@ -766,7 +766,7 @@ class ManagerSubject extends React.Component {
                 <h4 style={{textAlign: 'center'}}>{dataSet.getInfoClassSubject.name}</h4>
                 <p>GV: {dataSet.getInfoClassSubject.teacher.name}</p>
                 <p>Email: {dataSet.getInfoClassSubject.teacher.email}</p>
-                <p>Code: XXXXX</p>
+                <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject : 'XXXXX'}</p>
               </div>
               <div style={{marginTop: 10, backgroundColor: 'white', padding: 5}}>
                 <h3>THÊM HỌC VIÊN</h3>
@@ -859,7 +859,7 @@ const MyQuery = gql`
         _id name image email friendList
       },
       getInfoClassSubject(classSubjectId:$classSubjectId) {
-          _id  name
+          _id  name code
           teacher {
             _id name  image  email
           }

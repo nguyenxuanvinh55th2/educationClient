@@ -25,6 +25,22 @@ class Wall extends React.Component {
       this.setState({courses: __.cloneDeep(nextProps.courses.coursesActive)})
     }
   }
+  handleCheckCode(code){
+    if(this.props.checkCodeUser){
+      this.props.checkCodeUser(this.props.users.userId, code).then(({data}) => {
+        console.log(data);
+        if(data){
+          this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp học thành công', level:'success'});
+        }
+        else {
+          this.props.addNotificationMute({fetchData: true, message: 'Có vẻ như mã code môn học bị nhầm, vui lòng liên hệ lại với giáo viên để xác nhận lại mã môn học', level:'error'});
+        }
+      })
+      .catch((error) => {
+        this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+      })
+    }
+  }
   render(){
     let { courses } = this.props;
     let dataState = this.state;
@@ -89,9 +105,13 @@ class Wall extends React.Component {
                                   </p>
                                   <h5 style={{color: '#35bcbf'}}>Nhập mã CODE để tham gia môn học</h5>
                                   <div className="input-group col-sm-9 col-md-6 col-lg-4">
-                                    <input type="text" className="form-control" style={{height: 35}} />
+                                    <input type="text" className="form-control" value={classSubject.checkCode ? classSubject.checkCode : ''} style={{height: 35}}
+                                    onChange={({target}) => this.setState((prevState, props) => {
+                                        prevState.courses[idx].classSubjects[index].checkCode = target.value
+                                            return {courses: prevState.courses};
+                                          })}/>
                                     <span className="input-group-btn">
-                                      <button className="btn btn-secondary" type="button" style={{backgroundColor: '#35bcbf', color: 'white', height: 35, width: 50}}>ENTER</button>
+                                      <button className="btn btn-secondary" type="button" style={{backgroundColor: '#35bcbf', color: 'white', height: 35, width: 50}} onClick={() => this.handleCheckCode(classSubject.checkCode)}>ENTER</button>
                                     </span>
                                   </div>
                                 </div>
@@ -112,6 +132,12 @@ class Wall extends React.Component {
     }
   }
 }
+
+const checkCodeUser = gql`
+ mutation checkCodeUser($userId: String, $code: String){
+   checkCodeUser(userId: $userId, code: $code)
+ }
+`;
 
 const MyQuery = gql`
     query courses{
@@ -138,4 +164,9 @@ graphql(MyQuery, {
     }),
     name: 'courses',
 }),
+graphql(checkCodeUser,{
+     props:({mutate})=>({
+     checkCodeUser : (userId,code) =>mutate({variables:{userId, code}})
+   })
+ })
 )(Wall);
