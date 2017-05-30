@@ -23,16 +23,16 @@ class Login extends Component {
     loginWithPassword(that.state.email, encrypted.toString()).then(({data})=>{
       if(data){
         let dataUser = JSON.parse(data.loginWithPassword);
-        this.props.loginCommand(dataUser.user);
         localStorage.setItem('keepLogin', true);
         localStorage.setItem('Meteor.loginToken', dataUser.token);
-        this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
+        this.props.loginCommand(dataUser.user);
         this.props.handleClose();
+        this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
       }
     }).catch((err)=>{
       console.log(err);
-      this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})
       this.props.handleClose();
+      this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})
     });
   }
   handleLoginGoogle(response){

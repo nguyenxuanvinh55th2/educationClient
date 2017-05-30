@@ -5,6 +5,7 @@ import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 import NotificationSystem from 'react-notification-system';
 import Header from './Header.jsx';
+import { Meteor } from 'meteor/meteor';
 function mapStateToProps(state){
   return {
     users: state.users,
