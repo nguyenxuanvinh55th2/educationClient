@@ -766,7 +766,7 @@ class ManagerSubject extends React.Component {
                 <h4 style={{textAlign: 'center'}}>{dataSet.getInfoClassSubject.name}</h4>
                 <p>GV: {dataSet.getInfoClassSubject.teacher.name}</p>
                 <p>Email: {dataSet.getInfoClassSubject.teacher.email}</p>
-                <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject : 'XXXXX'}</p>
+                <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject.code : 'XXXXX'}</p>
               </div>
               <div style={{marginTop: 10, backgroundColor: 'white', padding: 5}}>
                 <h3>THÊM HỌC VIÊN</h3>
@@ -859,7 +859,7 @@ const MyQuery = gql`
         _id name image email friendList
       },
       getInfoClassSubject(classSubjectId:$classSubjectId) {
-          _id  name 
+        _id name code
           teacher {
             _id name  image  email
           }
