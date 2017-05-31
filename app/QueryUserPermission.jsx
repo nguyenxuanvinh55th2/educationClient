@@ -9,6 +9,11 @@ class QueryUserPermission extends React.Component{
         setInterval(()=>{
             this.updateToken();
         }, 1000);
+        if(!Meteor.status().connected){
+            setInterval(()=>{
+                // console.log(Meteor.status());
+            }, 1000);
+        }
         // this.oldToken = localStorage.getItem('Meteor.loginToken');
     }
     updateToken(){
@@ -58,8 +63,8 @@ const LOGOUT = gql`
 export default compose(
     graphql(QUERY_USER_INFO, {
       options: ({token}) => ({
-          variables: {token},
-          pollInterval: 30000
+          variables: {token: localStorage.getItem('Meteor.loginToken')},
+          pollInterval: 1000
       }),
     }),
     graphql(LOGOUT, {

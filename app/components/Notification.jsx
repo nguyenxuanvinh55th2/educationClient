@@ -94,7 +94,7 @@ class Notification extends Component {
       var note = document.getElementById('notification');
       //var menu = document.getElementById('userMenu');
 
-      if(event.target !== note) {
+      if(note && event.target !== note && note.style && note.style.display) {
         note.style.display = 'none';
       }
 
