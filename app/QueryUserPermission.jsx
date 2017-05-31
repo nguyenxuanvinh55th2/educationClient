@@ -8,7 +8,12 @@ class QueryUserPermission extends React.Component{
         super(props);
         setInterval(()=>{
             this.updateToken();
-        }, );
+        }, 1000);
+        if(!Meteor.status().connected){
+            setInterval(()=>{
+                // console.log(Meteor.status());
+            }, 1000);
+        }
         // this.oldToken = localStorage.getItem('Meteor.loginToken');
     }
     updateToken(){

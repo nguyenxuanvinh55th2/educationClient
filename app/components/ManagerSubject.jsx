@@ -859,7 +859,7 @@ const MyQuery = gql`
         _id name image email friendList
       },
       getInfoClassSubject(classSubjectId:$classSubjectId) {
-          _id  name 
+          _id  name
           teacher {
             _id name  image  email
           }
