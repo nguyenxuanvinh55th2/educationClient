@@ -8,7 +8,6 @@ import  { GroupPlayers } from 'educationServer/groupPlayer'
 import  { PersonalPlayers } from 'educationServer/personalPlayer'
 import  { Examinations } from 'educationServer/examination'
 
-
 import { browserHistory } from 'react-router';
 
 import __ from 'lodash';
@@ -184,6 +183,7 @@ class WaitExam extends React.Component {
                     let _id = params.id;
                     startExamination(token, _id).then(() => {
                       console.log("message");
+                      browserHistory.push('/startedExam/' + this.props.params.id);
                     }).catch((err) => {
                       console.log("loi ", err);
                     });

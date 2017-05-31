@@ -234,9 +234,9 @@ class StartedExam extends React.Component {
   componentWillReceiveProps(nextProps) {
     let { data, users }= nextProps;
     if(data.examById)  {
-      if(!this.state.currentQuestion && this.state.firstRender) {
+      if(!this.state.currentQuestion) {
         let currentQuestion = data.examById.questionSet.questions[0];
-        this.setState({currentQuestion, firstRender: false});
+        this.setState({currentQuestion});
       }
       let questionSet = __.cloneDeep(data.examById.questionSet.questions);
       __.forEach(questionSet, (item, idx) => {
@@ -244,7 +244,7 @@ class StartedExam extends React.Component {
       });
       this.setState({questionSet});
       if(data.examById.createdBy._id != users.userId) {
-        if(nextProps.currentQuestion.questionId !== this.props.currentQuestion.questionId) {
+        if(this.props.currentQuestion && nextProps.currentQuestion.questionId !== this.props.currentQuestion.questionId) {
           let currentQuestion = __.find(data.examById.questionSet.questions, {_id: nextProps.currentQuestion.questionId});
           this.setState({currentQuestion});
         }
