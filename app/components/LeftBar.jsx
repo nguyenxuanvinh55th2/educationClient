@@ -29,6 +29,26 @@ import IconButton from 'material-ui/IconButton';
 import Avatar from 'material-ui/Avatar';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import ActionInfo from 'material-ui/svg-icons/action/info';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+const iconButtonElement = (
+  <IconButton
+    touch={true}
+    tooltipPosition="bottom-left"
+  >
+    <MoreVertIcon color={grey400} />
+  </IconButton>
+);
+
+// const rightIconMenu = (
+//   <IconMenu iconButtonElement={iconButtonElement}>
+//     <MenuItem>Reply</MenuItem>
+//     <MenuItem>Forward</MenuItem>
+//     <MenuItem>Delete</MenuItem>
+//   </IconMenu>
+// );
 class SubjectItem extends React.Component {
   renderSubjectTheme() {
     return __.map(this.props.themes,(theme,idx) => {
@@ -160,35 +180,36 @@ class LeftBar extends React.Component {
     if(data.loading && ! data.examByUser) {
       return []
     } else {
-        return __.map(data.examByUser, (item, idx) =>(
-          <ListItem key={idx}
-            primaryText={
-              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <p style={{color: 'white', fontSize: 13, width: 150}}>{ item.name }</p>
-                {
-                  (item.status === 0 || item.status === 1) ?
-                  <button style={{height: 30}} className="btn btn-primary" onClick={this.readyExamination.bind(this, item._id)}>Bắt đầu</button> :
-                  <button style={{height: 30}} className="btn btn-primary" onClick={() => {
-                    browserHistory.push('/waitExam/' + item._id)
-                  }}>Xem laị</button>
-                }
-                <button id={'remove' + idx} className="btn btn-danger" style={{borderWidth: 0, borderLeftWidth: 1, width: 25, height: 30}} onClick={() => {
-                      let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
-                      if(remove) {
-                        let token = localStorage.getItem('Meteor.loginToken');
-                        console.log("message ", item._id);
-                        this.props.removeExamination(token, item._id).then(() => {
-                          this.props.data.refetch();
-                          console.log("thanh cong");
-                        }).catch((err) => {
-                          console.log("message ", err);
-                        });
-                      }
-                    }}>X</button>
-              </div>
-            }
-          />
-        ))
+        return __.map(data.examByUser, (item, idx) =>{
+          let rightIconMenu = (
+            <IconMenu iconButtonElement={iconButtonElement}>
+              {
+                 (item.status === 0 || item.status === 1) ?
+                   <MenuItem onClick={this.readyExamination.bind(this, item._id)}>Bắt đâu kì thi</MenuItem> :
+                   <MenuItem onClick={() => {
+                       browserHistory.push('/waitExam/' + item._id)
+                     }}>Xem lại kì thi</MenuItem>
+              }
+              <MenuItem onClick={() => {
+                  let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
+                  if(remove) {
+                    let token = localStorage.getItem('Meteor.loginToken');
+                    this.props.removeExamination(token, item._id).then(() => {
+                      this.props.data.refetch();
+                    }).catch((err) => {
+                    });
+                  }
+                }}>Bỏ theo dõi thì ki</MenuItem>
+            </IconMenu>
+          );
+          return (
+            <ListItem key={idx}
+              primaryText={item.name}
+              rightIconButton={rightIconMenu}
+              style={{color: 'white', fontSize: 13}}
+            />
+          )
+        })
     }
   }
 
@@ -206,31 +227,35 @@ class LeftBar extends React.Component {
     if(data.loading && ! data.questionSetBankUser) {
       return []
     } else {
-        return __.map(data.questionSetBankUser, (item, idx) =>(
-          <ListItem key={idx}
-            primaryText={
-              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <p style={{color: 'white', fontSize: 13, width: 150}}>{ item.title }</p>
-                  <button style={{height: 30}} className="btn btn-primary" onClick={() => {
-                    browserHistory.push('/profile/' + users.userId + '/questionSet/' + item._id)
-                  }}>Xem</button>
-                <button id={'remove' + idx} className="btn btn-danger" style={{borderWidth: 0, borderLeftWidth: 1, width: 25, height: 30}} onClick={() => {
-                      let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
-                      if(remove) {
-                        let token = localStorage.getItem('Meteor.loginToken');
-                        console.log("message ", item._id);
-                        this.props.removeQuestionSet(token, item._id).then(() => {
-                          this.props.data.refetch();
-                          console.log("thanh cong");
-                        }).catch((err) => {
-                          console.log("message ", err);
-                        });
-                      }
-                    }}>X</button>
-              </div>
-            }
-          />
-        ))
+        return __.map(data.questionSetBankUser, (item, idx) =>{
+          let rightIconMenu = (
+            <IconMenu iconButtonElement={iconButtonElement}>
+              <MenuItem onClick={() => {
+                  browserHistory.push('/profile/' + users.userId + '/questionSet/' + item._id)
+                }}>Xem bộ đề</MenuItem>
+              <MenuItem onClick={() => {
+                    let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
+                    if(remove) {
+                      let token = localStorage.getItem('Meteor.loginToken');
+                      this.props.removeQuestionSet(token, item._id).then(() => {
+                        this.props.data.refetch();
+                      }).catch((err) => {
+                        console.log("message ", err);
+                      });
+                    }
+                }}>Bỏ theo dõi bộ đề</MenuItem>
+            </IconMenu>
+          );
+          return (
+            (
+              <ListItem key={idx}
+                primaryText={item.title}
+                rightIconButton={rightIconMenu}
+                style={{color: 'white', fontSize: 13}}
+              />
+            )
+          )
+        })
     }
   }
 
@@ -243,7 +268,7 @@ class LeftBar extends React.Component {
             this.props.closeLeftBar();
           }
         }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
-        <div style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center', cursor: 'pointer'}}>
           <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
         <List>

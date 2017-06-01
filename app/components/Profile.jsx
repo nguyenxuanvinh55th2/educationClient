@@ -4,6 +4,8 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import Header from './Header.jsx';
 import LeftBar from './LeftBar.jsx'
 import ChatBar from './ChatBar.jsx'
 import Notification from './Notification.jsx'
@@ -110,7 +112,12 @@ export default class Profile extends React.Component {
       )
     }
     else {
-      return <div style={{textAlign: 'center'}}>Vui lòng đăng nhập!</div>;
+      return (
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <Header {...this.props}/>
+          <div style={{textAlign: 'center', margin: 100}}>Vui lòng đăng nhập để tiếp tục</div>
+        </div>
+      )
     }
   }
 }
