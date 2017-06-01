@@ -43,7 +43,7 @@ import ManagerUserParent from './components/ManagerUserParent.jsx';
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
-        this.token = null;
+        this.token = localStorage.getItem('Meteor.loginToken');
         if(localStorage.getItem('keepLogin') === 'true'){
             this.token = localStorage.getItem('Meteor.loginToken');
         } else {
