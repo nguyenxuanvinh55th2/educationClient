@@ -67,6 +67,11 @@ export default class ChatItem extends Component {
   }
 
   openChatRoom(event) {
+    let _this = this;
+    if(_this.props.handleCloseChat){
+      _this.props.handleCloseChat();
+      //chang router chat page
+    }
     var chatShow = document.getElementById('chatShow');
     this.setState({showChatRoom: true});
 

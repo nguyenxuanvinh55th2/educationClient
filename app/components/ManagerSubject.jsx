@@ -3,10 +3,10 @@ import React from 'react';
 import { Link, Router, browserHistory } from 'react-router'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {AgGridReact} from 'ag-grid-react';
-
+import Dropzone from 'react-dropzone';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import Dialog from 'material-ui/Dialog';
 import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
@@ -15,6 +15,7 @@ import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
+const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
 class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -51,7 +52,9 @@ class ManagerSubject extends React.Component {
       dataSetTheme: [],
       userSubjects: [],
       userMails: [],
-      userFriendsUserClass: []
+      userFriendsUserClass: [],
+      topicSelected: {},
+      openGiveAdd: false
     }
   }
   componentWillReceiveProps(nextProps){
@@ -100,6 +103,7 @@ class ManagerSubject extends React.Component {
         isTheme: true,
         content: this.state.dataTheme.content,
       },
+      files: this.state.dataTheme.files,
       theme: {
         name: this.state.dataTheme.title
       },
@@ -124,6 +128,7 @@ class ManagerSubject extends React.Component {
         title: this.state.dataAssign.title,
         content: this.state.dataAssign.content,
       },
+      files: this.state.dataAssign.files,
       classSubjectId: this.state.subjectId,
     }
     this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
@@ -311,6 +316,9 @@ class ManagerSubject extends React.Component {
       </div>
     )
   }
+  onDropGiveAdd(files){
+    console.log(files);
+  }
   render(){
     let { dataSet, users } = this.props;
       if(dataSet.loading && !dataSet.getActivityForum){
@@ -319,6 +327,7 @@ class ManagerSubject extends React.Component {
         )
       }
       else {
+        console.log(this.state.topicSelected);
         return (
           <div style={{display: 'flex', flexDirection: 'row', padding: 20, justifyContent: 'space-between'}}>
             <div style={{width: '65%'}}>
@@ -435,14 +444,19 @@ class ManagerSubject extends React.Component {
                                        </div>
                                      }
                                      else {
-                                       let stringValue = 'http://docs.google.com/gview?url=';
+                                      //  let stringValue = 'http://docs.google.com/gview?url=';
                                       //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-
-                                       stringValue += file.file;
-                                       stringValue += '&embedded=true';
+                                       //
+                                      //  stringValue += file.file;
+                                      //  stringValue += '&embedded=true';
                                        return (
-                                         <div key={fileIdx} style={{padding: 5}}>
-                                           <iframe src={stringValue}></iframe>
+                                         <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                           {/* <iframe src={stringValue}></iframe> */}
+                                           <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                           <div style={{display: "flex", flexDirection: 'column'}}>
+                                             <h3>{file.fileName}</h3>
+                                             <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                           </div>
                                          </div>
                                        )
                                      }
@@ -520,16 +534,21 @@ class ManagerSubject extends React.Component {
                                       </div>
                                     }
                                     else {
-                                      let stringValue = 'http://docs.google.com/gview?url=';
-                                     //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-
-                                      stringValue += file.file;
-                                      stringValue += '&embedded=true';
-                                      return (
-                                        <div key={fileIdx} style={{padding: 5}}>
-                                          <iframe src={stringValue}></iframe>
+                                    //   let stringValue = 'http://docs.google.com/gview?url=';
+                                    //  //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
+                                     //
+                                    //   stringValue += file.file;
+                                    //   stringValue += '&embedded=true';
+                                    return (
+                                      <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                        {/* <iframe src={stringValue}></iframe> */}
+                                        <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                        <div style={{display: "flex", flexDirection: 'column'}}>
+                                          <h3>{file.fileName}</h3>
+                                          <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
                                         </div>
-                                      )
+                                      </div>
+                                    )
                                     }
                                   })
                                 }
@@ -609,13 +628,12 @@ class ManagerSubject extends React.Component {
                     {
                       __.map(this.state.dataSetAss,(ass,idx) => {
                         return (
-                          <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}
-                            onClick={() => {
-                              let dataValueAss = this.state.dataSetAss;
-                              dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
-                              this.setState({dataSetAss: dataValueAss})
-                            }}>
-                            <p>{ass.topic.title}</p>
+                          <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
+                            <p style={{width: '100%', cursor: 'pointer'}} onClick={() => {
+                                let dataValueAss = this.state.dataSetAss;
+                                dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
+                                this.setState({dataSetAss: dataValueAss})
+                              }}>{ass.topic.title}</p>
                             {
                               ass.openDetail &&
                               <div>
@@ -648,74 +666,87 @@ class ManagerSubject extends React.Component {
                                       stringValue += file.file;
                                       stringValue += '&embedded=true';
                                       return (
-                                        <div key={fileIdx} style={{padding: 5}}>
-                                          <iframe src={stringValue}></iframe>
+                                        <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                          {/* <iframe src={stringValue}></iframe> */}
+                                          <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                          <div style={{display: "flex", flexDirection: 'column'}}>
+                                            <h3>{file.fileName}</h3>
+                                            <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                          </div>
                                         </div>
                                       )
                                     }
                                   })
                                 }
+                              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                  <button type="button" className="btn btn-warning" onClick={() => this.setState({openGiveAdd: true,topicSelected: ass.topic})} >Nộp bài</button>
+                              </div>
                               </div>
                             }
                           </div>
                         )
                       })
                     }
-                    <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
+                    {/* <button type="button" className="btn" style={{backgroundColor: 'white', border: '1px dotted #35bcbf', color: '#35bcbf', marginTop: 5, height: 40}}
                        onClick={() => this.handleAddTheme()}>
                       <span className="glyphicon glyphicon-plus"></span> Tải file bài tập
-                    </button>
+                    </button> */}
                   </div>
-                  <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
-                    <div style={{backgroundColor: 'white', padding: 20}}>
-                      <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Tạo mới bài tập tự luận</button>
-                      <input type="text" placeholder="Tên bài tập" style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}} onChange={({target}) => {
-                        let dataAssign = this.state.dataAssign;
-                        dataAssign.title = target.value;
-                        this.setState({dataAssign: dataAssign});
-                      }}/>
-                      <div style={{border: '1px solid #f0f0f0', minHeighth: 100, padding: 10, marginTop: 15}}>
-                        <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 100, width: '100%'}} onChange={({target}) => {
-                          let dataAssign = this.state.dataAssign;
-                          dataAssign.content = target.value;
-                          this.setState({dataAssign: dataAssign});
-                        }}/>
-                        {
-                          this.state.dataAssign.files.length ?
-                          <div style={this.styles.wrapper}>
-                            {
-                              __.map(this.state.dataAssign.files,(file,idx) => {
-                                return(
-                                  <Chip
-                                      key={idx}
-                                      onRequestDelete={() => {
-                                        this.setState((prevState) => {
-                                          prevState.dataAssign.files.splice(idx,1);
-                                          return prevState;
-                                        });
-                                      }}
-                                      style={this.styles.chip}
-                                    >
-                                      {file.fileName}
-                                    </Chip>
-                                )
-                              })
-                            }
-                          </div> : <div></div>
-                        }
-                        {/* <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                          <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
-                        </div> */}
-                      </div>
-                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
-                        <div>
-                          <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileAss").click()}>+ Tệp</button>
-                          <input type="file" id="getFileAss"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isAssignment")} />
-                        </div>
-                        <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataAssign.title || !this.state.dataAssign.content} onClick={() => this.handleAddAss()}>Thêm bài tập</button>
-                      </div>
-                    </div>
-                  </div>
+                  {
+                     dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                     <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
+                       <div style={{backgroundColor: 'white', padding: 20}}>
+                         <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Tạo mới bài tập tự luận</button>
+                         <input type="text" placeholder="Tên bài tập" style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}} onChange={({target}) => {
+                           let dataAssign = this.state.dataAssign;
+                           dataAssign.title = target.value;
+                           this.setState({dataAssign: dataAssign});
+                         }}/>
+                         <div style={{border: '1px solid #f0f0f0', minHeighth: 100, padding: 10, marginTop: 15}}>
+                           <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 100, width: '100%'}} onChange={({target}) => {
+                             let dataAssign = this.state.dataAssign;
+                             dataAssign.content = target.value;
+                             this.setState({dataAssign: dataAssign});
+                           }}/>
+                           {
+                             this.state.dataAssign.files.length ?
+                             <div style={this.styles.wrapper}>
+                               {
+                                 __.map(this.state.dataAssign.files,(file,idx) => {
+                                   return(
+                                     <Chip
+                                         key={idx}
+                                         onRequestDelete={() => {
+                                           this.setState((prevState) => {
+                                             prevState.dataAssign.files.splice(idx,1);
+                                             return prevState;
+                                           });
+                                         }}
+                                         style={this.styles.chip}
+                                       >
+                                         {file.fileName}
+                                       </Chip>
+                                   )
+                                 })
+                               }
+                             </div> : <div></div>
+                           }
+                           {/* <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                             <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
+                           </div> */}
+                         </div>
+                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+                           <div>
+                             <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileAss").click()}>+ Tệp</button>
+                             <input type="file" id="getFileAss"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isAssignment")} />
+                           </div>
+                           <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataAssign.title || !this.state.dataAssign.content} onClick={() => this.handleAddAss()}>Thêm bài tập</button>
+                         </div>
+                       </div>
+                     </div>
+                      :
+                     <div></div>
+                  }
                 </TabPanel>
 
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
@@ -775,9 +806,35 @@ class ManagerSubject extends React.Component {
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
                  </div>
-                 <button className="btn btn-primary">Add</button>
+                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Add</button>
               </div>
             </div>
+            <Dialog
+              modal={true}
+              open={this.state.openGiveAdd}
+              autoDetectWindowHeight={false}
+              autoScrollBodyContent={false}
+              contentStyle={{minHeight:'60%'}}
+            >
+              <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+                  <div className="modal-content">
+                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
+                      <h4 className="modal-title">Nộp bài tập: {this.state.topicSelected ? this.state.topicSelected.title : ''} - {this.state.topicSelected.owner ? this.state.topicSelected.owner.name : ''} </h4>
+                      <span className="close" onClick={() => this.setState({openGiveAdd: false})}>&times;</span>
+                    </div>
+                    <div className="modal-body" style={{maxHeight:window.innerHeight - 300, overflowY: 'auto', overflowX: 'hidden'}}>
+                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                        <Dropzone onDrop={this.onDropGiveAdd.bind(this)} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}}>
+                          <div style={{textAlign: 'center'}}>Click or Drap here to upload file</div>
+                        </Dropzone>
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-default" onClick={() => this.setState=({openGiveAdd: false})}>Đóng</button>
+                    </div>
+                  </div>
+              </div>
+            </Dialog>
           </div>
         )
       }
