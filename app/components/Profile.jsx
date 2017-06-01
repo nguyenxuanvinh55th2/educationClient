@@ -39,6 +39,7 @@ export default class Profile extends React.Component {
   }
   render() {
     let { users } = this.props;
+    console.log('users.userId ', users.userId)
     if(users.userId){
       return(
         <div style={{flexDirection: 'column'}}>

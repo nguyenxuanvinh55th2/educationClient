@@ -11,6 +11,8 @@ import Dropzone from 'react-dropzone';
 import QuestionCreateItem from './QuestionCreateItem.jsx';
 import QuestionReviewItem from './QuestionReviewItem.jsx';
 
+import '../tab.css';
+
 class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
@@ -90,12 +92,12 @@ class AddQuestion extends React.Component {
     let { showReview } = this.state;
     return (
       <Tabs className="secondary">
-        <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Tab>
-                <h4 className="modal-title">THÊM NỘI DUNG</h4>
+        <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40}}>
+            <Tab style={{border: 'none'}}>
+                <h4 className="modal-title" style={{color: 'black'}}>THÊM NỘI DUNG</h4>
             </Tab>
-            <Tab style={{float: 'right'}}>
-              <button className="btn btn-primary" onClick={() => {
+            <Tab style={{float: 'right', width: '70%', paddingLeft: 15, border: 'none'}}>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right'}} onClick={() => {
                   this.setState({showReview: true})
                 }}>XEM LẠI</button>
             </Tab>
@@ -105,8 +107,8 @@ class AddQuestion extends React.Component {
             <div style={{width: '80%'}}>
               { this.renderQuestionCreate() }
             </div>
-            <div style={{width: '80%', paddingLeft: '35%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'center'}}>
-              <button className="btn btn-primary" style={{width: '30%'}} onClick={this.addNewQuestion.bind(this)}>
+            <div style={{width: '80%', paddingLeft: 57, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'left'}}>
+              <button className="btn" style={{width: 125, backgroundColor: '#35bcbf', color: 'white'}} onClick={this.addNewQuestion.bind(this)}>
                 Thêm câu hỏi
               </button>
             </div>
@@ -128,7 +130,7 @@ class AddQuestion extends React.Component {
                   style={{marginLeft: '35%', width: '30%'}}
                 />
               </div>
-              <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+              <button className="btn" style={{marginLeft: '35%', width: '30%', backgroundColor: '#35bcbf', color: 'white'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
             </div> : null
           }
         </TabPanel>
@@ -328,14 +330,14 @@ class AddQuestion extends React.Component {
             <div style={{width: '70%'}}>
               <div style={{width: '100%'}} className={this.state.title ? 'form-group' : 'form-group has-error'}>
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Tiêu đề</label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-9" style={{paddingRight: 0}}>
                       <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
                       <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
                   </div>
               </div>
               <div style={{width: '100%'}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Mô tả</label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-9" style={{paddingRight: 0}}>
                       <textarea style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
                       </textarea>
                       <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
@@ -343,7 +345,7 @@ class AddQuestion extends React.Component {
               </div>
               <div style={{width: '100%'}} className={this.state.score ? 'form-group' : 'form-group has-error'}>
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Điểm số</label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-9" style={{paddingRight: 0}}>
                       <input style={{width: '100%', margin: 0}} type="number" className="form-control" value={this.state.score} onChange={({target}) => {
                           let questionList = this.state.questionList;
                           questionList[0].score = target.value;
@@ -354,7 +356,7 @@ class AddQuestion extends React.Component {
               </div>
               <div style={{width: '100%'}} className="form-group">
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Môn học</label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-9" style={{paddingRight: 0}}>
                     <Combobox
                       name="subjectss"
                       data={this.props.data.subjectByUser}
@@ -366,7 +368,7 @@ class AddQuestion extends React.Component {
                   </div>
               </div>
               <div style={{width: '100%'}} className="form-group">
-                <div className="col-sm-9 col-sm-offset-3">
+                <div className="col-sm-9 col-sm-offset-3"  style={{paddingRight: 0}}>
                   <Dropzone onDrop={this.onDrop.bind(this)} style={{height: 50, border: '1px solid gray', borderRadius: 10, padding: '13px 7px'}}>
                     <div style={{textAlign: 'center'}}>Thêm câu hỏi từ file của bạn</div>
                   </Dropzone>
@@ -376,8 +378,8 @@ class AddQuestion extends React.Component {
             <div style={{width: '30%'}}>
             {
               questionFile ?
-              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
-              <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
+              <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
+              <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
             }
             </div>
           </div>

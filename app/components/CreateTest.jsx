@@ -91,12 +91,12 @@ class CreateTest extends  React.Component {
                     </div>
                   </div>
                   <div style={{width: '30%'}}>
-                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
+                      <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
                           this.setState({getQuestionFrom: 'questionBank', stepIndex: 1})
                         }}>Ngân hàng câu hỏi</button>
                       <div style={{height: 10}}>
                       </div>
-                      <button type="button" className="btn btn-primary" style={{width: '100%'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
+                      <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.name && this.state.description)} onClick={() => {
                           this.setState({getQuestionFrom: 'questionCreater', stepIndex: 1})
                         }}>Câu hỏi tự tạo</button>
                   </div>
@@ -191,7 +191,7 @@ class CreateTest extends  React.Component {
                     </label>
                   </div>
                   <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                      <button type="button" className="btn btn-primary" style={{width: '100%'}} onClick={this.saveTest.bind(this)}>HOÀN TẤT</button>
+                      <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%'}} onClick={this.saveTest.bind(this)}>HOÀN TẤT</button>
                   </div>
                 </div>
               </form>

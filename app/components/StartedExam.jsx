@@ -12,8 +12,11 @@ import printExamResult from './printExamResult';
 
 import  { UserExams } from 'educationServer/userExam'
 import  { Questions } from 'educationServer/question'
+import  { Examinations } from 'educationServer/examination'
 
 import PlayerImage from './PlayerImage.jsx';
+
+import { Meteor } from 'meteor/meteor';
 
 class ScoreChat extends React.Component {
   render() {
@@ -124,13 +127,17 @@ class StartedExam extends React.Component {
   constructor(props) {
     super(props);
     this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: [], questionCountDown: 0, index: 1, firstRender: true};
+    this.interval = null;
   }
 
   componentDidUpdate() {
-    let { data, users, finishExamination, screenShot } = this.props;
+    let { data, finishExamination, screenShot } = this.props;
     let { startCountDown } = this.state;
     let token = localStorage.getItem('Meteor.loginToken');
     let randomNuber = Math.floor((Math.random() * 10) + 40);
+    // if(this.interval) {
+    //   clearInterval(this.interval);
+    // }
     let that = this;
     if(!startCountDown && data.examById && !data.examById.isClassStyle) {
       let timeLeft = moment().valueOf() - data.examById.timeStart;
@@ -138,10 +145,10 @@ class StartedExam extends React.Component {
       let countDown = time
       let token = localStorage.getItem('Meteor.loginToken');
       if(data.examById.status === 99) {
-        let interval = setInterval(() => {
+        this.interval = setInterval(() => {
           countDown -= 1000;
-          if(countDown % randomNuber === 0 && data.examById.createdBy._id !== users.userId && that.refs.webcam) {
-            playerImage = that.refs.webcam.getScreenshot();
+          if(countDown % randomNuber === 0 && data.examById.createdBy._id !== Meteor.userId() && that.refs.webcam) {
+            let playerImage = that.refs.webcam.getScreenshot();
             screenShot(token, playerImage);
           }
           //data.refetch();
@@ -150,10 +157,10 @@ class StartedExam extends React.Component {
           let minute = Math.floor((time - hour * 3600) / 60);
           let second = Math.floor(time - hour * 3600 - minute * 60);
           this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()});
-          if(countDown <= 0 && users.userId === data.examById.createdBy._id) {
+          if(countDown <= 0 && Meteor.userId() === data.examById.createdBy._id) {
             finishExamination(token, data.examById._id).then(() => {
-              console.log("ki thi da ket thuc");
-              clearInterval(interval);
+              that.props.data.refetch();
+              clearInterval(this.interval);
             }).catch((err) => {
               console.log("error ", err);
             });
@@ -209,7 +216,6 @@ class StartedExam extends React.Component {
         let index = this.state.index + 1;
         this.setState({currentQuestion, index});
     }
-    console.log('currentQuestion ', currentQuestion);
     if(data.examById.isClassStyle) {
       let token = localStorage.getItem('Meteor.loginToken');
       currentQuestion = JSON.stringify(currentQuestion);
@@ -237,7 +243,8 @@ class StartedExam extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let { data, users }= nextProps;
+    let { userExams } = this.state;
+    let { data }= nextProps;
     if(data.examById)  {
       if(!this.state.currentQuestion) {
         let currentQuestion = data.examById.questionSet.questions[0];
@@ -248,21 +255,19 @@ class StartedExam extends React.Component {
         item['index'] = idx + 1;
       });
       this.setState({questionSet});
-      if(data.examById.createdBy._id != users.userId) {
+      if(data.examById.createdBy._id != Meteor.userId()) {
         if(this.props.currentQuestion && nextProps.currentQuestion.questionId !== this.props.currentQuestion.questionId) {
           let currentQuestion = __.find(data.examById.questionSet.questions, {_id: nextProps.currentQuestion.questionId});
           this.setState({currentQuestion});
         }
       }
     }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    let { userExams } = this.state;
-    let { users, data } = this.props;
-    if(nextProps.userExams !== userExams) {
+    if(JSON.stringify(nextProps.userExams) !== JSON.stringify(this.props.userExams)) {
       this.props.data.refetch();
       this.setState({userExams: nextProps.userExams});
+    }
+    if(nextProps.status === 100) {
+      this.props.data.refetch();
     }
   }
 
@@ -350,7 +355,6 @@ class StartedExam extends React.Component {
                     if(submit) {
                       let token = localStorage.getItem('Meteor.loginToken');
                       finishExamination(token, data.examById._id).then(() => {
-                        console.log("ki thi da ket thuc");
                       }).catch((err) => {
                         console.log("error ", err);
                       });
@@ -483,15 +487,14 @@ class StartedExam extends React.Component {
   }
 
   render() {
-    let { data, params, users } = this.props;
+    let { data, params } = this.props;
     let { currentQuestion, questionSet, questionCountDown } = this.state;
-    console.log('questionSet ', questionSet);
-    if(data.loading) {
+    if(!data.examById) {
       return (
         <div className="spinner spinner-lg"></div>
       )
     } else {
-        if(data.examById.createdBy._id === users.userId || data.examById.status === 100) {
+        if(data.examById.createdBy._id === Meteor.userId() || data.examById.status === 100) {
           let questionCount = data.examById.questionSet.questions.length;
           let playerList = __.cloneDeep(data.examById.userExams);
           __.forEach(playerList, item => {
@@ -628,13 +631,14 @@ const StartedExamWithData = compose (
 export default createContainer((ownProps) => {
   Meteor.subscribe("userExams");
   Meteor.subscribe("questions");
+  Meteor.subscribe("examinations");
   let examId = ownProps.params.id;
   let userExams = UserExams.find({examId}).fetch();
   let currentQuestion = Questions.findOne({_id: 'currentQuestion'});
-  console.log('currentQuestion ', currentQuestion);
-
+  let examination = Examinations.findOne({_id:examId});
   return {
     userExams,
-    currentQuestion
+    currentQuestion,
+    status: examination ? examination.status : 99
   };
 }, StartedExamWithData);

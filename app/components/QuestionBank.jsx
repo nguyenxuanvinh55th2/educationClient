@@ -46,28 +46,28 @@ class SelectQuestionInputForm extends React.Component {
     let easyQuestionCount = __.filter(data.questionBySubject, item => item.correctRate > 0.6).length;
     return (
       <div style={{width: '100%'}}>
-        <p className="col-sm-9 col-sm-offset-3">{'Số lượng câu hỏi dễ: ' + easyQuestionCount}</p>
-        <p className="col-sm-9 col-sm-offset-3">{'Số lượng câu trung bình: ' + normalQuestionCount}</p>
-        <p className="col-sm-9 col-sm-offset-3">{'Số lượng câu hỏi khó: ' + hardQuestionCount}</p>
-        <div style={{width: '100%', paddingBottom: 10}} className={this.props.easyQuestionCount ? 'form-group' : 'form-group has-error'}>
-            <label className="col-sm-3 control-label">Nhập số lượng câu hỏi dễ</label>
+        <p className="col-sm-9 col-sm-offset-2">{'Số lượng câu hỏi dễ: ' + easyQuestionCount}</p>
+        <p className="col-sm-9 col-sm-offset-2">{'Số lượng câu trung bình: ' + normalQuestionCount}</p>
+        <p className="col-sm-9 col-sm-offset-2">{'Số lượng câu hỏi khó: ' + hardQuestionCount}</p>
+        <div style={{width: '100%', paddingBottom: 10, margin: 0}} className={this.props.easyQuestionCount ? 'form-group' : 'form-group has-error'}>
+            <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Nhập số lượng câu hỏi dễ</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={easyQuestionCount.toString()} value={this.props.easyQuestionCount} onChange={({target}) => getQuestionTypeCount('easyQuestionCount', target.value)}/>
                 <span className="help-block">{this.props.easyQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
             </div>
         </div>
-        <div style={{width: '100%', paddingBottom: 10}} className={this.props.normalQuestionCount ? 'form-group' : 'form-group has-error'}>
-            <label className="col-sm-3 control-label">Nhập số lượng câu hỏi trung bình</label>
+        <div style={{width: '100%', paddingBottom: 10, margin: 0}} className={this.props.normalQuestionCount ? 'form-group' : 'form-group has-error'}>
+            <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Số lượng câu hỏi trung bình</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={normalQuestionCount.toString()} value={this.props.normalQuestionCount} onChange={({target}) => getQuestionTypeCount('normalQuestionCount', target.value)}/>
                 <span className="help-block">{this.props.normalQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
             </div>
         </div>
-        <div style={{width: '100%', paddingBottom: 10}} className={this.props.hardQuestionCount ? 'form-group' : 'form-group has-error'}>
-            <label className="col-sm-3 control-label">Nhập số lượng câu hỏi khó</label>
+        <div style={{width: '100%', paddingBottom: 10, margin: 0}} className={this.props.hardQuestionCount ? 'form-group' : 'form-group has-error'}>
+            <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Nhập số lượng câu hỏi khó</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={hardQuestionCount.toString()} value={this.props.hardQuestionCount} onChange={({target}) => getQuestionTypeCount('hardQuestionCount', target.value)}/>
-                <span className="help-block">{this.state.hardQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
+                <span className="help-block">{this.props.hardQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
             </div>
         </div>
       </div>
@@ -133,9 +133,9 @@ class QuestionItem extends React.Component {
     let { question } = this.props;
     let { showAnswer } = this.state;
     return (
-      <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
+      <div style={{width: '100%', paddingLeft: 0, paddingRight: '20%'}}>
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <div className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
+          <div className="col-sm-10" style={{width: '100%',marginBottom: 10, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}
           </div>
           <Checkbox
@@ -154,7 +154,7 @@ class QuestionItem extends React.Component {
         </div>
         {
           showAnswer ?
-          <div style={{width: '60%', marginBottom: 15}}>
+          <div style={{width: '100%', marginBottom: 15}}>
             <font style={{color: 'blue', fontWeight: 'bold'}}>Câu hỏi:</font>
             <div style={{width: '100%'}}>
               {question.question}
@@ -197,18 +197,18 @@ class QuestionSetItem extends React.Component {
     let { showQuestion } = this.state;
     console.log('this.props ', this.props);
     return (
-      <div style={{width: '100%', paddingLeft: 15, paddingRight: 15, paddingTop: 15}}>
-        <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <div className="col-sm-9" style={{padding: '5px 5px 0px 0px'}}>
-            <button className="btn btn-default" style={{width: '100%'}} onClick={this.showQuestion.bind(this)}>
+      <div style={{width: '100%', paddingLeft: 15, paddingRight: 15, paddingTop: 3}}>
+        <div style={{width: '70%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <div className="col-sm-9" style={{padding: '5px 11px 0px 0px'}}>
+            <button className="btn" style={{width: '100%', backgroundColor: '#D7DCDC'}} onClick={this.showQuestion.bind(this)}>
               {questionSet.title}
             </button>
           </div>
-          <div className="col-sm-2" style={{padding: '5px 5px 0px 0px'}}>
-            <button className="btn btn-primary" style={{width: '100%'}} onClick={() => getQuestionSet(questionSet)}>Chọn</button>
+          <div className="col-sm-2" style={{padding: '5px 0px 0px 0px'}}>
+            <button className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} onClick={() => getQuestionSet(questionSet)}>Chọn</button>
           </div>
           <div className="col-sm-1" style={{padding: '5px 5px 0px 0px'}}>
-            <button className="btn btn-danger" style={{width: '100%'}} onClick={() => {
+            <button className="btn" style={{width: '100%', backgroundColor: 'white', color: '#35bcbf', padding: 0}} onClick={() => {
                 let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                 if(remove) {
                   let token = localStorage.getItem('Meteor.loginToken');
@@ -218,13 +218,13 @@ class QuestionSetItem extends React.Component {
                   });
                 }
               }}>
-              <i className="fa fa-times" aria-hidden="true"></i>
+              <i style={{fontSize: 19, paddingTop: 6, paddingBottom: 0}} className="fa fa-trash" aria-hidden="true"></i>
             </button>
           </div>
         </div>
         {
           showQuestion ?
-          <div style={{width: '80%', marginBottom: 15}}>
+          <div style={{width: '80%', marginTop: 15}}>
             { this.renderQuestionSet(questionSet) }
           </div> : null
         }
@@ -457,9 +457,11 @@ class QuesionBank extends React.Component {
     let { data } = this.props;
     if(showQuestionBank === 'personal') {
       return (
-        <Tabs className="secondary">
-          <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}} onClick={() => {
+        <div>
+          <h4 style={{color: '#35bcbf', paddingLeft: 30, marginBottom: 0}}>Thêm câu hỏi từ cá nhân</h4>
+          <Tabs className="secondary">
+          <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40}}>
+              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}} onClick={() => {
                 if(bankType !== 'sequence') {
                   this.setState({bankType: 'sequence'})
                 }
@@ -470,7 +472,7 @@ class QuesionBank extends React.Component {
                     }
                   }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Lần lượt</p>
               </Tab>
-              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}  onClick={() => {
+              <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}}  onClick={() => {
                 if(bankType !== 'random') {
                   this.setState({bankType: 'random'})
                 }
@@ -481,8 +483,8 @@ class QuesionBank extends React.Component {
                     }
                   }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
               </Tab>
-              <Tab style={{float: 'right'}}>
-                <button className="btn btn-primary" onClick={() => {
+              <Tab style={{float: 'right', width: '70%', paddingLeft: 15, border: 'none'}}>
+                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right', border: 'none'}} onClick={() => {
                     this.setState({showReview: true})
                   }}>XEM LẠI</button>
               </Tab>
@@ -504,15 +506,15 @@ class QuesionBank extends React.Component {
             </div>
           </TabPanel>
           <TabPanel>
-            <div style={{width: '60%', marginLeft: '20%'}}>
+            <div style={{width: '80%', marginLeft: 35}}>
                 <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-                  <div style={{width: '100%', paddingTop: 50, paddingBottom: 30}}>
+                  <div style={{width: '100%', paddingTop: 10, paddingBottom: 30}}>
                     {
                       data.subjectByUser ?
                       <div style={{width: '100%'}}>
-                        <div style={{width: '100%', paddingBottom: 10}} className="form-group">
-                            <label className="col-sm-3 control-label">Chọn môn học</label>
-                            <div className="col-sm-9">
+                        <div style={{width: '100%', paddingBottom: 10, paddingLeft: 19, paddingRight: 0, marginBottom: 0}} className="form-group">
+                            <label className="col-sm-2 control-label" style={{paddingRight: 5, paddingLeft: 10, textAlign: 'left', whiteSpace: 'nowrap'}}>Chọn môn học</label>
+                            <div className="col-sm-9" style={{paddingLeft: 24, paddingRight: 78}}>
                               <Combobox
                                 name="subject"
                                 data={data.subjectByUser}
@@ -532,9 +534,6 @@ class QuesionBank extends React.Component {
                           getQuestionBySubject={this.getQuestionBySubject.bind(this)}
                           questionBySubject={this.state.questionBySubject}
                           type={'personal'}/>
-                        <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                            <button type="button" className="btn btn-primary" style={{width: 150}} onClick={this.getQuestionListByRate.bind(this, 'personalQuestion')}>TIẾP TỤC</button>
-                        </div>
                       </div> : null
                     }
                   </div>
@@ -548,33 +547,36 @@ class QuesionBank extends React.Component {
               <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                 { this.renderQuestionReview() }
               </div>
-              <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+              <button className="btn" style={{marginLeft: '35%', width: '30%', backgroundColor: '#35bcbf', color: 'white'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
             </div> : null
           }
           </TabPanel>
         </Tabs>
+        </div>
       )
     } else
         if(showQuestionBank === 'public') {
           return (
-            <Tabs className="secondary">
-              <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+            <div>
+              <h4 style={{color: '#35bcbf', paddingLeft: 30, marginBottom: 0}}>Thêm câu hỏi từ cá nhân</h4>
+              <Tabs className="secondary">
+              <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40}}>
+                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}}>
                     <input checked={bankType === 'sequence' && 'checked'} type="radio" name="pBankType" onChange={({target}) => {
                         if(bankType !== 'sequence') {
                           this.setState({bankType: 'sequence'})
                         }
                       }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Lần lượt</p>
                   </Tab>
-                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                  <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}}>
                     <input checked={bankType === 'random' && 'checked'} type="radio" name="pBankType" onChange={({target}) => {
                         if(bankType !== 'random') {
                           this.setState({bankType: 'random'})
                         }
                       }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
                   </Tab>
-                  <Tab style={{float: 'right'}}>
-                    <button className="btn btn-primary" onClick={() => {
+                  <Tab style={{float: 'right', width: '70%', paddingLeft: 15, border: 'none'}}>
+                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right'}} onClick={() => {
                         this.setState({showReview: true})
                       }}>XEM LẠI</button>
                   </Tab>
@@ -594,15 +596,15 @@ class QuesionBank extends React.Component {
                 </div>
               </TabPanel>
               <TabPanel>
-                <div style={{width: '60%', marginLeft: '20%'}}>
+                <div style={{width: '80%', marginLeft: 35}}>
                     <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
-                      <div style={{width: '100%', paddingTop: 50, paddingBottom: 30}}>
+                      <div style={{width: '100%', paddingTop: 10, paddingBottom: 30}}>
                         {
                           data.subjects ?
                           <div style={{width: '100%'}}>
-                            <div style={{width: '100%', paddingBottom: 10}} className="form-group">
-                                <label className="col-sm-3 control-label">Chọn môn học</label>
-                                <div className="col-sm-9">
+                            <div style={{width: '100%', paddingBottom: 10, paddingLeft: 19, paddingRight: 0, marginBottom: 0}} className="form-group">
+                                <label className="col-sm-2 control-label" style={{paddingRight: 5, paddingLeft: 10, textAlign: 'left', whiteSpace: 'nowrap'}}>Chọn môn học</label>
+                                <div className="col-sm-9" style={{paddingLeft: 24, paddingRight: 78}}>
                                   <Combobox
                                     name="subjects"
                                     data={data.subjects}
@@ -622,9 +624,6 @@ class QuesionBank extends React.Component {
                               getQuestionBySubject={this.getQuestionBySubject.bind(this)}
                               questionBySubject={this.state.questionBySubject}
                               type={'public'}/>
-                            <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                                <button type="button" className="btn btn-primary" style={{width: 150}} onClick={this.getQuestionListByRate.bind(this, 'publicQuestion')}>TIẾP TỤC</button>
-                            </div>
                           </div> : null
                         }
                       </div>
@@ -638,11 +637,12 @@ class QuesionBank extends React.Component {
                   <div style={{width: '100%', paddingLeft: '20%', paddingRight: '20%'}}>
                     { this.renderQuestionReview() }
                   </div>
-                  <button className="btn btn-primary" style={{marginLeft: '35%', width: '30%'}} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
+                  <button className="btn" style={{marginLeft: '35%', width: '30%', }} onClick={this.saveQuestion.bind(this)}>Lưu câu hỏi</button>
                 </div> : null
               }
               </TabPanel>
             </Tabs>
+            </div>
           )
         }
   }
