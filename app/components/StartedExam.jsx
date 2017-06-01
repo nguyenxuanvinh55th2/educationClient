@@ -140,11 +140,11 @@ class StartedExam extends React.Component {
       if(data.examById.status === 99) {
         let interval = setInterval(() => {
           countDown -= 1000;
-          if(countDown % randomNuber === 0) {
+          if(countDown % randomNuber === 0 && data.examById.createdBy._id !== users.userId && that.refs.webcam) {
             playerImage = that.refs.webcam.getScreenshot();
             screenShot(token, playerImage);
           }
-          data.refetch();
+          //data.refetch();
           let time = countDown / 1000;
           let hour = Math.floor(time / 3600);
           let minute = Math.floor((time - hour * 3600) / 60);
@@ -160,6 +160,7 @@ class StartedExam extends React.Component {
           }
         }, 1000);
       }
+
       // if(data.examById.isClassStyle) {
       //   let time1 = (data.examById.time * 60 * 1000);
       //   let questionCount = data.examById.questionSet.questions.length;
@@ -197,14 +198,19 @@ class StartedExam extends React.Component {
     let { updateCurrentQuestion, data, users } = this.props;
     let currentQuestion;
     if(question.index < questionSet.length) {
-      currentQuestion = questionSet[question.index];
+      if(!question.index ) {
+        currentQuestion = questionSet[1];
+      } else {
+          currentQuestion = questionSet[question.index];
+      }
       this.setState({currentQuestion, index: question.index});
     } else {
         currentQuestion = questionSet[0];
-        this.setState({currentQuestion, index: question.index});
+        let index = this.state.index + 1;
+        this.setState({currentQuestion, index});
     }
+    console.log('currentQuestion ', currentQuestion);
     if(data.examById.isClassStyle) {
-      console.log('selection');
       let token = localStorage.getItem('Meteor.loginToken');
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
@@ -217,14 +223,13 @@ class StartedExam extends React.Component {
     let currentQuestion;
     if(question.index >= 2) {
       currentQuestion = questionSet[question.index - 2];
-      console.log('currentQuestion 1', currentQuestion);
       this.setState({currentQuestion, index: question.index});
     } else {
+        let index = this.state.index - 1;
         currentQuestion = questionSet[questionSet.length - 1];
-        this.setState({currentQuestion, index: question.index});
+        this.setState({currentQuestion, index});
     }
     if(data.examById.isClassStyle) {
-      console.log('currentQuestion pre ', currentQuestion);
       let token = localStorage.getItem('Meteor.loginToken');
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
@@ -440,7 +445,7 @@ class StartedExam extends React.Component {
               !data.examById.isClassStyle &&
               questionSet.map((item, idx) => (
                 <button key={idx} style={{borderRadius: '100%', width: 30, height: 30, margin: 10}} className={item._id === currentQuestion._id ? 'btn btn-primary' : 'btn btn-default'} onClick={() => {
-                    this.setState({currentQuestion: item})
+                    this.setState({currentQuestion: item, index: item.index})
                   }}>{item.index}</button>
                 ))
               }
@@ -480,9 +485,10 @@ class StartedExam extends React.Component {
   render() {
     let { data, params, users } = this.props;
     let { currentQuestion, questionSet, questionCountDown } = this.state;
+    console.log('questionSet ', questionSet);
     if(data.loading) {
       return (
-        <div className="loader"></div>
+        <div className="spinner spinner-lg"></div>
       )
     } else {
         if(data.examById.createdBy._id === users.userId || data.examById.status === 100) {

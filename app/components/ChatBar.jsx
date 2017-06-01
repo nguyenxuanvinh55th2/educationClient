@@ -69,7 +69,7 @@ class ChatBar extends React.Component {
   renderChat() {
     if(!this.props.data || this.props.data.loading)
       return (
-        <div className="loader"></div>
+        <div className="spinner spinner-lg"></div>
       )
     else {
       var userList = this.searchItem(this.props.data.userChat);

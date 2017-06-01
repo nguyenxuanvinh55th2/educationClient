@@ -64,7 +64,7 @@ export default compose(
     graphql(QUERY_USER_INFO, {
       options: ({token}) => ({
           variables: {token: localStorage.getItem('Meteor.loginToken')},
-          pollInterval: 1000
+          //pollInterval: 1000
       }),
     }),
     graphql(LOGOUT, {
