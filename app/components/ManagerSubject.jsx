@@ -15,6 +15,7 @@ import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
+const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
 class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -435,14 +436,19 @@ class ManagerSubject extends React.Component {
                                        </div>
                                      }
                                      else {
-                                       let stringValue = 'http://docs.google.com/gview?url=';
+                                      //  let stringValue = 'http://docs.google.com/gview?url=';
                                       //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-
-                                       stringValue += file.file;
-                                       stringValue += '&embedded=true';
+                                       //
+                                      //  stringValue += file.file;
+                                      //  stringValue += '&embedded=true';
                                        return (
-                                         <div key={fileIdx} style={{padding: 5}}>
-                                           <iframe src={stringValue}></iframe>
+                                         <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                           {/* <iframe src={stringValue}></iframe> */}
+                                           <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                           <div style={{display: "flex", flexDirection: 'column'}}>
+                                             <h3>{file.fileName}</h3>
+                                             <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                           </div>
                                          </div>
                                        )
                                      }
@@ -520,16 +526,21 @@ class ManagerSubject extends React.Component {
                                       </div>
                                     }
                                     else {
-                                      let stringValue = 'http://docs.google.com/gview?url=';
-                                     //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-
-                                      stringValue += file.file;
-                                      stringValue += '&embedded=true';
-                                      return (
-                                        <div key={fileIdx} style={{padding: 5}}>
-                                          <iframe src={stringValue}></iframe>
+                                    //   let stringValue = 'http://docs.google.com/gview?url=';
+                                    //  //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
+                                     //
+                                    //   stringValue += file.file;
+                                    //   stringValue += '&embedded=true';
+                                    return (
+                                      <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                        {/* <iframe src={stringValue}></iframe> */}
+                                        <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                        <div style={{display: "flex", flexDirection: 'column'}}>
+                                          <h3>{file.fileName}</h3>
+                                          <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
                                         </div>
-                                      )
+                                      </div>
+                                    )
                                     }
                                   })
                                 }
@@ -648,8 +659,13 @@ class ManagerSubject extends React.Component {
                                       stringValue += file.file;
                                       stringValue += '&embedded=true';
                                       return (
-                                        <div key={fileIdx} style={{padding: 5}}>
-                                          <iframe src={stringValue}></iframe>
+                                        <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                          {/* <iframe src={stringValue}></iframe> */}
+                                          <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
+                                          <div style={{display: "flex", flexDirection: 'column'}}>
+                                            <h3>{file.fileName}</h3>
+                                            <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                          </div>
                                         </div>
                                       )
                                     }
@@ -775,7 +791,7 @@ class ManagerSubject extends React.Component {
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
                  </div>
-                 <button className="btn btn-primary">Add</button>
+                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Add</button>
               </div>
             </div>
           </div>

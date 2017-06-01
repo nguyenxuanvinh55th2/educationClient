@@ -39,6 +39,9 @@ export default class Profile extends React.Component {
   componentWillUnmount() {
       window.removeEventListener('resize', this.mediaQueryChanged);
   }
+  handleCloseChat(){
+    this.setState({chatBarOpen: false})
+  }
   render() {
     let { users } = this.props;
     if(users.userId){
@@ -67,29 +70,34 @@ export default class Profile extends React.Component {
             }}>
               <Notifications color={'#35bcbf'}/>
             </IconButton>
-            <IconButton onClick={() => this.setState({chatBarOpen: true})}>
-              <IconChat color={'#35bcbf'}/>
-            </IconButton>
+            {
+              !window.matchMedia(`(min-width: 1100px)`).matches &&
+                <IconButton onClick={() => this.setState({chatBarOpen: true})}>
+                  <IconChat color={'#35bcbf'}/>
+                </IconButton>
+            }
           </AppBar>
-          <div style={{width: 200}}>
-             <ChatBar {...this.props}/>
-          </div>
+          {
+            window.matchMedia(`(min-width: 1100px)`).matches &&
+            <div style={{width: 200}}>
+               <ChatBar {...this.props}/>
+            </div>
+          }
         {
           window.matchMedia(`(min-width: 800px)`).matches ?
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
             <div style={{width: 256}}>
               <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
             </div>
-            <div style={{width: window.innerWidth -(2*256), marginTop: 47, minHeight: this.state.height - 47}}>
+            <div style={{width: window.innerWidth - 256 - (window.matchMedia(`(min-width: 1100px)`).matches ? 200 : 0), marginTop: 47, minHeight: this.state.height - 47}}>
               {React.cloneElement(this.props.children, this.props)}
-            </div>
-            <div style={{width: 256}}>
-
             </div>
           </div> :
           <div style={{display:'flex', flexDirection: 'column'}}>
             <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
-            {React.cloneElement(this.props.children, this.props)}
+            <div style={{marginTop: 35}}>
+                {React.cloneElement(this.props.children, this.props)}
+            </div>
           </div>
         }
           <Dialog
@@ -108,6 +116,9 @@ export default class Profile extends React.Component {
                 </div>
             </div>
           </Dialog>
+          <Drawer width={200}  docked={false} openSecondary={true} open={this.state.chatBarOpen}  onRequestChange={() => this.setState({chatBarOpen: false})} >
+            <ChatBar {...this.props} handleCloseChat={this.handleCloseChat.bind(this)}/>
+         </Drawer>
         </div>
       )
     }
