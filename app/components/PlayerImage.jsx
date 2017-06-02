@@ -12,8 +12,8 @@ export default class PlayerImage extends React.Component {
       let { checkOutImage } = this.props;
       console.log('checkOutImage ', checkOutImage);
       return (
-        <div style={{width: 50, height: 50}}>
-          <img style={{height: 50, width: 50, borderRadius: '100%', maxWidth: '100%', maxHeight: '100%'}} src={checkOutImage} onClick={() => {
+        <div style={{width: '100%', height: 50, display: 'flex', justifyContent: 'center'}}>
+          <img style={this.props.imageStyle} src={checkOutImage} onClick={() => {
               this.setState({showModal: true});
             }}/>
           <Dialog

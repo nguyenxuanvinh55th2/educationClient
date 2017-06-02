@@ -94,7 +94,7 @@ class QuestionStatis extends React.Component {
           <div style={{padding: '10px 50px'}}>
             <h2 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>{ data.questionSetById.title }</h2>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-              <button className="btn btn-default" style={{boxShadow: 'none'}} onClick={() => this.setState({openDrawer: true})}>Nội dung</button>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.setState({openDrawer: true})}>Nội dung</button>
             </div>
             <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
               <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê dựa trên điểm số:</h3>
@@ -116,7 +116,7 @@ class QuestionStatis extends React.Component {
                 })
               }
               <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                <button className="btn btn-default" onClick={() => {
+                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
                     let scoreShowAll = !this.state.scoreShowAll;
                     this.setState({scoreShowAll});
                   }}>{scoreShowAll ? "Thu gọn" : "Hiện tất cả"}</button>
@@ -142,7 +142,7 @@ class QuestionStatis extends React.Component {
                 })
               }
               <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                <button className="btn btn-default" onClick={() => {
+                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
                     let rateShowAll = !this.state.allRateShowAll;
                     this.setState({allRateShowAll});
                   }}>{rateShowAll ? "Thu gọn" : "Hiện tất cả"}</button>

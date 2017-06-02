@@ -121,19 +121,19 @@ class WaitExam extends React.Component {
   renderPlayerList(playerList) {
     console.log('playerList ', playerList);
     return playerList.map((item, idx) => (
-      <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
+      <tbody key = {idx} style={{borderTop: '1px solid #EEEEEE'}}>
         <tr>
-          <td>
+          <td style={{fontSize:16, textAlign: 'center'}}>
             { idx + 1 }
           </td>
           <td>
-            <PlayerImage checkOutImage = {item.player.user.checkOutImage[0].link}/>
+            <PlayerImage imageStyle={{marginTop: 7, width: 30, height: 30, borderRadius: '100%'}} checkOutImage = {item.player.user.checkOutImage[0].link}/>
           </td>
-          <td>
-            <p>{item.player.user.name}</p>
+          <td style={{textAlign: 'center'}}>
+            <p style={{fontSize:16}}>{item.player.user.name}</p>
           </td>
-          <td>
-            <p>{item.player.user.email}</p>
+          <td style={{textAlign: 'center'}}>
+            <p style={{fontSize:14}}>{item.player.user.email}</p>
           </td>
         </tr>
       </tbody>
@@ -155,18 +155,18 @@ class WaitExam extends React.Component {
               <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
               <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
             </div>
-            <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
+            <div className="col-sm-12" style={{paddingLeft: 350, paddingRight: 350}}>
               <table>
                 <thead>
-                  <th style={{width: 50, color: '#68C0BC', fontSize: 14}}>
+                  <th style={{width: 50, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter', textAlign: 'center'}}>
                     STT
                   </th>
                   <th style={{width: 75, color: '#68C0BC', fontSize: 14}}>
                   </th>
-                  <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                  <th style={{width: 200, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter', textAlign: 'center'}}>
                     Tên người dùng
                   </th>
-                  <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+                  <th style={{width: 200, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter',  textAlign: 'center'}}>
                     Email
                   </th>
                 </thead>
@@ -178,7 +178,7 @@ class WaitExam extends React.Component {
             <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
               {
                 users.userId === data.examById.createdBy._id ?
-                <button className="btn btn-primary" style={{width: '100%'}} onClick={() => {
+                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%'}} onClick={() => {
                     let token= localStorage.getItem('Meteor.loginToken');
                     let _id = params.id;
                     startExamination(token, _id).then(() => {

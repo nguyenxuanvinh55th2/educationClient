@@ -80,8 +80,8 @@ class QuestionContent extends React.Component {
           {
             !isClassStyle &&
             <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 35%'}}>
-              <button className="btn btn-primary" style={{width: 100}} onClick={() => getPreviosQuestion(question)}>Trước</button>
-              <button className="btn btn-primary" style={{width: 100}} onClick={() => getNextQuestion(question)}>Tiếp</button>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getPreviosQuestion(question)}>Trước</button>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getNextQuestion(question)}>Tiếp</button>
             </div>
           }
         </div>
@@ -274,17 +274,15 @@ class StartedExam extends React.Component {
   renderPlayerList(playerList) {
     let { data } = this.props;
     return playerList.map((item, idx) => (
-      <tbody key = {idx} style={{borderTop: '1px solid gray'}}>
-        <tr style={{height: 15, borderTop: '1px solid gray'}}>
-        </tr>
+      <tbody key = {idx} style={{borderTop: '1px solid #EEEEEE', paddingTop: 5, paddingBottom: 5}}>
         <tr>
-          <td rowSpan="2">
+          <td rowSpan="2" style={{textAlign: 'center'}}>
             { idx + 1 }
           </td>
           <td rowSpan="2">
-            <PlayerImage checkOutImage = {item.player.user.checkOutImage[0].link}/>
+            <PlayerImage imageStyle={{marginTop: 5, width: 40, height: 40, borderRadius: '100%'}} checkOutImage = {item.player.user.checkOutImage[0].link}/>
           </td>
-          <td style={{textAlign: 'center'}} onClick={() => {
+          <td onClick={() => {
               this.setState({openDrawer: true, currentPlayerCheckoutImage: item.player.user.checkOutImage});
             }}>
             <p>{item.player.user.name}</p>
@@ -297,7 +295,7 @@ class StartedExam extends React.Component {
           </td>
           <td rowSpan="2" style={{textAlign: 'center'}}>
             {
-              data.examById.status === 100 && <button className="btn btn-primary" onClick={() => printExamResult(data.examById, item.player, item.results, item.totalScore)}>Kết quả</button>
+              data.examById.status === 100 && <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => printExamResult(data.examById, item.player, item.results, item.totalScore)}>Kết quả</button>
             }
           </td>
         </tr>
@@ -309,8 +307,6 @@ class StartedExam extends React.Component {
               </div>
             </div>
           </td>
-        </tr>
-        <tr style={{height: 15, borderBottom: '1px solid gray'}}>
         </tr>
       </tbody>
     ));
@@ -381,21 +377,21 @@ class StartedExam extends React.Component {
           <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
           <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
         </div>
-        <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
+        <div className="col-sm-12" style={{paddingLeft: 350, paddingRight: 350}}>
           <table>
             <thead>
-              <th style={{width: 50, color: '#68C0BC', fontSize: 14}}>
+              <th style={{width: 50, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter'}}>
                 STT
               </th>
-              <th style={{width: 75, color: '#68C0BC', fontSize: 14}}>
+              <th style={{width: 300, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter'}}>
               </th>
-              <th style={{width: 200, color: '#68C0BC', fontSize: 14}}>
+              <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'left', fontWeight: 'lighter'}}>
                 Tên người dùng
               </th>
-              <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'center'}}>
+              <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'left', fontWeight: 'lighter'}}>
                 Email
               </th>
-              <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'center'}}>
+              <th style={{width: 200, color: '#68C0BC', fontSize: 14, textAlign: 'center', fontWeight: 'lighter'}}>
                 Điểm
               </th>
               <th>
@@ -409,7 +405,7 @@ class StartedExam extends React.Component {
         {
           data.examById.status !== 100 ?
           <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
-            <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
+            <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%', border: 'none', fontSize: 14, height: 40}}>
               { 'Thời gian còn lại: ' + timeString }
             </button>
           </div> : null
