@@ -44,7 +44,6 @@ export default class Profile extends React.Component {
   }
   render() {
     let { users } = this.props;
-    console.log('users.userId ', users.userId)
     if(users.userId){
       return(
         <div style={{flexDirection: 'column'}}>
@@ -124,12 +123,19 @@ export default class Profile extends React.Component {
       )
     }
     else {
-      return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <Header {...this.props}/>
-          <div style={{textAlign: 'center', margin: 100}}>Vui lòng đăng nhập để tiếp tục</div>
-        </div>
-      )
+      if(Meteor.userId()){
+        return (
+          <div className="spinner spinner-lg"></div>
+        )
+      }
+      else {
+        return (
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <Header {...this.props}/>
+            <div style={{textAlign: 'center', margin: 100}}>Vui lòng đăng nhập để tiếp tục</div>
+          </div>
+        )
+      }
     }
   }
 }

@@ -17,6 +17,7 @@ class QueryUserPermission extends React.Component{
         }
         if(localStorage.getItem('keepLogin')!=='true'){
             if(localStorage.getItem('Meteor.loginToken')){
+                // store.dispatch(loginCommand({}));
                 Meteor.logout();
             }
         }
@@ -43,11 +44,6 @@ class QueryUserPermission extends React.Component{
         return <div></div>;
     }
 }
-const LOGOUT = gql`
-  mutation logout($token: String) {
-    logoutUser(token: $token)
-  }
-`;
 const GET_USER_INFO = gql`
     mutation getInfoUser($token: String){
         getInfoUser(token: $token)
@@ -62,11 +58,4 @@ export default compose(
           })
       })
     }),
-    graphql(LOGOUT, {
-        props: ({mutate}) => ({
-            logout: ({token}) => mutate({
-                variables: {token}
-            })
-        })
-    })
 )(QueryUserPermission);
