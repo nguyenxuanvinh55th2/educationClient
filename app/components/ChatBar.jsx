@@ -154,7 +154,6 @@ export default compose(
 graphql(USER_CHAT, {
     options: (ownProps) => ({
       variables: { userId: ownProps.users ? ownProps.users.userId : null},
-      pollInterval: 1000,
       forceFetch: true
     }),
 }),

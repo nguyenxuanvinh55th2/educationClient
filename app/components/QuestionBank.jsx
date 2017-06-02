@@ -265,7 +265,7 @@ class QuesionBank extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let { data } = nextProps;
-    if(data.subjectByUser) {
+    if(data.subjectByUser && data.subjectByUser.legth) {
       let subject = data.subjectByUser[0];
       this.setState({subjectId: subject._id})
     }

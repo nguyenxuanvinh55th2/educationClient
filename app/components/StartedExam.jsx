@@ -276,7 +276,7 @@ class StartedExam extends React.Component {
     return playerList.map((item, idx) => (
       <tbody key = {idx} style={{borderTop: '1px solid #EEEEEE', paddingTop: 5, paddingBottom: 5}}>
         <tr>
-          <td rowSpan="2" style={{textAlign: 'center'}}>
+          <td rowSpan="2" style={{textAlign: 'center', fontSize: 14}}>
             { idx + 1 }
           </td>
           <td rowSpan="2">
@@ -285,13 +285,13 @@ class StartedExam extends React.Component {
           <td onClick={() => {
               this.setState({openDrawer: true, currentPlayerCheckoutImage: item.player.user.checkOutImage});
             }}>
-            <p>{item.player.user.name}</p>
+            <p style={{fontSize: 16}}>{item.player.user.name}</p>
           </td>
           <td>
-            <p>{item.player.user.email}</p>
+            <p style={{fontSize: 14}}>{item.player.user.email}</p>
           </td>
           <td rowSpan="2" style={{textAlign: 'center'}}>
-            <p>{item.totalScore}</p>
+            <p style={{fontSize: 14}}>{item.totalScore}</p>
           </td>
           <td rowSpan="2" style={{textAlign: 'center'}}>
             {
@@ -301,7 +301,7 @@ class StartedExam extends React.Component {
         </tr>
         <tr>
           <td colSpan="2">
-            <div className="progress" style={{width: '100%', height: 10, marginTop: 3}}>
+            <div className="progress" style={{width: '100%', height: 5, marginTop: -12}}>
               <div className="progress-bar" role="progressbar" aria-valuenow={item.process.toString()}
                aria-valuemin="0" aria-valuemax="100" style={{backgroundColor: '#68C0BC', width: item.process.toString() + '%'}}>
               </div>
@@ -326,6 +326,9 @@ class StartedExam extends React.Component {
     } else {
         return (
           <div style={{backgroundColor: 'white'}}>
+            <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+            </a>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
               <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
               <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
@@ -372,6 +375,9 @@ class StartedExam extends React.Component {
     let { openDrawer, timeString, currentPlayerCheckoutImage, questionCountDown } = this.state;
     return (
       <div style={{backgroundColor: 'white'}}>
+        <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
+          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+        </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
           <h3 style={{color: '#68C0BC'}}>{'Mã: ' + data.examById.code}</h3>
@@ -428,6 +434,9 @@ class StartedExam extends React.Component {
     let second = Math.floor(time - hour * 3600 - minute * 60);
     return (
       <div>
+        <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
+          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+        </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
           <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
