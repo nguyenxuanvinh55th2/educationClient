@@ -18,7 +18,7 @@ class AnswerCreateItem extends React.Component {
       <div style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '80%', paddingBottom: 10}}>
         <textarea value={ answer.answer } className="col-sm-10" className="form-control" onChange={({target}) => this.props.setAnswer(target.value)}>
         </textarea>
-        <div className="col-sm-1">
+        <div className="col-sm-1" style={{paddingLeft: 12}}>
           <Checkbox
             checkedIcon={<ActionFavorite />}
             checked={checked}
@@ -33,8 +33,8 @@ class AnswerCreateItem extends React.Component {
             }}
           />
         </div>
-        <div className="col-sm-1">
-          <button className="btn btn-danger" onClick={() => this.props.removeAnswer()}>
+        <div className="col-sm-1" style={{paddingLeft: 12}}>
+          <button className="btn" style={{backgroundColor: '#A30000', color: 'white'}} onClick={() => this.props.removeAnswer()}>
             <i className="fa fa-times" aria-hidden="true"></i>
           </button>
         </div>
@@ -175,14 +175,14 @@ export default class QuestionCreateItem extends React.Component {
         <div>
           <input value={question.score} style={{width: 75}} type="number" className="form-control" onChange={({target}) => this.props.setScoreValue(target.value)}/>
         </div>
-        <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <button type="button" className="btn btn-primary" style={{width: 150, marginRight:  20}} onClick={this.addNewAnswer.bind(this)}>Thêm lựa chọn</button>
-            <Dropzone style={{padiing: 0, textAlign:'center', width: 150, height: 25, marginRight:  20, border: '1px solid #00659c', backgroundColor: '#0088ce', backgroundImage: 'linear-gradient(to bottom, #39a5dc 0%, #0088ce 100%)', backgroundRepeat: 'repeat-x', color: '#fff', boxShadow: '0 2px 3px rgba(3, 3, 3, 0.1)'}} onDropAccepted={this.onDropAccepted.bind(this)} onDropRejected={this.onDropRejected} accept="audio/*,video/*,image/*" maxSize={1024*8*1000} multiple={false}>
+        <div style={{width: '100%', paddingBottom: 10, paddingTop: 15,  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <button type="button" className="btn" style={{width: 125, marginRight:  20, backgroundColor: '#35bcbf', color: 'white'}} onClick={this.addNewAnswer.bind(this)}>Thêm lựa chọn</button>
+            <Dropzone style={{padiing: 0, textAlign:'center', width: 125, height: 25, marginRight:  20, backgroundColor: '#35bcbf', color: 'white' }} onDropAccepted={this.onDropAccepted.bind(this)} onDropRejected={this.onDropRejected} accept="audio/*,video/*,image/*" maxSize={1024*8*1000} multiple={false}>
               <div style={{paddingTop: 2}}>
                 <p style={{color: 'white', fontWeight: 'bold'}}>Chọn file</p>
               </div>
             </Dropzone>
-          <button type="button" className="btn btn-danger" style={{width: 150, marginRight:  20}} onClick={() => this.props.removeQuestion()}>Xóa câu hỏi</button>
+          <button type="button" className="btn" style={{width: 125, marginRight:  20,backgroundColor: '#A30000', color: 'white'}} onClick={() => this.props.removeQuestion()}>Xóa câu hỏi</button>
         </div>
       </div>
     )
