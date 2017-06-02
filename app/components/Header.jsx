@@ -127,10 +127,13 @@ class Header extends React.Component {
         >
           <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
               <div className="modal-content">
-                <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
-                  <div>
-                    <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center',width: '95%'}}>
+                    <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_den_zpsntdgsyjt.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
                   </div>
+                  <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
+                </div>
+                <div className="modal-body" style={{maxHeight:this.state.height - 300, overflowY: 'auto', overflowX: 'hidden'}}>
                   {
                     dialogType === 'register'  ?
                     <Register {...this.props} handleClose={() => this.setState({showModal: false})}/> :

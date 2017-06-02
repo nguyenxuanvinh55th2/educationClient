@@ -54,7 +54,8 @@ class ManagerSubject extends React.Component {
       userMails: [],
       userFriendsUserClass: [],
       topicSelected: {},
-      openGiveAdd: false
+      openGiveAdd: false,
+      filesAss: {}
     }
   }
   componentWillReceiveProps(nextProps){
@@ -455,7 +456,9 @@ class ManagerSubject extends React.Component {
                                            <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                            <div style={{display: "flex", flexDirection: 'column'}}>
                                              <h3>{file.fileName}</h3>
-                                             <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                             <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}
+                                               onClick={() => document.getElementById(file._id).click()}>Download</button>
+                                             <a href={file.file} download id={file._id} hidden></a>
                                            </div>
                                          </div>
                                        )
@@ -545,7 +548,7 @@ class ManagerSubject extends React.Component {
                                         <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                         <div style={{display: "flex", flexDirection: 'column'}}>
                                           <h3>{file.fileName}</h3>
-                                          <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                          <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}>Download</button>
                                         </div>
                                       </div>
                                     )
@@ -671,7 +674,7 @@ class ManagerSubject extends React.Component {
                                           <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                           <div style={{display: "flex", flexDirection: 'column'}}>
                                             <h3>{file.fileName}</h3>
-                                            <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Download</button>
+                                            <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}>Download</button>
                                           </div>
                                         </div>
                                       )
@@ -831,6 +834,7 @@ class ManagerSubject extends React.Component {
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-default" onClick={() => this.setState=({openGiveAdd: false})}>Đóng</button>
+                      <button type="button" className="btn btn-primary">Nộp</button>
                     </div>
                   </div>
               </div>
