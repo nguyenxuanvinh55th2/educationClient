@@ -817,6 +817,7 @@ class ManagerSubject extends React.Component {
               open={this.state.openGiveAdd}
               autoDetectWindowHeight={false}
               autoScrollBodyContent={false}
+              bodyStyle={{padding: 0}}
               contentStyle={{minHeight:'60%'}}
             >
               <div className="modal-dialog" style={{width: 'auto', margin: 0}}>

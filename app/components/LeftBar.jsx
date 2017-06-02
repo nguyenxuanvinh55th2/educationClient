@@ -371,6 +371,7 @@ class LeftBar extends React.Component {
        <Dialog
          modal={true}
          open={this.state.openDialog}
+         bodyStyle={{padding: 0}}      
          contentStyle={{maxWidth: 'none'}}
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />

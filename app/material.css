@@ -94,9 +94,9 @@ body.icons-docs {
 .rc-calendar-footer-btn, .rc-calendar-range-middle, .rc-calendar-input-wrap {
   display: none;
 }
-div[data-reactroot] > div > div > div > div{
+/*div[data-reactroot] > div > div > div > div{
   padding: 0!important;
-}
+}*/
 .menuItem{
   padding: 0!important;
 }

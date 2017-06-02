@@ -19,6 +19,7 @@ export default class PlayerImage extends React.Component {
           <Dialog
             modal={true}
             open={this.state.showModal}
+            bodyStyle={{padding: 0}}
             contentStyle={{height: 300, width: 245}}
           >
             <div className="modal-dialog" style={{width: 'auto', margin: 0}}>

@@ -103,6 +103,7 @@ export default class Profile extends React.Component {
           <Dialog
             modal={true}
             open={this.state.showModal}
+            bodyStyle={{padding: 0}}
             contentStyle={{minHeight:'40%'}}
           >
             <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
