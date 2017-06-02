@@ -30,6 +30,7 @@ import Avatar from 'material-ui/Avatar';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import RotateLeft from 'material-ui/svg-icons/image/rotate-left';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
@@ -174,7 +175,11 @@ class LeftBar extends React.Component {
       browserHistory.push('/waitExam/' + _id)
     })
   }
-
+  logout(){
+    Meteor.logout();
+    localStorage.removeItem('Meteor.loginToken');
+    this.props.loginCommand({});
+  }
   renderExamination() {
     let { data, users } = this.props;
     if(data.loading && ! data.examByUser) {
@@ -331,6 +336,12 @@ class LeftBar extends React.Component {
            style={{color: 'white', fontSize: 13}}
            nestedItems={this.renderQuestionSet()}
          />
+         <ListItem
+           primaryText="Đăng xuất"
+           leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
+           style={{color: 'white', fontSize: 13}}
+           onClick={this.logout.bind(this)}
+         />
          {/* <ListItem
            primaryText="Thời gian biểu"
            leftIcon={<Note color={'white'} style={{width: 20, height: 20}}/>}
@@ -367,7 +378,7 @@ class LeftBar extends React.Component {
        <Dialog
          modal={true}
          open={this.state.openDialog}
-         contentStyle={{width: 600,maxWidth: 'none'}}
+         contentStyle={{maxWidth: 'none'}}
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>

@@ -63,9 +63,6 @@ class Login extends Component {
   render() {
     return (
       <div style={{flexDirection: 'column'}}>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_den_zpsntdgsyjt.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
-        </div>
         <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
           <h4>ĐĂNG NHẬP</h4>
         </div>
