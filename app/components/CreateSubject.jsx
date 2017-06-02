@@ -103,7 +103,7 @@ class CreateSubject extends React.Component {
     else {
       return (
         <div className="row" style={{padding: 15}}>
-          <div className="col-sm-9">
+          <div className="col-sm-8">
             <h3 style={{textAlign: 'center', color: "#35bcbf"}}>MÔN HỌC</h3>
             <div className="column">
               <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -175,7 +175,7 @@ class CreateSubject extends React.Component {
               </div>
             </div>
           </div>
-          <div className="col-sm-3">
+          <div className="col-sm-4">
             <div style={{backgroundColor: 'white', padding: 10}}>
               <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
               <Combobox

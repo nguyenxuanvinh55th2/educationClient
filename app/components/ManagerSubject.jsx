@@ -355,7 +355,7 @@ class ManagerSubject extends React.Component {
                 </TabList>
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-                    <div style={{border: '1px solid #f0f0f0', minHeight: 150, borderRadius: 10, padding: 10}}>
+                    <div style={{ minHeight: 150, borderRadius: 10, padding: 10}}>
                       <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{ height: 100, width: '100%'}} value={this.state.dataForum.content} onChange={({target}) => {
                         let dataForum = this.state.dataForum;
                         dataForum.content = target.value;
@@ -569,7 +569,7 @@ class ManagerSubject extends React.Component {
                            dataTheme.open = !this.state.dataTheme.open;
                            this.setState({dataTheme: dataTheme});
                          }}>
-                        <span className="glyphicon glyphicon-plus"></span> {this.state.dataTheme.open ? 'Hủy chủ đề' : 'Thêm chủ đề'}
+                        <span className={this.state.dataTheme.open ? "glyphicon glyphicon-minus" : "glyphicon glyphicon-plus"}></span> {this.state.dataTheme.open ? 'Hủy chủ đề' : 'Thêm chủ đề'}
                       </button>
                     }
                   </div>
@@ -759,12 +759,12 @@ class ManagerSubject extends React.Component {
                         return (
                           <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
-                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
+                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="75" width="75" className="img-responsive"/>
                             </div>
                             <div style={{paddingLeft: 10}}>
-                              <h3>{infoUser.name}</h3>
-                              <h4>{infoUser.email}</h4>
-                              <h5>Teacher</h5>
+                              <h4>{infoUser.name}</h4>
+                              <h5>{infoUser.email}</h5>
+                              <p>Teacher</p>
                             </div>
                           </div>
                         )
@@ -775,12 +775,12 @@ class ManagerSubject extends React.Component {
                         return (
                           <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
-                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
+                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="75" width="75" className="img-responsive"/>
                             </div>
                             <div style={{paddingLeft: 10}}>
-                              <h3>{infoUser.name}</h3>
-                              <h4>{infoUser.email}</h4>
-                              <h5>Student</h5>
+                              <h4>{infoUser.name}</h4>
+                              <h5>{infoUser.email}</h5>
+                              <p>Student</p>
                             </div>
                           </div>
                         )
@@ -797,19 +797,19 @@ class ManagerSubject extends React.Component {
             </div>
             <div style={{width: '35%', paddingLeft: 15}}>
               <div style={{backgroundColor: 'white', padding: 5}}>
-                <h4 style={{textAlign: 'center'}}>{dataSet.getInfoClassSubject.name}</h4>
+                <h4 style={{textAlign: 'center', color: '#35bcbf'}}>{dataSet.getInfoClassSubject.name}</h4>
                 <p>GV: {dataSet.getInfoClassSubject.teacher.name}</p>
                 <p>Email: {dataSet.getInfoClassSubject.teacher.email}</p>
                 <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject.code : 'XXXXX'}</p>
               </div>
               <div style={{marginTop: 10, backgroundColor: 'white', padding: 5}}>
-                <h3>THÊM HỌC VIÊN</h3>
+                <h3 style={{textAlign: 'center'}}>Thêm học viên</h3>
                 <EditMulti value={this.state.userSubjects} userIds={this.state.userFriendsUserClass} label={"name"} placeholder='...'
                    onChangeValue={(value) => this.setState({userSubjects: value})}/>
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
                  </div>
-                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Add</button>
+                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Mời</button>
               </div>
             </div>
             <Dialog

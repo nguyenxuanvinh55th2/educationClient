@@ -56,7 +56,7 @@ class ClassList extends React.Component {
     }
     else {
       return (
-        <div className="column" style={{padding: 15}}>
+        <div className="col-sm-12 col-md-8 col-lg-8 col-md-push-2 col-lg-pull-2">
           <h3 style={{textAlign: 'center', color: "#35bcbf"}}>LỚP HỌC</h3>
           <div className="row" style={{marginTop: 5}}>
             <div className="col-sm-3">

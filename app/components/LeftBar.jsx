@@ -329,12 +329,6 @@ class LeftBar extends React.Component {
            style={{color: 'white', fontSize: 13}}
            nestedItems={this.renderQuestionSet()}
          />
-         <ListItem
-           primaryText="Đăng xuất"
-           leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
-           style={{color: 'white', fontSize: 13}}
-           onClick={this.logout.bind(this)}
-         />
          {/* <ListItem
            primaryText="Thời gian biểu"
            leftIcon={<Note color={'white'} style={{width: 20, height: 20}}/>}
@@ -362,6 +356,12 @@ class LeftBar extends React.Component {
            nestedItems={[
            ]}
          />
+         <ListItem
+           primaryText="Đăng xuất"
+           leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
+           style={{color: 'white', fontSize: 13}}
+           onClick={this.logout.bind(this)}
+         />
        </List>
        <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
@@ -371,8 +371,8 @@ class LeftBar extends React.Component {
        <Dialog
          modal={true}
          open={this.state.openDialog}
-         bodyStyle={{padding: 0}}      
-         contentStyle={{maxWidth: 'none'}}
+         bodyStyle={{padding: 0}}
+         contentStyle={{width: 600}}
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
