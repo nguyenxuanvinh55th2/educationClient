@@ -44,16 +44,16 @@ export class WrapMain extends React.Component{
     constructor(props){
         super(props);
         this.token = localStorage.getItem('Meteor.loginToken');
-        if(localStorage.getItem('keepLogin') === 'true'){
-            this.token = localStorage.getItem('Meteor.loginToken');
-        } else {
-            localStorage.removeItem('Meteor.loginToken');
-        }
+        // if(localStorage.getItem('keepLogin') === 'true'){
+        //     this.token = localStorage.getItem('Meteor.loginToken');
+        // } else {
+        //     localStorage.removeItem('Meteor.loginToken');
+        // }
     }
     render(){
         return (
             <div style={{flexDirection: 'column', width: '100%', height:'100%'}}>
-                <QueryUserPermission {...this.props} token={this.token} />
+                {/* <QueryUserPermission {...this.props} token={this.token} /> */}
                 {React.cloneElement(this.props.children, this.props)}
             </div>
         );
