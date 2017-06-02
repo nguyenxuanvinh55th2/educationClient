@@ -827,13 +827,13 @@ class ManagerSubject extends React.Component {
                     </div>
                     <div className="modal-body" style={{maxHeight:window.innerHeight - 300, overflowY: 'auto', overflowX: 'hidden'}}>
                       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                        <Dropzone onDrop={this.onDropGiveAdd.bind(this)} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}}>
+                        <Dropzone onDrop={this.onDropGiveAdd.bind(this)} multiple={false} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}}>
                           <div style={{textAlign: 'center'}}>Click or Drap here to upload file</div>
                         </Dropzone>
                       </div>
                     </div>
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-default" onClick={() => this.setState=({openGiveAdd: false})}>Đóng</button>
+                      <button type="button" className="btn btn-default" onClick={() => this.setState({openGiveAdd: false})}>Đóng</button>
                       <button type="button" className="btn btn-primary">Nộp</button>
                     </div>
                   </div>

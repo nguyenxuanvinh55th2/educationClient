@@ -55,8 +55,8 @@ class Header extends React.Component {
     let { users } = this.props;
     let { dialogType } = this.state;
     return(
-      <div style={{flexDirection:'column', width:'auto', height: 40, maxHeight: 40}}>
-        <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0}}>
+      <div style={{flexDirection:'column', width:'auto',minHeight: 40, height: 40, maxHeight: 40}}>
+        <nav className="navbar navbar-default navbar-fixed-top " style={{backgroundColor: '#2b3a41', border: 0, height: 70}}>
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" onClick={() => this.setState({isOpenDrawer: !this.state.isOpenDrawer})}>
@@ -65,7 +65,7 @@ class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+                <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" />
               </a>
             </div>
             {
@@ -129,7 +129,7 @@ class Header extends React.Component {
               <div className="modal-content">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center',width: '95%'}}>
-                    <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_den_zpsntdgsyjt.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+                    <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn2_zps8wakpjpf.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
                   </div>
                   <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                 </div>

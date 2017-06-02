@@ -43,13 +43,6 @@ const iconButtonElement = (
   </IconButton>
 );
 
-// const rightIconMenu = (
-//   <IconMenu iconButtonElement={iconButtonElement}>
-//     <MenuItem>Reply</MenuItem>
-//     <MenuItem>Forward</MenuItem>
-//     <MenuItem>Delete</MenuItem>
-//   </IconMenu>
-// );
 class SubjectItem extends React.Component {
   renderSubjectTheme() {
     return __.map(this.props.themes,(theme,idx) => {
@@ -274,7 +267,7 @@ class LeftBar extends React.Component {
           }
         }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
         <div style={{textAlign: 'center', cursor: 'pointer'}}>
-          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
+          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
         <List>
           <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}} onClick={() => browserHistory.push("/profile/" + users.userId)}

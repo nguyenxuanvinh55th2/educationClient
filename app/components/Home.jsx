@@ -22,11 +22,13 @@ export default class Home extends React.Component {
     let imgUrlCenter = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/home-page_15_zpsjp7fq1qu.png';
     return(
       <div style={{display: 'flex', flexDirection: 'column'}}>
-        <Header {...this.props}/>
-        <div style={{flexDirection:'column', width:'auto'}}>
+        <div style={{height: 40}}>
+          <Header {...this.props}/>
+        </div>
+        <div style={{flexDirection:'column', width:'auto', marginTop: 30}}>
           <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', height: this.state.height - 65, paddingTop: 10}}>
-            <div style={{paddingBottom: 60}}>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/text_zpsumkavrgr.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
+            <div style={{paddingBottom: 60, marginTop: 40, }}>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/text_zps26sj4dh6.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" />
                 <button type="button" className="btn" style={{backgroundColor: '#35bcbf', borderRadius: 25, width: 250, height: 45, color: 'white', marginTop: 15}}>THAM GIA THI</button>
