@@ -437,3 +437,7 @@ ul, li {
   height: 60px;
   width: 60px;
 }
+
+.btn {
+  box-shadow: none;
+}

@@ -53,21 +53,21 @@ class SelectQuestionInputForm extends React.Component {
             <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Nhập số lượng câu hỏi dễ</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={easyQuestionCount.toString()} value={this.props.easyQuestionCount} onChange={({target}) => getQuestionTypeCount('easyQuestionCount', target.value)}/>
-                <span className="help-block">{this.props.easyQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
+                <span className="help-block">{this.props.easyQuestionCount ? null : 'Thông tin này là bắt buộc'}</span>
             </div>
         </div>
         <div style={{width: '100%', paddingBottom: 10, margin: 0}} className={this.props.normalQuestionCount ? 'form-group' : 'form-group has-error'}>
             <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Số lượng câu hỏi trung bình</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={normalQuestionCount.toString()} value={this.props.normalQuestionCount} onChange={({target}) => getQuestionTypeCount('normalQuestionCount', target.value)}/>
-                <span className="help-block">{this.props.normalQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
+                <span className="help-block">{this.props.normalQuestionCount ? null : 'Thông tin này là bắt buộcc'}</span>
             </div>
         </div>
         <div style={{width: '100%', paddingBottom: 10, margin: 0}} className={this.props.hardQuestionCount ? 'form-group' : 'form-group has-error'}>
             <label className="col-sm-2 control-label" style={{paddingRight: 0, paddingLeft: 10, textAlign: 'left'}}>Nhập số lượng câu hỏi khó</label>
             <div className="col-sm-9">
                 <input style={{width: '80%'}} type="number" className="form-control" min="0" max={hardQuestionCount.toString()} value={this.props.hardQuestionCount} onChange={({target}) => getQuestionTypeCount('hardQuestionCount', target.value)}/>
-                <span className="help-block">{this.props.hardQuestionCount ? null : 'thong tin nay la bat buoc'}</span>
+                <span className="help-block">{this.props.hardQuestionCount ? null : 'Thông tin này là bắt buộc'}</span>
             </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ class QuestionItem extends React.Component {
     return question.correctAnswer.map((item, idx) => (
       <AnswerItem key={idx} answer={item}/>
     ));
-  }
+  }ta
 
   showAnswer() {
     let showAnswer = this.state.showAnswer;
@@ -137,7 +137,7 @@ class QuestionItem extends React.Component {
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
           <div className="col-sm-10" style={{width: '100%',marginBottom: 10, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}
-          </div>
+       ta   </div>
           <Checkbox
             label="Chọn câu hỏi"
             checked={this.state.checked}
@@ -261,6 +261,7 @@ class QuesionBank extends React.Component {
     questionList.push(question);
     this.setState({questionList});
     this.setState({questionType: 'question'});
+    this.props.addNotificationMute({fetchData: true, message: 'Thêm câu hỏi thành công', level:'success'});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -281,6 +282,7 @@ class QuesionBank extends React.Component {
     if(questionSet) {
       this.setState({questionSet});
       this.setState({questionType: 'questionSet'});
+      this.props.addNotificationMute({fetchData: true, message: 'Thêm bộ câu hỏi thành công', level:'success'});
     }
   }
 
@@ -444,6 +446,7 @@ class QuesionBank extends React.Component {
         console.log('questionSetString', questionSetString);
         console.log('token ', localStorage.getItem('Meteor.loginToken'));
         this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
+          this.props.addNotificationMute({fetchData: true, message: 'Tạo câu hỏi thành công', level:'success'});
           getQuestionSetId(data.insertQuestionSet);
           increaseStepIndex();
         }).catch((error) => {
@@ -459,8 +462,8 @@ class QuesionBank extends React.Component {
       return (
         <div>
           <h4 style={{color: '#35bcbf', paddingLeft: 30, marginBottom: 0}}>Thêm câu hỏi từ cá nhân</h4>
-          <Tabs className="secondary">
-          <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40}}>
+          <Tabs className="secondary" style={{paddingTop: 7}}>
+          <TabList style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40, paddingRight: 40, backgroundColor: 'white', border: 'none'}}>
               <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}} onClick={() => {
                 if(bankType !== 'sequence') {
                   this.setState({bankType: 'sequence'})
@@ -484,8 +487,8 @@ class QuesionBank extends React.Component {
                   }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
               </Tab>
               <Tab style={{float: 'right', width: '70%', paddingLeft: 15, border: 'none'}}>
-                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right', border: 'none'}} onClick={() => {
-                    this.setState({showReview: true})
+                <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right', border: 'none', marginTop: -3}} onClick={() => {
+                    this.setState({showReview: true, bankType: ''})
                   }}>XEM LẠI</button>
               </Tab>
           </TabList>
@@ -558,9 +561,9 @@ class QuesionBank extends React.Component {
         if(showQuestionBank === 'public') {
           return (
             <div>
-              <h4 style={{color: '#35bcbf', paddingLeft: 30, marginBottom: 0}}>Thêm câu hỏi từ cá nhân</h4>
-              <Tabs className="secondary">
-              <TabList className="modal-header" style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40}}>
+              <h4 style={{color: '#35bcbf', paddingLeft: 30, marginBottom: 0}}>Thêm câu hỏi từ cộng đồng</h4>
+             <Tabs className="secondary" style={{paddingTop: 7}}>
+              <TabList style={{margin: 0, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 40, paddingRight: 40, backgroundColor: 'white', border: 'none'}}>
                   <Tab style = {{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: 'none'}}>
                     <input checked={bankType === 'sequence' && 'checked'} type="radio" name="pBankType" onChange={({target}) => {
                         if(bankType !== 'sequence') {
@@ -576,8 +579,8 @@ class QuesionBank extends React.Component {
                       }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ngẫu nhiên</p>
                   </Tab>
                   <Tab style={{float: 'right', width: '70%', paddingLeft: 15, border: 'none'}}>
-                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right'}} onClick={() => {
-                        this.setState({showReview: true})
+                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', float: 'right', marginTop: -3}} onClick={() => {
+                        this.setState({showReview: true, bankType: ''})
                       }}>XEM LẠI</button>
                   </Tab>
               </TabList>
@@ -674,6 +677,7 @@ class QuesionBank extends React.Component {
                 }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Cộng đồng</p>
             </label>
           </div>
+          <button type="button" className="btn" style={{width: 90, backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.props.decreaseStepIndex()}>Quay lại</button>
           <Drawer docked={false} width={800} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
             {
               this.drawerContent()
