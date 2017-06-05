@@ -81,7 +81,8 @@ class LeftBar extends React.Component {
     this.state = {
       openDialog: false,
       height: window.innerHeight,
-      open: false
+      open: false,
+      selectedIndex: -1
     }
   }
   handleResize(e) {
@@ -287,8 +288,9 @@ class LeftBar extends React.Component {
            leftIcon={<LocalLibary color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 0 ?  'rgba(0, 0, 0, 0.2)' : ''}}
            nestedListStyle={{marginLeft: 25}}
+           onClick={() => this.setState({selectedIndex: 0})}
            nestedItems={
             this.renderClassSubjectTeacher()
            }
@@ -298,7 +300,8 @@ class LeftBar extends React.Component {
            leftIcon={<School color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 1 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 1})}
            nestedItems={
             this.renderClassSubjectStudent()
            }
@@ -308,7 +311,8 @@ class LeftBar extends React.Component {
            leftIcon={<Person color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 2 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 2})}
            nestedItems={
             this.renderChildrent()
            }
@@ -318,7 +322,8 @@ class LeftBar extends React.Component {
            leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 3 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 3})}
            nestedItems={this.renderExamination()}
          />
          <ListItem
@@ -326,7 +331,8 @@ class LeftBar extends React.Component {
            leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 4 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 4})}
            nestedItems={this.renderQuestionSet()}
          />
          {/* <ListItem
@@ -352,6 +358,8 @@ class LeftBar extends React.Component {
            leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 5 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 5})}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
            ]}

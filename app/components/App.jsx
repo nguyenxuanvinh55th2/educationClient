@@ -10,11 +10,13 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import store from '../store.js'
 import { loginCommand } from '../action/actionCreator';
+import { changTypeLogin } from '../action/actionCreator';
 function mapStateToProps(state){
   return {
     users: state.users,
     subjectClass: state.subjectClass,
-    notification: state.notification
+    notification: state.notification,
+    loginToken: state.loginToken
   }
 }
 
@@ -47,14 +49,26 @@ class Main extends React.Component {
                     if(data.getInfoUser){
                         let parseData = JSON.parse(data.getInfoUser);
                         store.dispatch(loginCommand(parseData));
+                        store.dispatch(changTypeLogin('Meteor.loginToken'));
                     }
                 })
                 .catch((err)=>{
                     console.log(err);
                 });
-            } else {
-                store.dispatch(loginCommand({}));
             }
+        }
+        else if (localStorage.getItem('Meteor.loginServices') == 'facebook') {
+          this.props.getInfoUser({token: localStorage.getItem('Meteor.loginTokenFacebook')})
+          .then(({data})=>{
+              if(data.getInfoUser){
+                  let parseData = JSON.parse(data.getInfoUser);
+                  store.dispatch(loginCommand(parseData));
+                  store.dispatch(changTypeLogin('Meteor.loginTokenFacebook'));
+              }
+          })
+          .catch((err)=>{
+              console.log(err);
+          });
         }
     });
   }

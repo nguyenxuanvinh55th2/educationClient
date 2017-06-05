@@ -19,3 +19,9 @@ export function addNotificationMute(detail){
         detail
     }
 }
+export function changTypeLogin(value){
+    return {
+        type: 'CHANGE_LOGIN_TOKEN',
+        value
+    }
+}

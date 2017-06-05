@@ -40,12 +40,14 @@ class Header extends React.Component {
       window.removeEventListener('resize', this.handleResize);
   }
   handleLogout(){
-    let { users, logout } = this.props;
+    let { users, logout, loginToken } = this.props;
     if(this.props.logout && users.userId){
-      this.props.logout(users.userId,localStorage.getItem('Meteor.loginToken')).then(({data}) => {
+      this.props.logout(users.userId,localStorage.getItem(loginToken)).then(({data}) => {
         if(data.logoutUser){
           Meteor.logout();
           localStorage.removeItem('Meteor.loginToken');
+          localStorage.removeItem('Meteor.loginTokenFacebook');
+          localStorage.removeItem('Meteor.loginServices');
           this.props.loginCommand({});
         }
       })
@@ -65,7 +67,7 @@ class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" />
+                <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" style={{height: 80, width: 180}}/>
               </a>
             </div>
             {

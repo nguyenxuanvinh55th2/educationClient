@@ -15,6 +15,7 @@ import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
+import { GiveAssignment } from './ChildManagerSubject.jsx'
 const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
 class ManagerSubject extends React.Component {
   constructor(props) {
@@ -316,9 +317,6 @@ class ManagerSubject extends React.Component {
         </table>
       </div>
     )
-  }
-  onDropGiveAdd(files){
-    console.log(files);
   }
   render(){
     let { dataSet, users } = this.props;
@@ -820,25 +818,7 @@ class ManagerSubject extends React.Component {
               bodyStyle={{padding: 0}}
               contentStyle={{minHeight:'60%'}}
             >
-              <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
-                  <div className="modal-content">
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
-                      <h4 className="modal-title">Nộp bài tập: {this.state.topicSelected ? this.state.topicSelected.title : ''} - {this.state.topicSelected.owner ? this.state.topicSelected.owner.name : ''} </h4>
-                      <span className="close" onClick={() => this.setState({openGiveAdd: false})}>&times;</span>
-                    </div>
-                    <div className="modal-body" style={{maxHeight:window.innerHeight - 300, overflowY: 'auto', overflowX: 'hidden'}}>
-                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                        <Dropzone onDrop={this.onDropGiveAdd.bind(this)} multiple={false} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}}>
-                          <div style={{textAlign: 'center'}}>Click or Drap here to upload file</div>
-                        </Dropzone>
-                      </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-default" onClick={() => this.setState({openGiveAdd: false})}>Đóng</button>
-                      <button type="button" className="btn btn-primary">Nộp</button>
-                    </div>
-                  </div>
-              </div>
+              <GiveAssignment topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
             </Dialog>
           </div>
         )

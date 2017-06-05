@@ -22,6 +22,7 @@ class QueryUserPermission extends React.Component{
             }
         }
         Meteor.autorun(()=>{
+          console.log("vinh", localStorage.getItem('Meteor.loginServices'), Meteor.getItem('Meteor.loginToken'));
             if(Meteor.status().connected){
                 if(Meteor.userId()){
                     this.props.getInfoUser({token: localStorage.getItem('Meteor.loginToken')})
@@ -37,6 +38,19 @@ class QueryUserPermission extends React.Component{
                 } else {
                     store.dispatch(loginCommand({}));
                 }
+            }
+            else if (localStorage.getItem('Meteor.loginServices') == 'facebook') {
+              console.log("ok ki ki");
+              this.props.getInfoUser({token: localStorage.getItem('Meteor.loginToken')})
+              .then(({data})=>{
+                  if(data.getInfoUser){
+                      let parseData = JSON.parse(data.getInfoUser);
+                      store.dispatch(loginCommand(parseData));
+                  }
+              })
+              .catch((err)=>{
+                  console.log(err);
+              });
             }
         });
     }
