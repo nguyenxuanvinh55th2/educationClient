@@ -123,7 +123,7 @@ class AddQuestion extends React.Component {
               </div>
               <div style={{width: '100%'}}>
                 <Checkbox
-                  label="Public bộ câu hỏi"
+                  label="Chia sẻ với cộng đồng"
                   onCheck={(_, isInputChecked) => {
                     this.setState({isPublic: isInputChecked});
                   }}
@@ -314,6 +314,7 @@ class AddQuestion extends React.Component {
       questionSetString.push(JSON.stringify(item));
     });
     this.props.insertQuestionSet(users.userId, questionSet, questionSetString).then(({data}) => {
+      this.props.addNotificationMute({fetchData: true, message: 'Tạo câu hỏi thành công', level:'success'});
       getQuestionSetId(data.insertQuestionSet);
       increaseStepIndex();
     }).catch((error) => {
@@ -331,8 +332,8 @@ class AddQuestion extends React.Component {
               <div style={{width: '100%'}} className={this.state.title ? 'form-group' : 'form-group has-error'}>
                   <label style={{paddingRight: 0, textAlign: 'left'}} className="col-sm-3 control-label">Tiêu đề</label>
                   <div className="col-sm-9" style={{paddingRight: 0}}>
-                      <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value.toUpperCase()})}/>
-                      <span className="help-block">{this.state.title ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                      <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.title} onChange={({target}) => this.setState({title: target.value})}/>
+                      <span className="help-block">{this.state.title ? null : 'Tiêu đề câu hỏi là bắt buộc'}</span>
                   </div>
               </div>
               <div style={{width: '100%'}} className={this.state.description ? 'form-group' : 'form-group has-error'}>
@@ -340,7 +341,7 @@ class AddQuestion extends React.Component {
                   <div className="col-sm-9" style={{paddingRight: 0}}>
                       <textarea style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.description} onChange={({target}) => this.setState({description: target.value})}>
                       </textarea>
-                      <span className="help-block">{this.state.description ? null : 'tiêu đề câu hỏi là bắt buộc'}</span>
+                      <span className="help-block">{this.state.description ? null : 'Tiêu đề câu hỏi là bắt buộc'}</span>
                   </div>
               </div>
               <div style={{width: '100%'}} className={this.state.score ? 'form-group' : 'form-group has-error'}>
@@ -351,7 +352,7 @@ class AddQuestion extends React.Component {
                           questionList[0].score = target.value;
                           this.setState({score: target.value, questionList});
                         }}/>
-                      <span className="help-block">{this.state.score ? null : 'điểm số là bắt buộc'}</span>
+                      <span className="help-block">{this.state.score ? null : 'Điểm số là bắt buộc'}</span>
                   </div>
               </div>
               <div style={{width: '100%'}} className="form-group">
@@ -378,9 +379,10 @@ class AddQuestion extends React.Component {
             <div style={{width: '30%'}}>
             {
               questionFile ?
-              <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={this.addQuestionFromFile.bind(this)}>Xem lại</button> :
+              <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={this.addQuestionFromFile.bind(this)}>Chỉnh sửa nội dung</button> :
               <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white'}} disabled={!(this.state.title && this.state.description && this.state.score)} onClick={() => this.setState({openDrawer: true})}>Thêm nội dung</button>
             }
+              <button type="button" className="btn" style={{width: '100%', backgroundColor: '#35bcbf', color: 'white', marginTop: 14}} onClick={() => this.props.decreaseStepIndex()}>Quay lại</button>
             </div>
           </div>
         </form>

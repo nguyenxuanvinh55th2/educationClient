@@ -218,6 +218,7 @@ class StartedExam extends React.Component {
     }
     if(data.examById.isClassStyle) {
       let token = localStorage.getItem('Meteor.loginToken');
+      currentQuestion['index'] = question.index;
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
     }
@@ -237,6 +238,7 @@ class StartedExam extends React.Component {
     }
     if(data.examById.isClassStyle) {
       let token = localStorage.getItem('Meteor.loginToken');
+      currentQuestion['index'] = question.index - 2;
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
     }
@@ -248,7 +250,7 @@ class StartedExam extends React.Component {
     if(data.examById)  {
       if(!this.state.currentQuestion) {
         let currentQuestion = data.examById.questionSet.questions[0];
-        this.setState({currentQuestion});
+        this.setState({currentQuestion, index: 1});
       }
       let questionSet = __.cloneDeep(data.examById.questionSet.questions);
       __.forEach(questionSet, (item, idx) => {
@@ -258,6 +260,7 @@ class StartedExam extends React.Component {
       if(data.examById.createdBy._id != Meteor.userId()) {
         if(this.props.currentQuestion && nextProps.currentQuestion.questionId !== this.props.currentQuestion.questionId) {
           let currentQuestion = __.find(data.examById.questionSet.questions, {_id: nextProps.currentQuestion.questionId});
+          currentQuestion['index'] = 1;
           this.setState({currentQuestion});
         }
       }
@@ -319,6 +322,7 @@ class StartedExam extends React.Component {
     let hour = Math.floor(time / 3600);
     let minute = Math.floor((time - hour * 3600) / 60);
     let second = Math.floor(time - hour * 3600 - minute * 60);
+    console.log('currentQuestion ', currentQuestion)
     if(!currentQuestion && data.examById.status !== 100) {
       return (
         <div className="spinner spinner-lg"></div>
@@ -339,7 +343,7 @@ class StartedExam extends React.Component {
               </h3>
             </div>
             <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
-              <h3>{ currentQuestion.question }</h3>
+              <h3>{ 'Câu ' + currentQuestion.index + ' ' + currentQuestion.question }</h3>
             </div>
             <div className="col-sm-12" style={{height: 120}}>
             </div>
@@ -418,7 +422,7 @@ class StartedExam extends React.Component {
         }
         <Drawer docked={false} width={300} openSecondary={true} open={openDrawer} onRequestChange={(openDrawer) => this.setState({openDrawer})}>
           {
-            currentPlayerCheckoutImage.map(item => <img style={{width: '100%', padding: '30px 30px 0px 30px'}} src={item.link}/>)
+            currentPlayerCheckoutImage.map((item, idx) => <img key={idx} style={{width: '100%', padding: '30px 30px 0px 30px'}} src={item.link}/>)
           }
         </Drawer>
       </div>

@@ -48,17 +48,6 @@ export default class QuestionReviewItem extends React.Component {
           <div className="col-sm-10" style={{width: '100%',marginBottom: 15, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {'Câu ' + this.props.index + ': ' + question.question}
           </div>
-          {
-            questionType !== 'publicQuestion' ?
-            <Checkbox
-              label="Public"
-              checked={question.isPublic}
-              onCheck={(_, isInputChecked) => {
-                publicQuestion(isInputChecked)
-              }}
-              style={{width: 75}}
-            /> : null
-          }
         </div>
         {
           showAnswer ?

@@ -55,8 +55,13 @@ class CreateTest extends  React.Component {
   }
 
   increaseStepIndex() {
-    console.log("message increaseStepIndex");
     this.setState({ stepIndex: 2 });
+  }
+
+  decreaseStepIndex() {
+    let index = this.state.stepIndex;
+    index --;
+    this.setState({ stepIndex: index });
   }
 
   renderStepActions(stepIndex) {
@@ -65,7 +70,7 @@ class CreateTest extends  React.Component {
       case 0:
         return (
           <div style={{width: '100%'}}>
-              <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+              <div className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                 <div style={{width: '100%', paddingTop: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                   <div style={{width: '70%'}}>
                     <div style={{width: '100%'}} className="form-group">
@@ -77,7 +82,7 @@ class CreateTest extends  React.Component {
                     <div style={{width: '100%'}} className={this.state.name ? 'form-group' : 'form-group has-error'}>
                       <label className="col-sm-3 control-label" style={{paddingRight: 0, textAlign: 'left'}}>Tên kì thi</label>
                       <div className="col-sm-9" style={{paddingRight: 0}}>
-                        <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value.toUpperCase()})}/>
+                        <input style={{width: '100%', margin: 0}} type="text" className="form-control" value={this.state.name} onChange={({target}) => this.setState({name: target.value})}/>
                         <span className="help-block">{this.state.name ? null : 'tên kì thi là bắt buộc'}</span>
                       </div>
                     </div>
@@ -101,46 +106,46 @@ class CreateTest extends  React.Component {
                         }}>Câu hỏi tự tạo</button>
                   </div>
                 </div>
-              </form>
+              </div>
           </div>
         );
       case 1:
         if(getQuestionFrom === 'questionCreater') {
           return (
-            <AddQuestion { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
+            <AddQuestion { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} decreaseStepIndex={this.decreaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
           )
         } else {
           return (
-            <QuestionBank { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
+            <QuestionBank { ...this.props } increaseStepIndex={this.increaseStepIndex.bind(this)} decreaseStepIndex={this.decreaseStepIndex.bind(this)} getQuestionSetId={this.getQuestionSetId.bind(this)}/>
           )
         }
       case 2:
         return (
           <div style={{width: '100%'}}>
-              <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+              <div className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                 <div style={{width: '100%', paddingTop: 15}}>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Tổng thời gian cho kì thi</label>
                   <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 0, paddingRight: 20}}>
-                      <Slider defaultValue={time} step={1} value={time} min={15} max={120} style={{width: '80%'}} onChange={(_, newValue) => {
+                      <Slider sliderStyle={{marginTop: 0, marginBottom: 15}} defaultValue={time} step={1} value={time} min={15} max={120} style={{width: '80%'}} onChange={(_, newValue) => {
                           this.setState({time: newValue});
                         }}/>
-                      <input style={{width: '10%', marginTop: 20, marginLeft: 20}} type="text" className="form-control" value={time} onChange={({target}) => {
+                      <input style={{width: '10%', marginTop: 0, marginLeft: 20}} type="text" className="form-control" value={time} onChange={({target}) => {
                           this.setState({time: target.value});
                         }}/>
-                      <p style={{marginLeft: 20, marginTop: 20}}>Phút</p>
+                      <p style={{marginLeft: 20, marginTop: 0}}>Phút</p>
                   </div>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Số lượng thí sinh tối đa</label>
                   <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 0, paddingRight: 20}}>
-                      <Slider defaultValue={userCount} step={1} value={userCount} min={1} max={100} style={{width: '80%'}} onChange={(_, newValue) => {
+                      <Slider sliderStyle={{marginTop: 0, marginBottom: 15}} defaultValue={userCount} step={1} value={userCount} min={1} max={100} style={{width: '80%'}} onChange={(_, newValue) => {
                           this.setState({userCount: newValue});
                         }}/>
-                      <input style={{width: '10%', marginTop: 20, marginLeft: 20}} type="text" className="form-control" value={userCount} onChange={({target}) => {
+                      <input style={{width: '10%', marginTop: 0, marginLeft: 20}} type="text" className="form-control" value={userCount} onChange={({target}) => {
                           this.setState({userCount: target.value});
                         }}/>
-                      <p style={{marginLeft: 20, marginTop: 20}}>SV</p>
+                      <p style={{marginLeft: 20, marginTop: 0}}>SV</p>
                   </div>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Đề thi của bạn được dùng để</label>
-                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
                     <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                       <input checked={!isTest && 'checked'} type="radio" name="optradio" onChange={({target}) => {
                           if(isTest) {
@@ -157,7 +162,7 @@ class CreateTest extends  React.Component {
                     </label>
                   </div>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Hình thức thi</label>
-                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
                     <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                       <input checked={isClassStyle && 'checked'} type="radio" name="optradio1" onChange={({target}) => {
                           if(!isClassStyle) {
@@ -173,8 +178,8 @@ class CreateTest extends  React.Component {
                         }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Tại nhà</p>
                     </label>
                   </div>
-                  <label className="col-sm-12" style={{paddingLeft: 0}}>Được sử dụng tài liệu?</label>
-                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 25}}>
+                  <label className="col-sm-12" style={{paddingLeft: 0}}>Được sử dụng tài liệu</label>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
                     <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                       <input checked={!openTest && 'checked'} type="radio" name="optradio2" onChange={({target}) => {
                           if(openTest) {
@@ -190,11 +195,13 @@ class CreateTest extends  React.Component {
                         }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Có</p>
                     </label>
                   </div>
-                  <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '25%', paddingRight: '25%'}}>
-                      <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%'}} onClick={this.saveTest.bind(this)}>HOÀN TẤT</button>
+                  <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingLeft: '25%', paddingRight: '25%'}}>
+                      <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 150}} onClick={() => this.decreaseStepIndex()}>QUAY LẠI</button>
+                      <div style={{width: 15}}></div>
+                      <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 150}} onClick={() => this.saveTest()}>HOÀN TẤT</button>
                   </div>
                 </div>
-              </form>
+              </div>
           </div>
         )
       default:
@@ -220,9 +227,11 @@ class CreateTest extends  React.Component {
     newTest[testStyle] = true;
 
     let info = JSON.stringify(newTest);
+    console.log('something');
     insertExamination(users.userId, info).then(({data}) => {
+      this.props.addNotificationMute({fetchData: true, message: 'tạo kì thi thành công', level:'success'});
       let _id = data.insertExamination;
-      browserHistory.push('/profile/' + this.props.users.userId);
+      this.setState({stepIndex: 0});
     }).catch((err) => {
 
     });
@@ -237,7 +246,7 @@ class CreateTest extends  React.Component {
           <h3 style={{width: '100%', textAlign: 'center', color: '#00BCD4', marginBottom: 0}}>TẠO KÌ THI</h3>
           <Stepper orientation="vertical" linear={false} activeStep={stepIndex}>
             <Step>
-              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 'bold'}}>
                 Tạo kì thi
               </StepLabel>
               <StepContent style={{paddingLeft: 0}}>
@@ -245,15 +254,15 @@ class CreateTest extends  React.Component {
               </StepContent>
             </Step>
             <Step>
-              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
-                Thêm câu hỏi
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 'bold'}}>
+                Thêm bộ câu hỏi
               </StepLabel>
               <StepContent>
                 {this.renderStepActions(1)}
               </StepContent>
             </Step>
             <Step>
-              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 550}}>
+              <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 'bold'}}>
                 Hoàn tất
               </StepLabel>
               <StepContent style={{paddingLeft: 0}}>

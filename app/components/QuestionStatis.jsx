@@ -103,7 +103,7 @@ class QuestionStatis extends React.Component {
                   let length = scoreShowAll ? data.examinationByQuestionSet.length : 2;
                   if(idx < length) {
                     return (
-                      <div key={idx} style={{width: 300, padding: 10}}>
+                      <div key={idx} style={{width: 500, padding: 10}}>
                         <PieChart chartData={statisScore(item.userExams.map(item => item.score))} chartOptions={{
                             animatable: true,
                           }}/>
@@ -129,7 +129,7 @@ class QuestionStatis extends React.Component {
                   let length = rateShowAll ? data.examinationByQuestionSet.length : 2;
                   if(idx < length) {
                     return (
-                      <div key={idx} style={{width: 300, padding: 10}}>
+                      <div key={idx} style={{width: 500, padding: 10}}>
                         <BarChart chartData={statisQuestion(item.questionSet.questions, 'correctRateByExam')} chartOptions={{
                              enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
                         }}/>
@@ -150,7 +150,7 @@ class QuestionStatis extends React.Component {
             </div>
             <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
               <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê trên toàn bộ kì thi:</h3>
-              <div style={{width: 300, padding: 10}}>
+              <div style={{width: 500, padding: 10}}>
                 <BarChart chartData={statisQuestion(data.questionSetById.questions, 'correctRate')} chartOptions={{
                      enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
                 }}/>
