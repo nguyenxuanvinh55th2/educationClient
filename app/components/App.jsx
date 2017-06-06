@@ -36,7 +36,7 @@ class Main extends React.Component {
         }, 5000);
     }
     if(localStorage.getItem('keepLogin')!=='true'){
-        if(localStorage.getItem('Meteor.loginToken')){
+        if(localStorage.getItem(this.props.loginToken)){
             // store.dispatch(loginCommand({}));
             Meteor.logout();
         }
@@ -44,12 +44,12 @@ class Main extends React.Component {
     Meteor.autorun(()=>{
         if(Meteor.status().connected){
             if(Meteor.userId()){
-                this.props.getInfoUser({token: localStorage.getItem('Meteor.loginToken')})
+                this.props.getInfoUser({token: localStorage.getItem(this.props.loginToken)})
                 .then(({data})=>{
                     if(data.getInfoUser){
                         let parseData = JSON.parse(data.getInfoUser);
                         store.dispatch(loginCommand(parseData));
-                        store.dispatch(changTypeLogin('Meteor.loginToken'));
+                        store.dispatch(changTypeLogin(this.props.loginToken));
                     }
                 })
                 .catch((err)=>{
@@ -64,6 +64,19 @@ class Main extends React.Component {
                   let parseData = JSON.parse(data.getInfoUser);
                   store.dispatch(loginCommand(parseData));
                   store.dispatch(changTypeLogin('Meteor.loginTokenFacebook'));
+              }
+          })
+          .catch((err)=>{
+              console.log(err);
+          });
+        }
+        else if (localStorage.getItem('loginServicesGoogle') == 'google') {
+          this.props.getInfoUser({token: localStorage.getItem('Meteor.loginTokenGoogle')})
+          .then(({data})=>{
+              if(data.getInfoUser){
+                  let parseData = JSON.parse(data.getInfoUser);
+                  store.dispatch(loginCommand(parseData));
+                  store.dispatch(changTypeLogin('Meteor.loginTokenGoogle'));
               }
           })
           .catch((err)=>{

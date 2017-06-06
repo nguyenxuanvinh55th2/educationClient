@@ -11,7 +11,7 @@ class Authenticate extends Component {
     cryptr = new Cryptr('ntuquiz123');
     //giải mã thông tin user được chứa trong đường link
     var decryptedString = cryptr.decrypt(this.props.params.code);
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken');
     props.authenticateUser(token, decryptedString);
     //this.setState({authenticate: true});
   }
@@ -25,7 +25,7 @@ class Authenticate extends Component {
   //     //giải mã thông tin user được chứa trong đường link
   //     var decryptedString = cryptr.decrypt(this.props.params.code);
   //     var userCode = JSON.parse(decryptedString);
-  //     let token = localStorage.getItem('Meteor.loginToken');
+  //     let token = localStorage.getItem(this.props.loginToken);
   //     this.props.onAuthenticate(token, userCode);
   //     this.setState({authenticate: true});
   //   }

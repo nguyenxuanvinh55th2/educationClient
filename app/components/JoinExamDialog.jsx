@@ -14,7 +14,7 @@ class JoinExamDialog extends React.Component {
   }
 
   insertUserToExam() {
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
     let { insertUserToExam } = this.props;
     let { examCode } = this.state;
     this.playerImage = this.refs.webcam.getScreenshot();

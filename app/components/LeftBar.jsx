@@ -164,14 +164,19 @@ class LeftBar extends React.Component {
   }
   readyExamination(_id) {
     let { readyExamination } = this.props;
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem(this.props.loginToken);
     readyExamination(token, _id).then(() => {
       browserHistory.push('/waitExam/' + _id)
     })
   }
   logout(){
     Meteor.logout();
+    localStorage.removeItem('Meteor.loginTokenGoogle');
     localStorage.removeItem('Meteor.loginToken');
+    localStorage.removeItem('Meteor.loginTokenFacebook');
+    localStorage.removeItem('Meteor.loginServices');
+    localStorage.removeItem('Meteor.loginServicesGoogle');
+    this.props.loginCommand({});
     this.props.loginCommand({});
   }
   renderExamination() {
@@ -192,7 +197,7 @@ class LeftBar extends React.Component {
               <MenuItem onClick={() => {
                   let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                   if(remove) {
-                    let token = localStorage.getItem('Meteor.loginToken');
+                    let token = localStorage.getItem(this.props.loginToken);
                     this.props.removeExamination(token, item._id).then(() => {
                       this.props.data.refetch();
                     }).catch((err) => {
@@ -235,7 +240,7 @@ class LeftBar extends React.Component {
               <MenuItem onClick={() => {
                     let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                     if(remove) {
-                      let token = localStorage.getItem('Meteor.loginToken');
+                      let token = localStorage.getItem(this.props.loginToken);
                       this.props.removeQuestionSet(token, item._id).then(() => {
                         this.props.data.refetch();
                       }).catch((err) => {
@@ -451,7 +456,7 @@ const REMOVE_EXAMINATION = gql`
 export default compose(
 graphql(CLASS_SUBJECT, {
     options: (ownProps) => ({
-      variables: {userId: ownProps.users.userId,token: localStorage.getItem('Meteor.loginToken')},
+      variables: {userId: ownProps.users.userId,token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken') },
       forceFetch: true
     }),
 }),

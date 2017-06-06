@@ -76,7 +76,7 @@ class ChatRoom extends Component {
       var count = this.props.chatContent.length - 1;
       var userId = this.props.chatContent[count].userId;
       if(this.props.chatId !== null && this.props.users && userId !== this.props.users.userId) {
-        let token = localStorage.getItem('Meteor.loginToken');
+        let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
         this.props.updateChatContent(token, this.props.chatId);
       }
     }
@@ -90,7 +90,7 @@ class ChatRoom extends Component {
     const userId = this.props.users.userId;
     const date = moment().valueOf();
     let index = 0;
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
 
     if(this.props.chatId === null) {
 

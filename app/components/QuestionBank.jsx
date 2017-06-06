@@ -89,7 +89,7 @@ const QUESTION_BY_SUBJECT = gql`
 const SelectQuestionInputFormWithData = compose (
     graphql(QUESTION_BY_SUBJECT, {
         options: (owProps)=> ({
-            variables: {token: localStorage.getItem('Meteor.loginToken'), subjectId: owProps.subjectId, type: owProps.type},
+            variables: {token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken'), subjectId: owProps.subjectId, type: owProps.type},
             forceFetch: true
         })
     }),
@@ -211,7 +211,7 @@ class QuestionSetItem extends React.Component {
             <button className="btn" style={{width: '100%', backgroundColor: 'white', color: '#35bcbf', padding: 0}} onClick={() => {
                 let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                 if(remove) {
-                  let token = localStorage.getItem('Meteor.loginToken');
+                  let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                   console.log("message ",  questionSet._id);
                   this.props.removeQuestionSet(token, questionSet._id).then(() => {
                     this.props.refetch();
@@ -444,8 +444,8 @@ class QuesionBank extends React.Component {
         });
         console.log('questionSet ', questionSet);
         console.log('questionSetString', questionSetString);
-        console.log('token ', localStorage.getItem('Meteor.loginToken'));
-        this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
+        console.log('token ', localStorage.getItem(this.props.loginToken));
+        this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
           this.props.addNotificationMute({fetchData: true, message: 'Tạo câu hỏi thành công', level:'success'});
           getQuestionSetId(data.insertQuestionSet);
           increaseStepIndex();
@@ -743,7 +743,7 @@ const INSERT_QUESTION_SET = gql`
 export default compose (
     graphql(QUESTION_SET_QUERY, {
         options: (owProps)=> ({
-            variables: {userId: owProps.users.userId, token: localStorage.getItem('Meteor.loginToken')},
+            variables: {userId: owProps.users.userId, token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')},
             forceFetch: true
         })
     }),

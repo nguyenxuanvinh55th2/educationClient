@@ -237,7 +237,7 @@ class Register extends React.Component {
                         let dataUser = JSON.parse(data.loginWithPassword);
                         this.props.loginCommand(dataUser.user);
                         localStorage.setItem('keepLogin', true);
-                        localStorage.setItem('Meteor.loginToken', dataUser.token);
+                        localStorage.setItem(this.props.loginToken, dataUser.token);
                         this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
                         this.props.handleClose();
                         this.setState({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: ''});

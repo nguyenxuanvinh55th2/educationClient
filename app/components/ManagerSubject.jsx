@@ -88,7 +88,7 @@ class ManagerSubject extends React.Component {
       classSubjectId: this.state.subjectId,
       files: this.state.dataForum.files
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài viết mới thành công', level:'success'});
         this.refreshData();
@@ -111,7 +111,7 @@ class ManagerSubject extends React.Component {
       },
       classSubjectId: this.state.subjectId
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm chủ đề mới thành công', level:'success'});
         this.refreshData();
@@ -133,7 +133,7 @@ class ManagerSubject extends React.Component {
       files: this.state.dataAssign.files,
       classSubjectId: this.state.subjectId,
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công', level:'success'});
         this.refreshData();
@@ -267,7 +267,7 @@ class ManagerSubject extends React.Component {
           content: value,
           topicId: topicId
         }
-        this.props.insertCommentForum(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+        this.props.insertCommentForum(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
           if(data){
             document.getElementById(idValue).value = '';
             this.props.addNotificationMute({fetchData: true, message: 'Gửi bình luận thành công', level:'success'});
