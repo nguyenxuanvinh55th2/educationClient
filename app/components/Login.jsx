@@ -81,7 +81,7 @@ class Login extends Component {
           <h4>ĐĂNG NHẬP</h4>
         </div>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
-          <div style={{flexDirection: 'column', marginTop: 5}}>
+          <div style={{flexDirection: 'column', marginTop: 5, width: '50%'}}>
             <form className="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-9 col-sm-offset-3">

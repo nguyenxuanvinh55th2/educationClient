@@ -15,33 +15,32 @@ export class GiveAssignment extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      file: {}
+      file: {},
     }
   }
-  onDropAccepted(acceptedFiles,event) {
-    console.log(acceptedFiles);
+  onDropAccepted(files) {
     let that = this;
-    if(acceptedFiles.length){
-      let file = acceptedFiles[0];
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function (e) {
-          if(e.target.result){
-            that.setState({file:{
-              file:e.target.result,
-              fileName: file.name,
-              type: file.type
-            }});
-          }
-      };
-      reader.onerror = function (error) {
-        console.log('Error: ', error);
-      };
-    }
-  }
-  onDropRejected(rejectedFiles){
-    if(rejectedFiles.length && rejectedFiles[0].size > 1024*1000*2){
-      alert('File nhỏ hơn 2MB!');
+    if(files.length){
+      let file = files[0];
+      if(file.size <= 1024*1000*10){
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            if(e.target.result){
+              that.setState({file: {
+                file: e.target.result,
+                fileName: file.name,
+                type: file.type
+              }})
+            }
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+      }
+      else {
+        alert('File nhỏ hơn 10MB!');
+      }
     }
   }
   render(){
@@ -54,9 +53,18 @@ export class GiveAssignment extends React.Component {
             </div>
             <div className="modal-body" style={{maxHeight:window.innerHeight - 300, overflowY: 'auto', overflowX: 'hidden'}}>
               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                <Dropzone onDropAccepted={this.onDropAccepted} onDropRejected={this.onDropRejected} multiple={false} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}} minSize={0} maxSize={1024*20*1000} multiple={false} >
+                <Dropzone onDrop={this.onDropAccepted.bind(this)} multiple={false} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}} minSize={0} maxSize={1024*10*1000} multiple={false} >
                   <div style={{textAlign: 'center'}}>Click or Drap here to upload file</div>
                 </Dropzone>
+              {
+                this.state.file.file ?
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 15}}>
+                  <img src={this.state.file.file ? this.state.file.file : ''} style={{height: 140, width: 140}}/>
+                  <div>
+                    <p>{this.state.file.fileName}</p>
+                  </div>
+                </div> : <div></div>
+              }
               </div>
             </div>
             <div className="modal-footer">
