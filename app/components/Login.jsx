@@ -13,7 +13,8 @@ class Login extends Component {
     this.handleLoginGoogle = this.handleLoginGoogle.bind(this);
     this.state= {
       email: '',
-      password: ''
+      password: '',
+      stopCallBack: false
     }
   }
   handleLogin(){
@@ -24,9 +25,14 @@ class Login extends Component {
     loginWithPassword(that.state.email, encrypted.toString()).then(({data})=>{
       if(data){
         let dataUser = JSON.parse(data.loginWithPassword);
+        localStorage.removeItem('Meteor.loginTokenGoogle');
+        localStorage.removeItem('Meteor.loginTokenFacebook');
+        localStorage.removeItem('Meteor.loginServices');
+        localStorage.removeItem('Meteor.loginServicesGoogle');
         localStorage.setItem('keepLogin', true);
-        localStorage.setItem('Meteor.loginToken', dataUser.token);
+        localStorage.setItem(this.props.loginToken, dataUser.token);
         this.props.loginCommand(dataUser.user);
+        this.props.changTypeLogin('Meteor.loginToken');
         this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
       }
     }).catch((err)=>{
@@ -41,16 +47,24 @@ class Login extends Component {
         this.props.loginWithGoogle(JSON.stringify(response)).then(({data}) => {
           if(data && data.loginWithGoogle){
             let dataUser =  JSON.parse(data.loginWithGoogle);
+            localStorage.removeItem('Meteor.loginToken');
+            localStorage.removeItem('Meteor.loginTokenFacebook');
+            localStorage.removeItem('Meteor.loginServices');
             localStorage.setItem('keepLogin', true);
-            localStorage.setItem('Meteor.loginToken', dataUser.token);
+            localStorage.setItem('loginServicesGoogle', 'google')
+            localStorage.setItem('Meteor.loginTokenGoogle', dataUser.token);
             this.props.loginCommand({
               _id: dataUser.user._id,
               friendList: dataUser.user.friendList,
               googleId: dataUser.user.googleId,
               profile: dataUser.user.profileObj,
               services: dataUser.user.services,
-              w3: dataUser.user.w3
+              w3: dataUser.user.w3,
+              name: dataUser.user.profileObj.name,
+              email: dataUser.user.profileObj.email,
+              image: dataUser.user.profileObj.imageUrl
             });
+            this.props.changTypeLogin('Meteor.loginTokenGoogle');
             this.props.handleClose();
           }
         })
@@ -67,7 +81,7 @@ class Login extends Component {
           <h4>ĐĂNG NHẬP</h4>
         </div>
         <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
-          <div style={{flexDirection: 'column', marginTop: 5, width: '50%'}}>
+          <div style={{flexDirection: 'column', marginTop: 5}}>
             <form className="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-9 col-sm-offset-3">
@@ -94,19 +108,26 @@ class Login extends Component {
               <FacebookLogin
                 appId="265492483877076"
                 autoLoad={false}
-                reAuthenticate={true}
+                reAuthenticate={false}
                 textButton="Login with Facebook"
                 fields="name,email,picture"
                 callback={(response) => {
+                  localStorage.clear();
                     response['services'] = 'facebook';
                     response['job'] = '';
                     response['friendList'] = [];
                     this.props.loginWithFacebook(JSON.stringify(response)).then(({data}) => {
                       if(data && data.loginWithFacebook){
                         let dataUser = JSON.parse(data.loginWithFacebook);
+                        localStorage.removeItem('Meteor.loginTokenGoogle');
+                        localStorage.removeItem('Meteor.loginToken');
+                        localStorage.removeItem('Meteor.loginServicesGoogle');
                         localStorage.setItem('keepLogin', true);
-                        localStorage.setItem('Meteor.loginToken', dataUser.token);
+                        localStorage.setItem('Meteor.loginServices', 'facebook');
+                        dataUser.user.image = dataUser.user.picture.data.url;
+                        localStorage.setItem('Meteor.loginTokenFacebook', dataUser.token);
                         this.props.loginCommand(dataUser.user);
+                        this.props.changTypeLogin('Meteor.loginTokenFacebook');
                         this.props.handleClose();
                       }
                       else {

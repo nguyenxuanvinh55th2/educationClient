@@ -66,7 +66,7 @@ class QuestionContent extends React.Component {
             question.answerSet.map((item, idx) => (
               <label key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 <input checked={userResults[question._id] && (userResults[question._id].answer.indexOf(item) > -1 && 'checked')} type="radio" name="optradio" onChange={({target}) => {
-                    let token = localStorage.getItem('Meteor.loginToken');
+                    let token =localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                     this.props.answerQuestion(token, examId, questionSetId, question._id, item).then(() => {
                       this.props.data.refetch()
                     }).catch((err) => {
@@ -111,7 +111,7 @@ const ANSWER_QUESTION = gql`
 const QuestionContentWithData = compose (
     graphql(PLAYER_RESULT_BY_USER, {
         options: (ownProps)=> ({
-            variables: {token: localStorage.getItem('Meteor.loginToken'), examId: ownProps.examId},
+            variables: {token: localStorage.getItem(this.props.loginToken), examId: ownProps.examId},
             forceFetch: true
         })
     }),
@@ -133,7 +133,7 @@ class StartedExam extends React.Component {
   componentDidUpdate() {
     let { data, finishExamination, screenShot } = this.props;
     let { startCountDown } = this.state;
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
     let randomNuber = Math.floor((Math.random() * 10) + 40);
     // if(this.interval) {
     //   clearInterval(this.interval);
@@ -143,7 +143,7 @@ class StartedExam extends React.Component {
       let timeLeft = moment().valueOf() - data.examById.timeStart;
       let time = (data.examById.time * 60 * 1000) - timeLeft;
       let countDown = time
-      let token = localStorage.getItem('Meteor.loginToken');
+      let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
       if(data.examById.status === 99) {
         this.interval = setInterval(() => {
           countDown -= 1000;
@@ -214,7 +214,8 @@ class StartedExam extends React.Component {
         this.setState({currentQuestion, index});
     }
     if(data.examById.isClassStyle) {
-      let token = localStorage.getItem('Meteor.loginToken');
+      let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
+      currentQuestion['index'] = question.index;
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
     }
@@ -234,7 +235,8 @@ class StartedExam extends React.Component {
         this.setState({currentQuestion, index});
     }
     if(data.examById.isClassStyle) {
-      let token = localStorage.getItem('Meteor.loginToken');
+      let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
+      currentQuestion['index'] = question.index - 2;
       currentQuestion = JSON.stringify(currentQuestion);
       updateCurrentQuestion(token, currentQuestion)
     }
@@ -351,7 +353,7 @@ class StartedExam extends React.Component {
                 <button className="btn" style={{width: 80, border: 'none', fontSize: 14, backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
                     var submit = confirm('Bạn có muốn dừng bài kiểm tra?');
                     if(submit) {
-                      let token = localStorage.getItem('Meteor.loginToken');
+                      let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                       finishExamination(token, data.examById._id).then(() => {
                       }).catch((err) => {
                         console.log("error ", err);

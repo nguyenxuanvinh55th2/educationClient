@@ -15,6 +15,7 @@ import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
+import { GiveAssignment } from './ChildManagerSubject.jsx'
 const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
 class ManagerSubject extends React.Component {
   constructor(props) {
@@ -87,7 +88,7 @@ class ManagerSubject extends React.Component {
       classSubjectId: this.state.subjectId,
       files: this.state.dataForum.files
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài viết mới thành công', level:'success'});
         this.refreshData();
@@ -110,7 +111,7 @@ class ManagerSubject extends React.Component {
       },
       classSubjectId: this.state.subjectId
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm chủ đề mới thành công', level:'success'});
         this.refreshData();
@@ -132,7 +133,7 @@ class ManagerSubject extends React.Component {
       files: this.state.dataAssign.files,
       classSubjectId: this.state.subjectId,
     }
-    this.props.insertTopic(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+    this.props.insertTopic(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công', level:'success'});
         this.refreshData();
@@ -266,7 +267,7 @@ class ManagerSubject extends React.Component {
           content: value,
           topicId: topicId
         }
-        this.props.insertCommentForum(localStorage.getItem('Meteor.loginToken'),JSON.stringify(info)).then(({data}) => {
+        this.props.insertCommentForum(localStorage.getItem(this.props.loginToken),JSON.stringify(info)).then(({data}) => {
           if(data){
             document.getElementById(idValue).value = '';
             this.props.addNotificationMute({fetchData: true, message: 'Gửi bình luận thành công', level:'success'});
@@ -317,9 +318,6 @@ class ManagerSubject extends React.Component {
       </div>
     )
   }
-  onDropGiveAdd(files){
-    console.log(files);
-  }
   render(){
     let { dataSet, users } = this.props;
       if(dataSet.loading && !dataSet.getActivityForum){
@@ -355,7 +353,7 @@ class ManagerSubject extends React.Component {
                 </TabList>
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-                    <div style={{border: '1px solid #f0f0f0', minHeight: 150, borderRadius: 10, padding: 10}}>
+                    <div style={{ minHeight: 150, borderRadius: 10, padding: 10}}>
                       <textarea rows="5" placeholder="Bạn có điều gì muốn hỏi" style={{ height: 100, width: '100%'}} value={this.state.dataForum.content} onChange={({target}) => {
                         let dataForum = this.state.dataForum;
                         dataForum.content = target.value;
@@ -569,7 +567,7 @@ class ManagerSubject extends React.Component {
                            dataTheme.open = !this.state.dataTheme.open;
                            this.setState({dataTheme: dataTheme});
                          }}>
-                        <span className="glyphicon glyphicon-plus"></span> {this.state.dataTheme.open ? 'Hủy chủ đề' : 'Thêm chủ đề'}
+                        <span className={this.state.dataTheme.open ? "glyphicon glyphicon-minus" : "glyphicon glyphicon-plus"}></span> {this.state.dataTheme.open ? 'Hủy chủ đề' : 'Thêm chủ đề'}
                       </button>
                     }
                   </div>
@@ -759,12 +757,12 @@ class ManagerSubject extends React.Component {
                         return (
                           <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
-                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
+                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="75" width="75" className="img-responsive"/>
                             </div>
                             <div style={{paddingLeft: 10}}>
-                              <h3>{infoUser.name}</h3>
-                              <h4>{infoUser.email}</h4>
-                              <h5>Teacher</h5>
+                              <h4>{infoUser.name}</h4>
+                              <h5>{infoUser.email}</h5>
+                              <p>Teacher</p>
                             </div>
                           </div>
                         )
@@ -775,12 +773,12 @@ class ManagerSubject extends React.Component {
                         return (
                           <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', border: '2px solid white', padding: 10}}>
                             <div>
-                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="100" width="100" className="img-responsive"/>
+                              <img src={infoUser.image ? infoUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} height="75" width="75" className="img-responsive"/>
                             </div>
                             <div style={{paddingLeft: 10}}>
-                              <h3>{infoUser.name}</h3>
-                              <h4>{infoUser.email}</h4>
-                              <h5>Student</h5>
+                              <h4>{infoUser.name}</h4>
+                              <h5>{infoUser.email}</h5>
+                              <p>Student</p>
                             </div>
                           </div>
                         )
@@ -797,19 +795,19 @@ class ManagerSubject extends React.Component {
             </div>
             <div style={{width: '35%', paddingLeft: 15}}>
               <div style={{backgroundColor: 'white', padding: 5}}>
-                <h4 style={{textAlign: 'center'}}>{dataSet.getInfoClassSubject.name}</h4>
+                <h4 style={{textAlign: 'center', color: '#35bcbf'}}>{dataSet.getInfoClassSubject.name}</h4>
                 <p>GV: {dataSet.getInfoClassSubject.teacher.name}</p>
                 <p>Email: {dataSet.getInfoClassSubject.teacher.email}</p>
                 <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject.code : 'XXXXX'}</p>
               </div>
               <div style={{marginTop: 10, backgroundColor: 'white', padding: 5}}>
-                <h3>THÊM HỌC VIÊN</h3>
+                <h3 style={{textAlign: 'center'}}>Thêm học viên</h3>
                 <EditMulti value={this.state.userSubjects} userIds={this.state.userFriendsUserClass} label={"name"} placeholder='...'
                    onChangeValue={(value) => this.setState({userSubjects: value})}/>
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
                  </div>
-                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Add</button>
+                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Mời</button>
               </div>
             </div>
             <Dialog
@@ -820,25 +818,7 @@ class ManagerSubject extends React.Component {
               bodyStyle={{padding: 0}}
               contentStyle={{minHeight:'60%'}}
             >
-              <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
-                  <div className="modal-content">
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
-                      <h4 className="modal-title">Nộp bài tập: {this.state.topicSelected ? this.state.topicSelected.title : ''} - {this.state.topicSelected.owner ? this.state.topicSelected.owner.name : ''} </h4>
-                      <span className="close" onClick={() => this.setState({openGiveAdd: false})}>&times;</span>
-                    </div>
-                    <div className="modal-body" style={{maxHeight:window.innerHeight - 300, overflowY: 'auto', overflowX: 'hidden'}}>
-                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                        <Dropzone onDrop={this.onDropGiveAdd.bind(this)} multiple={false} style={{height: 140, border: '1px solid gray', borderRadius: 10, padding: '13px 7px', width: 350}}>
-                          <div style={{textAlign: 'center'}}>Click or Drap here to upload file</div>
-                        </Dropzone>
-                      </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-default" onClick={() => this.setState({openGiveAdd: false})}>Đóng</button>
-                      <button type="button" className="btn btn-primary">Nộp</button>
-                    </div>
-                  </div>
-              </div>
+              <GiveAssignment topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
             </Dialog>
           </div>
         )

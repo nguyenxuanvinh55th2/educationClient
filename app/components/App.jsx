@@ -10,11 +10,13 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import store from '../store.js'
 import { loginCommand } from '../action/actionCreator';
+import { changTypeLogin } from '../action/actionCreator';
 function mapStateToProps(state){
   return {
     users: state.users,
     subjectClass: state.subjectClass,
-    notification: state.notification
+    notification: state.notification,
+    loginToken: state.loginToken
   }
 }
 
@@ -34,7 +36,7 @@ class Main extends React.Component {
         }, 5000);
     }
     if(localStorage.getItem('keepLogin')!=='true'){
-        if(localStorage.getItem('Meteor.loginToken')){
+        if(localStorage.getItem(this.props.loginToken)){
             // store.dispatch(loginCommand({}));
             Meteor.logout();
         }
@@ -42,19 +44,44 @@ class Main extends React.Component {
     Meteor.autorun(()=>{
         if(Meteor.status().connected){
             if(Meteor.userId()){
-                this.props.getInfoUser({token: localStorage.getItem('Meteor.loginToken')})
+                this.props.getInfoUser({token: localStorage.getItem(this.props.loginToken)})
                 .then(({data})=>{
                     if(data.getInfoUser){
                         let parseData = JSON.parse(data.getInfoUser);
                         store.dispatch(loginCommand(parseData));
+                        store.dispatch(changTypeLogin(this.props.loginToken));
                     }
                 })
                 .catch((err)=>{
                     console.log(err);
                 });
-            } else {
-                store.dispatch(loginCommand({}));
             }
+        }
+        else if (localStorage.getItem('Meteor.loginServices') == 'facebook') {
+          this.props.getInfoUser({token: localStorage.getItem('Meteor.loginTokenFacebook')})
+          .then(({data})=>{
+              if(data.getInfoUser){
+                  let parseData = JSON.parse(data.getInfoUser);
+                  store.dispatch(loginCommand(parseData));
+                  store.dispatch(changTypeLogin('Meteor.loginTokenFacebook'));
+              }
+          })
+          .catch((err)=>{
+              console.log(err);
+          });
+        }
+        else if (localStorage.getItem('loginServicesGoogle') == 'google') {
+          this.props.getInfoUser({token: localStorage.getItem('Meteor.loginTokenGoogle')})
+          .then(({data})=>{
+              if(data.getInfoUser){
+                  let parseData = JSON.parse(data.getInfoUser);
+                  store.dispatch(loginCommand(parseData));
+                  store.dispatch(changTypeLogin('Meteor.loginTokenGoogle'));
+              }
+          })
+          .catch((err)=>{
+              console.log(err);
+          });
         }
     });
   }

@@ -179,7 +179,7 @@ class WaitExam extends React.Component {
               {
                 users.userId === data.examById.createdBy._id ?
                 <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%'}} onClick={() => {
-                    let token= localStorage.getItem('Meteor.loginToken');
+                    let token= localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                     let _id = params.id;
                     startExamination(token, _id).then(() => {
                       console.log("message");

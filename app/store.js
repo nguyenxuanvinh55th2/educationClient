@@ -10,7 +10,8 @@ const defaultState = {
   notification: {
     fetchData: false,
     level: '', message: ''
-  }
+  },
+  loginToken: 'Meteor.loginToken'
 }
 
 const store = createStore(

@@ -43,11 +43,11 @@ import ManagerUserParent from './components/ManagerUserParent.jsx';
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
-        this.token = localStorage.getItem('Meteor.loginToken');
+        this.token = localStorage.getItem(this.props.loginToken);
         // if(localStorage.getItem('keepLogin') === 'true'){
-        //     this.token = localStorage.getItem('Meteor.loginToken');
+        //     this.token = localStorage.getItem(this.props.loginToken);
         // } else {
-        //     localStorage.removeItem('Meteor.loginToken');
+        //     localStorage.removeItem(this.props.loginToken);
         // }
     }
     render(){

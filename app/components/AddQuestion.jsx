@@ -417,7 +417,7 @@ const ADD_QUESTION_FROM_FILE = gql`
 export default compose (
     graphql(ADD_QUESTION_QUERY, {
         options: (owProps)=> ({
-            variables: {userId: owProps.users.userId, token: localStorage.getItem('Meteor.loginToken')},
+            variables: {userId: owProps.users.userId, token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')},
             forceFetch: true
         })
     }),

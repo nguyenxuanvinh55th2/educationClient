@@ -81,7 +81,8 @@ class LeftBar extends React.Component {
     this.state = {
       openDialog: false,
       height: window.innerHeight,
-      open: false
+      open: false,
+      selectedIndex: -1
     }
   }
   handleResize(e) {
@@ -163,14 +164,19 @@ class LeftBar extends React.Component {
   }
   readyExamination(_id) {
     let { readyExamination } = this.props;
-    let token = localStorage.getItem('Meteor.loginToken');
+    let token = localStorage.getItem(this.props.loginToken);
     readyExamination(token, _id).then(() => {
       browserHistory.push('/waitExam/' + _id)
     })
   }
   logout(){
     Meteor.logout();
+    localStorage.removeItem('Meteor.loginTokenGoogle');
     localStorage.removeItem('Meteor.loginToken');
+    localStorage.removeItem('Meteor.loginTokenFacebook');
+    localStorage.removeItem('Meteor.loginServices');
+    localStorage.removeItem('Meteor.loginServicesGoogle');
+    this.props.loginCommand({});
     this.props.loginCommand({});
   }
   renderExamination() {
@@ -191,7 +197,7 @@ class LeftBar extends React.Component {
               <MenuItem onClick={() => {
                   let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                   if(remove) {
-                    let token = localStorage.getItem('Meteor.loginToken');
+                    let token = localStorage.getItem(this.props.loginToken);
                     this.props.removeExamination(token, item._id).then(() => {
                       this.props.data.refetch();
                     }).catch((err) => {
@@ -234,7 +240,7 @@ class LeftBar extends React.Component {
               <MenuItem onClick={() => {
                     let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                     if(remove) {
-                      let token = localStorage.getItem('Meteor.loginToken');
+                      let token = localStorage.getItem(this.props.loginToken);
                       this.props.removeQuestionSet(token, item._id).then(() => {
                         this.props.data.refetch();
                       }).catch((err) => {
@@ -287,8 +293,9 @@ class LeftBar extends React.Component {
            leftIcon={<LocalLibary color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 0 ?  'rgba(0, 0, 0, 0.2)' : ''}}
            nestedListStyle={{marginLeft: 25}}
+           onClick={() => this.setState({selectedIndex: 0})}
            nestedItems={
             this.renderClassSubjectTeacher()
            }
@@ -298,7 +305,8 @@ class LeftBar extends React.Component {
            leftIcon={<School color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 1 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 1})}
            nestedItems={
             this.renderClassSubjectStudent()
            }
@@ -308,7 +316,8 @@ class LeftBar extends React.Component {
            leftIcon={<Person color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 2 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 2})}
            nestedItems={
             this.renderChildrent()
            }
@@ -318,7 +327,8 @@ class LeftBar extends React.Component {
            leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 3 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 3})}
            nestedItems={this.renderExamination()}
          />
          <ListItem
@@ -326,14 +336,9 @@ class LeftBar extends React.Component {
            leftIcon={<Description color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 4 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 4})}
            nestedItems={this.renderQuestionSet()}
-         />
-         <ListItem
-           primaryText="Đăng xuất"
-           leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
-           style={{color: 'white', fontSize: 13}}
-           onClick={this.logout.bind(this)}
          />
          {/* <ListItem
            primaryText="Thời gian biểu"
@@ -358,9 +363,17 @@ class LeftBar extends React.Component {
            leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
            initiallyOpen={false}
            primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 5 ?  'rgba(0, 0, 0, 0.2)' : ''}}
+           onClick={() => this.setState({selectedIndex: 5})}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
            ]}
+         />
+         <ListItem
+           primaryText="Đăng xuất"
+           leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
+           style={{color: 'white', fontSize: 13}}
+           onClick={this.logout.bind(this)}
          />
        </List>
        <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
@@ -371,8 +384,8 @@ class LeftBar extends React.Component {
        <Dialog
          modal={true}
          open={this.state.openDialog}
-         bodyStyle={{padding: 0}}      
-         contentStyle={{maxWidth: 'none'}}
+         bodyStyle={{padding: 0}}
+         contentStyle={{width: 600}}
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
@@ -443,7 +456,7 @@ const REMOVE_EXAMINATION = gql`
 export default compose(
 graphql(CLASS_SUBJECT, {
     options: (ownProps) => ({
-      variables: {userId: ownProps.users.userId,token: localStorage.getItem('Meteor.loginToken')},
+      variables: {userId: ownProps.users.userId,token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken') },
       forceFetch: true
     }),
 }),

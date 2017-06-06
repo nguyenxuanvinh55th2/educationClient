@@ -18,7 +18,7 @@ class AcceptButton extends Component {
       if(this.props.note.type === 'add-class-note')
         return (
           <button className="btn btn-primary" style={{marginTop: '50px', float: 'right'}} onClick={e => {
-            let token = localStorage.getItem('Meteor.loginToken');
+            let token = localStorage.getItem(this.props.loginToken);
             this.props.insertUserClass(token, this.props.note.classInfo._id);
           }}>Tham gia</button>
         )
@@ -174,9 +174,9 @@ const DELETE_NOTIFICATION = gql`
 export default compose(
   graphql(NOTIFICATION, {
       options: (ownProps) => ({
-        variables: { token: localStorage.getItem('Meteor.loginToken') },
+        variables: { token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')  },
         forceFetch: true
-      }),
+      })
   }),
   graphql(
     DELETE_NOTIFICATION,

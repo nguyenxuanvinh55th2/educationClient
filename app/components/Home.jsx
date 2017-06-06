@@ -36,8 +36,8 @@ export default class Home extends React.Component {
             </div>
           </div>
           <div  className="row" style={{margin: '50px 100px'}}>
-            <div className="col-sm-12 col-md-4 col-lg-5">
-              <h2>TUIELEARNING dành cho những ai?</h2>
+            <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15}}>
+              <h2>TUIELEARNING DÀNH CHO NHỮNG AI?</h2>
               <p style={{paddingRight: 50}}>
                 - Đội ngủ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
               </p>
@@ -63,10 +63,10 @@ export default class Home extends React.Component {
             <div className="col-sm-12 col-md-4 col-lg-4">
               <div className="row">
                 <div className="col-sm-2">
-                  <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 50}}>
+                  <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-6" style={{ fontSize:  17}}>
                   <p>
                     - Tính năng đơn giản
                   </p>
@@ -79,10 +79,10 @@ export default class Home extends React.Component {
             <div className="col-sm-12 col-md-4 col-lg-4">
               <div className="row">
                 <div className="col-sm-2">
-                  <span  className="glyphicon glyphicon-ok pull-left" style={{fontSize: 50}}>
+                  <span  className="glyphicon glyphicon-ok pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-6" style={{ fontSize:  17}}>
                   <p>
                     - Vừa học vừa chơi.
                   </p>
@@ -95,10 +95,10 @@ export default class Home extends React.Component {
             <div className="col-sm-12 col-md-4 col-lg-4">
               <div className="row">
                 <div className="col-sm-2 ">
-                  <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 50}}>
+                  <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-6" style={{ fontSize:  17}}>
                   <p>
                     - Sử dụng mà không cần cài đặt.
                   </p>
@@ -162,9 +162,9 @@ export default class Home extends React.Component {
           </div>
           <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
             <div className="col-sm-12 col-md-5 col-lg-4 col-md-offset-1 col-lg-offset-1" style={{flexDirection: 'column', alignItems: 'center'}}>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" style={{height: 40}} />
-              <div>
-                <p>LIÊN HỆ</p>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" style={{height: 40}} />
+              <div style={{ fontSize: 15 }}>
+                <h2>LIÊN HỆ</h2>
                 <p>Tuielearning.com.vn <span className="glyphicon glyphicon-home pull-left" style={{paddingRight: 10, top: 3}}></span></p>
                 <p>0166xxxx770 <span className="glyphicon glyphicon-earphone pull-left" style={{paddingRight: 10, top: 3}}></span></p>
                 <p>tuielearning@gmail.com <span className="glyphicon glyphicon-envelope pull-left" style={{paddingRight: 10, top: 3}}></span></p>
@@ -183,8 +183,8 @@ export default class Home extends React.Component {
                 <TextField fullWidth={true} inputStyle={{color: 'white'}} hintStyle={{color: 'white'}}
                   hintText="Nội dung đóng góp" />
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                  <button type="button" className="btn btn-default">
-                    <span className="glyphicon glyphicon-send pull-right" style={{paddingLeft: 5, top: 3}}></span> Gửi
+                  <button type="button" className="btn btn-default" style={{width: 80}}>
+                    <span className="glyphicon glyphicon-send pull-right" style={{fontSize: 24}}></span> Gửi
                   </button>
                 </div>
               </div>
