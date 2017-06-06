@@ -15,7 +15,7 @@ import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
-import { GiveAssignment } from './ChildManagerSubject.jsx'
+import { GiveAssignment, ListUserGiveAss } from './ChildManagerSubject.jsx'
 const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
 class ManagerSubject extends React.Component {
   constructor(props) {
@@ -56,6 +56,7 @@ class ManagerSubject extends React.Component {
       userFriendsUserClass: [],
       topicSelected: {},
       openGiveAdd: false,
+      openGiveList:false,
       filesAss: {}
     }
   }
@@ -326,7 +327,6 @@ class ManagerSubject extends React.Component {
         )
       }
       else {
-        console.log(this.state.topicSelected);
         return (
           <div style={{display: 'flex', flexDirection: 'row', padding: 20, justifyContent: 'space-between'}}>
             <div style={{width: '65%'}}>
@@ -681,6 +681,9 @@ class ManagerSubject extends React.Component {
                                 }
                               <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
                                   <button type="button" className="btn btn-warning" onClick={() => this.setState({openGiveAdd: true,topicSelected: ass.topic})} >Nộp bài</button>
+                                  <button type="button" className="btn btn-default" style={{marginLeft: 10}} onClick={() => {
+                                    browserHistory.push(this.props.location.pathname + "/"+ ass.topic._id)
+                                  }} >Danh sách đã nộp</button>
                               </div>
                               </div>
                             }
@@ -818,7 +821,7 @@ class ManagerSubject extends React.Component {
               bodyStyle={{padding: 0}}
               contentStyle={{minHeight:'60%'}}
             >
-              <GiveAssignment topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
+              <GiveAssignment {...this.props} topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
             </Dialog>
           </div>
         )
@@ -878,13 +881,6 @@ const MyQuery = gql`
           owner {
              _id name  image  email
            }
-          memberReply {
-            _id
-            owner {
-              _id name image email
-            }
-            content
-          }
           files {
             _id  file type  fileName
           }
