@@ -61,7 +61,6 @@ class ChatBar extends React.Component {
       }
       return searchList;
     } else {
-      console.log('userList ', userList);
       return userList;
     }
   }
