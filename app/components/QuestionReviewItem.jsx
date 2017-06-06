@@ -39,7 +39,7 @@ export default class QuestionReviewItem extends React.Component {
   }
 
   render() {
-    let { question, publicQuestion, questionType, getReviewFrom, getScore } = this.props;
+    let { question, publicQuestion, questionType, getReviewFrom, getScore, correctRate } = this.props;
     console.log('question ', question);
     let { showAnswer } = this.state;
     return (
@@ -81,6 +81,9 @@ export default class QuestionReviewItem extends React.Component {
               <font style={{color: 'blue', fontWeight: 'bold', paddingRight: 10}}>Điểm số: </font>
               <input style={{width: 50, borderRadius: 3, border: 0, marginTop: -5}} type="number" value={ question.score } onChange={({target}) => getScore(question._id, target.value)}/>
             </div>
+            {
+              correctRate && <font style={{color: 'blue', fontWeight: 'bold', paddingRight: 10}}>{ 'Tỉ lệ trả lời đúng: ' + correctRate }</font>
+            }
           </div> : null
         }
       </div>

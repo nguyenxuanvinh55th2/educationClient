@@ -66,11 +66,10 @@ class QuestionContent extends React.Component {
             question.answerSet.map((item, idx) => (
               <label key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 <input checked={userResults[question._id] && (userResults[question._id].answer.indexOf(item) > -1 && 'checked')} type="radio" name="optradio" onChange={({target}) => {
-                    let token =localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
+                    let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                     this.props.answerQuestion(token, examId, questionSetId, question._id, item).then(() => {
                       this.props.data.refetch()
                     }).catch((err) => {
-
                     });
                   }}/>
                 <div style={{width: 300, marginRight: 50, marginBottom: 10, marginLeft: 10, height: 50, backgroundColor: 'white', padding: 15, fontWeight: 'lighter', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>{ item }</div>
@@ -111,7 +110,7 @@ const ANSWER_QUESTION = gql`
 const QuestionContentWithData = compose (
     graphql(PLAYER_RESULT_BY_USER, {
         options: (ownProps)=> ({
-            variables: {token: localStorage.getItem(this.props.loginToken), examId: ownProps.examId},
+            variables: {token: localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken'), examId: ownProps.examId},
             forceFetch: true
         })
     }),
@@ -452,13 +451,14 @@ class StartedExam extends React.Component {
         <div className="col-sm-12">
           <div className="col-sm-3" style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
             {
-              !data.examById.isClassStyle &&
               questionSet.map((item, idx) => (
                 <button key={idx} style={{borderRadius: '100%', width: 30, height: 30, margin: 10}} className={item._id === currentQuestion._id ? 'btn btn-primary' : 'btn btn-default'} onClick={() => {
-                    this.setState({currentQuestion: item, index: item.index})
-                  }}>{item.index}</button>
-                ))
-              }
+                  if(!data.examById.isClassStyle) {
+                    this.setState({currentQuestion: item, index: item.index});
+                  }
+                }}>{item.index}</button>
+              ))
+            }
             </div>
             <div className="col-sm-9">
               <QuestionContentWithData

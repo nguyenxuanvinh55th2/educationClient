@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import __ from 'lodash';
 
 import Drawer from 'material-ui/Drawer';
+import Dialog from 'material-ui/Dialog';
 
 import PieChart from './PieChart.jsx';
 import BarChart from './BarChart.jsx';
@@ -44,16 +45,44 @@ const statisScore = (scoreArray) => {
   return countArray;
 }
 
-const statisQuestion = (questionArray, correctRate) => {
+const statisQuestion = (questionArray, correctRate, type) => {
   return {
-      labels: questionArray.map((item, idx) => item.question.substring(0, 6) + '...'),
+      labels: questionArray.map((item, idx) => {
+        if(type === 'full') {
+          return 'Câu ' + (idx + 1).toString()
+        } else {
+            return ''
+        }
+      }),
       datasets: [{
           label: '# of Votes',
           data: questionArray.map((item, idx) => Math.round(item[correctRate] * 100)),
-          backgroundColor: questionArray.map((item, idx) => 'rgba(255, 99, 132, 0.2)'),
-          borderColor: questionArray.map((item, idx) => 'rgba(255,99,132,1)'),
-          borderWidth: 1
+          fillColor: questionArray.map((item, idx) => 'rgba(53, 188, 191, 0.2)'),
+          strokeColor: questionArray.map((item, idx) => 'rgba(53, 188, 191, 0.8)')
       }]
+  }
+}
+
+class DialogBarChat extends React.Component {
+  render() {
+    let { chartData, name } = this.props;
+    return (
+      <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+        <div className="modal-content">
+          <div className="modal-header" style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
+            <h4>THỐNG KÊ BỘ CÂU HỎI</h4>
+          </div>
+          <div className="modal-body" style={{display:'flex', flexDirection:'column', justifyContent:'center'}}>
+            <BarChart width={'750'} height={'400'} chartData={chartData} chartOptions={{
+                       enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
+                  }}/>
+            <div style={{width: '100%', textAlign: 'center'}}>
+              {name}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 }
 
@@ -65,7 +94,14 @@ class QuestionStatis extends React.Component {
       openDrawer: false,
       scoreShowAll: false,
       rateShowAll: false,
+      showDialog: false,
+      data: null,
+      name: null
     }
+  }
+
+  showChartDialog(data, name) {
+    this.setState({showDialog: true, data, name});
   }
 
   showQuestion() {
@@ -100,11 +136,11 @@ class QuestionStatis extends React.Component {
               <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê dựa trên điểm số:</h3>
               {
                 data.examinationByQuestionSet.map((item, idx) => {
-                  let length = scoreShowAll ? data.examinationByQuestionSet.length : 2;
+                  let length = scoreShowAll ? data.examinationByQuestionSet.length : 3;
                   if(idx < length) {
                     return (
-                      <div key={idx} style={{width: 500, padding: 10}}>
-                        <PieChart chartData={statisScore(item.userExams.map(item => item.score))} chartOptions={{
+                      <div key={idx} style={{width: 250, padding: '10px 25px 25px'}}>
+                        <PieChart width={'200'} height={'200'} chartData={statisScore(item.userExams.map(item => item.score))} chartOptions={{
                             animatable: true,
                           }}/>
                         <div style={{width: '100%', textAlign: 'center'}}>
@@ -129,8 +165,10 @@ class QuestionStatis extends React.Component {
                   let length = rateShowAll ? data.examinationByQuestionSet.length : 2;
                   if(idx < length) {
                     return (
-                      <div key={idx} style={{width: 500, padding: 10}}>
-                        <BarChart chartData={statisQuestion(item.questionSet.questions, 'correctRateByExam')} chartOptions={{
+                      <div key={idx} style={{width: 400, padding: 10}} onClick={() => {
+                        this.showChartDialog(statisQuestion(item.questionSet.questions, 'correctRateByExam', 'full'), item.name)
+                      }}>
+                        <BarChart width={'400'} height={'200'} chartData={statisQuestion(item.questionSet.questions, 'correctRateByExam', 'mini')} chartOptions={{
                              enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
                         }}/>
                         <div style={{width: '100%', textAlign: 'center'}}>
@@ -143,15 +181,17 @@ class QuestionStatis extends React.Component {
               }
               <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                 <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
-                    let rateShowAll = !this.state.allRateShowAll;
-                    this.setState({allRateShowAll});
+                    let rateShowAll = !this.state.rateShowAll;
+                    this.setState({rateShowAll});
                   }}>{rateShowAll ? "Thu gọn" : "Hiện tất cả"}</button>
               </div>
             </div>
             <div style={{width: '100%', display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
               <h3 style={{width: '100%', textAlign: 'center', color: "#35BCBF"}}>Thống kê trên toàn bộ kì thi:</h3>
-              <div style={{width: 500, padding: 10}}>
-                <BarChart chartData={statisQuestion(data.questionSetById.questions, 'correctRate')} chartOptions={{
+              <div style={{width: 400, padding: 10}} onClick={() => {
+                this.showChartDialog(statisQuestion(data.questionSetById.questions, 'correctRate', 'full'), data.questionSetById.name)
+              }}>
+                <BarChart width={'400'} height={'200'} chartData={statisQuestion(data.questionSetById.questions, 'correctRate', 'mini')} chartOptions={{
                      enabled:true, scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] }
                 }}/>
                 <div style={{width: '100%', textAlign: 'center'}}>
@@ -166,6 +206,17 @@ class QuestionStatis extends React.Component {
                 </div>
               </div>
             </Drawer>
+            <Dialog
+              modal={false}
+              open={this.state.showDialog}
+              onRequestClose={() => this.setState({showDialog: false})}
+              autoDetectWindowHeight={false}
+              autoScrollBodyContent={false}
+              bodyStyle={{padding: 0}}
+              contentStyle={{minHeight:'60%'}}
+            >
+              <DialogBarChat chartData={this.state.data} name={this.state.name}/>
+            </Dialog>
           </div>
         )
     }

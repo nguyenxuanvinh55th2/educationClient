@@ -41,9 +41,10 @@ class SelectQuestionInputForm extends React.Component {
 
   render() {
     let { data, getQuestionTypeCount } = this.props
-    let hardQuestionCount = __.filter(data.questionBySubject, item => item.correctRate <= 0.3).length;
-    let normalQuestionCount = __.filter(data.questionBySubject, item => item.correctRate > 0.3 && item.correctRate <= 0.6).length;
-    let easyQuestionCount = __.filter(data.questionBySubject, item => item.correctRate > 0.6).length;
+    console.log('data.questionBySubject ', data.questionBySubject)
+    let hardQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate <= 0.3).length;
+    let normalQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate > 0.3 && item.correctRate <= 0.6).length;
+    let easyQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate > 0.6).length;
     return (
       <div style={{width: '100%'}}>
         <p className="col-sm-9 col-sm-offset-2">{'Số lượng câu hỏi dễ: ' + easyQuestionCount}</p>
@@ -80,6 +81,7 @@ const QUESTION_BY_SUBJECT = gql`
         questionBySubject(token: $token, subjectId: $subjectId, type: $type) {
             _id
             question
+            questionSetId
             answerSet
             correctAnswer
             correctRate
@@ -269,6 +271,8 @@ class QuesionBank extends React.Component {
     if(data.subjectByUser && data.subjectByUser.legth) {
       let subject = data.subjectByUser[0];
       this.setState({subjectId: subject._id})
+    } else {
+        this.setState({subjectId: 'other'})
     }
   }
 
@@ -310,7 +314,7 @@ class QuesionBank extends React.Component {
     let questionList = []
     questionBySubject = __.cloneDeep(questionBySubject);
     if(questionBySubject) {
-      let easyQuestionSet = __.filter(questionBySubject, item => item => item.correctRate > 0.6);
+      let easyQuestionSet = __.filter(questionBySubject, item => item.correctRate && item.correctRate > 0.6);
       for(let i = 0; i < easyQuestionSet.length; i++) {
         let randomNumber = Math.floor(Math.random() * easyQuestionSet.length) + 0;
         if(i > 0 && randomNumber === easyQuestionSet[i - 1].randomNumber) {
@@ -320,36 +324,39 @@ class QuesionBank extends React.Component {
             easyQuestionSet[i]['randomNumber'] = randomNumber;
         }
       }
+      console.log('easyQuestionSet ', easyQuestionSet)
       easyQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.easyQuestionCount; i++) {
         questionList.push(easyQuestionSet[i]);
       }
 
-      let normalQuestionSet = __.filter(questionBySubject, item => item => item.correctRate > 0.3 && item.correctRate <= 0.6);
+      let normalQuestionSet = __.filter(questionBySubject, item => item.correctRate && item.correctRate > 0.3 && item.correctRate <= 0.6);
       for(let i = 0; i < normalQuestionSet.length; i++) {
         let randomNumber = Math.floor(Math.random() * normalQuestionSet.length) + 0;
-        if(i > 0 && randomNumber === easyQuestionSet[i - 1].randomNumber) {
+        if(i > 0 && randomNumber === normalQuestionSet[i - 1].randomNumber) {
           normalQuestionSet[i]['randomNumber'] = randomNumber + i;
           // i --;
         } else {
             normalQuestionSet[i]['randomNumber'] = randomNumber;
         }
       }
+      console.log('normalQuestionSet ', normalQuestionSet)
       normalQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.normalQuestionCount; i++) {
         questionList.push(normalQuestionSet[i]);
       }
 
-      let hardQuestionSet = __.filter(questionBySubject, item => item => item.correctRate <= 0.3);
+      let hardQuestionSet = __.filter(questionBySubject, item => item.correctRate && item.correctRate <= 0.3);
       for(let i = 0; i < hardQuestionSet.length; i++) {
         let randomNumber = Math.floor(Math.random() * hardQuestionSet.length) + 0;
-        if(i > 0 && randomNumber === easyQuestionSet[i - 1].randomNumber) {
+        if(i > 0 && randomNumber === hardQuestionSet[i - 1].randomNumber) {
           hardQuestionSet[i]['randomNumber'] = randomNumber + i;
           // i --;
         } else {
             hardQuestionSet[i]['randomNumber'] = randomNumber;
         }
       }
+      console.log('hardQuestionSet ', hardQuestionSet)
       hardQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.hardQuestionCount; i++) {
         questionList.push(hardQuestionSet[i]);
@@ -414,7 +421,7 @@ class QuesionBank extends React.Component {
     let questionReviewList = questionType === 'questionSet' ? questionSet.questions : questionList;
     console.log('questionReviewList ', questionReviewList);
     return questionReviewList.map((item, idx) => (
-      <QuestionReviewItem index={parseInt(idx) + 1} getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)}/>
+      <QuestionReviewItem index={parseInt(idx) + 1} getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)} correctRate={item.correctRate}/>
     ))
   }
 
@@ -457,7 +464,11 @@ class QuesionBank extends React.Component {
 
   drawerContent() {
     let { showQuestionBank, showReview, bankType } = this.state;
-    let { data } = this.props;
+    let data = __.cloneDeep(this.props.data);
+    data.subjectByUser.push({
+      _id: 'other',
+      name: 'Khác'
+    })
     if(showQuestionBank === 'personal') {
       return (
         <div>
@@ -510,7 +521,7 @@ class QuesionBank extends React.Component {
           </TabPanel>
           <TabPanel>
             <div style={{width: '80%', marginLeft: 35}}>
-                <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+                <div className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                   <div style={{width: '100%', paddingTop: 10, paddingBottom: 30}}>
                     {
                       data.subjectByUser ?
@@ -540,7 +551,10 @@ class QuesionBank extends React.Component {
                       </div> : null
                     }
                   </div>
-                </form>
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button> 
+                  </div>
+                </div>
             </div>
           </TabPanel>
           <TabPanel>
@@ -600,7 +614,7 @@ class QuesionBank extends React.Component {
               </TabPanel>
               <TabPanel>
                 <div style={{width: '80%', marginLeft: 35}}>
-                    <form className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
+                    <div className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                       <div style={{width: '100%', paddingTop: 10, paddingBottom: 30}}>
                         {
                           data.subjects ?
@@ -630,7 +644,10 @@ class QuesionBank extends React.Component {
                           </div> : null
                         }
                       </div>
-                    </form>
+                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                        <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button> 
+                      </div>
+                    </div>
                 </div>
               </TabPanel>
               <TabPanel>
@@ -695,6 +712,7 @@ const QUESTION_SET_QUERY = gql`
           _id
           title
           description
+          examId
           questionCount
           questions {
             _id
@@ -712,6 +730,7 @@ const QUESTION_SET_QUERY = gql`
           _id
           title
           description
+          examId
           questionCount
           questions {
             _id
