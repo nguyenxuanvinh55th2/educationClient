@@ -5,16 +5,16 @@ import __ from 'lodash';
 export default function printExamResult(examination, player, results, totalScore) {
     let content = '<div style="padding: 0px 10%;">';
     console.log('results ', results);
-    __.forEach(results, item => {
+    __.forEach(results, (item, idx) => {
       content +=
       '<div>' +
-        '<h3>'+ item.question.question + '</h3>' +
+        '<h3>'+ 'Câu ' + (idx + 1).toString() + ': ' + item.question.question + '</h3>' +
       '</div>' +
       '<div style="display: -webkit-flex; Webkit-flex-wrap: wrap; display: flex; flex-wrap: wrap">';
       __.forEach(item.question.answerSet, sub => {
         content +=
         '<label style="display: flex; flex-direction: row; justify-content: flex-start;">' +
-          '<input ' + (item.question.correctAnswer.indexOf(sub) > -1 ? 'checked ' : ' ') + 'type="checkbox" style="margin-top: 15px;" disabled/>' +
+          '<input ' + (item.answer.indexOf(sub) > -1 ? 'checked ' : ' ') + 'type="checkbox" style="margin-top: 15px;" disabled/>' +
           '<div style="width: 300; margin-right: 50; margin-bottom: 10; margin-left: 10; height: 50; background-color: white; padding: 0px 15px 15px 0px; font-weight: lighter; border-radius: 10; display: flex; flex-direction: column; justify-content: center;">' +
             sub +
           '</div>' +

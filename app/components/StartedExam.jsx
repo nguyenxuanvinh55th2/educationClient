@@ -80,8 +80,8 @@ class QuestionContent extends React.Component {
           {
             !isClassStyle &&
             <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 35%'}}>
-              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getPreviosQuestion(question)}>Trước</button>
-              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getNextQuestion(question)}>Tiếp</button>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getPreviosQuestion(__.cloneDeep(question))}>Trước</button>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} onClick={() => getNextQuestion(__.cloneDeep(question))}>Tiếp</button>
             </div>
           }
         </div>
@@ -201,19 +201,16 @@ class StartedExam extends React.Component {
   }
 
   getNextQuestion(question) {
-    let { questionSet } = this.state;
+    let { questionSet, index } = this.state;
     let { updateCurrentQuestion, data, users } = this.props;
     let currentQuestion;
-    if(question.index < questionSet.length) {
-      if(!question.index ) {
-        currentQuestion = questionSet[1];
-      } else {
-          currentQuestion = questionSet[question.index];
-      }
-      this.setState({currentQuestion, index: question.index});
+    if(index < questionSet.length) {
+      currentQuestion = questionSet[index];
+      index ++;
+      this.setState({currentQuestion, index});
     } else {
         currentQuestion = questionSet[0];
-        let index = this.state.index + 1;
+        let index = 1;
         this.setState({currentQuestion, index});
     }
     if(data.examById.isClassStyle) {
@@ -225,14 +222,15 @@ class StartedExam extends React.Component {
   }
 
   getPreviosQuestion(question) {
-    let { questionSet } = this.state;
+    let { questionSet, index } = this.state;
     let { updateCurrentQuestion, data, users } = this.props;
     let currentQuestion;
-    if(question.index >= 2) {
-      currentQuestion = questionSet[question.index - 2];
-      this.setState({currentQuestion, index: question.index});
+    if(index >= 2) {
+      currentQuestion = questionSet[index - 2];
+      index --;
+      this.setState({currentQuestion, index});
     } else {
-        let index = this.state.index - 1;
+        let index = questionSet.length;
         currentQuestion = questionSet[questionSet.length - 1];
         this.setState({currentQuestion, index});
     }
@@ -260,7 +258,6 @@ class StartedExam extends React.Component {
       if(data.examById.createdBy._id != Meteor.userId()) {
         if(this.props.currentQuestion && nextProps.currentQuestion.questionId !== this.props.currentQuestion.questionId) {
           let currentQuestion = __.find(data.examById.questionSet.questions, {_id: nextProps.currentQuestion.questionId});
-          currentQuestion['index'] = 1;
           this.setState({currentQuestion});
         }
       }
@@ -343,17 +340,17 @@ class StartedExam extends React.Component {
               </h3>
             </div>
             <div className="col-sm-12" style={{paddingLeft: (window.innerWidth - 525) / 2, paddingRight: (window.innerWidth - 525) / 2}}>
-              <h3>{ 'Câu ' + currentQuestion.index + ' ' + currentQuestion.question }</h3>
+              <h3>{ 'Câu ' + this.state.index + ' ' + currentQuestion.question }</h3>
             </div>
             <div className="col-sm-12" style={{height: 120}}>
             </div>
             {
               data.examById.status !== 100 ?
               <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <button className="btn btn-primary" style={{width: 80, border: 'none', fontSize: 14, height: 40}} onClick={this.getPreviosQuestion.bind(this, currentQuestion)}>
+                <button className="btn" style={{width: 80, border: 'none', fontSize: 14, backgroundColor: '#35bcbf', color: 'white'}} onClick={this.getPreviosQuestion.bind(this, __.cloneDeep(currentQuestion))}>
                   Trước
                 </button>
-                <button className="btn btn-danger" style={{width: 80, border: 'none', fontSize: 14, height: 40}} onClick={() => {
+                <button className="btn" style={{width: 80, border: 'none', fontSize: 14, backgroundColor: '#35bcbf', color: 'white'}} onClick={() => {
                     var submit = confirm('Bạn có muốn dừng bài kiểm tra?');
                     if(submit) {
                       let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
@@ -365,7 +362,7 @@ class StartedExam extends React.Component {
                   }}>
                   Dừng
                 </button>
-                <button className="btn btn-primary" style={{width: 80, border: 'none', fontSize: 14, height: 40}} onClick={this.getNextQuestion.bind(this, currentQuestion)}>
+                <button className="btn" style={{width: 80, border: 'none', fontSize: 14, backgroundColor: '#35bcbf', color: 'white'}} onClick={this.getNextQuestion.bind(this, __.cloneDeep(currentQuestion))}>
                   Tiếp
                 </button>
               </div> : null
