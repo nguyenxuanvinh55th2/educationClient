@@ -114,11 +114,11 @@ export default class Home extends React.Component {
               <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" />
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <h3>Rèn luyện tính tự lập cho sinh viên</h3>
-              <p style={{paddingRight: 50}}>
+              <h2>Rèn luyện tính tự lập cho sinh viên</h2>
+              <p style={{paddingRight: 50, fontSize: 17}}>
                 Sinh viên có thể quản lý thời gian học tập một cách chủ động bằng cách lập thời gian biểu cho từng bài học hoặc bài tập của minh.
               </p>
-              <p style={{paddingRight: 50}}>
+              <p style={{paddingRight: 50, fontSize: 17}}>
                 Chương trình ôn luyện phù hợp với nhiều mức học đối với mỗi sinh viên khác nhau.
               </p>
             </div>

@@ -331,7 +331,7 @@ class ManagerSubject extends React.Component {
           <div style={{display: 'flex', flexDirection: 'row', padding: 20, justifyContent: 'space-between'}}>
             <div style={{width: '65%'}}>
               <Tabs className="secondary" >
-                <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
+                <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white', borderBottom: 0}}>
                     <Tab>
                         <h4 className="modal-title" style={{color: '#35bcbf'}}>Forum</h4>
                     </Tab>
@@ -508,7 +508,7 @@ class ManagerSubject extends React.Component {
                               dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
                               this.setState({dataSetTheme: dataValueTheme})
                             }}>
-                            <p>{theme.theme.name}</p>
+                            <p style={{fontWeight: 600}}>{theme.theme.name}</p>
                             {
                               theme.openDetail &&
                               <div>
@@ -630,7 +630,7 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetAss,(ass,idx) => {
                         return (
                           <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
-                            <p style={{width: '100%', cursor: 'pointer'}} onClick={() => {
+                            <p style={{width: '100%', cursor: 'pointer', fontWeight: 600}} onClick={() => {
                                 let dataValueAss = this.state.dataSetAss;
                                 dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
                                 this.setState({dataSetAss: dataValueAss})
