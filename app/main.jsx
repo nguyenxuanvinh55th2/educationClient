@@ -40,6 +40,8 @@ import QuestionStatis from './components/QuestionStatis.jsx';
 import Authenticate from './components/Authenticate.jsx';
 import ManagerUserParent from './components/ManagerUserParent.jsx';
 import { ListUserGiveAss } from './components/ChildManagerSubject.jsx'
+import UserProfile from './components/UserProfile.jsx';
+
 export class WrapMain extends React.Component{
     constructor(props){
         super(props);
@@ -76,6 +78,7 @@ ReactDOM.render(
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
               <Route path="/profile/:id/questionSet/:questionSetId" component={QuestionStatis}/>
               <Route path="/profile/:id/createTest" component={CreateTest}/>
+              <Route path="/profile/:id/userProfile" component={UserProfile} />
               <Route path="/profile/:id/:subjectId" component={ManagerSubject} />
               <Route path="/profile/:id/:subjectId/:topicId" component={ListUserGiveAss} />
               <Route path="/profile/:id/children/:childrenId" component={ManagerUserParent} />

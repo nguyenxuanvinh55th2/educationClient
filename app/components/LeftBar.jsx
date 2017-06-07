@@ -364,7 +364,10 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13, backgroundColor: this.state.selectedIndex == 5 ?  'rgba(0, 0, 0, 0.2)' : ''}}
-           onClick={() => this.setState({selectedIndex: 5})}
+           onClick={() => {
+            this.setState({selectedIndex: 5});
+            browserHistory.push('/profile/' + this.props.users.userId + '/userProfile')
+           }}
            style={{color: 'white', fontSize: 13}}
            nestedItems={[
            ]}
