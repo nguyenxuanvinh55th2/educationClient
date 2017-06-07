@@ -68,26 +68,6 @@ class WaitExam extends React.Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if(nextProps.userIds) {
-  //     let userIds = nextProps.userIds;
-  //     Meteor.call('getUserExam', userIds, (err, result) => {
-  //       if(err) {
-  //         console.log("lay du lieu loi ", err);
-  //       } else {
-  //           console.log("result ", result);
-  //           __.forEach(result, item => {
-  //             item['name'] = item.profileObj ? item.profileObj.name : item.name ? item.name : item.username;
-  //             item['email'] = item.profileObj ? item.profileObj.email : item.email ? item.email : item.emails[0].address;
-  //             item['checkOutImage'] = item.checkOutImage[0].link;
-  //           })
-  //           let players = result;
-  //           this.setState({players});
-  //       }
-  //     })
-  //   }
-  // }
-
   shouldComponentUpdate(nextProps, nextState){
     let { params } = this.props;
     if(nextProps.examination && nextProps.examination.status >= 99) {
@@ -119,7 +99,6 @@ class WaitExam extends React.Component {
   }
 
   renderPlayerList(playerList) {
-    console.log('playerList ', playerList);
     return playerList.map((item, idx) => (
       <tbody key = {idx} style={{borderTop: '1px solid #EEEEEE'}}>
         <tr>
@@ -182,7 +161,6 @@ class WaitExam extends React.Component {
                     let token= localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                     let _id = params.id;
                     startExamination(token, _id).then(() => {
-                      console.log("message");
                       browserHistory.push('/startedExam/' + this.props.params.id);
                     }).catch((err) => {
                       console.log("loi ", err);

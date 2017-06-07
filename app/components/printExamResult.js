@@ -4,7 +4,6 @@ import __ from 'lodash';
 
 export default function printExamResult(examination, player, results, totalScore) {
     let content = '<div style="padding: 0px 10%;">';
-    console.log('results ', results);
     __.forEach(results, (item, idx) => {
       content +=
       '<div>' +
@@ -30,7 +29,6 @@ export default function printExamResult(examination, player, results, totalScore
       '</div>';
     })
     content += '</div>'
-    console.log('content ', content);
 
     var popupWin = window.open('', '_blank');
     var body = '<html>' +

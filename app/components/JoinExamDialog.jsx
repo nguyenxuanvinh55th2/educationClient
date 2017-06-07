@@ -20,10 +20,10 @@ class JoinExamDialog extends React.Component {
     this.playerImage = this.refs.webcam.getScreenshot();
     insertUserToExam(token, examCode, this.playerImage).then(({data}) => {
       if(data.insertUserToExam === 'notFound') {
-        console.log("kì thi không tòn tại");
+        this.props.addNotificationMute({fetchData: true, message: 'Kì thi không tòn tại', level:'danger'});
       } else
           if(data.insertUserToExam === 'canNotJoin') {
-            console.log("kì thi này hiện chưa bắt đầu hoặc đã kết thúc");
+            this.props.addNotificationMute({fetchData: true, message: 'Kì thi này hiện chưa bắt đầu hoặc đã kết thúc', level:'danger'});
           } else {
               browserHistory.push('/waitExam/' + data.insertUserToExam);
           }

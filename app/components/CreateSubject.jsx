@@ -82,7 +82,6 @@ class CreateSubject extends React.Component {
       let idx = __.findIndex(this.props.subjectClass.classSubjectsByTeacher,{_id: value});
       if(idx > -1){
         let data = this.props.subjectClass.classSubjectsByTeacher[idx];
-        console.log(data);
         this.setState({
           _id: data.subject._id,
           code: data.subject.code,

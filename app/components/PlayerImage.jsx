@@ -10,7 +10,6 @@ export default class PlayerImage extends React.Component {
 
     render() {
       let { checkOutImage } = this.props;
-      console.log('checkOutImage ', checkOutImage);
       return (
         <div style={{width: '100%', height: 50, display: 'flex', justifyContent: 'center'}}>
           <img style={this.props.imageStyle} src={checkOutImage} onClick={() => {

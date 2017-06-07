@@ -227,7 +227,6 @@ class CreateTest extends  React.Component {
     newTest[testStyle] = true;
 
     let info = JSON.stringify(newTest);
-    console.log('something');
     insertExamination(users.userId, info).then(({data}) => {
       this.props.addNotificationMute({fetchData: true, message: 'tạo kì thi thành công', level:'success'});
       let _id = data.insertExamination;
@@ -242,9 +241,9 @@ class CreateTest extends  React.Component {
     let { users } = this.props;
     return (
       <div style={{width: window.innerWidth - (2 * 256), height: window.innerHeight -50}}>
-        <div style={{width: '60%', backgroundColor: 'white', paddingTop: 10, height: '100%'}}>
+        <div style={{width: '100%', backgroundColor: 'white', paddingTop: 10, paddingLeft: '15%', paddingRight: '15%', height: '100%'}}>
           <h3 style={{width: '100%', textAlign: 'center', color: '#00BCD4', marginBottom: 0}}>TẠO KÌ THI</h3>
-          <Stepper orientation="vertical" linear={false} activeStep={stepIndex}>
+          <Stepper style={{minWidth: 600}} orientation="vertical" linear={false} activeStep={stepIndex}>
             <Step>
               <StepLabel style={{color: '#00BCD4', fontSize: 13, fontWeight: 'bold'}}>
                 Tạo kì thi

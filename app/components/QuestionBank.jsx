@@ -41,7 +41,6 @@ class SelectQuestionInputForm extends React.Component {
 
   render() {
     let { data, getQuestionTypeCount } = this.props
-    console.log('data.questionBySubject ', data.questionBySubject)
     let hardQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate <= 0.3).length;
     let normalQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate > 0.3 && item.correctRate <= 0.6).length;
     let easyQuestionCount = __.filter(data.questionBySubject, item => item.correctRate && item.correctRate > 0.6).length;
@@ -197,7 +196,6 @@ class QuestionSetItem extends React.Component {
   render() {
     let { questionSet, getQuestionSet } = this.props;
     let { showQuestion } = this.state;
-    console.log('this.props ', this.props);
     return (
       <div style={{width: '100%', paddingLeft: 15, paddingRight: 15, paddingTop: 3}}>
         <div style={{width: '70%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -214,7 +212,6 @@ class QuestionSetItem extends React.Component {
                 let remove = confirm('Bạn thật sự muốn xóa bộ câu hỏi này?');
                 if(remove) {
                   let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
-                  console.log("message ",  questionSet._id);
                   this.props.removeQuestionSet(token, questionSet._id).then(() => {
                     this.props.refetch();
                   });
@@ -323,8 +320,8 @@ class QuesionBank extends React.Component {
         } else {
             easyQuestionSet[i]['randomNumber'] = randomNumber;
         }
+        easyQuestionSet[i]['score'] = 1;
       }
-      console.log('easyQuestionSet ', easyQuestionSet)
       easyQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.easyQuestionCount; i++) {
         questionList.push(easyQuestionSet[i]);
@@ -339,8 +336,8 @@ class QuesionBank extends React.Component {
         } else {
             normalQuestionSet[i]['randomNumber'] = randomNumber;
         }
+        normalQuestionSet[i]['score'] = 1;
       }
-      console.log('normalQuestionSet ', normalQuestionSet)
       normalQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.normalQuestionCount; i++) {
         questionList.push(normalQuestionSet[i]);
@@ -355,14 +352,15 @@ class QuesionBank extends React.Component {
         } else {
             hardQuestionSet[i]['randomNumber'] = randomNumber;
         }
+        hardQuestionSet[i]['score'] = 1;
       }
-      console.log('hardQuestionSet ', hardQuestionSet)
       hardQuestionSet.sort((a, b) => a.randomNumber - b.randomNumber);
       for(let i = 0; i < this.state.hardQuestionCount; i++) {
         questionList.push(hardQuestionSet[i]);
       }
     }
     this.setState({questionList, questionType: type});
+    this.props.addNotificationMute({fetchData: true, message: 'Thêm bộ câu hỏi thành công', level:'success'});
   }
 
   getSubject(value) {
@@ -419,7 +417,6 @@ class QuesionBank extends React.Component {
   renderQuestionReview() {
     let { questionList, questionSet, questionType } = this.state;
     let questionReviewList = questionType === 'questionSet' ? questionSet.questions : questionList;
-    console.log('questionReviewList ', questionReviewList);
     return questionReviewList.map((item, idx) => (
       <QuestionReviewItem index={parseInt(idx) + 1} getReviewFrom={'questionBank'} key={item._id + idx} question={item} publicQuestion={this.publicQuestion.bind(this, item._id)} questionType={questionType} getScore={this.getScore.bind(this)} correctRate={item.correctRate}/>
     ))
@@ -442,16 +439,12 @@ class QuesionBank extends React.Component {
         let questionSetString = [];
         questionSet = JSON.stringify(questionSet);
         questionList = __.cloneDeep(questionList);
-        console.log('questionList ', questionList);
         __.forEach(questionList, item => {
           item.answerSet = item.answerSet;
           item.correctAnswer = item.correctAnswer;
           item.subjectId = subjectId;
           questionSetString.push(JSON.stringify(item));
         });
-        console.log('questionSet ', questionSet);
-        console.log('questionSetString', questionSetString);
-        console.log('token ', localStorage.getItem(this.props.loginToken));
         this.props.insertQuestionFromBank(localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken'), questionSet,  questionSetString).then(({data}) => {
           this.props.addNotificationMute({fetchData: true, message: 'Tạo câu hỏi thành công', level:'success'});
           getQuestionSetId(data.insertQuestionSet);
@@ -552,7 +545,7 @@ class QuesionBank extends React.Component {
                     }
                   </div>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button> 
+                    <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button>
                   </div>
                 </div>
             </div>
@@ -645,7 +638,7 @@ class QuesionBank extends React.Component {
                         }
                       </div>
                       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                        <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button> 
+                        <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={() => this.getQuestionListByRate('question')}>Lưu câu hỏi</button>
                       </div>
                     </div>
                 </div>

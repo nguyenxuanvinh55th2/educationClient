@@ -35,7 +35,6 @@ class Register extends React.Component {
       this.setState({ email: e.target.value });
       this.props.getExistEmail(e.target.value).then(({data}) => {
         if(data.getExistEmail) {
-          console.log("message ", data.getExistEmail);
           this.setState({existEmail: true});
         } else {
             this.setState({existEmail: false});
@@ -54,7 +53,6 @@ class Register extends React.Component {
               if(e.target.id === 'name') {
                 this.setState({ name: e.target.value });
                 this.props.getExistUserName(e.target.value).then(({data}) => {
-                  console.log("message ", data.getExistUserName);
                   if(data.getExistUserName) {
                     this.setState({existUser: true});
                   } else {

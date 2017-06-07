@@ -47,13 +47,6 @@ class ChatBar extends React.Component {
   searchItem(userList) {
     let searchList = [];
     if(this.state.sItem && this.state.sItem !== '') {
-      // this.props.searchUser(this.state.sItem).then(({data}) => {
-      //   console.log("message ", data.searchUser);
-      //   data.searchUser.forEach(item => {
-      //     searchList.push(item);
-      //   })
-      // })
-      //console.log('searchList ', searchList);
       for(let i = 0; i < userList.length; i++) {
         var lowerCase = this.renderSearchString(userList[i].user.name);
         if(lowerCase.indexOf(this.state.sItem) !== -1)

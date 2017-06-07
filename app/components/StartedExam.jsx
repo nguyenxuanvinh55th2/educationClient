@@ -318,7 +318,6 @@ class StartedExam extends React.Component {
     let hour = Math.floor(time / 3600);
     let minute = Math.floor((time - hour * 3600) / 60);
     let second = Math.floor(time - hour * 3600 - minute * 60);
-    console.log('currentQuestion ', currentQuestion)
     if(!currentQuestion && data.examById.status !== 100) {
       return (
         <div className="spinner spinner-lg"></div>

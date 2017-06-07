@@ -126,7 +126,6 @@ export default class QuestionCreateItem extends React.Component {
         reader.readAsDataURL(file);
         reader.onload = function (e) {
             if(reader.result) {
-              console.log('that.props ', that.props);
               that.props.getFile(reader.result, file.type);
             }
         }
@@ -144,7 +143,6 @@ export default class QuestionCreateItem extends React.Component {
 
   render() {
     let { question }= this.props;
-    console.log('this.props ', this.props);
     return (
       <div style={{width: '100%', paddingLeft: '10%'}}>
         <div style={{marginBottom: 10}}>
