@@ -36,7 +36,7 @@ export default class Home extends React.Component {
             </div>
           </div>
           <div  className="row" style={{margin: '50px 100px'}}>
-            <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15}}>
+            <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15, lineHeight: '40px'}}>
               <h2>TUIELEARNING DÀNH CHO NHỮNG AI?</h2>
               <p style={{paddingRight: 50}}>
                 - Đội ngủ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
@@ -55,8 +55,8 @@ export default class Home extends React.Component {
               </p>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh1_zpsgftsjtdy.png" className="img-responsive" />
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh2New_zpsp9haf4py.png" className="img-responsive" style={{marginTop: 15}}/>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh1_zpsgftsjtdy.png" className="img-responsive" style={{height: 200}}/>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh2New_zpsp9haf4py.png" className="img-responsive" style={{marginTop: 15, height: 200}}/>
             </div>
           </div>
           <div className="row" style={{margin: 40}}>
@@ -111,7 +111,7 @@ export default class Home extends React.Component {
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" />
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" style={{height: 230, width: 420}}/>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
               <h2>Rèn luyện tính tự lập cho sinh viên</h2>
