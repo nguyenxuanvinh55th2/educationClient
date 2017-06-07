@@ -1,6 +1,7 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
 import { Link, Router, browserHistory } from 'react-router'
 import { graphql, compose } from 'react-apollo';
+import moment from 'moment';
 
 import gql from 'graphql-tag';
 
@@ -8,10 +9,11 @@ import gql from 'graphql-tag';
 
 class AcceptButton extends Component {
   render() {
+    let { users } = this.props;
     if(this.props.note.type === 'add-friend-note')
       return (
         <button className="btn btn-primary" style={{marginTop: '50px', float: 'right'}} onClick={e => {
-
+          this.props.updateFriendList(users.userId, this.props.note.createdBy._id);
         }}>Xác nhận</button>
       )
     else
@@ -37,12 +39,25 @@ const INSERT_USER_CLASS = gql`
   }
 `;
 
+const UPDATE_FRIEND_LIST = gql`
+  mutation updateFriendList($userId: String!, $_id: String!) {
+    updateFriendList(userId: $userId, _id: $_id)
+  }
+`;
+
 const AcceptButtonWithMutate = compose(
   graphql(
     INSERT_USER_CLASS,
     {
       props: ({ mutate }) => ({
         insertUserClass: (token, classId) => mutate({ variables: { token, classId } }),
+      }),
+  }),
+  graphql(
+    UPDATE_FRIEND_LIST,
+    {
+      props: ({ mutate }) => ({
+        updateFriendList: (userId, _id) => mutate({ variables: { userId, _id } }),
       }),
   })
 )(AcceptButton);
@@ -65,7 +80,7 @@ class Note extends Component {
               <p>{this.props.note.note}</p>
             }
 
-            <p>{this.props.note.createdAt}</p>
+            <p>{moment(this.props.note.createdAt).format('DD/MM/YYYY hh:mm')}</p>
           </span>
         </div>
         <div className="col-sm-3">
@@ -73,7 +88,7 @@ class Note extends Component {
             <button className='btn btn-danger' style={{float: 'right'}} onClick = { e => {
                 this.props.removeNotification(this.props.note._id)
             }}>X</button>
-          <AcceptButtonWithMutate note={this.props.note}/>
+          <AcceptButtonWithMutate {...this.props} note={this.props.note}/>
           </div>
         </div>
       </div>
@@ -123,7 +138,7 @@ class Notification extends Component {
           )
         } else {
             return this.props.data.notification.map((note, idx) => (
-              <Note key={idx} note={note} remove={this.props.removeNotification.bind(this)}/>
+              <Note {...this.props} key={idx} note={note} remove={this.removeNotification.bind(this)}/>
             ))
           }
   }

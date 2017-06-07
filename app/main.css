@@ -5,7 +5,7 @@
   border-right: 1px solid gray;
   height: 100vh;
   right: 0px;
-  padding-left: 20px;
+  padding-left: 5px;
   padding-top: 40px;
   width: 200px;
   display: inline;
@@ -23,18 +23,20 @@
 
 .chatbar-user {
   padding-bottom: 10px;
-  height: 80%;
+  height: 90%;
 }
 
 .chatbar-search {
   border-top: 1px solid #aaa9a9;
   padding-top: 20px;
   width: 92%;
+  position: absolute;
+  bottom: 0px;
 }
 
 .userList {
   width: 100%;
-  padding-bottom: 10px;
+  padding: 0px;
 }
 
 .avatar {
@@ -106,7 +108,7 @@ button:active {
 .message-right, .message-left {
   font-size: 20px;
   font-weight: 100;
-  background-color: #2f9ce2;
+  background-color: #35BCBF;
   color: white;
   padding: 5px;
   -webkit-border-radius: 7px;
@@ -129,7 +131,9 @@ button:active {
   height: 280px;
   overflow: scroll;
   overflow-x: hidden;
-  width: 99%;
+  width: 100%;
+  border-left: 1px solid #35BCBF;
+  border-right: 1px solid #35BCBF;
 }
 
 .td-room-name {
@@ -306,7 +310,7 @@ ul, li {
   float: right;
   padding-right: 10px;
   //right: 260px;
-  width: 300px;
+  width: 270px;
 }
 
 .chatImage {
@@ -337,7 +341,7 @@ ul, li {
 .message-right, .message-left {
   font-size: 20px;
   font-weight: 100;
-  background-color: #2f9ce2;
+  background-color: #35BCBF;
   color: white;
   padding: 5px;
   -webkit-border-radius: 7px;
@@ -363,7 +367,7 @@ ul, li {
   height: 280px;
   overflow: scroll;
   overflow-x: hidden;
-  width: 99%;
+  width: 100%;
 }
 
 .td-room-name {

@@ -29,7 +29,7 @@ const style = {margin: 5};
 class ChatBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { sItem: '' };
+    this.state = { sItem: '', searchList: [] };
     this.value = '';
   }
 
@@ -64,17 +64,18 @@ class ChatBar extends React.Component {
         <div className="spinner spinner-lg"></div>
       )
     else {
-      var userList = this.searchItem(this.props.data.userChat);
+      var userList = this.state.searchList.length ? this.state.searchList : this.props.data.userChat;
       return userList.map((item) => (
-        <ChatItem {...this.props} key={item._id} userId={item._id} image={item.user.image} userName={item.user.name} lastLogin={item.user.lastLogin} chatId={item.contentId} online={item.user.online} chatContent={item.content}/>
+        <ChatItem {...this.props} isFriend={item.isFriend} key={item._id} userId={item._id} image={item.user.image} userName={item.user.name} lastLogin={item.user.lastLogin} chatId={item.contentId} online={item.user.online} chatContent={item.content}/>
       ));
     }
   }
 
   render() {
+    let { users } = this.props;
     return (
       <div className="chatbar">
-        <div className="chatbar-user" style={{paddingTop: 50}}>
+        <div className="chatbar-user" style={{paddingTop: 15, overflowY: 'auto'}}>
           <ul className="userList">
             { this.renderChat() }
           </ul>
@@ -83,10 +84,17 @@ class ChatBar extends React.Component {
           <form>
               <div className="form-group" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                 <div className="col-sm-10" style={{paddingRight: 0}}>
-                  <input type="text" id="modalInput" className="form-control"onChange={e => {
-                      if(e !== null) {
-                        this.setState({sItem: this.renderSearchString(e.target.value)})
+                  <input type="text" id="modalInput" className="form-control"onChange={({target}) => {
+                      if(target.value && target.value !== '') {
+                        this.props.searchUser(users.userId, target.value).then(({data}) => {
+                          if(data.searchUser && data.searchUser.length > 0) {
+                            this.setState({searchList: data.searchUser});
+                          } else {
+                              this.setState({searchList: []});
+                          }
+                        })
                       }
+                      this.setState({searchList: []});
                     }}/>
                 </div>
                 <label className="col-sm-2 control-label" htmlFor="modalInput">
@@ -105,6 +113,7 @@ const USER_CHAT = gql`
   query userChat($userId: String){
     userChat(userId: $userId) {
       _id
+      isFriend
       user {
         name
         image
@@ -130,9 +139,11 @@ const USER_CHAT = gql`
 }`
 
 const FIND_USER = gql`
-    mutation searchUser($keyWord: String!) {
-        searchUser(keyWord: $keyWord) {
-          _id
+    mutation searchUser($userId: String!, $keyWord: String!) {
+      searchUser(userId: $userId, keyWord: $keyWord) {
+        _id
+        isFriend
+        user {
           name
           image
           online
@@ -140,6 +151,20 @@ const FIND_USER = gql`
           email
           social
         }
+        contentId
+        content {
+          index
+          userId
+          user{
+            _id
+            name
+            image
+          }
+          message
+          read
+          date
+        }
+    }
 }`
 
 export default compose(
@@ -151,7 +176,7 @@ graphql(USER_CHAT, {
 }),
 graphql(FIND_USER, {
     props: ({mutate})=> ({
-        searchUser : (keyWord) => mutate({variables:{keyWord}})
+        searchUser : (userId, keyWord) => mutate({variables:{userId, keyWord}})
     })
 }),
 )(ChatBar);
