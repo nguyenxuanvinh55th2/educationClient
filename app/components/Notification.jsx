@@ -49,7 +49,6 @@ const AcceptButtonWithMutate = compose(
 
 class Note extends Component {
   render() {
-    console.log(this.props.remove);
     return (
       <div style={{borderBottom: '1px solid #EBEBEB', paddingTop: '10px', paddingBottom: '8px', width: '285px', marginLeft: '0px', height: 120}} onClick={e => {
           document.getElementById('notification').style.display = 'inline';
@@ -130,7 +129,6 @@ class Notification extends Component {
   }
 
   render() {
-    // console.log('notification ', this.props.data.notification);
     return (
       <div id="notification">
         {this.renderNote()}

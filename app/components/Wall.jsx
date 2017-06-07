@@ -28,7 +28,6 @@ class Wall extends React.Component {
   handleCheckCode(code){
     if(this.props.checkCodeUser){
       this.props.checkCodeUser(this.props.users.userId, code).then(({data}) => {
-        console.log(data);
         if(data){
           this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp học thành công', level:'success'});
         }

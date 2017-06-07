@@ -37,7 +37,6 @@ class AddQuestion extends React.Component {
   addQuestionFromFile() {
     let { questionList, title, description, isPublic, subjectId, questionFile, score } = this.state;
     let {  getQuestionSetId, users } = this.props;
-    console.log("message ", questionFromFile);
     let questionSet = {
       title,
       description,
@@ -55,7 +54,6 @@ class AddQuestion extends React.Component {
     for(let i = 0; i < array.length - 1; i++) {
       if(array[i].indexOf('Câu') > -1) {
         let index = array[i].indexOf('//');
-        console.log('index ', index);
         let question = {
           _id: (Math.floor(Math.random()*99999) + 10000).toString(),
           question: array[i].replace(array[i].substring(0, index + 2), ''),
@@ -84,7 +82,6 @@ class AddQuestion extends React.Component {
         questionFromFile.push(question);
       }
     }
-    console.log('questionFromFile ', questionFromFile);
     this.setState({questionList: questionFromFile, openDrawer: true});
   }
 
@@ -247,14 +244,12 @@ class AddQuestion extends React.Component {
 
   onDrop(files) {
     let file = files[0];
-    console.log('file ', file);
     var reader = new FileReader();
     reader.readAsText(file);
     let that = this;
 
     reader.onload = function () {
       let content = reader.result;
-      console.log('content ', content);
       that.setState({questionFile: content});
     };
 
