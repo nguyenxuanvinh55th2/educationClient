@@ -15,6 +15,7 @@ class ManagerUserParent extends React.Component {
     super(props)
   }
   render(){
+    console.log("params");
     return (
       <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <Tabs className="secondary" >

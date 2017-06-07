@@ -765,7 +765,7 @@ class ManagerSubject extends React.Component {
                             <div style={{paddingLeft: 10}}>
                               <h4>{infoUser.name}</h4>
                               <h5>{infoUser.email}</h5>
-                              <p>Teacher</p>
+                              <p>Giáo viên</p>
                             </div>
                           </div>
                         )
@@ -781,7 +781,7 @@ class ManagerSubject extends React.Component {
                             <div style={{paddingLeft: 10}}>
                               <h4>{infoUser.name}</h4>
                               <h5>{infoUser.email}</h5>
-                              <p>Student</p>
+                              <p>Học viên</p>
                             </div>
                           </div>
                         )

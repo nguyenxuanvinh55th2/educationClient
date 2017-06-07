@@ -4,13 +4,14 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import ClassList from './ClassList.jsx';
 import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
 import Dialog from 'material-ui/Dialog';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
+import { CreateCoure } from './LeftBar.jsx'
 class CreateSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -18,7 +19,9 @@ class CreateSubject extends React.Component {
     this.handleAddTheme = this.handleAddTheme.bind(this);
     this.state = {
       _id: '', code: '', name: '', description: '',  themes: [], joinCourse: false,
-      classId: '', courseId: '', userSubjects: [], userMails: []
+      classId: '', courseId: '', userSubjects: [], userMails: [],
+      openClass: false, openCourse: false,
+      checkedSelect: true, checkedNew: false
     }
   }
   handleSave(){
@@ -102,12 +105,13 @@ class CreateSubject extends React.Component {
     else {
       return (
         <div className="row" style={{padding: 15}}>
-          <div className="col-sm-8">
+          {/* <button type="button"  onClick={() => this.props.dataSet.refetch()}>dfdfdsf</button> */}
+          <div className="col-sm-8" style={{backgroundColor: 'white', padding: 10}}>
             <h3 style={{textAlign: 'center', color: "#35bcbf"}}>MÔN HỌC</h3>
             <div className="column">
               <div style={{display: 'flex', flexDirection: 'column'}}>
                 <div className="radio">
-                  <label><input type="radio" defaultChecked={true} name="optradio" />Chọn môn học</label>
+                  <label><input type="radio" checked={this.state.checkedSelect} onChange={() => this.setState({checkedNew: this.state.checkedSelect, checkedSelect: !this.state.checkedSelect})} name="optradio" />Chọn môn học</label>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', paddingLeft: 20}}>
                   <p style={{width: '20%'}}>Chọn môn học</p>
@@ -125,7 +129,7 @@ class CreateSubject extends React.Component {
               </div>
               <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
                 <div className="radio">
-                  <label><input type="radio" defaultChecked={true} name="create" />Tạo mới môn học</label>
+                  <label><input type="radio" checked={this.state.checkedNew} onChange={() => this.setState({checkedSelect: this.state.checkedNew, checkedNew: !this.state.checkedNew})} name="create" />Tạo mới môn học</label>
                 </div>
                 <div style={{paddingLeft: 20}}>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -176,7 +180,12 @@ class CreateSubject extends React.Component {
           </div>
           <div className="col-sm-4">
             <div style={{backgroundColor: 'white', padding: 10}}>
-              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Lớp học</h4>
+                <button type="button" className="btn" style={{backgroundColor: 'white', color: '#35bcbf'}} onClick={() => this.setState({openClass: true})}>
+                  <span className="glyphicon glyphicon-plus"></span>
+                </button>
+              </div>
               <Combobox
                 name="class"
                 data={dataSet.getClassByUserId}
@@ -187,7 +196,12 @@ class CreateSubject extends React.Component {
                 getValue={this.getClass.bind(this)}/>
             </div>
             <div style={{backgroundColor: 'white', padding: 10, marginTop: 10}}>
-              <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <h4 style={{textAlign: 'center', color: "#35bcbf"}}>Khóa học</h4>
+                <button type="button" className="btn" style={{backgroundColor: 'white', color: '#35bcbf'}} onClick={() => this.setState({openCourse: true})}>
+                  <span className="glyphicon glyphicon-plus"></span>
+                </button>
+              </div>
               <Combobox
                 name="course"
                 data={dataSet.courses}
@@ -218,6 +232,22 @@ class CreateSubject extends React.Component {
               <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width : '100%'}} disabled={!this.state.code || !this.state.name || !this.state.description} onClick={() => this.handleSave()}>HOÀN THÀNH</button>
             </div>
           </div>
+          <Dialog
+            modal={true}
+            open={this.state.openCourse}
+            bodyStyle={{padding: 0}}
+            contentStyle={{width: 600}}
+          >
+            <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={() => this.setState({openCourse: false})} refreshData={() => this.props.dataSet.refetch()}/>
+          </Dialog>
+          <Dialog
+            modal={true}
+            open={this.state.openClass}
+            bodyStyle={{padding: 0}}
+            contentStyle={{width: 600}}
+          >
+            <ClassList {...this.props} height={window.innerHeight -226} handleClose={() => this.setState({openClass: false})} refreshData={() => this.props.dataSet.refetch()} />
+          </Dialog>
         </div>
       )
     }

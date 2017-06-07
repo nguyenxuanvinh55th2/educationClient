@@ -33,10 +33,14 @@ class ClassList extends React.Component {
       this.props.insertClass(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
         if(data.insertClass){
           if(type == 'saveAndGo'){
+            this.props.handleClose();
             browserHistory.push('/profile/' + this.props.users.userId + '/createSubject');
           }
           else {
-            browserHistory.push('/profile/' + this.props.users.userId);
+            this.props.handleClose();
+            if(this.props.refreshData){
+              this.props.refreshData();
+            }
           }
         this.props.addNotificationMute({fetchData: true, message: 'Tạo lớp học mới thành công', level:'success'});
         }
@@ -49,48 +53,58 @@ class ClassList extends React.Component {
   }
   render(){
     let { dataSet } = this.props;
-    if(dataSet.loading && !dataSet.user){
       return (
-        <div className="spinner spinner-lg"></div>
-      )
-    }
-    else {
-      return (
-        <div className="col-sm-12 col-md-8 col-lg-8 col-md-push-2 col-lg-pull-2">
-          <h3 style={{textAlign: 'center', color: "#35bcbf"}}>LỚP HỌC</h3>
-          <div className="row" style={{marginTop: 5}}>
-            <div className="col-sm-3">
-              <label >Mã lớp học</label>
+        <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">Tạo mới lớp học</h4>
+              </div>
+              <div className="modal-body" style={{height: this.props.height,overflowY: 'auto', overflowX: 'hidden'}}>
+                {
+                  dataSet.loading ?
+                  <div className="spinner spinner-lg"></div> :
+                  <div>
+                    <div className="row" style={{marginTop: 5}}>
+                      <div className="col-sm-3">
+                        <label >Mã lớp học</label>
+                      </div>
+                      <div className="col-sm-9">
+                        <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
+                      </div>
+                    </div>
+                    <div className="row" style={{marginTop: 5}}>
+                      <div className="col-sm-3">
+                        <label >Tên lớp học</label>
+                      </div>
+                      <div className="col-sm-9">
+                        <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
+                      </div>
+                    </div>
+                    <div className="column">
+                      <label>Mời sinh viên tham gian lớp học</label>
+                      <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+                        <MultiSelectEditor value={this.state.userClasses} data={dataSet.user.userFriendsUser} label={"name"} placeholder="Tìm kiếm sinh viên"
+                           onChangeValue={(value) => this.setState({userClasses: value})}/>
+                      </div>
+                      <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
+                        <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+              <div className="modal-footer" style={{margin: 0}}>
+                <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
+                <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
+                {
+                  !this.props.refreshData ?
+                  <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', marginLeft: 10}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
+                  : <div></div>
+                }
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.code} onChange={({target}) => this.setState({code: target.value})}/>
-            </div>
-          </div>
-          <div className="row" style={{marginTop: 5}}>
-            <div className="col-sm-3">
-              <label >Tên lớp học</label>
-            </div>
-            <div className="col-sm-9">
-              <input type="text" className="form-control" style={{width: '100%'}} value={this.state.name} onChange={({target}) => this.setState({name: target.value})} />
-            </div>
-          </div>
-          <div className="column">
-            <label>Mời sinh viên tham gian lớp học</label>
-            <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
-              <MultiSelectEditor value={this.state.userClasses} data={dataSet.user.userFriendsUser} label={"name"} placeholder="Tìm kiếm sinh viên"
-                 onChangeValue={(value) => this.setState({userClasses: value})}/>
-            </div>
-            <div style={{marginLeft: '25%', paddingLeft: 10, marginTop: 5}}>
-              <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
-            </div>
-          </div>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
-            <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("save")}>Tạo mới lớp học</button>
-            <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', marginLeft: 10}} disabled={!this.state.code || ! this.state.name} onClick={() => this.handleSave("saveAndGo")}>Tiếp tục thêm môn học</button>
-          </div>
         </div>
       )
-    }
   }
 }
 const INSERT_CLASS = gql`
