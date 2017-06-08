@@ -226,7 +226,16 @@ class PermissionSubjectForm extends React.Component {
                     __.forEach(per.profile.roles,(role) => {
                       switch (role) {
                         case 'userCanView':
-                          rolesString.push("Có quyền xem nội dung")
+                          rolesString.push("Có quyền xem nội dung");
+                          break;
+                        case 'userCanManage':
+                          rolesString.push('co quyen quan ly');
+                          break;
+                        case 'userCanUploadLesson':
+                          rolesString.push('co quyen dang bai giang');
+                          break;
+                        case 'userCanUploadAssignment':
+                          rolesString.push('co quyen dang bai tap')
                           break;
                         default:
                           break;
