@@ -1,5 +1,11 @@
 import React, { PropTypes, Component, ReactDom } from 'react';
-import { Link, Router, browserHistory } from 'react-router'
+import { Link, Router, browserHistory } from 'react-router';
+
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
 
 import ChatRoom from './ChatRoom.jsx';
 
@@ -19,7 +25,7 @@ class ChatNotificate extends Component {
   }
 }
 
-export default class ChatItem extends Component {
+class ChatItem extends Component {
   constructor(props) {
       super(props);
       this.state = {showChatRoom: false};
@@ -63,7 +69,7 @@ export default class ChatItem extends Component {
           count --;
         }
       }
-    return (<ChatNotificate show={ show } number={ number } userId={ userId }></ChatNotificate>)
+    return (<ChatNotificate {...this.props} show={ show } number={ number } userId={ userId }></ChatNotificate>)
   }
 
   openChatRoom(event) {
@@ -88,8 +94,9 @@ export default class ChatItem extends Component {
   }
 
   render() {
+      let { users } = this.props;
       return (
-          <li>
+          <li style={{marginTop: 10}}>
             { this.renderNotification() }
             { this.renderChatRoom() }
             <button style={{background: 'none', border: 'none' }} onClick={this.openChatRoom.bind(this)}>
@@ -100,10 +107,22 @@ export default class ChatItem extends Component {
                       <img src={ this.props.image } style= {{width: '30px', height: '30px'}}/>
                     </td>
                     <td style={{width: '150px'}}>
-                      <div style={{marginLeft: '10px'}}>{ this.props.userName }</div>
+                      <div style={{marginLeft: '10px', textAlign: 'left'}}>{ this.props.userName.length > 9 ? this.props.userName.substring(0, 10) + '...' : this.props.userName }</div>
                     </td>
                     <td>
-                      { this.props.online ? <div style={{width: '9px', height: '9px', backgroundColor: '#53af13', borderRadius: '50%'}}/> : <div style={{width: '27%', fontSize: '11px', color: 'gray'}}>{this.props.lastLogin}</div> }
+                      { this.props.isFriend ? (
+                          this.props.online ? 
+                          <div style={{width: '9px', height: '9px', backgroundColor: '#53af13', borderRadius: '50%'}}/> : 
+                          <div style={{width: '27%', fontSize: '11px', color: 'gray'}}>{this.props.lastLogin}</div>
+                        ) : 
+                        <IconButton tooltip="Thêm bạn" iconStyle={{color: 'rgb(53, 188, 191)', height: 30, width: 30}} onClick={() => {
+                          this.props.insertUserFriend(users.userId, this.props.userId).then(() => {
+                            this.props.addNotificationMute({fetchData: true, message: 'Gửi yêu cầu kết bạn thành công', level:'success'});
+                          })
+                        }}>
+                          <i className="material-icons">person_add</i>
+                        </IconButton> 
+                      }
                     </td>
                   </tr>
                 </tbody>
@@ -113,3 +132,16 @@ export default class ChatItem extends Component {
       )
   }
 }
+
+const ADD_FRIEND = gql`
+  mutation insertUserFriend($userId: String!, $_id: String) {
+    insertUserFriend(userId: $userId, _id: $_id) 
+  }`
+
+export default compose(
+graphql(ADD_FRIEND, {
+    props: ({mutate})=> ({
+        insertUserFriend : (userId, _id) => mutate({variables:{userId, _id}})
+    })
+}),
+)(ChatItem);

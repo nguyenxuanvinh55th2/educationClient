@@ -16,7 +16,7 @@ class Message extends Component {
           <td className="td-image">
             <img className="chatImage" style={{marginLeft: '15px'}} src={ this.props.image }/>
           </td>
-          <td className="td-message">
+          <td className="td-message" style={{width: '100%'}}>
             <p className="message-left">
               {this.props.text}
               <br/>
@@ -31,8 +31,8 @@ class Message extends Component {
       return (
         <tr>
           <td></td>
-          <td className="td-message">
-            <p className="message-right">
+          <td className="td-message" style={{width: '100%'}}>
+            <p className="message-right col-sm-offset-3">
               {this.props.text}
               <br/>
               <span className="messageDate">{moment(this.props.date).format('DD/MM/YYYY, h:mm:ss')}</span>
@@ -134,7 +134,7 @@ class ChatRoom extends Component {
     }
 
     ReactDOM.findDOMNode(this.refs.messageInput).value = '';
-    node = ReactDOM.findDOMNode(this.refs.chatBody);
+    let node = ReactDOM.findDOMNode(this.refs.chatBody);
     node.scrollTop = 300;
   }
 
@@ -146,16 +146,16 @@ class ChatRoom extends Component {
   render() {
       //var rightSpace = this.props.chatRoomPosition.toString() + 'px';
       return (
-        <div id={ 'chatroom' + this.props.id } className=" chatRoom" style={{display: 'none', paddingRight: 0}}>
-          <div className="chat-heading" style={{backgroundColor: '#2f9ce2', color: 'white', height: 40}}>
+        <div id={ 'chatroom' + this.props.id } className=" chatRoom" style={{display: 'none', paddingRight: 0, marginRight: 10}}>
+          <div className="chat-heading" style={{backgroundColor: '#35BCBF', color: 'white', height: 40}}>
             <table style={{width: '100%'}}>
               <tbody>
                 <tr>
-                  <td className="td-room-name" style={{ paddingTop: 10, paddingLeft: 10, fontSize: 14 }}>
+                  <td className="td-room-name" style={{ paddingTop: 15, paddingLeft: 10, fontSize: 14 }}>
                     <p className="p-room-name">{ this.props.name }</p>
                   </td>
                   <td className="td-room-closing" style={{ paddingTop: 10, paddingRight: 10 }}>
-                    <button className="button-chat-closing" style={{fontSize: 14}} onClick= {e => {
+                    <button className="button-chat-closing" style={{fontSize: 14, paddingTop: 7}} onClick= {e => {
                         document.getElementById('chatroom' + this.props.id).style.display = 'none';
                         let chatRooms = document.getElementsByClassName('chatRoom');
                         let childrenCount = 0;
@@ -172,16 +172,16 @@ class ChatRoom extends Component {
               </tbody>
             </table>
           </div>
-          <div ref="chatBody" className="chat-body" style={{marginRight: 0, backgroundColor: 'white'}}>
+          <div ref="chatBody" className="chat-body" style={{marginRight: 0, backgroundColor: 'white', padding: 10}}>
             <table>
               <tbody>
                 { this.renderMessage() }
               </tbody>
             </table>
           </div>
-          <div className="chat-footer" style={{backgroundColor: '#2f9ce2', color: 'white'}}>
-            <div style={{paddingTop: '10px'}}>
-              <textarea ref="messageInput" className="input-chat" rows="3" cols="50" id="comment" onClick={this.readMessenger.bind(this)}></textarea>
+          <div className="chat-footer" style={{backgroundColor: '#35BCBF', color: 'white'}}>
+            <div style={{padding: '10px'}}>
+              <textarea ref="messageInput" className="input-chat" rows="3" cols="50" id="comment" onClick={this.readMessenger.bind(this)} style={{marginLeft: 0, width: '80%'}}></textarea>
               <button className="button-chat-send btn btn-success" style={{padding: '0px', backgroundColor: 'transparent', backgroundImage: 'url("")', borderColor: 'white'}} onClick={this.sendMessage.bind(this)}>
                 <i className="fa fa-play" aria-hidden="true"></i>
               </button>
