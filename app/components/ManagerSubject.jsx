@@ -13,10 +13,24 @@ import accounting from 'accounting';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+
+import MenuItem from 'material-ui/MenuItem';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
-import { GiveAssignment, ListUserGiveAss } from './ChildManagerSubject.jsx'
-const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
+import { GiveAssignment, ListUserGiveAss, PermissionSubject } from './ChildManagerSubject.jsx'
+const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png';
+const iconButtonElement = (
+  <IconButton
+    touch={true}
+    tooltipPosition="bottom-left"
+  >
+    <MoreVertIcon color={grey400} />
+  </IconButton>
+);
 class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -331,7 +345,7 @@ class ManagerSubject extends React.Component {
           <div style={{display: 'flex', flexDirection: 'row', padding: 20, justifyContent: 'space-between'}}>
             <div style={{width: '65%'}}>
               <Tabs className="secondary" >
-                <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
+                <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white', borderBottom: 0}}>
                     <Tab>
                         <h4 className="modal-title" style={{color: '#35bcbf'}}>Forum</h4>
                     </Tab>
@@ -350,6 +364,12 @@ class ManagerSubject extends React.Component {
                     <Tab>
                         <h4 className="modal-title" style={{color: '#35bcbf'}}>Hoạt động</h4>
                     </Tab>
+                    {
+                      dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                      <Tab>
+                          <h4 className="modal-title" style={{color: '#35bcbf'}}>Phân quyền</h4>
+                      </Tab>: <div></div>
+                    }
                 </TabList>
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
@@ -402,6 +422,28 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetForum,(active,idx) => {
                         let topic = active.topic;
                         let idValue = 'comment' + '-' + idx;
+                        let rightIconMenu = (
+                          <IconMenu iconButtonElement={iconButtonElement}>
+                            <MenuItem>Chỉnh sửa</MenuItem>
+                            <MenuItem onClick={() => {
+                              let r = confirm('Bạn muốn xóa dữ liệu này')
+                              if(r == true){
+                                if(this.props.removeActivity){
+                                  this.props.removeActivity(active._id).then(({data}) => {
+                                    if(data){
+                                      this.props.addNotificationMute({fetchData: true, message: 'Xóa thành công', level:'success'});
+                                      this.refreshData();
+                                    }
+                                  })
+                                  .catch((error) => {
+                                    this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+                                    console.log(error);
+                                  })
+                                }
+                              }
+                            }}>Xoá</MenuItem>
+                          </IconMenu>
+                        );
                         return (
                           <div key={idx} style={{backgroundColor: 'white', marginTop: 10, padding: 10}}>
                             <ListItem style={{fontSize: 13}}
@@ -417,6 +459,7 @@ class ManagerSubject extends React.Component {
                                secondaryText={
                                  <p style={{fontSize: 10}}>{moment(topic.createdAt ? topic.createdAt : moment().valueOf()).format('HH:mm DD/MM/YYYY')}</p>
                                }
+                              rightIconButton={rightIconMenu}
                              />
                              <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                                <p>{topic.content}</p>
@@ -443,14 +486,8 @@ class ManagerSubject extends React.Component {
                                        </div>
                                      }
                                      else {
-                                      //  let stringValue = 'http://docs.google.com/gview?url=';
-                                      //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-                                       //
-                                      //  stringValue += file.file;
-                                      //  stringValue += '&embedded=true';
                                        return (
                                          <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                           {/* <iframe src={stringValue}></iframe> */}
                                            <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                            <div style={{display: "flex", flexDirection: 'column'}}>
                                              <h3>{file.fileName}</h3>
@@ -464,11 +501,11 @@ class ManagerSubject extends React.Component {
                                    })
                                  }
                                </div>
-                               <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => {
+                               <button type="button" className="btn" style={{minWidth: 80, maxWidth: 100, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => {
                                  let dataValueForum = this.state.dataSetForum;
                                  dataValueForum[idx].openComment = dataValueForum[idx].openComment ? !dataValueForum[idx].openComment : true;
                                  this.setState({dataSetForum: dataValueForum})
-                               }}>Bình luận</button>
+                               }}>Bình luận({topic.memberReply.length})</button>
                                {
                                  active.openComment &&
                                  <div>
@@ -508,7 +545,7 @@ class ManagerSubject extends React.Component {
                               dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
                               this.setState({dataSetTheme: dataValueTheme})
                             }}>
-                            <p>{theme.theme.name}</p>
+                            <p style={{fontWeight: 600}}>{theme.theme.name}</p>
                             {
                               theme.openDetail &&
                               <div>
@@ -535,14 +572,8 @@ class ManagerSubject extends React.Component {
                                       </div>
                                     }
                                     else {
-                                    //   let stringValue = 'http://docs.google.com/gview?url=';
-                                    //  //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-                                     //
-                                    //   stringValue += file.file;
-                                    //   stringValue += '&embedded=true';
                                     return (
                                       <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                        {/* <iframe src={stringValue}></iframe> */}
                                         <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                         <div style={{display: "flex", flexDirection: 'column'}}>
                                           <h3>{file.fileName}</h3>
@@ -630,7 +661,7 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetAss,(ass,idx) => {
                         return (
                           <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
-                            <p style={{width: '100%', cursor: 'pointer'}} onClick={() => {
+                            <p style={{width: '100%', cursor: 'pointer', fontWeight: 600}} onClick={() => {
                                 let dataValueAss = this.state.dataSetAss;
                                 dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
                                 this.setState({dataSetAss: dataValueAss})
@@ -661,14 +692,8 @@ class ManagerSubject extends React.Component {
                                       </div>
                                     }
                                     else {
-                                      let stringValue = 'http://docs.google.com/gview?url=';
-                                     //  stringValue += "https://lookaside.fbsbx.com/file/L%E1%BB%8ACH%20THI%20%C4%90%E1%BA%A4U%20H%E1%BB%98I%20THAO%20SINH%20VI%C3%8AN%20TR%C6%AF%E1%BB%9CNG%20%C4%90%E1%BA%A0I%20H%E1%BB%8CC%20NHA%20TRANGNH%202016%20-%202017.doc?token=AWxanGnSaNn7bywJj_53qmuEcDmxwumpy67Wk7EL97aqvxtp-1pFFQevjZOGJNR2pByLZQk6fMyt09aMocVf6dtzGfA8ZgC0mYBymbLYsd7b0PDJHBJQfaZCQDuVR4uE_FYUS0Ielq33pWr82_3XkR_2q3aCowu7oQq4VKoZm1dWcE6y1lq-t2Mj97ODqwj85E8"
-
-                                      stringValue += file.file;
-                                      stringValue += '&embedded=true';
                                       return (
                                         <div key={fileIdx} style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                          {/* <iframe src={stringValue}></iframe> */}
                                           <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                           <div style={{display: "flex", flexDirection: 'column'}}>
                                             <h3>{file.fileName}</h3>
@@ -765,7 +790,7 @@ class ManagerSubject extends React.Component {
                             <div style={{paddingLeft: 10}}>
                               <h4>{infoUser.name}</h4>
                               <h5>{infoUser.email}</h5>
-                              <p>Teacher</p>
+                              <p>Giáo viên</p>
                             </div>
                           </div>
                         )
@@ -781,7 +806,7 @@ class ManagerSubject extends React.Component {
                             <div style={{paddingLeft: 10}}>
                               <h4>{infoUser.name}</h4>
                               <h5>{infoUser.email}</h5>
-                              <p>Student</p>
+                              <p>Học viên</p>
                             </div>
                           </div>
                         )
@@ -794,6 +819,12 @@ class ManagerSubject extends React.Component {
                     this.renderActivityUser()
                   }
                 </TabPanel>
+                {
+                  dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                  <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+                    <PermissionSubject {...this.props} userIds={__.map(dataSet.getUserByClassSucbject,(user) => user._id)} accountingObjectId={dataSet.getInfoClassSubject.accounting._id}/>
+                  </TabPanel> :<div></div>
+                }
               </Tabs>
             </div>
             <div style={{width: '35%', paddingLeft: 15}}>
@@ -836,6 +867,11 @@ const INSERT_FORUM = gql`
 const INSERT_COMMENT = gql`
  mutation insertCommentForum($token:String!,$info:String){
    insertCommentForum(token:$token,info:$info)
+ }
+`;
+const REMOVE_ACTIVITY = gql`
+ mutation removeActivity($_id: String){
+   removeActivity(_id: $_id)
  }
 `;
 const MyQuery = gql`
@@ -901,6 +937,9 @@ const MyQuery = gql`
           teacher {
             _id name  image  email
           }
+          accounting {
+           _id
+         }
         }
     }`
 export default compose(
@@ -919,6 +958,11 @@ export default compose(
   graphql(INSERT_COMMENT,{
        props:({mutate})=>({
        insertCommentForum : (token,info) =>mutate({variables:{token,info}})
+     })
+   }),
+  graphql(REMOVE_ACTIVITY,{
+       props:({mutate})=>({
+       removeActivity : (_id) =>mutate({variables:{_id}})
      })
    })
 )(ManagerSubject)

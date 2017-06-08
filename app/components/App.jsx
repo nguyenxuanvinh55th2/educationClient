@@ -1,6 +1,6 @@
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import __ from 'lodash'
+import __ from 'lodash';
 import * as actionCreator from "../action/actionCreator"
 import React from 'react'
 import NotificationSystem from 'react-notification-system';
@@ -101,19 +101,22 @@ class Main extends React.Component {
   }
   render(){
     let childProps = __.cloneDeep(this.props);
-    delete childProps.children;
+   delete childProps.children;
     return (
       <div style={{flexDirection: 'column'}}>
         {
-          Meteor.userId() && this.props.users.userId ?
+          Meteor.userId() && this.props.users.userId || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle') ?
           <div>
             {React.cloneElement(this.props.children, childProps)}
             <NotificationSystem ref="notificationSystemRoot" style={{NotificationItem: {DefaultStyle: {margin: '10px', minHeight: 50, padding: '10px'}}}} />
           </div> :
-          Meteor.userId() && !this.props.users && !this.props.users.userId ?
-          <div className="spinner spinner-lg"></div> :
+          Meteor.userId() && !this.props.users && !this.props.users.userId || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle')  ?
           <div>
-            {React.cloneElement(this.props.children, childProps)}
+              {React.cloneElement(this.props.children, this.props)}
+            <div className="spinner spinner-lg"></div>
+          </div> :
+          <div>
+            {React.cloneElement(this.props.children, this.props)}
             <NotificationSystem ref="notificationSystemRoot" style={{NotificationItem: {DefaultStyle: {margin: '10px', minHeight: 50, padding: '10px'}}}} />
           </div>
         }

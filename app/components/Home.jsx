@@ -14,7 +14,8 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      height: window.innerHeight
+      height: window.innerHeight,
+      pictureSelect: 0
     }
   }
   render() {
@@ -36,7 +37,7 @@ export default class Home extends React.Component {
             </div>
           </div>
           <div  className="row" style={{margin: '50px 100px'}}>
-            <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15}}>
+            <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15, lineHeight: '40px'}}>
               <h2>TUIELEARNING DÀNH CHO NHỮNG AI?</h2>
               <p style={{paddingRight: 50}}>
                 - Đội ngủ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
@@ -55,8 +56,8 @@ export default class Home extends React.Component {
               </p>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh1_zpsgftsjtdy.png" className="img-responsive" />
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh2New_zpsp9haf4py.png" className="img-responsive" style={{marginTop: 15}}/>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh1_zpsgftsjtdy.png" className="img-responsive" style={{height: 200}}/>
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh2New_zpsp9haf4py.png" className="img-responsive" style={{marginTop: 15, height: 200}}/>
             </div>
           </div>
           <div className="row" style={{margin: 40}}>
@@ -66,7 +67,7 @@ export default class Home extends React.Component {
                   <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Tính năng đơn giản
                   </p>
@@ -82,7 +83,7 @@ export default class Home extends React.Component {
                   <span  className="glyphicon glyphicon-ok pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Vừa học vừa chơi.
                   </p>
@@ -98,7 +99,7 @@ export default class Home extends React.Component {
                   <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Sử dụng mà không cần cài đặt.
                   </p>
@@ -111,14 +112,14 @@ export default class Home extends React.Component {
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" />
+              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" style={{height: 230, width: 420}}/>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <h3>Rèn luyện tính tự lập cho sinh viên</h3>
-              <p style={{paddingRight: 50}}>
+              <h2>Rèn luyện tính tự lập cho sinh viên</h2>
+              <p style={{paddingRight: 50, fontSize: 17}}>
                 Sinh viên có thể quản lý thời gian học tập một cách chủ động bằng cách lập thời gian biểu cho từng bài học hoặc bài tập của minh.
               </p>
-              <p style={{paddingRight: 50}}>
+              <p style={{paddingRight: 50, fontSize: 17}}>
                 Chương trình ôn luyện phù hợp với nhiều mức học đối với mỗi sinh viên khác nhau.
               </p>
             </div>
@@ -139,26 +140,47 @@ export default class Home extends React.Component {
             <div className="col-sm-2 col-md-5 col-lg-6">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                   <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'blue', margin: 10, paddingLeft: 0, paddingRight: 0}}>
-                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/18301853_474450599568708_293956610097321619_n.jpg?oh=5a1d51e8ef46e79681bff3d75ac1cccd&oe=599FB7A4" style={{height: 100, width: 120}}></img>
+                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/18301853_474450599568708_293956610097321619_n.jpg?oh=5a1d51e8ef46e79681bff3d75ac1cccd&oe=599FB7A4" style={{height: 100, width: 120}} onClick={() => this.setState({pictureSelect: 0})}></img>
                   </div>
                   <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'red', margin: 10, paddingLeft: 0, paddingRight: 0}}>
-                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-1/18301520_1895134390728456_2770252754714215340_n.jpg?oh=f2b8dfcab5fa2c3d7c63bf8276f18c6a&oe=59B20E53" style={{height: 100, width: 120}}></img>
+                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-1/18301520_1895134390728456_2770252754714215340_n.jpg?oh=f2b8dfcab5fa2c3d7c63bf8276f18c6a&oe=59B20E53" style={{height: 100, width: 120}} onClick={() => this.setState({pictureSelect: 1})}></img>
                   </div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                   <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'blue', margin: 10, paddingLeft: 0, paddingRight: 0}}>
-                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/13619965_1737051969868065_1863773849078891223_n.jpg?oh=47e1f56f1215e278ed569abef416ea62&oe=59E2156B" style={{height: 100, width: 120}} ></img>
+                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/13619965_1737051969868065_1863773849078891223_n.jpg?oh=47e1f56f1215e278ed569abef416ea62&oe=59E2156B" style={{height: 100, width: 120}} onClick={() => this.setState({pictureSelect: 2})}></img>
                   </div>
                   <div className="col-sm-6" style={{height: 100, width: 120, backgroundColor: 'red', margin: 10, paddingLeft: 0, paddingRight: 0}}>
-                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/18268374_474450206235414_2328779912435889820_n.jpg?oh=e53992444a19fd253b28240c6c58d011&oe=59AE8B94" style={{height: 100, width: 120}}></img>
+                    <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t1.0-9/18268374_474450206235414_2328779912435889820_n.jpg?oh=e53992444a19fd253b28240c6c58d011&oe=59AE8B94" style={{height: 100, width: 120}} onClick={() => this.setState({pictureSelect: 3})}></img>
                   </div>
                 </div>
             </div>
-            <div className="col-sm-10 col-md-7 col-lg-4">
-              <h2 style={{textAlign: 'center'}}>Nguyễn Xuân Vinh</h2>
-              <p>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
-              giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
-            </div>
+            {
+              this.state.pictureSelect == 0 ?
+              <div className="col-sm-10 col-md-7 col-lg-4">
+                <h2 style={{textAlign: 'center'}}>Nguyễn Xuân Vinh</h2>
+                <p style={{fontSize: 15}}>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
+                giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
+              </div> :
+              this.state. pictureSelect == 1 ?
+              <div className="col-sm-10 col-md-7 col-lg-4">
+                <h2 style={{textAlign: 'center'}}>Nguyễn Thị Bích Thuận</h2>
+                <p style={{fontSize: 15}}>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
+                giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
+              </div> :
+              this.state.pictureSelect == 2 ?
+              <div className="col-sm-10 col-md-7 col-lg-4">
+                <h2 style={{textAlign: 'center'}}>Huỳnh Ngọc Sáng</h2>
+                <p style={{fontSize: 15}}>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
+                giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
+              </div>
+              :
+              <div className="col-sm-10 col-md-7 col-lg-4">
+                <h2 style={{textAlign: 'center'}}>Đội ngũ phát triển</h2>
+                <p style={{fontSize: 15}}>Là một đội ngũ phát triển phần mềm, chúng tôi mong muốn tạo ra một sản phẩm có ích đối với các sinh viên khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
+                giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
+              </div>
+            }
           </div>
           <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
             <div className="col-sm-12 col-md-5 col-lg-4 col-md-offset-1 col-lg-offset-1" style={{flexDirection: 'column', alignItems: 'center'}}>

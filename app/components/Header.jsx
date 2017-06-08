@@ -83,15 +83,15 @@ class Header extends React.Component {
                   }
                   {
                     !users.userId &&
-                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true,  dialogType: 'login'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng nhập</a></li>
+                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true,  dialogType: 'login'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đăng nhập</a></li>
                   }
                   {
                     !users.userId &&
-                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng kí</a></li>
+                    <li style={{marginRight: 20}}><a onClick={() => this.setState({showModal: true, dialogType: 'register'})} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đăng kí</a></li>
                   }
                   {
                     users.userId &&
-                    <li><a onClick={() => this.handleLogout()} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đắng xuất</a></li>
+                    <li><a onClick={() => this.handleLogout()} className="btn btn-sm navbar-btn" style={{color: 'white', borderColor: 'white', padding: 8, width: 90}}>Đăng xuất</a></li>
                   }
                 </ul>
               </div>

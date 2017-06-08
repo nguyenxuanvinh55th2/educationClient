@@ -4,7 +4,11 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import { createContainer } from 'react-meteor-data';
+import  { Questions } from 'educationServer/question'
+import  { Examinations } from 'educationServer/examination'
+import  { ClassSubjects } from 'educationServer/classSubject'
+import ClassList from './ClassList.jsx';
 import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
@@ -34,6 +38,7 @@ import RotateLeft from 'material-ui/svg-icons/image/rotate-left';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+
 const iconButtonElement = (
   <IconButton
     touch={true}
@@ -82,7 +87,8 @@ class LeftBar extends React.Component {
       openDialog: false,
       height: window.innerHeight,
       open: false,
-      selectedIndex: -1
+      selectedIndex: -1,
+      openDialogClass: false
     }
   }
   handleResize(e) {
@@ -152,7 +158,7 @@ class LeftBar extends React.Component {
           key={idx}
           primaryText={
             <div>
-              <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.users.userId + '/children/' + item._id )}>{item.name}</a>
+              <a style={{color: 'white'}} onClick={() => browserHistory.push("/profile/" + this.props.users.userId + '/managerUser/' + item._id )}>{item.name}</a>
             </div>
           }
           initiallyOpen={false}
@@ -349,15 +355,6 @@ class LeftBar extends React.Component {
            nestedItems={[
            ]}
          /> */}
-         {/* <ListItem
-           primaryText="Hướng dẫn"
-           leftIcon={<Public color={'white'} style={{width: 20, height: 20}}/>}
-           initiallyOpen={false}
-           primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
-           nestedItems={[
-           ]}
-         /> */}
          <ListItem
            primaryText="Cài đặt"
            leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
@@ -373,6 +370,13 @@ class LeftBar extends React.Component {
            ]}
          />
          <ListItem
+           primaryText="Hướng dẫn"
+           leftIcon={<Public color={'white'} style={{width: 20, height: 20}}/>}
+           initiallyOpen={false}
+           primaryTogglesNestedList={true}
+           style={{color: 'white', fontSize: 13}}
+         />
+         <ListItem
            primaryText="Đăng xuất"
            leftIcon={<RotateLeft color={'white'} style={{width: 20, height: 20}}/>}
            style={{color: 'white', fontSize: 13}}
@@ -381,7 +385,7 @@ class LeftBar extends React.Component {
        </List>
        <div className="btn-group"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialog: true})}>Tạo khóa học</button>
-         <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => browserHistory.push('/profile/' + this.props.users.userId + '/createClass')}>Tạo lớp học</button>
+         <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialogClass: true})}>Tạo lớp học</button>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
        </div>
        <Dialog
@@ -392,6 +396,16 @@ class LeftBar extends React.Component {
        >
          <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} />
        </Dialog>
+       <Dialog
+         modal={true}
+         open={this.state.openDialogClass}
+         bodyStyle={{padding: 0}}
+         contentStyle={{width: 600}}
+       >
+         <ClassList {...this.props} height={window.innerHeight -226} handleClose={() => this.setState({openDialogClass: false})} />
+         {/* <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} /> */}
+       </Dialog>
+       <PubSub RefreshData={() => this.props.data.refetch()}/>
        </Drawer>
     )
   }
@@ -500,6 +514,9 @@ class CreateCoureForm extends React.Component {
         this.props.insertCourse(this.props.users.userId,JSON.stringify(data)).then(({data}) =>{
           if(data.insertCourse){
             this.props.handleClose();
+            if(this.props.refreshData){
+              this.props.refreshData();
+            }
             this.props.addNotificationMute({fetchData: true, message: 'Tạo khóa học mới thành công', level:'success'});
           }
         })
@@ -556,7 +573,11 @@ class CreateCoureForm extends React.Component {
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
               <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd}  onClick={() => this.handleSave("save")}>Tạo mới</button>
-              <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
+              {
+                !this.props.refreshData ?
+                <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.name || !this.state.dateStart || !this.state.dateEnd} onClick={() => this.handleSave("saveAndGo")}>Tạo mới và tiếp theo</button>
+                : <div></div>
+              }
             </div>
           </div>
       </div>
@@ -571,9 +592,43 @@ const INSERT_COURSE = gql`
  }
 `;
 
-
 export const CreateCoure =graphql(INSERT_COURSE,{
      props:({mutate})=>({
      insertCourse : (userId,info) =>mutate({variables:{userId,info}})
    })
  })(CreateCoureForm)
+
+class PubSubForm extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    refesh(){
+      if(this.props.RefreshData){
+        this.props.RefreshData();
+      }
+    }
+    componentWillUpdate(nextProps, nextState){
+      if(this.props.classSubjectsCount !== nextProps.classSubjectsCount){
+        this.refesh();
+      }
+      else if (this.props.questionCount !== nextProps.questionCount) {
+        this.refesh();
+      }
+      else if (this.props.examinationCount !== nextProps.examinationCount) {
+        this.refesh();
+      }
+    }
+    render(){
+        return (<div></div>);
+    }
+}
+const PubSub = createContainer((ownProps) => {
+  Meteor.subscribe("questions");
+  Meteor.subscribe("examinations");
+  Meteor.subscribe("classSubjects");
+  return {
+    classSubjectsCount: ClassSubjects.find({}).count(),
+    questionCount: Questions.find({}).count(),
+    examinationCount: Examinations.find({}).count()
+  }
+}, PubSubForm);

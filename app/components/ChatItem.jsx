@@ -50,7 +50,7 @@ class ChatItem extends Component {
         }
       }
     if(this.state.showChatRoom) {
-      return (<ChatRoom {...this.props} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
+      return (<ChatRoom {...this.props} refetch={this.props.refetch} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
     } else {
         return null
     }

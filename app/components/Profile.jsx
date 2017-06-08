@@ -4,7 +4,7 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import __ from 'lodash';
 import Header from './Header.jsx';
 import LeftBar from './LeftBar.jsx'
 import ChatBar from './ChatBar.jsx'
@@ -44,6 +44,8 @@ export default class Profile extends React.Component {
   }
   render() {
     let { users } = this.props;
+    let childProps = __.cloneDeep(this.props);
+    delete childProps.children;
     if(users.userId){
       return(
         <div style={{flexDirection: 'column', zIndex: 1}}>
@@ -90,13 +92,13 @@ export default class Profile extends React.Component {
               <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
             </div>
             <div style={{width: window.innerWidth - 256 - (window.matchMedia(`(min-width: 1100px)`).matches ? 200 : 0), marginTop: 47, minHeight: this.state.height - 47}}>
-              {React.cloneElement(this.props.children, this.props)}
+            {React.cloneElement(this.props.children, childProps)}
             </div>
           </div> :
           <div style={{display:'flex', flexDirection: 'column'}}>
             <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
             <div style={{marginTop: 35}}>
-                {React.cloneElement(this.props.children, this.props)}
+                {React.cloneElement(this.props.children, childProps)}
             </div>
           </div>
         }
@@ -124,7 +126,7 @@ export default class Profile extends React.Component {
       )
     }
     else {
-      if(Meteor.userId()){
+      if(Meteor.userId() || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle')){
         return (
           <div className="spinner spinner-lg"></div>
         )

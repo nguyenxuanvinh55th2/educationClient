@@ -69,6 +69,7 @@ class Login extends Component {
           }
         })
         .catch((error) => {
+          this.props.handleClose();
           console.log(error);
         });
       }

@@ -59,14 +59,14 @@ class ChatBar extends React.Component {
   }
 
   renderChat() {
-    if(!this.props.data || this.props.data.loading)
+    if(!this.props.data.userChat || this.props.data.loading)
       return (
         <div className="spinner spinner-lg"></div>
       )
     else {
       var userList = this.state.searchList.length ? this.state.searchList : this.props.data.userChat;
       return userList.map((item) => (
-        <ChatItem {...this.props} isFriend={item.isFriend} key={item._id} userId={item._id} image={item.user.image} userName={item.user.name} lastLogin={item.user.lastLogin} chatId={item.contentId} online={item.user.online} chatContent={item.content}/>
+        <ChatItem {...this.props} refetch={this.props.data.refetch} isFriend={item.isFriend} key={item._id} userId={item._id} image={item.user.image} userName={item.user.name} lastLogin={item.user.lastLogin} chatId={item.contentId} online={item.user.online} chatContent={item.content}/>
       ));
     }
   }
@@ -170,7 +170,7 @@ const FIND_USER = gql`
 export default compose(
 graphql(USER_CHAT, {
     options: (ownProps) => ({
-      variables: { userId: ownProps.users ? ownProps.users.userId : null},
+      variables: { userId: ownProps.users ? ownProps.users.userId : ''},
       forceFetch: true
     }),
 }),

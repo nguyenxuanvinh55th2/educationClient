@@ -35,7 +35,7 @@ class Message extends Component {
             <p className="message-right col-sm-offset-3">
               {this.props.text}
               <br/>
-              <span className="messageDate">{moment(this.props.date).format('DD/MM/YYYY, h:mm:ss')}</span>
+              <span className="messageDate">{moment(this.props.date).format('DD/MM/YYYY h:mm')}</span>
             </p>
           </td>
           <td>
@@ -67,8 +67,14 @@ class ChatRoom extends Component {
     }
   }
 
-  componentWillMount() {
-    this.index = this.props.chatContent.length
+  componentDidMount() {
+    this.index = this.props.chatContent.length;
+    setTimeout(() => {
+      let node = document.getElementById('chatbody' + this.props.id);
+      if(node) {
+        node.scrollTop = node.scrollHeight + 20;
+      }
+    }, 50);
   }
 
   readMessenger(event) {
@@ -130,17 +136,19 @@ class ChatRoom extends Component {
             chatId: id
         }
         item = JSON.stringify(item);
-        this.props.insertChatContent(token, item);
+        this.props.insertChatContent(token, item).then(() => {
+          this.props.refetch();
+        }).catch((err) => {
+          console.log('err ', err);
+        });
     }
-
-    ReactDOM.findDOMNode(this.refs.messageInput).value = '';
-    let node = ReactDOM.findDOMNode(this.refs.chatBody);
-    node.scrollTop = 300;
   }
 
-  componentDidMount() {
-    // node = ReactDOM.findDOMNode(this.refs.chatBody);
-    // node.scrollTop = 300;
+  componentDidUpdate(prevProps, prevState) {
+    let node = document.getElementById('chatbody' + this.props.id);
+    if(node) {
+      node.scrollTop = node.scrollHeight + 20;
+    }
   }
 
   render() {
@@ -172,18 +180,18 @@ class ChatRoom extends Component {
               </tbody>
             </table>
           </div>
-          <div ref="chatBody" className="chat-body" style={{marginRight: 0, backgroundColor: 'white', padding: 10}}>
+          <div id={ 'chatbody' + this.props.id } className="chat-body" style={{marginRight: 0, backgroundColor: 'white', padding: 10}}>
             <table>
               <tbody>
                 { this.renderMessage() }
               </tbody>
             </table>
           </div>
-          <div className="chat-footer" style={{backgroundColor: '#35BCBF', color: 'white'}}>
+          <div className="chat-footer" style={{backgroundColor: 'white', border: '1px solid #aaa9a9'}}>
             <div style={{padding: '10px'}}>
-              <textarea ref="messageInput" className="input-chat" rows="3" cols="50" id="comment" onClick={this.readMessenger.bind(this)} style={{marginLeft: 0, width: '80%'}}></textarea>
-              <button className="button-chat-send btn btn-success" style={{padding: '0px', backgroundColor: 'transparent', backgroundImage: 'url("")', borderColor: 'white'}} onClick={this.sendMessage.bind(this)}>
-                <i className="fa fa-play" aria-hidden="true"></i>
+              <textarea ref="messageInput" className="input-chat" rows="3" cols="50" id="comment" onClick={this.readMessenger.bind(this)} style={{marginLeft: 0, width: '80%', border: '1px solid #aaa9a9', color: '#54575E'}}></textarea>
+              <button className="button-chat-send btn btn-success" style={{padding: '0px', backgroundColor: 'transparent', backgroundImage: 'url("")'}} onClick={this.sendMessage.bind(this)}>
+                <i style={{textShadow: '2px 0 0 #aaa9a9, -2px 0 0 #aaa9a9, 0 2px 0 #aaa9a9, 0 -2px 0 #aaa9a9, 1px 1px #aaa9a9, -1px -1px 0 #aaa9a9, 1px -1px 0 #aaa9a9, -1px 1px 0 #aaa9a9', fontSize: 30}} className="fa fa-play" aria-hidden="true"></i>
               </button>
             </div>
           </div>
