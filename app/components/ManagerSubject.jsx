@@ -107,6 +107,11 @@ class ManagerSubject extends React.Component {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài viết mới thành công', level:'success'});
         this.refreshData();
+        this.setState({
+          dataForum: {
+            isForum: true, content: '', files: []
+          }
+        })
       }
     })
     .catch((error) => {
@@ -130,8 +135,12 @@ class ManagerSubject extends React.Component {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm chủ đề mới thành công', level:'success'});
         this.refreshData();
+        this.setState({
+          dataTheme: {
+            isTheme: true, title: '', content: '', files: [], open: false
+          }
+        })
       }
-      console.log(data);
     })
     .catch((error) => {
       this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
@@ -152,6 +161,11 @@ class ManagerSubject extends React.Component {
       if(data){
         this.props.addNotificationMute({fetchData: true, message: 'Thêm bài tập mới thành công', level:'success'});
         this.refreshData();
+        this.setState({
+          dataAssign: {
+            isAssignment: true,  title: '', content: '', files: []
+          },
+        })
       }
     })
     .catch((error) => {
@@ -726,13 +740,13 @@ class ManagerSubject extends React.Component {
                      <div style={{display: 'flex', flexDirection: 'column', marginTop: 10}}>
                        <div style={{backgroundColor: 'white', padding: 20}}>
                          <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Tạo mới bài tập tự luận</button>
-                         <input type="text" placeholder="Tên bài tập" style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}} onChange={({target}) => {
+                         <input type="text" placeholder="Tên bài tập" value={this.state.dataAssign.title} style={{width: '100%', height: 40, padding:10, border: '1px solid #f0f0f0'}} onChange={({target}) => {
                            let dataAssign = this.state.dataAssign;
                            dataAssign.title = target.value;
                            this.setState({dataAssign: dataAssign});
                          }}/>
                          <div style={{border: '1px solid #f0f0f0', minHeighth: 100, padding: 10, marginTop: 15}}>
-                           <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" style={{border: 'none', height: 100, width: '100%'}} onChange={({target}) => {
+                           <textarea rows="2" placeholder="Thêm nội dung câu hỏi bài tập" value={this.state.dataAssign.content} style={{border: 'none', height: 100, width: '100%'}} onChange={({target}) => {
                              let dataAssign = this.state.dataAssign;
                              dataAssign.content = target.value;
                              this.setState({dataAssign: dataAssign});
@@ -832,7 +846,7 @@ class ManagerSubject extends React.Component {
                 <h4 style={{textAlign: 'center', color: '#35bcbf'}}>{dataSet.getInfoClassSubject.name}</h4>
                 <p>GV: {dataSet.getInfoClassSubject.teacher.name}</p>
                 <p>Email: {dataSet.getInfoClassSubject.teacher.email}</p>
-                <p>Code: {dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject.code : 'XXXXX'}</p>
+                <p>Code: <span style={{color: '#35bcbf', fontSize: 20 }}>{dataSet.getInfoClassSubject.code ? dataSet.getInfoClassSubject.code : 'XXXXX'}</span></p>
               </div>
               <div style={{marginTop: 10, backgroundColor: 'white', padding: 5}}>
                 <h3 style={{textAlign: 'center'}}>Thêm học viên</h3>
@@ -872,6 +886,11 @@ const INSERT_COMMENT = gql`
 const REMOVE_ACTIVITY = gql`
  mutation removeActivity($_id: String){
    removeActivity(_id: $_id)
+ }
+`;
+const UPDATE_TOPIC = gql`
+ mutation updateTopic($_id: String, $info: String){
+   updateTopic(_id: $_id, info: $info)
  }
 `;
 const MyQuery = gql`
@@ -963,6 +982,11 @@ export default compose(
   graphql(REMOVE_ACTIVITY,{
        props:({mutate})=>({
        removeActivity : (_id) =>mutate({variables:{_id}})
+     })
+   }),
+  graphql(UPDATE_TOPIC,{
+       props:({mutate})=>({
+       updateTopic : (_id, info) =>mutate({variables:{_id, info}})
      })
    })
 )(ManagerSubject)

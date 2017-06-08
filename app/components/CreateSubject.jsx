@@ -46,7 +46,8 @@ class CreateSubject extends React.Component {
         name: nameClassSubject,
         courseId: this.state.courseId,
         dateStart: moment.valueOf(),
-        dateEnd: moment.valueOf()
+        dateEnd: moment.valueOf(),
+        code: this.state.code
       },
       userSubjects: this.state.userSubjects,
       userMails: this.state.userMails,
@@ -54,16 +55,26 @@ class CreateSubject extends React.Component {
       themes: this.state.themes,
       classId: this.state.classId
     };
-    if(this.props.insertSubject){
-      this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
-        if(data){
-          this.props.addNotificationMute({fetchData: true, message: 'Tạo môn học mới thành công', level:'success'});
-          browserHistory.push("/profile/" + this.props.users.userId);
+    console.log(this.state.code);
+    if(this.props.checkCodeClassSubject){
+      this.props.checkCodeClassSubject(this.state.code).then(({data}) => {
+        if(data && !data.checkCodeClassSubject){
+          if(this.props.insertSubject){
+            this.props.insertSubject(this.props.users.userId,JSON.stringify(info)).then(({data}) => {
+              if(data){
+                this.props.addNotificationMute({fetchData: true, message: 'Tạo môn học mới thành công', level:'success'});
+                browserHistory.push("/profile/" + this.props.users.userId);
+              }
+            })
+            .catch((error) => {
+              this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+              console.log(error);
+            })
+          }
         }
-      })
-      .catch((error) => {
-        this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
-        console.log(error);
+        else {
+          this.props.addNotificationMute({fetchData: true, message: 'Trùng mã môn học', level:'error'});
+        }
       })
     }
   }
@@ -258,6 +269,11 @@ const INSERT_SUBJECT = gql`
    insertSubject(userId:$userId,info:$info)
  }
 `;
+const CHECK_CODE = gql`
+ mutation checkCodeClassSubject($code: String){
+   checkCodeClassSubject(code: $code)
+ }
+`;
 const MyQuery = gql`
     query getSubjectByUserId($userId: String){
       getClassByUserId(userId: $userId) {
@@ -293,6 +309,11 @@ export default compose(
   graphql(INSERT_SUBJECT,{
        props:({mutate})=>({
        insertSubject : (userId,info) =>mutate({variables:{userId,info}})
+     })
+   }),
+  graphql(CHECK_CODE,{
+       props:({mutate})=>({
+       checkCodeClassSubject : (code) =>mutate({variables:{code}})
      })
    })
 )(CreateSubject)

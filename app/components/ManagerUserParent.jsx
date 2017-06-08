@@ -25,7 +25,7 @@ class ManagerUserParent extends React.Component {
       return (
         <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
           <Tabs className="secondary" >
-            <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
+            <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white', borderBottom: 0}}>
                 <Tab>
                     <h4 className="modal-title" style={{color: '#35bcbf'}}>Danh sách môn học</h4>
                 </Tab>
