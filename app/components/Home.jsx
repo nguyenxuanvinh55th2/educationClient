@@ -66,7 +66,7 @@ export default class Home extends React.Component {
                   <span className="glyphicon glyphicon-home pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Tính năng đơn giản
                   </p>
@@ -82,7 +82,7 @@ export default class Home extends React.Component {
                   <span  className="glyphicon glyphicon-ok pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Vừa học vừa chơi.
                   </p>
@@ -98,7 +98,7 @@ export default class Home extends React.Component {
                   <span className="glyphicon glyphicon-cog pull-left" style={{fontSize: 40}}>
                   </span>
                 </div>
-                <div className="col-sm-6" style={{ fontSize:  17}}>
+                <div className="col-sm-6" style={{ fontSize:  15}}>
                   <p>
                     - Sử dụng mà không cần cài đặt.
                   </p>
@@ -156,7 +156,7 @@ export default class Home extends React.Component {
             </div>
             <div className="col-sm-10 col-md-7 col-lg-4">
               <h2 style={{textAlign: 'center'}}>Nguyễn Xuân Vinh</h2>
-              <p>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
+              <p style={{fontSize: 15}}>Là một developer tôi mong muốn tạo ra một sản phẩm có ích đối với bản thân tôi khi đang ngồi trên ghế nhà trương cũng như các bạn sinh viên có thể cảm thấy hứng thú hơn đối với việc học ở trên lớp và trao đổi nhiều hơn đối với
               giáo viên để tăng thêm nhiều kiến thức hơn việc học thụ động trên lớp</p>
             </div>
           </div>

@@ -194,3 +194,83 @@ export const ListUserGiveAss = graphql(MyQuery, {
     }),
     name: 'dataSet',
 })(ListUserGiveAssForm);
+class PermissionSubjectForm extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render(){
+    let {dataPer} = this.props;
+    console.log(this.props.dataPer);
+    if(!dataPer.getPermissonInAccounting){
+      return (
+        <div className="spinner spinner-lg"></div>
+      )
+    }
+    else {
+      return (
+        <div style={{display: 'flex', flexDirection: 'column',}}>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <td></td>
+                  <th>Tên học viên</th>
+                  <th>Email</th>
+                  <th>Tập các quyền</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  __.map(dataPer.getPermissonInAccounting,(per,idx) => {
+                    let rolesString = [];
+                    __.forEach(per.profile.roles,(role) => {
+                      switch (role) {
+                        case 'userCanView':
+                          rolesString.push("Có quyền xem nội dung")
+                          break;
+                        default:
+                          break;
+                      }
+                    })
+                    return (
+                      <tr key={idx}>
+                        <td><button type="button" className="btn btn-lg" style={{backgroundColor: idx % 2 == 0 ?'#f0f0f0' : 'whitesmoke', color: '#35bcbf'}} onClick={() => this.setState({openClass: true})}>
+                            <span className="glyphicon glyphicon-pencil"></span>
+                          </button></td>
+                        <td>{per.user.name}</td>
+                        <td>{per.user.email}</td>
+                        <td>{rolesString.toString()}</td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )
+
+    }
+  }
+}
+
+const MyQueryPer = gql`
+    query getData($userIds: [String], $accountingObjectId: String){
+      getPermissonInAccounting(userIds: $userIds, accountingObjectId: $accountingObjectId) {
+      _id
+      user {
+        _id name image email
+      }
+      profile {
+        _id roles name
+      }
+      }
+    }`
+
+export const PermissionSubject = graphql(MyQueryPer, {
+    options: ({userIds, accountingObjectId}) => ({
+      variables: {userIds: userIds, accountingObjectId: accountingObjectId},
+      fetchPolicy: 'cache-only'
+    }),
+    name: 'dataPer',
+})(PermissionSubjectForm);

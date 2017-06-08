@@ -13,10 +13,24 @@ import accounting from 'accounting';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Chip from 'material-ui/Chip';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+
+import MenuItem from 'material-ui/MenuItem';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
-import { GiveAssignment, ListUserGiveAss } from './ChildManagerSubject.jsx'
-const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png'
+import { GiveAssignment, ListUserGiveAss, PermissionSubject } from './ChildManagerSubject.jsx'
+const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png';
+const iconButtonElement = (
+  <IconButton
+    touch={true}
+    tooltipPosition="bottom-left"
+  >
+    <MoreVertIcon color={grey400} />
+  </IconButton>
+);
 class ManagerSubject extends React.Component {
   constructor(props) {
     super(props)
@@ -350,6 +364,12 @@ class ManagerSubject extends React.Component {
                     <Tab>
                         <h4 className="modal-title" style={{color: '#35bcbf'}}>Hoạt động</h4>
                     </Tab>
+                    {
+                      dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                      <Tab>
+                          <h4 className="modal-title" style={{color: '#35bcbf'}}>Phân quyền</h4>
+                      </Tab>: <div></div>
+                    }
                 </TabList>
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
@@ -402,6 +422,12 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetForum,(active,idx) => {
                         let topic = active.topic;
                         let idValue = 'comment' + '-' + idx;
+                        let rightIconMenu = (
+                          <IconMenu iconButtonElement={iconButtonElement}>
+                            <MenuItem>Chỉnh sửa</MenuItem>
+                            <MenuItem>Xoá</MenuItem>
+                          </IconMenu>
+                        );
                         return (
                           <div key={idx} style={{backgroundColor: 'white', marginTop: 10, padding: 10}}>
                             <ListItem style={{fontSize: 13}}
@@ -417,6 +443,7 @@ class ManagerSubject extends React.Component {
                                secondaryText={
                                  <p style={{fontSize: 10}}>{moment(topic.createdAt ? topic.createdAt : moment().valueOf()).format('HH:mm DD/MM/YYYY')}</p>
                                }
+                              rightIconButton={rightIconMenu}
                              />
                              <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                                <p>{topic.content}</p>
@@ -464,11 +491,11 @@ class ManagerSubject extends React.Component {
                                    })
                                  }
                                </div>
-                               <button type="button" className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => {
+                               <button type="button" className="btn" style={{minWidth: 80, maxWidth: 100, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => {
                                  let dataValueForum = this.state.dataSetForum;
                                  dataValueForum[idx].openComment = dataValueForum[idx].openComment ? !dataValueForum[idx].openComment : true;
                                  this.setState({dataSetForum: dataValueForum})
-                               }}>Bình luận</button>
+                               }}>Bình luận({topic.memberReply.length})</button>
                                {
                                  active.openComment &&
                                  <div>
@@ -794,6 +821,12 @@ class ManagerSubject extends React.Component {
                     this.renderActivityUser()
                   }
                 </TabPanel>
+                {
+                  dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                  <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+                    <PermissionSubject {...this.props} userIds={__.map(dataSet.getUserByClassSucbject,(user) => user._id)} accountingObjectId={dataSet.getInfoClassSubject.accounting._id}/>
+                  </TabPanel> :<div></div>
+                }
               </Tabs>
             </div>
             <div style={{width: '35%', paddingLeft: 15}}>
@@ -901,6 +934,9 @@ const MyQuery = gql`
           teacher {
             _id name  image  email
           }
+          accounting {
+           _id
+         }
         }
     }`
 export default compose(

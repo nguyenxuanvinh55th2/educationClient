@@ -44,12 +44,11 @@ export default class Profile extends React.Component {
   }
   render() {
     let { users } = this.props;
-    const childrenWithProps = React.Children.map(this.props.children, (child) =>
-        React.cloneElement(child, this.props)
-    );
+    let childProps = __.cloneDeep(this.props);
+    delete childProps.children;
     if(users.userId){
       return(
-        <div style={{flexDirection: 'column'}}>
+        <div style={{flexDirection: 'column', zIndex: 1}}>
           <Notification loginToken={this.props.loginToken}/>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
           })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#ebebeb', height: 47, position: 'fixed'}}
@@ -93,14 +92,13 @@ export default class Profile extends React.Component {
               <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
             </div>
             <div style={{width: window.innerWidth - 256 - (window.matchMedia(`(min-width: 1100px)`).matches ? 200 : 0), marginTop: 47, minHeight: this.state.height - 47}}>
-              {/* {React.cloneElement(this.props.children, this.props)} */}
-              {childrenWithProps}
+            {React.cloneElement(this.props.children, childProps)}
             </div>
           </div> :
           <div style={{display:'flex', flexDirection: 'column'}}>
             <LeftBar {...this.props} sidebarOpen={this.state.sidebarOpen} closeLeftBar={() => this.setState({sidebarOpen: false})}/>
             <div style={{marginTop: 35}}>
-                {React.cloneElement(this.props.children, this.props)}
+                {React.cloneElement(this.props.children, childProps)}
             </div>
           </div>
         }

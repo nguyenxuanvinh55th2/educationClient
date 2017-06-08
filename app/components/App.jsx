@@ -100,24 +100,23 @@ class Main extends React.Component {
     this._notificationSystem = this.refs.notificationSystemRoot;
   }
   render(){
-    const childrenWithPropsParent = React.Children.map(this.props.children, (child) =>
-        React.cloneElement(child, this.props)
-    );
+    let childProps = __.cloneDeep(this.props);
+   delete childProps.children;
     return (
       <div style={{flexDirection: 'column'}}>
         {
           Meteor.userId() && this.props.users.userId || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle') ?
           <div>
-            {childrenWithPropsParent}
+            {React.cloneElement(this.props.children, childProps)}
             <NotificationSystem ref="notificationSystemRoot" style={{NotificationItem: {DefaultStyle: {margin: '10px', minHeight: 50, padding: '10px'}}}} />
           </div> :
           Meteor.userId() && !this.props.users && !this.props.users.userId || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle')  ?
           <div>
-              {childrenWithPropsParen}
+              {React.cloneElement(this.props.children, this.props)}
             <div className="spinner spinner-lg"></div>
           </div> :
           <div>
-            {childrenWithPropsParent}
+            {React.cloneElement(this.props.children, this.props)}
             <NotificationSystem ref="notificationSystemRoot" style={{NotificationItem: {DefaultStyle: {margin: '10px', minHeight: 50, padding: '10px'}}}} />
           </div>
         }

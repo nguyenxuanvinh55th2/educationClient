@@ -42,31 +42,10 @@ import ManagerUserParent from './components/ManagerUserParent.jsx';
 import { ListUserGiveAss } from './components/ChildManagerSubject.jsx'
 import UserProfile from './components/UserProfile.jsx';
 
-export class WrapMain extends React.Component{
-    constructor(props){
-        super(props);
-        this.token = localStorage.getItem(this.props.loginToken);
-        // if(localStorage.getItem('keepLogin') === 'true'){
-        //     this.token = localStorage.getItem(this.props.loginToken);
-        // } else {
-        //     localStorage.removeItem(this.props.loginToken);
-        // }
-    }
-    render(){
-        return (
-            <div style={{flexDirection: 'column', width: '100%', height:'100%'}}>
-                {/* <QueryUserPermission {...this.props} token={this.token} /> */}
-                {React.cloneElement(this.props.children, this.props)}
-            </div>
-        );
-    }
-}
-
 injectTapEventPlugin();
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
     <MuiThemeProvider>
-      <WrapMain>
         <Router history={history}>
           <Route path='/' component={App}>
             <IndexRoute component={Home}/>
@@ -77,17 +56,16 @@ ReactDOM.render(
               <Route path="/profile/:id/createClass" component={ClassList}/>
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
               <Route path="/profile/:id/questionSet/:questionSetId" component={QuestionStatis}/>
+              <Route path="/profile/:id/managerUser/:childrenId" component={ManagerUserParent}/>
               <Route path="/profile/:id/createTest" component={CreateTest}/>
               <Route path="/profile/:id/userProfile" component={UserProfile} />
               <Route path="/profile/:id/:subjectId" component={ManagerSubject} />
               <Route path="/profile/:id/:subjectId/:topicId" component={ListUserGiveAss} />
-              <Route path="/profile/:id/children/:childrenId" component={ManagerUserParent} />
             </Route>
             <Route path="/waitExam/:id" component={WaitExam}/>
             <Route path="/startedExam/:id" component={StartedExam}/>
           </Route>
         </Router>
-      </WrapMain>
     </MuiThemeProvider>
   </ApolloProvider>
 , document.getElementById('root'));

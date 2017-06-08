@@ -15,79 +15,86 @@ class ManagerUserParent extends React.Component {
     super(props)
   }
   render(){
-    console.log("params");
-    return (
-      <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
-        <Tabs className="secondary" >
-          <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
-              <Tab>
-                  <h4 className="modal-title" style={{color: '#35bcbf'}}>Danh sách môn học</h4>
-              </Tab>
-              <Tab>
-                  <h4 className="modal-title" style={{color: '#35bcbf'}}>Danh sách kì thi</h4>
-              </Tab>
-          </TabList>
-          <TabPanel style={{backgroundColor: '#f0f0f0'}}>
-            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-              <table className="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên môn học</th>
-                    <th>Tên giáo viên</th>
-                    <th>Email giáo viên</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    __.map(this.props.data.classSubjectsByStudent,(sub,idx) => {
-                      return(
-                        <tr key={idx}>
-                          <td>{idx + 1}</td>
-                          <td>{sub.name}</td>
-                          <td>{sub.teacher.name}</td>
-                          <td>{sub.teacher.email}</td>
-                        </tr>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-          </TabPanel>
-          <TabPanel style={{backgroundColor: '#f0f0f0'}}>
-            <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
-              <table className="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên kì thì</th>
-                    <th>Trạng thái</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    __.map(this.props.data.getAllPlayperExamByUser,(exam,idx) => {
-                      return(
-                        <tr key={idx}>
-                          <td>{idx + 1}</td>
-                          <td>{exam.name}</td>
-                          <td>
-                            {
-                              exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
-                            }
-                          </td>
-                        </tr>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-          </TabPanel>
-        </Tabs>
-      </div>
-    )
+    let { data } = this.props;
+    if(!data.classSubjectsByStudent){
+      return (
+        <div className="spinner spinner-lg"></div>
+      )
+    }
+    else {
+      return (
+        <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
+          <Tabs className="secondary" >
+            <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white'}}>
+                <Tab>
+                    <h4 className="modal-title" style={{color: '#35bcbf'}}>Danh sách môn học</h4>
+                </Tab>
+                <Tab>
+                    <h4 className="modal-title" style={{color: '#35bcbf'}}>Danh sách kì thi</h4>
+                </Tab>
+            </TabList>
+            <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+              <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
+                <table className="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên môn học</th>
+                      <th>Tên giáo viên</th>
+                      <th>Email giáo viên</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      __.map(this.props.data.classSubjectsByStudent,(sub,idx) => {
+                        return(
+                          <tr key={idx}>
+                            <td>{idx + 1}</td>
+                            <td>{sub.name}</td>
+                            <td>{sub.teacher.name}</td>
+                            <td>{sub.teacher.email}</td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </TabPanel>
+            <TabPanel style={{backgroundColor: '#f0f0f0'}}>
+              <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
+                <table className="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên kì thì</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      __.map(this.props.data.getAllPlayperExamByUser,(exam,idx) => {
+                        return(
+                          <tr key={idx}>
+                            <td>{idx + 1}</td>
+                            <td>{exam.name}</td>
+                            <td>
+                              {
+                                exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
+                              }
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </TabPanel>
+          </Tabs>
+        </div>
+      )
+    }
   }
 }
 const CLASS_SUBJECT = gql`
