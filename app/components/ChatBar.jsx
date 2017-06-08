@@ -75,7 +75,7 @@ class ChatBar extends React.Component {
     let { users } = this.props;
     return (
       <div className="chatbar">
-        <div className="chatbar-user" style={{paddingTop: 15, overflowY: 'auto'}}>
+        <div className="chatbar-user" style={{paddingTop: 15, overflowY: 'auto', overflowX: 'hidden'}}>
           <ul className="userList">
             { this.renderChat() }
           </ul>
