@@ -46,7 +46,7 @@ export default class Profile extends React.Component {
     let { users } = this.props;
     if(users.userId){
       return(
-        <div style={{flexDirection: 'column'}}>
+        <div style={{flexDirection: 'column', zIndex: 1}}>
           <Notification {...this.props} loginToken={this.props.loginToken}/>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
           })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#ebebeb', height: 47, position: 'fixed'}}
