@@ -4,7 +4,10 @@ import { Link, Router, browserHistory } from 'react-router'
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import { createContainer } from 'react-meteor-data';
+import  { Questions } from 'educationServer/question'
+import  { Examinations } from 'educationServer/examination'
+import  { ClassSubjects } from 'educationServer/classSubject'
 import ClassList from './ClassList.jsx';
 import __ from 'lodash';
 import moment from 'moment';
@@ -352,15 +355,6 @@ class LeftBar extends React.Component {
            nestedItems={[
            ]}
          /> */}
-         {/* <ListItem
-           primaryText="Hướng dẫn"
-           leftIcon={<Public color={'white'} style={{width: 20, height: 20}}/>}
-           initiallyOpen={false}
-           primaryTogglesNestedList={true}
-           style={{color: 'white', fontSize: 13}}
-           nestedItems={[
-           ]}
-         /> */}
          <ListItem
            primaryText="Cài đặt"
            leftIcon={<Setting color={'white'} style={{width: 20, height: 20}}/>}
@@ -411,6 +405,7 @@ class LeftBar extends React.Component {
          <ClassList {...this.props} height={window.innerHeight -226} handleClose={() => this.setState({openDialogClass: false})} />
          {/* <CreateCoure {...this.props} height={window.innerHeight -226} handleClose={this.handleClose.bind(this)} /> */}
        </Dialog>
+       <PubSub RefreshData={() => this.props.data.refetch()}/>
        </Drawer>
     )
   }
@@ -597,9 +592,43 @@ const INSERT_COURSE = gql`
  }
 `;
 
-
 export const CreateCoure =graphql(INSERT_COURSE,{
      props:({mutate})=>({
      insertCourse : (userId,info) =>mutate({variables:{userId,info}})
    })
  })(CreateCoureForm)
+
+class PubSubForm extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    refesh(){
+      if(this.props.RefreshData){
+        this.props.RefreshData();
+      }
+    }
+    componentWillUpdate(nextProps, nextState){
+      if(this.props.classSubjectsCount !== nextProps.classSubjectsCount){
+        this.refesh();
+      }
+      else if (this.props.questionCount !== nextProps.questionCount) {
+        this.refesh();
+      }
+      else if (this.props.examinationCount !== nextProps.examinationCount) {
+        this.refesh();
+      }
+    }
+    render(){
+        return (<div></div>);
+    }
+}
+const PubSub = createContainer((ownProps) => {
+  Meteor.subscribe("questions");
+  Meteor.subscribe("examinations");
+  Meteor.subscribe("classSubjects");
+  return {
+    classSubjectsCount: ClassSubjects.find({}).count(),
+    questionCount: Questions.find({}).count(),
+    examinationCount: Examinations.find({}).count()
+  }
+}, PubSubForm);
