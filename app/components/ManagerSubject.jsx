@@ -71,7 +71,8 @@ class ManagerSubject extends React.Component {
       topicSelected: {},
       openGiveAdd: false,
       openGiveList:false,
-      filesAss: {}
+      filesAss: {},
+      openDialogEdit: false
     }
   }
   componentWillReceiveProps(nextProps){
@@ -438,7 +439,7 @@ class ManagerSubject extends React.Component {
                         let idValue = 'comment' + '-' + idx;
                         let rightIconMenu = (
                           <IconMenu iconButtonElement={iconButtonElement}>
-                            <MenuItem>Chỉnh sửa</MenuItem>
+                            <MenuItem onClick={() => this.setState({openDialogEdit: true, topicSelected: topic})}>Chỉnh sửa</MenuItem>
                             <MenuItem onClick={() => {
                               let r = confirm('Bạn muốn xóa dữ liệu này')
                               if(r == true){
@@ -868,6 +869,55 @@ class ManagerSubject extends React.Component {
             >
               <GiveAssignment {...this.props} topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
             </Dialog>
+            <Dialog
+              modal={true}
+              open={this.state.openDialogEdit}
+              bodyStyle={{padding: 0}}
+              contentStyle={{width: 400}}
+            >
+              <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h4 className="modal-title">Chỉnh sửa bài đăng</h4>
+                    </div>
+                    <div className="modal-body" style={{overflowY: 'auto', overflowX: 'hidden', overflowY: 'auto', overflowX: 'hidden'}}>
+                    <textarea rows="5" style={{width: "100%"}} value={this.state.topicSelected.content} onChange={({target}) => {
+                      this.setState((prevState, props) => {
+                          prevState.topicSelected.content = target.value
+                          return prevState
+                        });
+                    }}></textarea>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-default" onClick={() => this.setState({openDialogEdit: false})}>Đóng</button>
+                      <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} disabled={!this.state.topicSelected.content} onClick={() => {
+                        if(this.props.updateTopic){
+                          let ob = {
+                            content: this.state.topicSelected.content
+                          }
+                          this.props.updateTopic(this.state.topicSelected._id, JSON.stringify(ob)).then(({data}) => {
+                            if(data.updateTopic){
+                                this.props.addNotificationMute({fetchData: true, message: 'Thành công', level:'success'});
+                                this.setState({openDialogEdit: false});
+                                this.refreshData();
+                            }
+                            else {
+                                this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+                                this.setState({openDialogEdit: false});
+                            }
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                              this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+                              this.setState({openDialogEdit: false});
+                          })
+                        }
+                      }} >Cập nhật</button>
+                    </div>
+                  </div>
+              </div>
+            </Dialog>
+
           </div>
         )
       }
