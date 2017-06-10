@@ -124,6 +124,7 @@ const USER_CHAT = gql`
       }
       contentId
       content {
+        _id
         index
         userId
         user{

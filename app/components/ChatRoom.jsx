@@ -10,6 +10,7 @@ import { Link, Router, browserHistory } from 'react-router'
 
 class Message extends Component {
   render() {
+    console.log('this.props ', this.props)
     if(this.props.users && this.props.userId !== this.props.users.userId) {
       return (
         <tr>
@@ -36,6 +37,7 @@ class Message extends Component {
               {this.props.text}
               <br/>
               <span className="messageDate">{moment(this.props.date).format('DD/MM/YYYY h:mm')}</span>
+              <div className="messageDate">{this.props.end && this.props.read ? 'đã xem' : ''}</div>
             </p>
           </td>
           <td>
@@ -55,15 +57,17 @@ class ChatRoom extends Component {
   }
 
   renderMessage () {
+
     if(this.props.chatId === null) {
       return (
         <tr></tr>
       )
     }
     else {
-      return this.props.chatContent.map((content, idx) => (
-        <Message {...this.props} key={content.index + idx} userId={content.user._id} name={content.user.name} image={content.user.image} text={content.message} date={content.date}/>
-      ));
+      return this.props.chatContent.map((content, idx) => {
+        let end = (idx >= (this.props.chatContent.length - 1));
+        return <Message {...this.props} key={content.index + idx} userId={content.user._id} name={content.user.name} image={content.user.image} text={content.message} date={content.date} read={content.read} end={end}/>
+      });
     }
   }
 
@@ -83,7 +87,9 @@ class ChatRoom extends Component {
       var userId = this.props.chatContent[count].userId;
       if(this.props.chatId !== null && this.props.users && userId !== this.props.users.userId) {
         let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
-        this.props.updateChatContent(token, this.props.chatId);
+        this.props.updateChatContent(token, this.props.chatId).then(() => {
+          this.props.refetch();
+        });
       }
     }
   }
@@ -124,12 +130,12 @@ class ChatRoom extends Component {
       this.props.insertChatContent(token, content);
 
     } else {
-
         let id = this.props.chatId;
         index = this.props.chatContent.length;
         let item = {
             index: index,
             userId: userId,
+            receiver: this.props.id,
             message: text,
             read: false,
             date: date,
