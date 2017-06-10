@@ -197,10 +197,13 @@ export const ListUserGiveAss = graphql(MyQuery, {
 class PermissionSubjectForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state= {
+      open: false,
+      userSelect: {}
+    }
   }
   render(){
     let {dataPer} = this.props;
-    console.log(this.props.dataPer);
     if(!dataPer.getPermissonInAccounting){
       return (
         <div className="spinner spinner-lg"></div>
@@ -235,7 +238,10 @@ class PermissionSubjectForm extends React.Component {
                           rolesString.push('Quyền đăng bài giảng');
                           break;
                         case 'userCanUploadAssignment':
-                          rolesString.push('Quyền đăng bài tập')
+                          rolesString.push('Quyền đăng bài tập');
+                          break;
+                        case 'userCanUploadPoll':
+                          rolesString.push('Quyền khảo sát');
                           break;
                         default:
                           break;
@@ -243,7 +249,7 @@ class PermissionSubjectForm extends React.Component {
                     })
                     return (
                       <tr key={idx}>
-                        <td><button type="button" className="btn btn-lg" style={{backgroundColor: idx % 2 == 0 ?'#f0f0f0' : 'whitesmoke', color: '#35bcbf'}} onClick={() => this.setState({openClass: true})}>
+                        <td><button type="button" className="btn btn-lg" style={{backgroundColor: idx % 2 == 0 ?'#f0f0f0' : 'whitesmoke', color: '#35bcbf'}} onClick={() => this.setState({open: true, userSelect: per})}>
                             <span className="glyphicon glyphicon-pencil"></span>
                           </button></td>
                         <td>{per.user.name}</td>
@@ -256,6 +262,16 @@ class PermissionSubjectForm extends React.Component {
               </tbody>
             </table>
           </div>
+          <Dialog
+            modal={true}
+            open={this.state.open}
+            autoDetectWindowHeight={false}
+            autoScrollBodyContent={false}
+            bodyStyle={{padding: 0}}
+            contentStyle={{minHeight:'60%'}}
+          >
+            <EditPerMission {...this.props} refreshData={() => this.props.dataPer.refetch()} userSelect={this.state.userSelect} handleClose={() => this.setState({open: false})}/>
+          </Dialog>
         </div>
       )
 
@@ -283,3 +299,153 @@ export const PermissionSubject = graphql(MyQueryPer, {
     }),
     name: 'dataPer',
 })(PermissionSubjectForm);
+
+class EditPerMissionForm extends React.Component {
+  constructor(props) {
+    super(props);
+    let rolesInActive = [];
+    this.roles = [
+      'userCanView', 'userCanManage', 'userCanUploadLesson', 'userCanUploadAssignment', 'userCanUploadPoll'
+    ]
+    __.forEach(this.roles,(role) => {
+      if(__.findIndex(props.userSelect.profile.roles,(r) => r == role) <=-1){
+        rolesInActive.push(role);
+      }
+    });
+    this.state = {
+      rolesActive: __.cloneDeep(props.userSelect.profile.roles),
+      rolesInActive: rolesInActive
+    }
+  }
+  render(){
+    let { userSelect } = this.props;
+    return (
+      <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h4 className="modal-title">Chỉnh sửa quyền: {userSelect.user.name}</h4>
+            </div>
+            <div className="modal-body" style={{overflowY: 'auto', overflowX: 'hidden', overflowY: 'auto', overflowX: 'hidden'}}>
+              <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <div style={{display: 'flex', flexDirection: 'column', width: '50%'}}>
+                  {
+                    __.map(this.state.rolesActive,(role, idx) => {
+                      let rolesString = '';
+                      switch (role) {
+                        case 'userCanView':
+                          rolesString = "Quyền xem nội dung";
+                          break;
+                        case 'userCanManage':
+                          rolesString = 'Quyền quản lý';
+                          break;
+                        case 'userCanUploadLesson':
+                          rolesString = 'Quyền đăng bài giảng';
+                          break;
+                        case 'userCanUploadAssignment':
+                          rolesString = 'Quyền đăng bài tập';
+                          break;
+                        case 'userCanUploadPoll':
+                          rolesString = 'Quyền khảo sát'
+                          break;
+                        default:
+                          break;
+                      }
+                      return (
+                        <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: '1px solid pink', margin: 5}}>
+                          <button type="button" className="btn btn-lg" style={{backgroundColor: 'white', color: '#35bcbf'}} onClick={() => {
+                            this.setState((prevState) => {
+                              prevState.rolesInActive.push(role);
+                              prevState.rolesActive.splice(idx,1);
+                              return prevState;
+                            });
+                          }}>
+                              <span className="glyphicon glyphicon-minus"></span>
+                          </button>
+                          <p style={{paddingTop: 10}}>{rolesString}</p>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column', width: '50%'}}>
+                  {
+                    __.map(this.state.rolesInActive,(role, idx) => {
+                      let rolesString = '';
+                      switch (role) {
+                        case 'userCanView':
+                          rolesString = "Quyền xem nội dung";
+                          break;
+                        case 'userCanManage':
+                          rolesString = 'Quyền quản lý';
+                          break;
+                        case 'userCanUploadLesson':
+                          rolesString = 'Quyền đăng bài giảng';
+                          break;
+                        case 'userCanUploadAssignment':
+                          rolesString = 'Quyền đăng bài tập';
+                          break;
+                        case 'userCanUploadPoll':
+                          rolesString = 'Quyền khảo sát'
+                          break;
+                        default:
+                          break;
+                      }
+                      return (
+                        <div key={idx} style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', border: '1px solid black', margin: 5}}>
+                          <button type="button" className="btn btn-lg" style={{backgroundColor: 'white', color: '#35bcbf'}} onClick={() => {
+                            this.setState((prevState) => {
+                              prevState.rolesActive.push(role);
+                              prevState.rolesInActive.splice(idx,1);
+                              return prevState;
+                            });
+                          }}>
+                              <span className="glyphicon glyphicon-plus"></span>
+                          </button>
+                          <p style={{paddingTop: 10}}>{rolesString}</p>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-default" onClick={() => this.props.handleClose()}>Đóng</button>
+              <button type="button" className="btn btn-primary" display={!this.state.rolesActive.length} onClick={() =>{
+                if(this.props.updateProfile){
+                  this.props.updateProfile(this.props.userSelect.profile._id, JSON.stringify({
+                    roles: this.state.rolesActive
+                  })).then(({data}) => {
+                    if(data.updateProfile){
+                      this.props.handleClose();
+                      this.props.refreshData();
+                      this.props.addNotificationMute({fetchData: true, message: 'Cập nhật thành công', level:'success'});
+                    }
+                    else {
+                      this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+                     this.props.handleClose();
+                    }
+                  })
+                  .catch((error) => {
+                    this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+                    this.props.handleClose();
+                  })
+                }
+              }}>Cập nhật</button>
+            </div>
+          </div>
+      </div>
+    )
+  }
+}
+
+const UPDATE_PROFILE = gql`
+ mutation updateProfile($_id: String,$info:String){
+   updateProfile(_id: $_id,info: $info)
+ }
+`;
+export const EditPerMission = graphql(UPDATE_PROFILE,{
+       props:({mutate})=>({
+       updateProfile : (_id,info) =>mutate({variables:{_id,info}})
+     })
+})(EditPerMissionForm);
