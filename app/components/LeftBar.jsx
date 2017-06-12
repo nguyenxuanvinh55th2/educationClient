@@ -382,6 +382,7 @@ class LeftBar extends React.Component {
            initiallyOpen={false}
            primaryTogglesNestedList={true}
            style={{color: 'white', fontSize: 13}}
+           onClick={() => document.getElementById('tutorial').click()}
          />
          <ListItem
            primaryText="Đăng xuất"
@@ -395,6 +396,7 @@ class LeftBar extends React.Component {
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() => this.setState({openDialogClass: true})}>Tạo lớp học</button>
          <button type="button" className="btn btn-link" style={{color: '#35bcbf', fontSize: 13}} onClick={() =>browserHistory.push('/profile/' + this.props.users.userId + '/createSubject')}>Tạo môn học</button>
        </div>
+       <a id="tutorial" target="_blank" href="https://docs.google.com/document/d/1Qk2vx26NroYrupga8Y8aaLae08CirtwcXQ_zxSduWbk/edit?usp=sharing"></a>
        <Dialog
          modal={true}
          open={this.state.openDialog}
