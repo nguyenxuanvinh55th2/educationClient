@@ -98,18 +98,20 @@ button:active {
 .message-left {
   float: left;
   margin-left: 10px;
+  background-color: #E9EBEE;
+  color: #54575E;
 }
 
 .message-right {
   float: right;
   margin-right: 10px;
+  background-color: #35BCBF;
+  color: white;
 }
 
 .message-right, .message-left {
   font-size: 20px;
   font-weight: 100;
-  background-color: #35BCBF;
-  color: white;
   padding: 5px;
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
@@ -123,17 +125,13 @@ button:active {
   font-size: 11px;
 }
 
-.chat-footer {
-  height: 55px;
-}
-
 .chat-body {
   height: 280px;
   overflow: scroll;
   overflow-x: hidden;
   width: 100%;
-  border-left: 1px solid #35BCBF;
-  border-right: 1px solid #35BCBF;
+  border-left: 1px solid #aaa9a9;
+  border-right: 1px solid #aaa9a9;
 }
 
 .td-room-name {
@@ -190,7 +188,7 @@ button:active {
 }
 
 .message-left, .message-right {
-  max-width: 170px;
+  max-width: 200px;
 }
 
 ul, li {
@@ -328,39 +326,13 @@ ul, li {
   width: 80%;
 }
 
-.message-left {
-  float: left;
-  margin-left: 10px;
-}
-
-.message-right {
-  float: right;
-  margin-right: 10px;
-}
-
-.message-right, .message-left {
-  font-size: 20px;
-  font-weight: 100;
-  background-color: #35BCBF;
-  color: white;
-  padding: 5px;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 17px;
-  //max-width: 80px;
-  // max-width: 50px;
-  // max-height: 100px;
-}
-
 .messageDate {
   font-size: 11px;
 }
 
 .chat-footer {
   height: 55px;
+  background-color: white;
 }
 
 .chat-body {

@@ -3,6 +3,8 @@ import { Link, Router, browserHistory } from 'react-router';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import __ from 'lodash';
+import { createContainer } from 'react-meteor-data';
 
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -12,6 +14,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
 
 import ChatRoom from './ChatRoom.jsx';
+
+import  { ChatContents } from 'educationServer/chatContent';
 
 //Meteor.subscribe("user");
 
@@ -50,7 +54,7 @@ class ChatItem extends Component {
         }
       }
     if(this.state.showChatRoom) {
-      return (<ChatRoom {...this.props} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
+      return (<ChatRoom {...this.props} refetch={this.props.refetch} id={ this.props.userId } name={ this.props.userName } chatId={ this.props.chatId } chatContent={ this.props.chatContent } number={ number }/>)
     } else {
         return null
     }
@@ -95,6 +99,15 @@ class ChatItem extends Component {
         chatShow.appendChild(chatRoom);
       }
     }, 50);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.chatEl !== this.props.chatEl) {
+      console.log('chatEl ', nextProps.chatEl)
+      if(!__.find(this.props.chatContent, {_id: nextProps.chatEl._id})) {
+        this.props.refetch();
+      }
+    }
   }
 
   render() {
@@ -196,7 +209,7 @@ const ADD_CHILDRENT = gql`
 }`
 
 
-export default compose(
+const ChatItemWithMutate = compose(
   graphql(ADD_FRIEND, {
       props: ({mutate})=> ({
           insertUserFriend : (userId, _id) => mutate({variables:{userId, _id}})
@@ -208,3 +221,13 @@ export default compose(
       })
   }),
 )(ChatItem);
+
+export default createContainer((ownProps) => {
+  Meteor.subscribe("chatContents", ownProps.users.userId);
+  console.log('data ', ChatContents.find({}).fetch());
+  let chatEl = ChatContents.find({userId: ownProps.userId, receiver: ownProps.users.userId}, {index: -1}).fetch().sort((a, b) => b.index - a.index)[0];
+  console.log('chatEl abc', chatEl);  
+  return {
+    chatEl
+  };
+}, ChatItemWithMutate);
