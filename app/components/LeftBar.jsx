@@ -176,14 +176,21 @@ class LeftBar extends React.Component {
     })
   }
   logout(){
-    Meteor.logout();
-    localStorage.removeItem('Meteor.loginTokenGoogle');
-    localStorage.removeItem('Meteor.loginToken');
-    localStorage.removeItem('Meteor.loginTokenFacebook');
-    localStorage.removeItem('Meteor.loginServices');
-    localStorage.removeItem('Meteor.loginServicesGoogle');
-    this.props.loginCommand({});
-    this.props.loginCommand({});
+    let { users, logout, loginToken } = this.props;
+    if(this.props.logout && users.userId){
+      this.props.logout(users.userId,localStorage.getItem(loginToken)).then(({data}) => {
+        if(data.logoutUser){
+          Meteor.logout();
+          localStorage.removeItem('Meteor.loginTokenGoogle');
+          localStorage.removeItem('Meteor.loginToken');
+          localStorage.removeItem('Meteor.loginTokenFacebook');
+          localStorage.removeItem('Meteor.loginServices');
+          localStorage.removeItem('Meteor.loginServicesGoogle');
+          this.props.loginCommand({});
+          browserHistory.push('/');
+        }
+      })
+    }
   }
   renderExamination() {
     let { data, users } = this.props;
@@ -470,6 +477,12 @@ const REMOVE_EXAMINATION = gql`
       removeExamination(token: $token, _id: $_id)
 }`
 
+const LOGOUT = gql`
+  mutation logout($userId: String, $token: String) {
+    logoutUser(userId: $userId, token: $token)
+  }
+`;
+
 export default compose(
 graphql(CLASS_SUBJECT, {
     options: (ownProps) => ({
@@ -491,6 +504,11 @@ graphql(REMOVE_EXAMINATION , {
     props: ({mutate})=> ({
         removeExamination : (token, _id) => mutate({variables:{token, _id}})
     })
+}),
+graphql(LOGOUT,{
+    props:({mutate})=>({
+    logout : (userId,token) =>mutate({variables:{userId,token}})
+  })
 }),
 )(LeftBar);
 
@@ -591,7 +609,6 @@ const INSERT_COURSE = gql`
    insertCourse(userId:$userId,info:$info)
  }
 `;
-
 export const CreateCoure =graphql(INSERT_COURSE,{
      props:({mutate})=>({
      insertCourse : (userId,info) =>mutate({variables:{userId,info}})
