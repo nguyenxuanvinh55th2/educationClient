@@ -76,7 +76,6 @@ class FriendList extends Component {
   }
 
   render() {
-    console.log('this.props.data.friendList ', this.props.data.friendList)
     return (
       <div className="friendList">
         <div className="col-sm-offset-8 col-sm-4" style={{marginRight: '1%'}}>

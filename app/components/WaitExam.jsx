@@ -127,7 +127,6 @@ class WaitExam extends React.Component {
         );
     } else {
         let playerList = __.cloneDeep(data.examById.userExams);
-        console.log('playerList ', playerList);
         return (
           <div style={{backgroundColor: 'white'}}>
             <div style={{textAlign: 'center', paddingBottom: 20}}>

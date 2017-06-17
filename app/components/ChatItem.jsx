@@ -103,7 +103,6 @@ class ChatItem extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.chatEl !== this.props.chatEl) {
-      console.log('chatEl ', nextProps.chatEl)
       if(!__.find(this.props.chatContent, {_id: nextProps.chatEl._id})) {
         this.props.refetch();
       }
@@ -224,9 +223,7 @@ const ChatItemWithMutate = compose(
 
 export default createContainer((ownProps) => {
   Meteor.subscribe("chatContents", ownProps.users.userId);
-  console.log('data ', ChatContents.find({}).fetch());
   let chatEl = ChatContents.find({userId: ownProps.userId, receiver: ownProps.users.userId}, {index: -1}).fetch().sort((a, b) => b.index - a.index)[0];
-  console.log('chatEl abc', chatEl);  
   return {
     chatEl
   };
