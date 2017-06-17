@@ -265,7 +265,7 @@ class QuesionBank extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let { data } = nextProps;
-    if(data.subjectByUser && data.subjectByUser.legth) {
+    if(data.subjectByUser && data.subjectByUser.length) {
       let subject = data.subjectByUser[0];
       this.setState({subjectId: subject._id})
     } else {
@@ -462,6 +462,7 @@ class QuesionBank extends React.Component {
       _id: 'other',
       name: 'Khác'
     })
+    console.log('data.subjectByUser ', data.subjectByUser)
     if(showQuestionBank === 'personal') {
       return (
         <div>
@@ -517,7 +518,7 @@ class QuesionBank extends React.Component {
                 <div className="form-horizontal" style={{width: '90%', marginLeft: '5%'}}>
                   <div style={{width: '100%', paddingTop: 10, paddingBottom: 30}}>
                     {
-                      data.subjectByUser ?
+                      (data.subjectByUser && data.subjectByUser.length) ?
                       <div style={{width: '100%'}}>
                         <div style={{width: '100%', paddingBottom: 10, paddingLeft: 19, paddingRight: 0, marginBottom: 0}} className="form-group">
                             <label className="col-sm-2 control-label" style={{paddingRight: 5, paddingLeft: 10, textAlign: 'left', whiteSpace: 'nowrap'}}>Chọn môn học</label>

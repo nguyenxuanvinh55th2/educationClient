@@ -144,23 +144,6 @@ class CreateTest extends  React.Component {
                         }}/>
                       <p style={{marginLeft: 20, marginTop: 0}}>SV</p>
                   </div>
-                  <label className="col-sm-12" style={{paddingLeft: 0}}>Đề thi của bạn được dùng để</label>
-                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
-                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                      <input checked={!isTest && 'checked'} type="radio" name="optradio" onChange={({target}) => {
-                          if(isTest) {
-                            this.setState({isTest: false})
-                          }
-                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ôn tập</p>
-                    </label>
-                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                      <input checked={isTest && 'checked'} type="radio" name="optradio" onChange={({target}) => {
-                          if(!isTest) {
-                            this.setState({isTest: true});
-                          }
-                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Kiểm tra</p>
-                    </label>
-                  </div>
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Hình thức thi</label>
                   <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
                     <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -176,23 +159,6 @@ class CreateTest extends  React.Component {
                             this.setState({isClassStyle: false});
                           }
                         }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Tại nhà</p>
-                    </label>
-                  </div>
-                  <label className="col-sm-12" style={{paddingLeft: 0}}>Được sử dụng tài liệu</label>
-                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
-                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                      <input checked={!openTest && 'checked'} type="radio" name="optradio2" onChange={({target}) => {
-                          if(openTest) {
-                            this.setState({openTest: false})
-                          }
-                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Không</p>
-                    </label>
-                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                      <input checked={openTest && 'checked'} type="radio" name="optradio2" onChange={({target}) => {
-                          if(!openTest) {
-                            this.setState({openTest: true});
-                          }
-                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Có</p>
                     </label>
                   </div>
                   <div style={{width: '100%', paddingBottom: 10,  display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingLeft: '25%', paddingRight: '25%'}}>
