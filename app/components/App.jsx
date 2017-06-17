@@ -100,6 +100,7 @@ class Main extends React.Component {
     this._notificationSystem = this.refs.notificationSystemRoot;
   }
   render(){
+    console.log("APp");
     let childProps = __.cloneDeep(this.props);
    delete childProps.children;
     return (
