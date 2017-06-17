@@ -2,8 +2,16 @@ import React, { PropTypes, Component } from 'react'
 import { Link, Router, browserHistory } from 'react-router'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import { Meteor } from 'meteor/meteor';
 
 class FriendItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+  }
   render() {
       return (
         <div className="col-sm-6">
@@ -18,8 +26,22 @@ class FriendItem extends Component {
               <p>{this.props.item.email}</p>
             </div>
             <div className="col-sm-1">
-              <div id="dropdown-custom-1" style={{background: 'white', backgroundImage: 'none'}}>
-              </div>
+              <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white'}} onClick={(event) => this.setState({open: true, anchorEl: event.currentTarget})}>Bạn bè</button>
+              <Popover
+                open={this.state.open}
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                onRequestClose={() => this.setState({open: false})}
+              >
+                <Menu>
+                  <MenuItem primaryText="Hủy kết bạn" onClick={() => {
+                    this.props.unFriend(Meteor.userId(), this.props.item._id).then(() => {
+                      this.props.refetch();
+                    })
+                  }}/>
+                </Menu>
+              </Popover>
             </div>
           </div>
         </div>
@@ -27,9 +49,19 @@ class FriendItem extends Component {
   }
 }
 
-FriendItem.PropTypes = {
-  item: PropTypes.object.isRequired
-}
+const UN_FRIEND = gql`
+    mutation unFriend($userId: String!, $friendId: String!) {
+      unFriend(userId: $userId, friendId: $friendId)
+}`
+
+const FriendItemMutate = compose(
+graphql(UN_FRIEND, {
+    props: ({mutate})=> ({
+        unFriend : (userId, friendId) => mutate({variables:{userId, friendId}})
+    })
+}),
+)(FriendItem);
+
 
 class FriendList extends Component {
   constructor(props) {
@@ -70,14 +102,14 @@ class FriendList extends Component {
     else {
       var friendList = this.searchItem(this.props.data.friendList);
       return friendList.map((item) => (
-        <FriendItem key={item._id} item={item}/>
+        <FriendItemMutate key={item._id} item={item} refetch={this.props.data.refetch}/>
       ));
     }
   }
 
   render() {
     return (
-      <div className="friendList">
+      <div className="friendList" style={{backgroundColor: '#F0F0F0'}}>
         <div className="col-sm-offset-8 col-sm-4" style={{marginRight: '1%'}}>
           <div className="col-sm-10" style={{paddingRight: 0}}>
                 <input type="text" id="modalInput" className="form-control" onChange={({target}) => {
