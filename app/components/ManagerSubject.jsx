@@ -349,6 +349,7 @@ class ManagerSubject extends React.Component {
     )
   }
   render(){
+    console.log(this.props.notification);
     let { dataSet, users } = this.props;
       if(dataSet.loading && !dataSet.getActivityForum){
         return (
