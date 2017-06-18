@@ -40,7 +40,7 @@ import QuestionStatis from './components/QuestionStatis.jsx';
 import Authenticate from './components/Authenticate.jsx';
 import ManagerUserParent from './components/ManagerUserParent.jsx';
 import { ListUserGiveAss } from './components/ChildManagerSubject.jsx'
-import UserProfile from './components/UserProfile.jsx';
+import UserProfile from './components/EditProfile.jsx';
 
 injectTapEventPlugin();
 ReactDOM.render(

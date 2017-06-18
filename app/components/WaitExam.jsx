@@ -109,7 +109,7 @@ class WaitExam extends React.Component {
             <PlayerImage imageStyle={{marginTop: 7, width: 30, height: 30, borderRadius: '100%'}} checkOutImage = {item.player.user.checkOutImage[0].link}/>
           </td>
           <td style={{textAlign: 'center'}}>
-            <p style={{fontSize:16}}>{item.player.user.name}</p>
+            <p style={{fontSize:16}}>{item.player.user.fullName ? item.player.user.fullName : item.player.user.name}</p>
           </td>
           <td style={{textAlign: 'center'}}>
             <p style={{fontSize:14}}>{item.player.user.email}</p>
@@ -204,6 +204,7 @@ const QUESTION_BY_EXAM = gql`
               link
               time
             }
+            fullName
           }
         }
       }

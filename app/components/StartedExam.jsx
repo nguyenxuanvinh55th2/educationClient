@@ -284,7 +284,7 @@ class StartedExam extends React.Component {
           <td onClick={() => {
               this.setState({openDrawer: true, currentPlayerCheckoutImage: item.player.user.checkOutImage});
             }}>
-            <p style={{fontSize: 16}}>{item.player.user.name}</p>
+            <p style={{fontSize: 16}}>{item.player.user.fullName ? item.player.user.fullName : item.player.user.name}</p>
           </td>
           <td>
             <p style={{fontSize: 14}}>{item.player.user.email}</p>
@@ -325,8 +325,8 @@ class StartedExam extends React.Component {
     } else {
         return (
           <div style={{backgroundColor: 'white'}}>
-            <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+            <a className="navbar-brand" href="/" style={{backgroundColor: 'white', position: 'absolute', top: 0, left: 0}}>
+              <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
             </a>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
               <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
@@ -374,8 +374,8 @@ class StartedExam extends React.Component {
     let { openDrawer, timeString, currentPlayerCheckoutImage, questionCountDown } = this.state;
     return (
       <div style={{backgroundColor: 'white'}}>
-        <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
-          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+        <a className="navbar-brand" href="/" style={{backgroundColor: 'white', position: 'absolute', top: 0, left: 0}}>
+              <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
         </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
@@ -433,21 +433,21 @@ class StartedExam extends React.Component {
     let second = Math.floor(time - hour * 3600 - minute * 60);
     return (
       <div>
-        <a className="navbar-brand" href="/" style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0}}>
-          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logo_zps0osdqorj.png" alt="Dispute Bills" />
+        <a className="navbar-brand" href="/" style={{backgroundColor: 'transparent', position: 'absolute', top: 0, left: 0}}>
+            <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
         </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
-          <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
+          <h1 style={{color: '#68C0BC', margin: 0, paddingTop: 15}}>{ data.examById.name.toUpperCase() }</h1>
           <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
         </div>
         {
           data.examById.isClassStyle &&
-          <div className="col-sm-12">
+          <div className="col-sm-12" style={{backgroundColor: '#f0f0f0'}}>
             <h3 style={{textAlign: 'center'}}>
             </h3>
           </div>
         }
-        <div className="col-sm-12">
+        <div className="col-sm-12" style={{backgroundColor: '#f0f0f0'}}>
           <div className="col-sm-3" style={{display: '-webkit-flex', WebkitFlexWrap: 'wrap', display: 'flex', flexWrap: 'wrap'}}>
             {
               questionSet.map((item, idx) => (
@@ -471,11 +471,11 @@ class StartedExam extends React.Component {
               />
             </div>
           </div>
-          <div className="col-sm-12" style={{height: 250}}>
+          <div className="col-sm-12" style={{height: 90, backgroundColor: '#f0f0f0'}}>
           </div>
           {
             !data.examById.isClassStyle &&
-            <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
+            <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2, height: 90, backgroundColor: '#f0f0f0'}}>
               <button className="byn btn-primary" style={{width: '100%', border: 'none', fontSize: 14, height: 40}}>
                 { 'Thời gian còn lại: ' + timeString }
               </button>
@@ -576,6 +576,7 @@ const QUESTION_BY_EXAM = gql`
               link
               time
             }
+            fullName
           }
         }
         results {

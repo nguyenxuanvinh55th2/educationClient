@@ -59,14 +59,20 @@ class Register extends React.Component {
                       this.setState({existUser: false});
                   }
                 });
-              } else
-                  if(e.target.id === 'address')
-                    this.setState({ address: e.target.value });
-                  else
-                    if(e.target.id === 'msMail')
-                      this.setState({ msMail: e.target.value });
-                    else
-                      this.setState({ phone: e.target.value });
+              } else 
+                  if(e.target.id === 'firstName') {
+                    this.setState({firstName: e.target.value });
+                  } else
+                      if(e.target.id === 'lastName') {
+                        this.setState({lastName: e.target.value });
+                      } else
+                          if(e.target.id === 'address')
+                            this.setState({ address: e.target.value });
+                          else
+                            if(e.target.id === 'msMail')
+                              this.setState({ msMail: e.target.value });
+                            else
+                              this.setState({ phone: e.target.value });
   }
 
   getEmailValidation() {
@@ -98,6 +104,18 @@ class Register extends React.Component {
   getNameValidation() {
     const value = this.state.name;
     if (value && value.length > 6) return 'success';
+    else return 'error';
+  }
+
+  getFirstNameValidation() {
+    const value = this.state.firstName;
+    if (value && value.length > 3) return 'success';
+    else return 'error';
+  }
+
+  getLastNameValidation() {
+    const value = this.state.lastName;
+    if (value && value.length > 3) return 'success';
     else return 'error';
   }
 
@@ -136,10 +154,27 @@ class Register extends React.Component {
           </div>
 
           <div className={this.getNameValidation() === 'success' ? "form-group" : "form-group has-error"}>
-            <label className="col-sm-2 control-label" htmlFor="modalInputDisabled" style={{paddingRight: 0}}>Tên của bạn</label>
+            <label className="col-sm-2 control-label" htmlFor="modalInputDisabled" style={{paddingRight: 0}}>Tên đăng nhập</label>
             <div className="col-sm-8">
               <input id='name' type="text" className="form-control" placeholder="Tên của bạn" ref={ node => this.name = node } onChange={this.handleChange.bind(this)}/>
               <span className="help-block">{this.state.existUser ? 'username đã tồn tại trong hệ thống' : this.getNameValidation() !== 'success' && 'Tên của bạn là bắt buộc'}</span>
+            </div>
+          </div>
+
+          <div className={this.getLastNameValidation() === 'success' ? "form-group" : "form-group has-error"}>
+            <label className="col-sm-2 control-label" htmlFor="modalInputDisabled" style={{paddingRight: 0}}>Họ của bạn</label>
+            <div className="col-sm-8">
+              <input id='lastName' type="text" className="form-control" placeholder="Tên của bạn" ref={ node => this.lastName = node } onChange={this.handleChange.bind(this)}/>
+              <span className="help-block">{this.getLastNameValidation() !== 'success' && 'Họ của bạn là bắt buộc'}</span>
+            </div>
+          </div>
+
+
+          <div className={this.getFirstNameValidation() === 'success' ? "form-group" : "form-group has-error"}>
+            <label className="col-sm-2 control-label" htmlFor="modalInputDisabled" style={{paddingRight: 0}}>Tên của bạn</label>
+            <div className="col-sm-8">
+              <input id='firstName' type="text" className="form-control" placeholder="Tên của bạn" ref={ node => this.firstName = node } onChange={this.handleChange.bind(this)}/>
+              <span className="help-block">{this.getFirstNameValidation() !== 'success' && 'Tên của bạn là bắt buộc'}</span>
             </div>
           </div>
 
@@ -214,6 +249,8 @@ class Register extends React.Component {
                   let email = this.state.email;
                   let password = this.state.password;
                   let username = this.state.name;
+                  let firstName = this.state.firstName;
+                  let lastName = this.state.lastName;
                   let old = this.state.old;
                   let gender = this.gender.value;
                   let address = this.state.address;
@@ -224,6 +261,8 @@ class Register extends React.Component {
                     old,
                     gender,
                     address,
+                    firstName,
+                    lastName
                   }
                   info = JSON.stringify(info);
                   this.props.register(info).then(() => {
@@ -238,7 +277,7 @@ class Register extends React.Component {
                         localStorage.setItem(this.props.loginToken, dataUser.token);
                         this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
                         this.props.handleClose();
-                        this.setState({email: '', password: '', passwordRetype: '', name: '', old: '', address: '', phone: ''});
+                        this.setState({email: '', password: '', passwordRetype: '', name: '', firstName: '', lastName: '', old: '', address: '', phone: ''});
                       }
                     }).catch((err)=>{
                       this.props.addNotificationMute({fetchData: true, message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu', level: 'error'})

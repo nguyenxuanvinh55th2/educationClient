@@ -135,10 +135,6 @@ class AddQuestion extends React.Component {
     )
   }
 
-  getFiles(files){
-    console.log('file ', files);
-  }
-
   renderQuestionCreate() {
     let { questionList } = this.state;
     return questionList.map((item, idx) =>  (

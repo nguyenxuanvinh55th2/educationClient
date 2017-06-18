@@ -358,17 +358,12 @@ ul, li {
 .button-chat-closing {
   background-color: inherit;
   margin-top: -15px;
-  //margin-left: 20%;
-  //width: 80%;
   float: right;
   border: none;
 }
 
 .button-chat-send {
-  // margin-top: -44px;
-  // margin-left: 30px;
   float: right;
-  //padding-right: 10px;
   width: 38px;
   height: 38px;
   border: none;
@@ -382,7 +377,6 @@ ul, li {
   color: black;
   width: 200px;
   margin-left: 5px;
-  //border-radius: 5%;
   heigth: 48px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -390,7 +384,6 @@ ul, li {
   border-color: white;
   color: white;
 
-  //background-color: blue;
   background-color: inherit;
 }
 
@@ -417,3 +410,51 @@ ul, li {
 .btn {
   box-shadow: none;
 }
+
+.friendList {
+  width: 100%;
+  padding-right: 1%;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  margin-left: -11px;
+}
+
+.listGroup-search{
+  margin-top: 20px;
+  padding-left: 0;
+  color: white;
+}
+
+.listGroupItem-search {
+  position: relative;
+  display: block;
+  padding: 10px 10px;
+  margin-bottom: -1px;
+  margin-left: 20px;
+  border:1pxs solid white;
+}
+
+.img-search-item {
+  width: 100px;
+  height: 100px;
+}
+
+.listGroupItemHeading{
+  font-size: 15px;
+}
+
+#menuLeft a {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: white;
+}
+
+#menuLeft{
+  min-height: 100vh;
+  min-width:15%;
+  position: fixed;
+  background-color: rgb(105, 105, 104);
+  left: 0px;
+}
+

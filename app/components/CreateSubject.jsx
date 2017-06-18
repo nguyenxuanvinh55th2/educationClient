@@ -55,7 +55,6 @@ class CreateSubject extends React.Component {
       themes: this.state.themes,
       classId: this.state.classId
     };
-    console.log(this.state.code);
     if(this.props.checkCodeClassSubject){
       this.props.checkCodeClassSubject(this.state.code).then(({data}) => {
         if(data && !data.checkCodeClassSubject){

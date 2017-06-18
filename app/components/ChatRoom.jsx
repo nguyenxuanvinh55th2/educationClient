@@ -10,7 +10,6 @@ import { Link, Router, browserHistory } from 'react-router'
 
 class Message extends Component {
   render() {
-    console.log('this.props ', this.props)
     if(this.props.users && this.props.userId !== this.props.users.userId) {
       return (
         <tr>
