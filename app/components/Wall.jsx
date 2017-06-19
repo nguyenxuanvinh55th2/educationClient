@@ -38,8 +38,11 @@ class Wall extends React.Component {
   handleCheckCode(code){
     if(this.props.checkCodeUser){
       this.props.checkCodeUser(this.props.users.userId, code).then(({data}) => {
-        if(data){
+        if(data.checkCodeUser && data.checkCodeUser !== 'duplicated'){
           this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp học thành công', level:'success'});
+        }
+        else if (data.checkCodeUser && data.checkCodeUser === 'duplicated') {
+          this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp, vui lòng kiểm tra lại danh sách môn học', level:'error'});
         }
         else {
           this.props.addNotificationMute({fetchData: true, message: 'Có vẻ như mã code môn học bị nhầm, vui lòng liên hệ lại với giáo viên để xác nhận lại mã môn học', level:'error'});
