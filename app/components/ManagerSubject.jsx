@@ -348,6 +348,27 @@ class ManagerSubject extends React.Component {
       </div>
     )
   }
+  handleInvite(){
+    __.forEach(this.state.userSubjects,(userId) => {
+      if(this.props.checkCodeUser){
+        this.props.checkCodeUser(userId, this.props.dataSet.getInfoClassSubject.code).then(({data}) => {
+          if(data.checkCodeUser && data.checkCodeUser !== 'duplicated'){
+            this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp học thành công', level:'success'});
+          }
+          else if (data.checkCodeUser && data.checkCodeUser === 'duplicated') {
+            this.props.addNotificationMute({fetchData: true, message: 'Bạn đã được thêm vào lớp, vui lòng kiểm tra lại danh sách môn học', level:'error'});
+          }
+          else {
+            this.props.addNotificationMute({fetchData: true, message: 'Có vẻ như mã code môn học bị nhầm, vui lòng liên hệ lại với giáo viên để xác nhận lại mã môn học', level:'error'});
+          }
+        })
+        .catch((error) => {
+          this.props.addNotificationMute({fetchData: true, message: 'Faild', level:'error'});
+        })
+      }
+
+    })
+  }
   render(){
     let { dataSet, users } = this.props;
       if(dataSet.loading && !dataSet.getActivityForum){
@@ -856,7 +877,7 @@ class ManagerSubject extends React.Component {
                  <div style={{marginTop: 15}}>
                    <InviteUser userMails={this.state.userMails} onChangeValue={(value) => this.setState({userMails: value})}/>
                  </div>
-                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}}>Mời</button>
+                 <button className="btn" style={{width: 70, backgroundColor: '#35bcbf', color: 'white', marginTop: 10}} onClick={() => this.handleInvite()}>Mời</button>
               </div>
             </div>
             <Dialog
@@ -941,6 +962,11 @@ const REMOVE_ACTIVITY = gql`
 const UPDATE_TOPIC = gql`
  mutation updateTopic($_id: String, $info: String){
    updateTopic(_id: $_id, info: $info)
+ }
+`;
+const checkCodeUser = gql`
+ mutation checkCodeUser($userId: String, $code: String){
+   checkCodeUser(userId: $userId, code: $code)
  }
 `;
 const MyQuery = gql`
@@ -1038,7 +1064,12 @@ export default compose(
        props:({mutate})=>({
        updateTopic : (_id, info) =>mutate({variables:{_id, info}})
      })
-   })
+   }),
+   graphql(checkCodeUser,{
+        props:({mutate})=>({
+        checkCodeUser : (userId,code) =>mutate({variables:{userId, code}})
+      })
+    })
 )(ManagerSubject)
 
 class EditMultiForm extends React.Component {
