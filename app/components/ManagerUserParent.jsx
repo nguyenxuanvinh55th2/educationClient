@@ -24,6 +24,7 @@ class ManagerUserParent extends React.Component {
     else {
       return (
         <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
+          <h1>Tên: {data.user.name} - Email: {data.user.email}</h1>
           <Tabs className="secondary" >
             <TabList className="modal-header" style={{margin: 0, backgroundColor: 'white', borderBottom: 0}}>
                 <Tab>
@@ -119,6 +120,9 @@ const CLASS_SUBJECT = gql`
      createdAt
      status
      isClassStyle
+   },
+   user(userId: $userId) {
+     _id name email
    }
 }`
 
