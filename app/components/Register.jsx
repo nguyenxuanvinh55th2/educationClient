@@ -59,7 +59,7 @@ class Register extends React.Component {
                       this.setState({existUser: false});
                   }
                 });
-              } else 
+              } else
                   if(e.target.id === 'firstName') {
                     this.setState({firstName: e.target.value });
                   } else
@@ -251,7 +251,7 @@ class Register extends React.Component {
                     let that = this;
                     var encrypted = CryptoJS.AES.encrypt(this.state.password, "def4ult");
                     this.props.loginWithPassword(that.state.email,encrypted.toString()).then(({data})=>{
-                      this.props.addNotificationMute({fetchData: true, message: 'Đăng nhập thành công', level: 'success'});
+                      this.props.addNotificationMute({fetchData: true, message: 'Đăng kí thành công', level: 'success'});
                       this.props.handleClose();
                       this.setState({email: '', password: '', passwordRetype: '', name: '', firstName: '', lastName: '', old: '', address: '', phone: ''});
                       if(data){
