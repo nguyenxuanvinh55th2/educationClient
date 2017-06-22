@@ -138,7 +138,7 @@ class QuestionItem extends React.Component {
         <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
           <div className="col-sm-10" style={{width: '100%',marginBottom: 10, marginRight: 10, padding: 5, border: '1px solid gray', borderRadius: 10}} onClick={this.showAnswer.bind(this)}>
             {question.question}
-       ta   </div>
+          </div>
           <Checkbox
             label="Chọn câu hỏi"
             checked={this.state.checked}
