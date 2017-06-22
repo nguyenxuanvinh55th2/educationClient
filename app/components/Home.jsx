@@ -40,7 +40,7 @@ export default class Home extends React.Component {
             <div className="col-sm-12 col-md-4 col-lg-5" style={{ fontSize: 15, lineHeight: '40px'}}>
               <h2>TUIELEARNING DÀNH CHO NHỮNG AI?</h2>
               <p style={{paddingRight: 50}}>
-                - Đội ngủ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
+                - Đội ngũ giáo viên tham gia giảng dạy và trao đổi học tập với sinh viên một cách đơn giản, thuận tiện.
               </p>
               <p>
                 - Sinh viên được học tập trong môi trường chủ động.

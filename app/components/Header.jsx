@@ -42,15 +42,15 @@ class Header extends React.Component {
   handleLogout(){
     let { users, logout, loginToken } = this.props;
     if(this.props.logout && users.userId){
+      localStorage.removeItem('Meteor.loginTokenGoogle');
+      localStorage.removeItem('Meteor.loginToken');
+      localStorage.removeItem('Meteor.loginTokenFacebook');
+      localStorage.removeItem('Meteor.loginServices');
+      localStorage.removeItem('Meteor.loginServicesGoogle');
+      this.props.loginCommand({});
       this.props.logout(users.userId,localStorage.getItem(loginToken)).then(({data}) => {
         if(data.logoutUser){
           Meteor.logout();
-          localStorage.removeItem('Meteor.loginTokenGoogle');
-          localStorage.removeItem('Meteor.loginToken');
-          localStorage.removeItem('Meteor.loginTokenFacebook');
-          localStorage.removeItem('Meteor.loginServices');
-          localStorage.removeItem('Meteor.loginServicesGoogle');
-          this.props.loginCommand({});
         }
       })
     }

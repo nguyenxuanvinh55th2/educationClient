@@ -22,7 +22,6 @@ class QueryUserPermission extends React.Component{
             }
         }
         Meteor.autorun(()=>{
-          console.log("vinh", localStorage.getItem('Meteor.loginServices'), Meteor.getItem(this.props.loginToken));
             if(Meteor.status().connected){
                 if(Meteor.userId()){
                     this.props.getInfoUser({token: localStorage.getItem(this.props.loginToken)})
