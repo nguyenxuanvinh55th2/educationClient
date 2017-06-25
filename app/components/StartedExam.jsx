@@ -125,7 +125,7 @@ const QuestionContentWithData = compose (
 class StartedExam extends React.Component {
   constructor(props) {
     super(props);
-    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: [], questionCountDown: 0, index: 1, firstRender: true};
+    this.state =  {currentQuestion: null, userExams: null, startCountDown: false, questionSet: null, timeString: null, openDrawer: false, currentPlayerCheckoutImage: [], questionCountDown: 0, index: 1, firstRender: true, reset: false};
     this.interval = null;
   }
 
@@ -156,8 +156,10 @@ class StartedExam extends React.Component {
           let minute = Math.floor((time - hour * 3600) / 60);
           let second = Math.floor(time - hour * 3600 - minute * 60);
           this.setState({timeString: hour.toString() + ': ' + minute.toString() + ': ' + second.toString()});
-          if(countDown <= 0 && Meteor.userId() === data.examById.createdBy._id) {
-            finishExamination(token, data.examById._id).then(() => {
+          if(countDown <= 0 && (Meteor.userId() === data.examById.createdBy._id || !data.examById.isTest)) {
+            console.log('findOne')
+            let result = document.getElementById('result-table').innerHTML;
+            finishExamination(token, data.examById._id, result).then(() => {
               that.props.data.refetch();
               clearInterval(this.interval);
             }).catch((err) => {
@@ -259,6 +261,11 @@ class StartedExam extends React.Component {
           let currentQuestion = __.find(data.examById.questionSet.questions, {_id: nextProps.currentQuestion.questionId});
           this.setState({currentQuestion});
         }
+      }
+      if(!data.examById.isTest && data.examById.status === 100 && !this.state.reset) {
+        console.log('reset');
+        this.props.resetExamination(data.examById._id);
+        this.setState({reset: true});
       }
     }
     if(JSON.stringify(nextProps.userExams) !== JSON.stringify(this.props.userExams)) {
@@ -383,7 +390,7 @@ class StartedExam extends React.Component {
           <p style={{fontSize: 14}}>Số lượng tham gia thi: <font style={{fontSize: 16, color: '#68C0BC'}}> { data.examById.userExams.length } </font></p>
         </div>
         <div className="col-sm-12" style={{paddingLeft: 350, paddingRight: 350}}>
-          <table>
+          <table id="result-table">
             <thead>
               <th style={{width: 50, color: '#68C0BC', fontSize: 14, fontWeight: 'lighter'}}>
                 STT
@@ -482,7 +489,7 @@ class StartedExam extends React.Component {
             </div>
           }
           {
-            !data.examById.isClassStyle &&
+            (!data.examById.isClassStyle && data.examById.isTest) &&
             <div style={{position: 'absolute', right: 20, bottom: 20}}>
               <Webcam ref="webcam" audio={false} screenshotFormat="image/webp" height={200} width={200}/>
             </div>
@@ -540,6 +547,7 @@ const QUESTION_BY_EXAM = gql`
       time
       createdAt
       status
+      isTest
       isClassStyle
       questionSet {
         _id
@@ -596,8 +604,13 @@ const QUESTION_BY_EXAM = gql`
   }`
 
 const FINISH_EXAMINATION = gql`
-    mutation finishExamination ($token: String!, $_id: String!) {
-      finishExamination(token: $token, _id: $_id)
+    mutation finishExamination ($token: String!, $_id: String!, $result: String) {
+      finishExamination(token: $token, _id: $_id, result: $result)
+}`
+
+const RESET_EXAMINATION = gql`
+    mutation resetExamination ($_id: String!) {
+      resetExamination(_id: $_id)
 }`
 
 const UPDATE_CURRENT_QUESTION = gql`
@@ -619,7 +632,12 @@ const StartedExamWithData = compose (
     }),
     graphql(FINISH_EXAMINATION, {
         props: ({mutate})=> ({
-            finishExamination : (token, _id) => mutate({variables:{token, _id}})
+            finishExamination : (token, _id, result) => mutate({variables:{token, _id, result}})
+        })
+    }),
+    graphql(RESET_EXAMINATION, {
+        props: ({mutate})=> ({
+            resetExamination : (_id) => mutate({variables:{_id}})
         })
     }),
     graphql(UPDATE_CURRENT_QUESTION, {

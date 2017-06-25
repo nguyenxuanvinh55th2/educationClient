@@ -29,7 +29,7 @@ class CreateTest extends  React.Component {
       questionSetId: null,
       getQuestionFrom: null,
       stepIndex: 0,
-      isTest: false,
+      isTest: true,
       isClassStyle: true,
       openTest: false,
     };
@@ -147,8 +147,25 @@ class CreateTest extends  React.Component {
                   <label className="col-sm-12" style={{paddingLeft: 0}}>Hình thức thi</label>
                   <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
                     <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={isTest && 'checked'} type="radio" name="radio1" onChange={({target}) => {
+                          if(!isTest) {
+                            this.setState({isTest: true})
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Kiểm tra</p>
+                    </label>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <input checked={!isTest && 'checked'} type="radio" name="radio1" onChange={({target}) => {
+                          if(isTest) {
+                            this.setState({isTest: false, isClassStyle: false});
+                          }
+                        }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Ôn tập</p>
+                    </label>
+                  </div>
+                  <label className="col-sm-12" style={{paddingLeft: 0}}>Hình thức thi</label>
+                  <div className="col-sm-12" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5, marginBottom: -5}}>
+                    <label style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                       <input checked={isClassStyle && 'checked'} type="radio" name="optradio1" onChange={({target}) => {
-                          if(!isClassStyle) {
+                          if(!isClassStyle && isTest) {
                             this.setState({isClassStyle: true})
                           }
                         }}/><p style={{color: '#818181', width: 100}}>&nbsp;&nbsp;&nbsp;Trên lớp</p>
