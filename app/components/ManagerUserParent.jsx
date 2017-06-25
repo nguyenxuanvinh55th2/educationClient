@@ -13,6 +13,38 @@ import accounting from 'accounting';
 class ManagerUserParent extends React.Component {
   constructor(props) {
     super(props)
+    this.data = [
+      {
+        name: 'Bài tập tự ôn trước khi thi',
+        date: '03/2/2017',
+        point: '7.5'
+      },
+      {
+        name: 'Bài tập chương 2 tổng quan PHP',
+        date: '09/3/2017',
+        point: 'Chưa nộp'
+      },
+      {
+        name: 'Bài tập tổng hợp kiến thức',
+        date: '10/04/2017',
+        point: '9'
+      },
+      {
+        name: 'Bài tập kiểm tra giữa kì',
+        date: '1/5/2017',
+        point: '4.5'
+      },
+      {
+        name: 'Bài tập luyện tập',
+        date: '9/7/2017',
+        point: 'Chưa nộp'
+      },
+      {
+        name: 'Kiểm tra kết thúc môn học',
+        date: '03/8/2017',
+        point: 'Chưa nộp'
+      }
+    ]
   }
   render(){
     let { data } = this.props;
@@ -72,14 +104,23 @@ class ManagerUserParent extends React.Component {
               <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
                 <table className="table table-striped table-bordered">
                   <thead>
-                    <tr>
+                    {/* <tr>
                       <th>#</th>
                       <th>Tên kì thì</th>
+                      <th>Ngày thi</th>
+                      <th>Điểm số</th>
                       <th>Trạng thái</th>
+                    </tr> */}
+                    <tr>
+                      <th>#</th>
+                      <th>Tên bài tập</th>
+                      <th>Hạn nộp</th>
+                      <th>Điểm số / trạng thái</th>
+                      {/* <th>Trạng thái</th> */}
                     </tr>
                   </thead>
                   <tbody>
-                    {
+                    {/* {
                       __.map(this.props.data.getAllPlayperExamByUser,(exam,idx) => {
                         return(
                           <tr key={idx}>
@@ -90,6 +131,23 @@ class ManagerUserParent extends React.Component {
                                 exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
                               }
                             </td>
+                          </tr>
+                        )
+                      })
+                    } */}
+                    {
+                      __.map(this.data,(exam,idx) => {
+                        return(
+                          <tr key={idx}>
+                            <td>{idx + 1}</td>
+                            <td>{exam.name}</td>
+                            <td>{exam.date}</td>
+                            <td>{exam.point}</td>
+                            {/* <td>
+                              {
+                                exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
+                              }
+                            </td> */}
                           </tr>
                         )
                       })
