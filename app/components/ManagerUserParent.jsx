@@ -40,6 +40,7 @@ class ManagerUserParent extends React.Component {
                   <thead>
                     <tr>
                       <th>#</th>
+                      <th></th>
                       <th>Tên môn học</th>
                       <th>Tên giáo viên</th>
                       <th>Email giáo viên</th>
@@ -51,6 +52,11 @@ class ManagerUserParent extends React.Component {
                         return(
                           <tr key={idx}>
                             <td>{idx + 1}</td>
+                            <td>
+                              <button type="button" className="btn" style={{boxShadow: 'none', border: 'none', backgroundColor: 'white'}}>
+                                <span className="glyphicon glyphicon-info-sign" style={{color: 'blue'}}></span>
+                              </button>
+                            </td>
                             <td>{sub.name}</td>
                             <td>{sub.teacher.name}</td>
                             <td>{sub.teacher.email}</td>

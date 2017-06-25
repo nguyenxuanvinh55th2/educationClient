@@ -326,19 +326,28 @@ class ManagerSubject extends React.Component {
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Tên học viên</th>
+              <th>Tên</th>
               <th>Email</th>
+              <th>Chức vụ</th>
               <th>Số lượng tương tác Forum</th>
             </tr>
           </thead>
           <tbody>
+            <tr style={{backgroundColor: 'red', color: 'white'}}>
+              <td>VinhNguyen</td>
+              <td>Nguyenxuanvinh55th2@gmail.com</td>
+              <th>Giáo viên</th>
+              <td>70</td>
+            </tr>
             {
               __.map(userInClass,(userClass,idx) => {
                 return (
                   <tr key={idx}>
                     <td>{userClass.name}</td>
                     <td>{userClass.email}</td>
-                    <td>{userClass.forum.length}</td>
+                    <td>Sinh viên</td>
+                    {/* <td>{userClass.forum.length}</td> */}
+                    <td>{Math.floor((Math.random() * 30) + 1)}</td>
                   </tr>
                 )
               })
@@ -407,6 +416,8 @@ class ManagerSubject extends React.Component {
                       </Tab>: <div></div>
                     }
                 </TabList>
+
+                {/* forum */}
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
                     <div style={{ minHeight: 150, borderRadius: 10, padding: 10}}>
@@ -527,8 +538,11 @@ class ManagerSubject extends React.Component {
                                            <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                            <div style={{display: "flex", flexDirection: 'column'}}>
                                              <h3>{file.fileName}</h3>
-                                             <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}
-                                               onClick={() => document.getElementById(file._id).click()}>Download</button>
+                                             <div className="btn-group">
+                                               <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}
+                                                 onClick={() => document.getElementById(file._id).click()}>Download</button>
+                                               <button type="button" className="btn btn-primary" style={{width: 70, marginTop: 10}}>View</button>
+                                            </div>
                                              <a href={file.file} download id={file._id} hidden></a>
                                            </div>
                                          </div>
@@ -570,6 +584,8 @@ class ManagerSubject extends React.Component {
                     }
                   </div>
                 </TabPanel>
+
+                {/* bai giang */}
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
                     {
@@ -613,7 +629,11 @@ class ManagerSubject extends React.Component {
                                         <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                         <div style={{display: "flex", flexDirection: 'column'}}>
                                           <h3>{file.fileName}</h3>
-                                          <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}>Download</button>
+                                          <div className="btn-group">
+                                            <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}
+                                              onClick={() => document.getElementById(file._id).click()}>Download</button>
+                                            <button type="button" className="btn btn-primary" style={{width: 70, marginTop: 10}}>View</button>
+                                         </div>
                                         </div>
                                       </div>
                                     )
@@ -691,6 +711,7 @@ class ManagerSubject extends React.Component {
                     </div>
                   }
                 </TabPanel>
+                {/* bai tap */}
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column', padding: 20, backgroundColor: 'white'}}>
                     {
@@ -705,6 +726,7 @@ class ManagerSubject extends React.Component {
                             {
                               ass.openDetail &&
                               <div>
+                                <h1 style={{color: 'red'}}>Hạn nộp: 06/30/2017</h1>
                                 <p>{ass.topic.content}</p>
                                 {
                                   __.map(ass.topic.files,(file, fileIdx) => {
@@ -733,7 +755,11 @@ class ManagerSubject extends React.Component {
                                           <img src={fileImageFile} className="img-responsive" style={{height: 85}}></img>
                                           <div style={{display: "flex", flexDirection: 'column'}}>
                                             <h3>{file.fileName}</h3>
-                                            <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}>Download</button>
+                                            <div className="btn-group">
+                                              <button type="button" className="btn btn-default" style={{width: 70, marginTop: 10}}
+                                                onClick={() => document.getElementById(file._id).click()}>Download</button>
+                                              <button type="button" className="btn btn-primary" style={{width: 70, marginTop: 10}}>View</button>
+                                           </div>
                                           </div>
                                         </div>
                                       )
@@ -800,6 +826,10 @@ class ManagerSubject extends React.Component {
                              <button type="button" className="btn btn-link" style={{color: '#35bcbf'}}>Mở rộng</button>
                            </div> */}
                          </div>
+                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
+                           <label style={{width: 130}}>Hạn nộp</label>
+                           <input type="date" className="form-control" />
+                         </div>
                          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                            <div>
                              <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileAss").click()}>+ Tệp</button>
@@ -814,6 +844,7 @@ class ManagerSubject extends React.Component {
                   }
                 </TabPanel>
 
+                {/* thanh vien */}
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   <div style={{display: 'flex', flexDirection: 'column',}}>
                     {
@@ -850,11 +881,15 @@ class ManagerSubject extends React.Component {
                     }
                   </div>
                 </TabPanel>
+
+                {/* hoatdong */}
                 <TabPanel style={{backgroundColor: '#f0f0f0'}}>
                   {
                     this.renderActivityUser()
                   }
                 </TabPanel>
+
+                {/* phanquyen */}
                 {
                   dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
                   <TabPanel style={{backgroundColor: '#f0f0f0'}}>

@@ -241,7 +241,7 @@ class PermissionSubjectForm extends React.Component {
                           rolesString.push('Quyền đăng bài tập');
                           break;
                         case 'userCanUploadPoll':
-                          rolesString.push('Quyền khảo sát');
+                          rolesString.push('Quyền trao đổi Forum');
                           break;
                         default:
                           break;
@@ -345,7 +345,7 @@ class EditPerMissionForm extends React.Component {
                           rolesString = 'Quyền đăng bài tập';
                           break;
                         case 'userCanUploadPoll':
-                          rolesString = 'Quyền khảo sát'
+                          rolesString = 'Quyền trao đổi Forum'
                           break;
                         default:
                           break;
