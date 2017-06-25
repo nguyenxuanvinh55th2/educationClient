@@ -6,10 +6,11 @@ import {AgGridReact} from 'ag-grid-react';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import Dialog from 'material-ui/Dialog';
 import __ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
+import ChildrentAss from './ChildrentAss.jsx';
 class ManagerUserParent extends React.Component {
   constructor(props) {
     super(props)
@@ -45,6 +46,10 @@ class ManagerUserParent extends React.Component {
         point: 'Chưa nộp'
       }
     ]
+    this.state = {
+      openAss: false,
+      classSubjectId: ''
+    }
   }
   render(){
     let { data } = this.props;
@@ -85,7 +90,9 @@ class ManagerUserParent extends React.Component {
                           <tr key={idx}>
                             <td>{idx + 1}</td>
                             <td>
-                              <button type="button" className="btn" style={{boxShadow: 'none', border: 'none', backgroundColor: 'white'}}>
+                              <button type="button" className="btn" style={{boxShadow: 'none', border: 'none', backgroundColor: 'white'}} onClick={() => {
+                                this.setState({openAss: true, classSubjectId: sub._id})
+                              }}>
                                 <span className="glyphicon glyphicon-info-sign" style={{color: 'blue'}}></span>
                               </button>
                             </td>
@@ -157,6 +164,16 @@ class ManagerUserParent extends React.Component {
               </div>
             </TabPanel>
           </Tabs>
+          <Dialog
+            modal={true}
+            open={this.state.openAss}
+            autoDetectWindowHeight={false}
+            autoScrollBodyContent={false}
+            bodyStyle={{padding: 0}}
+            contentStyle={{minHeight:'60%'}}
+          >
+            <ChildrentAss {...this.props} classSubjectId={this.state.classSubjectId} handleClose={() => this.setState({openAss: false})} />
+          </Dialog>
         </div>
       )
     }

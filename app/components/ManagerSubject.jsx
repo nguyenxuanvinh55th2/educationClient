@@ -312,7 +312,8 @@ class ManagerSubject extends React.Component {
     }
   }
   renderActivityUser(){
-    let userInClass = __.cloneDeep(this.props.dataSet.getUserByClassSucbject);
+    let teacher = __.cloneDeep(this.props.dataSet.getTeacherByClassSubject);
+    let userInClass = teacher.concat(__.cloneDeep(this.props.dataSet.getUserByClassSucbject));
     __.forEach(userInClass,(user,idx) => {
       user.forum = [];
       __.forEach(this.props.dataSet.getActivityForum,(forum) => {
@@ -333,23 +334,28 @@ class ManagerSubject extends React.Component {
             </tr>
           </thead>
           <tbody>
-            <tr style={{backgroundColor: 'red', color: 'white'}}>
-              <td>VinhNguyen</td>
-              <td>Nguyenxuanvinh55th2@gmail.com</td>
-              <th>Giáo viên</th>
-              <td>70</td>
-            </tr>
             {
               __.map(userInClass,(userClass,idx) => {
-                return (
-                  <tr key={idx}>
-                    <td>{userClass.name}</td>
-                    <td>{userClass.email}</td>
-                    <td>Sinh viên</td>
-                    {/* <td>{userClass.forum.length}</td> */}
-                    <td>{Math.floor((Math.random() * 30) + 1)}</td>
-                  </tr>
-                )
+                if(__.findIndex(teacher,{_id: userClass._id}) > -1){
+                  return (
+                    <tr key={idx} style={{backgroundColor: 'red', color: 'white'}}>
+                      <td>VinhNguyen</td>
+                      <td>Nguyenxuanvinh55th2@gmail.com</td>
+                      <th>Giáo viên</th>
+                      <td>{userClass.forum.length}</td>
+                    </tr>
+                  )
+                }
+                else {
+                  return (
+                    <tr key={idx}>
+                      <td>{userClass.name}</td>
+                      <td>{userClass.email}</td>
+                      <td>Sinh viên</td>
+                      <td>{userClass.forum.length}</td>
+                    </tr>
+                  )
+                }
               })
             }
           </tbody>
