@@ -14,41 +14,21 @@ import ChildrentAss from './ChildrentAss.jsx';
 class ManagerUserParent extends React.Component {
   constructor(props) {
     super(props)
-    this.data = [
-      {
-        name: 'Bài tập tự ôn trước khi thi',
-        date: '03/2/2017',
-        point: '7.5'
-      },
-      {
-        name: 'Bài tập chương 2 tổng quan PHP',
-        date: '09/3/2017',
-        point: 'Chưa nộp'
-      },
-      {
-        name: 'Bài tập tổng hợp kiến thức',
-        date: '10/04/2017',
-        point: '9'
-      },
-      {
-        name: 'Bài tập kiểm tra giữa kì',
-        date: '1/5/2017',
-        point: '4.5'
-      },
-      {
-        name: 'Bài tập luyện tập',
-        date: '9/7/2017',
-        point: 'Chưa nộp'
-      },
-      {
-        name: 'Kiểm tra kết thúc môn học',
-        date: '03/8/2017',
-        point: 'Chưa nộp'
-      }
-    ]
     this.state = {
       openAss: false,
-      classSubjectId: ''
+      classSubjectId: '',
+      exams: []
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps .data.getAllPlayperExamByUser){
+      let exams = [];
+      __.forEach(nextProps.data.getAllPlayperExamByUser, (exam) => {
+        if(exam.status !== 99){
+          exams.push(exam)
+        }
+      });
+      this.setState({exams: exams})
     }
   }
   render(){
@@ -111,50 +91,33 @@ class ManagerUserParent extends React.Component {
               <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: 'white'}}>
                 <table className="table table-striped table-bordered">
                   <thead>
-                    {/* <tr>
+                    <tr>
                       <th>#</th>
                       <th>Tên kì thì</th>
                       <th>Ngày thi</th>
                       <th>Điểm số</th>
-                      <th>Trạng thái</th>
-                    </tr> */}
-                    <tr>
-                      <th>#</th>
-                      <th>Tên bài tập</th>
-                      <th>Hạn nộp</th>
-                      <th>Điểm số / trạng thái</th>
-                      {/* <th>Trạng thái</th> */}
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {
-                      __.map(this.props.data.getAllPlayperExamByUser,(exam,idx) => {
+                    {
+                      __.map(this.state.exams,(exam,idx) => {
+                        let score = '';
+                        let indexUser = __.findIndex(exam.userExams, (user) => {
+                          return user.player.user._id == this.props.params.childrenId
+                        });
+                        if(indexUser > -1){
+                          score = exam.userExams[indexUser].score;
+                        }
                         return(
                           <tr key={idx}>
                             <td>{idx + 1}</td>
                             <td>{exam.name}</td>
+                            <td>{moment(exam.timeStart).format('HH:mm DD/MM/YYYY')}</td>
                             <td>
                               {
-                                exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
+                                exam.status == 100 ? score : 'Chưa bắt đầu'
                               }
                             </td>
-                          </tr>
-                        )
-                      })
-                    } */}
-                    {
-                      __.map(this.data,(exam,idx) => {
-                        return(
-                          <tr key={idx}>
-                            <td>{idx + 1}</td>
-                            <td>{exam.name}</td>
-                            <td>{exam.date}</td>
-                            <td>{exam.point}</td>
-                            {/* <td>
-                              {
-                                exam.status == 100 ? 'Đã kết thúc' : exam.status == 99 ? 'Đang diễn ra' : 'Chưa bắt đầu'
-                              }
-                            </td> */}
                           </tr>
                         )
                       })
@@ -172,7 +135,7 @@ class ManagerUserParent extends React.Component {
             bodyStyle={{padding: 0}}
             contentStyle={{minHeight:'60%'}}
           >
-            <ChildrentAss {...this.props} classSubjectId={this.state.classSubjectId} handleClose={() => this.setState({openAss: false})} />
+            <ChildrentAss {...this.props} childrenId={this.props.params.childrenId} classSubjectId={this.state.classSubjectId} handleClose={() => this.setState({openAss: false})} />
           </Dialog>
         </div>
       )
@@ -195,12 +158,18 @@ const CLASS_SUBJECT = gql`
      code
      timeStart
      name
-     description
-     userCount
      time
      createdAt
      status
-     isClassStyle
+     userExams {
+     _id score
+       player {
+         _id
+         user {
+           _id
+         }
+       }
+    }
    },
    user(userId: $userId) {
      _id name email

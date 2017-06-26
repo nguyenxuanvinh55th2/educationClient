@@ -139,6 +139,7 @@ class ListUserGiveAssForm extends React.Component {
               <th>File</th>
               <th>Ngày nộp</th>
               <th>Nộp dung</th>
+              <th>Điểm</th>
             </tr>
           </thead>
           <tbody>
@@ -152,6 +153,15 @@ class ListUserGiveAssForm extends React.Component {
                     <td><a href={member.files && member.files[0] ? member.files[0].file : ''} download><p> {member.files && member.files[0] ? member.files[0].fileName : 'Not valid'}</p></a></td>
                     <td>{moment(member.createdAt).format('HH:mm DD/MM/YYYY')}</td>
                     <td>{member.content}</td>
+                    {
+                      dataSet.getInfoTopic.owner._id == this.props.users.userId ?
+                      <td>
+                        <input type="number" value={member.point ? member.point : ''} onChange={({target}) => {
+
+                        }}></input>
+                      </td> :
+                      <td>{member.point ? member.point : 'Chưa cập nhật'}</td>
+                    }
                   </tr>
                 )
               })
@@ -171,7 +181,7 @@ const MyQuery = gql`
            _id name  image  email
          }
         memberReply {
-          _id
+          _id point
           owner {
             _id name image email
           }

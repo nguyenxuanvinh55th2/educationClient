@@ -11,6 +11,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import FriendList from './FriendList.jsx';
+import ManagerSystem from './ManagerSystem.jsx';
 
 class EditProfile extends React.Component {
   constructor(props) {
@@ -139,6 +140,12 @@ class EditProfile extends React.Component {
             <Tab>
               <h4 className="modal-title" style={{color: 'black'}}>Bạn bè</h4>
             </Tab>
+            {
+              this.props.users.userId == '0' &&
+              <Tab>
+                <h4 className="modal-title" style={{color: 'black'}}>Quản trị</h4>
+              </Tab>
+            }
         </TabList>
         <TabPanel>
           <div style={{padding: '0px 70px'}}>
@@ -236,6 +243,12 @@ class EditProfile extends React.Component {
         <TabPanel>
           <FriendList {...this.props}/>
         </TabPanel>
+        {
+          this.props.users.userId == '0' &&
+          <TabPanel>
+            <ManagerSystem {...this.props} />
+          </TabPanel>
+        }
       </Tabs>
     )
   }

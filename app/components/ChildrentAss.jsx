@@ -76,13 +76,20 @@ class  ChildrentAss extends React.Component {
                 </thead>
                 <tbody>
                   {
-                    __.map(this.data,(exam,idx) => {
+                    __.map(this.state.listAss,(ass,idx) => {
+                      let indexUser = __.findIndex(ass.topic.memberReply,(mem) => {
+                        return mem.owner._id == this.props.childrenId;
+                      });
+                      let point = 'Chưa nộp';
+                      if(indexUser > -1){
+                        point = ass.topic.memberReply[indexUser].point;
+                      }
                       return(
                         <tr key={idx}>
                           <td>{idx + 1}</td>
-                          <td>{exam.name}</td>
-                          <td>{exam.date}</td>
-                          <td>{exam.point}</td>
+                          <td>{ass.topic.title}</td>
+                          <td>{moment(ass.topic.deadline ? ass.topic.deadline : moment().valueOf()).format('DD/MM/YYYY')}</td>
+                          <td>{point}</td>
                         </tr>
                       )
                     })
@@ -103,17 +110,17 @@ const MyQuery = gql`
     query getData($classSubjectId: String!){
      getActivityAssignment(classSubjectId: $classSubjectId) {
         _id
-        theme {
-          _id  name
-        }
         topic {
-          _id title content links createdAt
+          _id title createdAt deadline
           owner {
              _id name  image  email
            }
-          files {
-            _id  file type  fileName
-          }
+             memberReply {
+             _id point
+             owner {
+               _id name image email
+             }
+           }
         }
       }
     }`

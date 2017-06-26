@@ -61,7 +61,8 @@ class ManagerSubject extends React.Component {
         isAssignment: true,
         title: '',
         content: '',
-        files: []
+        files: [],
+        deadline: ''
       },
       dataSetForum: [],
       dataSetTheme: [],
@@ -154,6 +155,7 @@ class ManagerSubject extends React.Component {
         isAssignment: true,
         title: this.state.dataAssign.title,
         content: this.state.dataAssign.content,
+        deadline: moment(this.state.dataAssign.deadline, 'YYYY-MM-DD').valueOf()
       },
       files: this.state.dataAssign.files,
       classSubjectId: this.state.subjectId,
@@ -732,7 +734,8 @@ class ManagerSubject extends React.Component {
                             {
                               ass.openDetail &&
                               <div>
-                                <h1 style={{color: 'red'}}>Hạn nộp: 06/30/2017</h1>
+                                <h1 style={{color: 'red'}}>Hạn nộp: {moment(ass.topic.deadline ? ass.topic.deadline : moment().valueOf()).format('DD/MM/YYYY')}
+                                </h1>
                                 <p>{ass.topic.content}</p>
                                 {
                                   __.map(ass.topic.files,(file, fileIdx) => {
@@ -834,14 +837,19 @@ class ManagerSubject extends React.Component {
                          </div>
                          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
                            <label style={{width: 130}}>Hạn nộp</label>
-                           <input type="date" className="form-control" />
+                           <input type="date" value={this.state.dataAssign.deadline} className="form-control" onChange={({target}) => {
+                             this.setState((prevState, props) => {
+                               prevState.dataAssign.deadline = target.value;
+                               return prevState;
+                              });
+                           }}/>
                          </div>
                          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                            <div>
                              <button type="button" className="btn" style={{marginLeft: 10, width: 70, backgroundColor: 'white', boxShadow: 'none', border: '1px dotted #35bcbf', color: '#35bcbf'}} onClick={() => document.getElementById("getFileAss").click()}>+ Tệp</button>
                              <input type="file" id="getFileAss"  multiple={false} style={{display: 'none'}} onChange={({target}) => this.handleAddMedia(target.files,"file","isAssignment")} />
                            </div>
-                           <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataAssign.title || !this.state.dataAssign.content} onClick={() => this.handleAddAss()}>Thêm bài tập</button>
+                           <button type="button" className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: 100}} disabled={!this.state.dataAssign.title || !this.state.dataAssign.content || !this.state.dataAssign.deadline} onClick={() => this.handleAddAss()}>Thêm bài tập</button>
                          </div>
                        </div>
                      </div>
@@ -1049,7 +1057,7 @@ const MyQuery = gql`
           _id  name
         }
         topic {
-          _id title content links createdAt
+          _id title content links createdAt deadline
           owner {
              _id name  image  email
            }
