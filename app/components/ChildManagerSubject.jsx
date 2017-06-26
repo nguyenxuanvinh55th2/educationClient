@@ -116,6 +116,14 @@ export const GiveAssignment = graphql(INSERT_MEMBER_REPLY,{
 class ListUserGiveAssForm extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      topics: []
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.dataSet.getInfoTopic){
+      this.setState({topics: __.cloneDeep(nextProps.dataSet.getInfoTopic)});
+    }
   }
   render(){
     let { dataSet } = this.props;
@@ -144,7 +152,7 @@ class ListUserGiveAssForm extends React.Component {
           </thead>
           <tbody>
             {
-              __.map(dataSet.getInfoTopic.memberReply,(member,idx) => {
+              __.map(this.state.topics.memberReply,(member,idx) => {
                 return (
                   <tr key={idx}>
                     <td>{idx +1}</td>
@@ -157,7 +165,24 @@ class ListUserGiveAssForm extends React.Component {
                       dataSet.getInfoTopic.owner._id == this.props.users.userId ?
                       <td>
                         <input type="number" value={member.point ? member.point : ''} onChange={({target}) => {
-
+                          this.setState((prevState) => {
+                            prevState.topics.memberReply[idx].point = target.value
+                            return prevState;
+                          })
+                        }}
+                        onKeyPress={(event) => {
+                            if(event.charCode === 13 || event.keyCode === 13){
+                              if(this.props.updateMemberReply && member.point){
+                                this.props.updateMemberReply(this.props.users.userId,member._id, JSON.stringify({point: parseFloat(member.point)})).then(({data}) => {
+                                  if(data.updateMemberReply){
+                                    this.props.addNotificationMute({fetchData: true, message: `Cập nhật điểm số  cho sinh viên ${member.owner.name} bài tập ${dataSet.getInfoTopic.title} thành công!`, level:'success'});
+                                  }
+                                })
+                                .catch((error) => {
+                                  this.props.addNotificationMute({fetchData: true, message: `Cập nhật điểm số  cho sinh viên ${member.owner.name} bài tập ${dataSet.getInfoTopic.title} thất bại!`, level:'error'});
+                                })
+                              }
+                            }
                         }}></input>
                       </td> :
                       <td>{member.point ? member.point : 'Chưa cập nhật'}</td>
@@ -197,13 +222,27 @@ const MyQuery = gql`
        },
     }`
 
+const UPDATE_MEMBER_REPLY = gql`
+ mutation updateMemberReply($userId: String, $_id: String, $info: String){
+   updateMemberReply(userId: $userId, _id: $_id, info: $info)
+ }
+`;
+
+const ListUserGiveAssMutate = graphql(UPDATE_MEMBER_REPLY,{
+     props:({mutate})=>({
+     updateMemberReply : (userId, _id, info) =>mutate({variables:{userId,_id,info}})
+   })
+ })(ListUserGiveAssForm)
+
 export const ListUserGiveAss = graphql(MyQuery, {
     options: (ownProps) => ({
       variables: {_id: ownProps.params.topicId},
       fetchPolicy: 'cache-only'
     }),
     name: 'dataSet',
-})(ListUserGiveAssForm);
+})(ListUserGiveAssMutate);
+
+
 class PermissionSubjectForm extends React.Component {
   constructor(props) {
     super(props);

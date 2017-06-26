@@ -56,7 +56,6 @@ class  ChildrentAss extends React.Component {
     }
   }
   render(){
-    console.log(this.props.dataSet.getActivityAssignment);
     return (
       <div className="modal-dialog" style={{width: 'auto', margin: 0}}>
           <div className="modal-content">
