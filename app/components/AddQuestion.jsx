@@ -71,10 +71,10 @@ class AddQuestion extends React.Component {
           let answerId = (Math.floor(Math.random()*99999) + 10000).toString();
           let answer = {
             _id: answerId,
-            answer: array[j].replace(/(dapan)/gi, '')
+            answer: array[j].replace(/(@)/gi, '')
           }
           question.answerSet.push(answer);
-          if(array[j].toLowerCase().indexOf('dapan') > -1 || array[j].toLowerCase().indexOf('dapan') > -1) {
+          if(array[j].toLowerCase().indexOf('@') > -1 || array[j].toLowerCase().indexOf('@') > -1) {
             question.correctAnswer.push(answer);
           }
           j++;
