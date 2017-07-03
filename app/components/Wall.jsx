@@ -177,12 +177,12 @@ const MyQuery = gql`
       coursesActive {
         _id name
         classSubjects {
-          _id name
+          _id name code
           teacher {
              _id name email
            }
           subject {
-            _id name description
+            _id name code description
           }
           class {
             _id  name

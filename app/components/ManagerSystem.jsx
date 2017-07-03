@@ -141,18 +141,16 @@ class ManagerSystem extends React.Component {
                     <div className="col-sm-9">
                       <select value={this.state.teacherChange && this.state.teacherChange._id ? this.state.teacherChange._id : -1} onChange={({target}) => {
                         if(target.value != -1){
-                          console.log(target.value);
                           this.setState({teacherChange: this.props.courses.user.userFriendsUser[__.findIndex(this.props.courses.user.userFriendsUser,(userA) => userA._id === target.value)]});
                         }
                         else {
                           this.setState({teacherChange: {}})
                         }
-                        console.log(this.state.teacherChange);
                       }}>
                         <option value={-1}>Chọn giáo viên</option>
                         {
                           __.map(this.props.courses.user.userFriendsUser, (infoUser,idx) =>
-                              <option key={idx} value={idx}>{infoUser._id} - {infoUser.email}</option>
+                              <option key={idx} value={infoUser._id}>{infoUser._id} - {infoUser.email}</option>
                           )
                         }
                       </select>
@@ -161,6 +159,17 @@ class ManagerSystem extends React.Component {
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-default" onClick={() => this.setState({open: false})}>Đóng</button>
+                  <button type="button" className="btn btn-primary" disabled={!this.state.teacherChange._id}  onClick={() => {
+                    console.log(this.state.teacherChange);
+                    if(this.props.moveTeacherInClassSubject){
+                      this.props.moveTeacherInClassSubject(this.state.classSelected._id, JSON.stringify({userId: this.state.teacherChange._id})).then(({data}) => {
+                        console.log(data);
+                      })
+                      .then((error) => {
+                        console.log(error);
+                      })
+                    }
+                  }}>Chuyển</button>
                 </div>
               </div>
           </div>
@@ -173,6 +182,11 @@ class ManagerSystem extends React.Component {
 const UPDATE_SUBJECT = gql`
  mutation updateClassSubject($classSubjectId: String, $info: String){
    updateClassSubject(classSubjectId: $classSubjectId, info: $info)
+ }
+`;
+const  MOVE_TEACHER = gql`
+ mutation moveTeacherInClassSubject($classSubjectId: String, $info: String){
+   moveTeacherInClassSubject(classSubjectId: $classSubjectId, info: $info)
  }
 `;
 
@@ -211,6 +225,11 @@ graphql(MyQuery, {
 graphql(UPDATE_SUBJECT,{
      props:({mutate})=>({
      updateClassSubject : (classSubjectId,info) =>mutate({variables:{classSubjectId,info}})
+   })
+ }),
+graphql(MOVE_TEACHER,{
+     props:({mutate})=>({
+     moveTeacherInClassSubject : (classSubjectId,info) =>mutate({variables:{classSubjectId,info}})
    })
  }),
 )(ManagerSystem);
