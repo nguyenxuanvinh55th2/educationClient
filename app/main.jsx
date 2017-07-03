@@ -23,6 +23,7 @@ import 'ag-grid-root/dist/styles/ag-grid.css';
 import 'ag-grid-root/dist/styles/theme-fresh.css';
 import './customer.css';
 import './main.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import App from './components/App.jsx'
 import Login from './components/Login.jsx'
@@ -41,6 +42,7 @@ import Authenticate from './components/Authenticate.jsx';
 import ManagerUserParent from './components/ManagerUserParent.jsx';
 import { ListUserGiveAss } from './components/ChildManagerSubject.jsx'
 import UserProfile from './components/EditProfile.jsx';
+import Calendar from './components/Calendar.jsx';
 
 injectTapEventPlugin();
 ReactDOM.render(
@@ -53,6 +55,7 @@ ReactDOM.render(
             <Route path="/authenticate/:id/:code" component={Authenticate}/>
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
+              <Route path="/profile/:id/calendar" component={Calendar} />
               <Route path="/profile/:id/createClass" component={ClassList}/>
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>
               <Route path="/profile/:id/questionSet/:questionSetId" component={QuestionStatis}/>
@@ -61,6 +64,7 @@ ReactDOM.render(
               <Route path="/profile/:id/userProfile" component={UserProfile} />
               <Route path="/profile/:id/:subjectId" component={ManagerSubject} />
               <Route path="/profile/:id/:subjectId/:topicId" component={ListUserGiveAss} />
+              <Route path="/profile/:id/calendar" component={Calendar} />
             </Route>
             <Route path="/waitExam/:id" component={WaitExam}/>
             <Route path="/startedExam/:id" component={StartedExam}/>

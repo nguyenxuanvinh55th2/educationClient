@@ -47,7 +47,8 @@ class CreateSubject extends React.Component {
         courseId: this.state.courseId,
         dateStart: moment.valueOf(),
         dateEnd: moment.valueOf(),
-        code: this.state.code
+        code: this.state.code,
+        isActive: true
       },
       userSubjects: this.state.userSubjects,
       userMails: this.state.userMails,

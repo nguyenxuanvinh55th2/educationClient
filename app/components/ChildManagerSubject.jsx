@@ -119,6 +119,43 @@ class ListUserGiveAssForm extends React.Component {
     this.state = {
       topics: []
     }
+    this.dataTest = [
+      {
+        user: "Sang Huynh",
+        email: "huynhngocsang@gmail.com",
+        file: "BaitaiOn_sang.docx",
+        date: '20/6/2017',
+        content: 'Gửi thầy mẫu báo báo tốt nghiệp của em'
+      },
+      {
+        user: "Duy Sinh",
+        email: "nguyenduysinh@gmail.com",
+        file: "BaitaiOn_vinh.docx",
+        date: '23/6/2017',
+        content: 'Gửi thầy mẫu báo báo tốt nghiệp của em'
+      },
+      {
+        user: "Kim Xuan",
+        email: "xuannguyen@gmail.com",
+        file: "BaitaiOn_xuan.docx",
+        date: '306/2017',
+        content: 'Gửi thầy mẫu báo báo tốt nghiệp của em'
+      },
+      {
+        user: "Trien Vien",
+        email: "phamtrieuvien@gmail.com",
+        file: "BaitaiOn_vien.docx",
+        date: '2/7/2017',
+        content: 'Gửi thầy mẫu báo báo tốt nghiệp của em'
+      },
+      {
+        user: "Sang Huynh",
+        email: "huynhngocsang@gmail.com",
+        file: "BaitaiOn_sang.docx",
+        date: '20/6/2017',
+        content: 'Gửi thầy mẫu báo báo tốt nghiệp của em'
+      }
+    ]
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.dataSet.getInfoTopic){
@@ -144,7 +181,10 @@ class ListUserGiveAssForm extends React.Component {
               <th>STT</th>
               <th>Tên</th>
               <th>Email</th>
-              <th>File</th>
+              {
+                dataSet.getInfoTopic.owner._id == this.props.users.userId &&
+                <th>File</th>
+              }
               <th>Ngày nộp</th>
               <th>Nộp dung</th>
               <th>Điểm</th>
@@ -158,7 +198,10 @@ class ListUserGiveAssForm extends React.Component {
                     <td>{idx +1}</td>
                     <td>{member.owner.name}</td>
                     <td>{member.owner.email}</td>
-                    <td><a href={member.files && member.files[0] ? member.files[0].file : ''} download><p> {member.files && member.files[0] ? member.files[0].fileName : 'Not valid'}</p></a></td>
+                    {
+                      dataSet.getInfoTopic.owner._id == this.props.users.userId &&
+                      <td><a href={member.files && member.files[0] ? member.files[0].file : ''} download><p> {member.files && member.files[0] ? member.files[0].fileName : 'Not valid'}</p></a></td>
+                    }
                     <td>{moment(member.createdAt).format('HH:mm DD/MM/YYYY')}</td>
                     <td>{member.content}</td>
                     {
@@ -175,6 +218,7 @@ class ListUserGiveAssForm extends React.Component {
                               if(this.props.updateMemberReply && member.point){
                                 this.props.updateMemberReply(this.props.users.userId,member._id, JSON.stringify({point: parseFloat(member.point)})).then(({data}) => {
                                   if(data.updateMemberReply){
+                                    this.props.dataSet.refetch();
                                     this.props.addNotificationMute({fetchData: true, message: `Cập nhật điểm số  cho sinh viên ${member.owner.name} bài tập ${dataSet.getInfoTopic.title} thành công!`, level:'success'});
                                   }
                                 })
