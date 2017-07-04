@@ -599,19 +599,18 @@ class ManagerSubject extends React.Component {
                     {
                       __.map(this.state.dataSetTheme,(theme,idx) => {
                         return (
-                          <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}
-                            onClick={() => {
-                              let dataValueTheme = this.state.dataSetTheme;
-                              dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
-                              this.setState({dataSetTheme: dataValueTheme})
-                            }}>
-                            <p style={{fontWeight: 600}}>{theme.theme.name}</p>
+                          <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
+                            <p style={{fontWeight: 600}}   onClick={() => {
+                                let dataValueTheme = this.state.dataSetTheme;
+                                dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
+                                this.setState({dataSetTheme: dataValueTheme})
+                              }}>{theme.theme.name}</p>
                             {
                               theme.openDetail &&
                               <div>
-                                <p>{theme.topic.content}</p>
+                                <p>{theme.topic && theme.topic.content ? theme.topic.content : ''}</p>
                                 {
-                                  __.map(theme.topic.files,(file, fileIdx) => {
+                                  __.map(theme.topic && theme.topic.files ? theme.topic.files : [],(file, fileIdx) => {
                                     if(file.type.includes('image')){
                                       return (
                                         <div key={fileIdx} style={{padding: 5}}>
@@ -643,6 +642,7 @@ class ManagerSubject extends React.Component {
                                             <button type="button" className="btn btn-primary" style={{width: 70, marginTop: 10}}>View</button>
                                          </div>
                                         </div>
+                                        <a href={file.file} download id={file._id} hidden></a>
                                       </div>
                                     )
                                     }
@@ -770,6 +770,7 @@ class ManagerSubject extends React.Component {
                                               <button type="button" className="btn btn-primary" style={{width: 70, marginTop: 10}}>View</button>
                                            </div>
                                           </div>
+                                          <a href={file.file} download id={file._id} hidden></a>
                                         </div>
                                       )
                                     }
