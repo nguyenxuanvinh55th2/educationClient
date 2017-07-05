@@ -141,10 +141,13 @@ class StartedExam extends React.Component {
     if(!startCountDown && data.examById && !data.examById.isClassStyle) {
       let timeLeft = moment().valueOf() - data.examById.timeStart;
       let time = (data.examById.time * 60 * 1000) - timeLeft;
-      let countDown = time
+      let countDown = time;
+      console.log('something');
       let token = localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
       if(data.examById.status === 99) {
+        console.log('something 1');
         this.interval = setInterval(() => {
+          console.log('something 2');
           countDown -= 1000;
           if(countDown % randomNuber === 0 && data.examById.createdBy._id !== Meteor.userId() && that.refs.webcam) {
             let playerImage = that.refs.webcam.getScreenshot();

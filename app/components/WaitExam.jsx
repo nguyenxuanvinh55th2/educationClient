@@ -156,7 +156,7 @@ class WaitExam extends React.Component {
             </div>
             <div style={{paddingLeft: (window.innerWidth - 300) / 2, paddingRight: (window.innerWidth - 300) / 2}}>
               {
-                users.userId === data.examById.createdBy._id || !data.examById.isTest ?
+                (users.userId === data.examById.createdBy._id || !data.examById.isTest) ?
                 <button className="btn" style={{backgroundColor: '#35bcbf', color: 'white', width: '100%'}} onClick={() => {
                     let token= localStorage.getItem('Meteor.loginTokenFacebook') ? localStorage.getItem('Meteor.loginTokenFacebook') : localStorage.getItem('Meteor.loginTokenGoogle') ? localStorage.getItem('Meteor.loginTokenGoogle') : localStorage.getItem('Meteor.loginToken')
                     let _id = params.id;
@@ -182,6 +182,7 @@ const QUESTION_BY_EXAM = gql`
       _id
       code
       name
+      isTest
       description
       createdBy {
         _id
