@@ -31,7 +31,7 @@ export default class Home extends React.Component {
             <div style={{paddingBottom: 60, marginTop: 40, }}>
               <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/text_zps26sj4dh6.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" />
+                <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" disabled={!this.props.users.userId} />
                 <button type="button" className="btn" style={{backgroundColor: '#35bcbf', borderRadius: 25, width: 250, height: 45, color: 'white', marginTop: 15}}>THAM GIA THI</button>
               </div>
             </div>

@@ -418,7 +418,7 @@ class ManagerSubject extends React.Component {
                         <h4 className="modal-title" style={{color: '#35bcbf'}}>Hoạt động</h4>
                     </Tab>
                     {
-                      dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanUploadAssignment') > -1 ) ?
+                      dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanManage') > -1 ) ?
                       <Tab>
                           <h4 className="modal-title" style={{color: '#35bcbf'}}>Phân quyền</h4>
                       </Tab>: <div></div>
@@ -600,11 +600,22 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetTheme,(theme,idx) => {
                         return (
                           <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
-                            <p style={{fontWeight: 600}}   onClick={() => {
-                                let dataValueTheme = this.state.dataSetTheme;
-                                dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
-                                this.setState({dataSetTheme: dataValueTheme})
-                              }}>{theme.theme.name}</p>
+                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                              <p style={{fontWeight: 600, width: '100%'}}   onClick={() => {
+                                  let dataValueTheme = this.state.dataSetTheme;
+                                  dataValueTheme[idx].openDetail = dataValueTheme[idx].openDetail ? !dataValueTheme[idx].openDetail : true;
+                                  this.setState({dataSetTheme: dataValueTheme})
+                                }}>{theme.theme.name}</p>
+                                {
+                                  dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanManage') > -1 ) ?
+                                  <button type="button" className="btn btn-sm" onClick={() => {
+                                    browserHistory.push("/profile/" + this.props.userId + '/' + this.props._id)
+                                  }}
+                                    style={{ margin: 0, boxShadow:'none', background:'none', padding: 0, color: '#35bcbf', fontSize: 15}}>
+                                    <span className="glyphicon glyphicon-pencil"></span>&nbsp;
+                                  </button> : null
+                                }
+                            </div>
                             {
                               theme.openDetail &&
                               <div>
@@ -726,11 +737,22 @@ class ManagerSubject extends React.Component {
                       __.map(this.state.dataSetAss,(ass,idx) => {
                         return (
                           <div key={idx} style={{border: '1px solid #f0f0f0', minHeight: 40, padding: 10, marginTop: idx == 0 ? 0 : 10, cursor: 'pointer'}}>
-                            <p style={{width: '100%', cursor: 'pointer', fontWeight: 600}} onClick={() => {
-                                let dataValueAss = this.state.dataSetAss;
-                                dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
-                                this.setState({dataSetAss: dataValueAss})
-                              }}>{ass.topic.title}</p>
+                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                              <p style={{width: '100%', cursor: 'pointer', fontWeight: 600}} onClick={() => {
+                                  let dataValueAss = this.state.dataSetAss;
+                                  dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
+                                  this.setState({dataSetAss: dataValueAss})
+                                }}>{ass.topic.title}</p>
+                                {
+                                  dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanManage') > -1 ) ?
+                                  <button type="button" className="btn btn-sm" onClick={() => {
+                                    browserHistory.push("/profile/" + this.props.userId + '/' + this.props._id)
+                                  }}
+                                    style={{ margin: 0, boxShadow:'none', background:'none', padding: 0, color: '#35bcbf', fontSize: 15}}>
+                                    <span className="glyphicon glyphicon-pencil"></span>&nbsp;
+                                  </button> : null
+                                }
+                            </div>
                             {
                               ass.openDetail &&
                               <div>

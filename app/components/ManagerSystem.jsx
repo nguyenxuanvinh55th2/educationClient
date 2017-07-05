@@ -150,7 +150,7 @@ class ManagerSystem extends React.Component {
                         <option value={-1}>Chọn giáo viên</option>
                         {
                           __.map(this.props.courses.user.userFriendsUser, (infoUser,idx) =>
-                              <option key={idx} value={infoUser._id}>{infoUser._id} - {infoUser.email}</option>
+                              <option key={idx} value={infoUser._id}>{infoUser.name} - {infoUser.email}</option>
                           )
                         }
                       </select>
@@ -160,7 +160,6 @@ class ManagerSystem extends React.Component {
                 <div className="modal-footer">
                   <button type="button" className="btn btn-default" onClick={() => this.setState({open: false})}>Đóng</button>
                   <button type="button" className="btn btn-primary" disabled={!this.state.teacherChange._id}  onClick={() => {
-                    console.log(this.state.teacherChange);
                     if(this.props.moveTeacherInClassSubject){
                       this.props.moveTeacherInClassSubject(this.state.classSelected._id, JSON.stringify({userId: this.state.teacherChange._id})).then(({data}) => {
                         console.log(data);

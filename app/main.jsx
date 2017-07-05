@@ -33,6 +33,8 @@ import Home from './components/Home.jsx'
 import ClassList from './components/ClassList.jsx'
 import CreateTest from './components/CreateTest.jsx'
 import CreateSubject from './components/CreateSubject.jsx'
+import EditSubject from './components/EditSubject.jsx'
+import MoveSubject from './components/MoveSubject.jsx'
 import QueryUserPermission from './QueryUserPermission.jsx';
 import WaitExam from './components/WaitExam.jsx';
 import StartedExam from './components/StartedExam.jsx';
@@ -55,6 +57,8 @@ ReactDOM.render(
             <Route path="/authenticate/:id/:code" component={Authenticate}/>
             <Route path="/profile/:id" component={Profile}>
               <IndexRoute component={Wall}/>
+              <Route path="/profile/:id/edit/:subjectId" component={EditSubject} />
+              <Route path="/profile/:id/move/:subjectId" component={MoveSubject} />
               <Route path="/profile/:id/calendar" component={Calendar} />
               <Route path="/profile/:id/createClass" component={ClassList}/>
               <Route path="/profile/:id/createSubject" component={CreateSubject}/>

@@ -74,7 +74,7 @@ export default class Calendar extends React.Component {
   }
   render(){
     return (
-      <div>
+      <div style={{display: 'flex', flexDirection: 'column', padding: 20}}>
         <BigCalendar
          {...this.props}
          events={this.events}

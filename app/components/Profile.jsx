@@ -17,6 +17,7 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import Notifications from 'material-ui/svg-icons/social/notifications'
+import Schedule from 'material-ui/svg-icons/action/schedule'
 import IconChat from 'material-ui/svg-icons/communication/chat';
 export default class Profile extends React.Component {
   constructor(props) {
@@ -71,6 +72,11 @@ export default class Profile extends React.Component {
                     }
             }}>
               <Notifications color={'#35bcbf'}/>
+            </IconButton>
+            <IconButton onClick={() => {
+              browserHistory.push(`/profile/${this.props.users.userId}/calendar`)
+            }}>
+              <Schedule color={'#35bcbf'}/>
             </IconButton>
             {
               !window.matchMedia(`(min-width: 1100px)`).matches &&
