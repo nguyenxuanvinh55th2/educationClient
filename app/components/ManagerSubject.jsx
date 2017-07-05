@@ -22,6 +22,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Combobox from './Combobox.jsx';
 import MultiSelectEditor, {InviteUser} from './MultiSelectEditor.jsx';
 import { GiveAssignment, ListUserGiveAss, PermissionSubject } from './ChildManagerSubject.jsx'
+
+import { EditTheme } from './DialogEditSubject.jsx'
 const fileImageFile = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/file_zpsgm6uuyel.png';
 const iconButtonElement = (
   <IconButton
@@ -73,7 +75,10 @@ class ManagerSubject extends React.Component {
       openGiveAdd: false,
       openGiveList:false,
       filesAss: {},
-      openDialogEdit: false
+      openDialogEdit: false,
+      openEditTheme: false,
+      openEditAss: false,
+      dataEditSelected: {}
     }
   }
   componentWillReceiveProps(nextProps){
@@ -609,7 +614,7 @@ class ManagerSubject extends React.Component {
                                 {
                                   dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanManage') > -1 ) ?
                                   <button type="button" className="btn btn-sm" onClick={() => {
-                                    browserHistory.push("/profile/" + this.props.userId + '/' + this.props._id)
+                                    this.setState({openEditTheme: true, dataEditSelected: __.cloneDeep(theme)})
                                   }}
                                     style={{ margin: 0, boxShadow:'none', background:'none', padding: 0, color: '#35bcbf', fontSize: 15}}>
                                     <span className="glyphicon glyphicon-pencil"></span>&nbsp;
@@ -743,7 +748,7 @@ class ManagerSubject extends React.Component {
                                   dataValueAss[idx].openDetail = dataValueAss[idx].openDetail ? !dataValueAss[idx].openDetail : true;
                                   this.setState({dataSetAss: dataValueAss})
                                 }}>{ass.topic.title}</p>
-                                {
+                                {/* {
                                   dataSet.getRolesUserClass && dataSet.getRolesUserClass.roles.length && (__.findIndex(dataSet.getRolesUserClass.roles, item => item === 'userCanManage') > -1 ) ?
                                   <button type="button" className="btn btn-sm" onClick={() => {
                                     browserHistory.push("/profile/" + this.props.userId + '/' + this.props._id)
@@ -751,7 +756,7 @@ class ManagerSubject extends React.Component {
                                     style={{ margin: 0, boxShadow:'none', background:'none', padding: 0, color: '#35bcbf', fontSize: 15}}>
                                     <span className="glyphicon glyphicon-pencil"></span>&nbsp;
                                   </button> : null
-                                }
+                                } */}
                             </div>
                             {
                               ass.openDetail &&
@@ -961,6 +966,16 @@ class ManagerSubject extends React.Component {
               contentStyle={{minHeight:'60%'}}
             >
               <GiveAssignment {...this.props} topicSelected={this.state.topicSelected} handleClose={() => this.setState({openGiveAdd: false})} />
+            </Dialog>
+            <Dialog
+              modal={true}
+              open={this.state.openEditTheme}
+              autoDetectWindowHeight={false}
+              autoScrollBodyContent={false}
+              bodyStyle={{padding: 0}}
+              contentStyle={{minHeight:'60%'}}
+            >
+              <EditTheme {...this.props} dataTheme={this.state.dataEditSelected} refreshData={() => this.refreshData()} handleClose={() => this.setState({openEditTheme: false})}/>
             </Dialog>
             <Dialog
               modal={true}

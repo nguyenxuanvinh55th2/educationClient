@@ -22,6 +22,7 @@ class EditProfile extends React.Component {
     this.handleSaveProfile = this.handleSaveProfile.bind(this);
     this.validateSaveProfile = this.validateSaveProfile.bind(this);
     this.state = {
+      code: props.users.currentUser.code ? props.users.currentUser.code : '',
       firstName: props.users.currentUser.firstName ? props.users.currentUser.firstName : '',
       lastName: props.users.currentUser.lastName ? props.users.currentUser.lastName : '',
       email: props.users.currentUser.email ? props.users.currentUser.email : '',
@@ -154,7 +155,7 @@ class EditProfile extends React.Component {
         <TabPanel>
           <div style={{padding: '0px 70px'}}>
             <div style={{flexDirection: 'column'}}>
-              <h2>Chỉnh sửa tài khoản</h2>
+              <h2>Chỉnh sửa tài khoản - CODE: {this.state.code}</h2>
             </div>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
               <div style={{width: '20%',display: 'flex', flexDirection: 'column'}}>

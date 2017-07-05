@@ -37,7 +37,8 @@ class MoveSubject extends React.Component {
     }
   }
   handleSave(){
-
+    this.props.addNotificationMute({fetchData: true, message: 'Hệ thống đã xác nhận việc chuyển môn học thành công', level:'success'});
+    browserHistory.push(`/profile/${this.props.users.userId}`);
   }
   handleAddTheme(){
     let themes = this.state.themes;
