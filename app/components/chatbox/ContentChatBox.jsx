@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router';
-import { Session } from 'meteor/session';
 import { createContainer } from 'react-meteor-data';
 import moment from 'moment';
 

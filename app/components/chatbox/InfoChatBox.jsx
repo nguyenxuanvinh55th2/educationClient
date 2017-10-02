@@ -1,5 +1,4 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import {Link} from 'react-router';
 import moment from 'moment';
 

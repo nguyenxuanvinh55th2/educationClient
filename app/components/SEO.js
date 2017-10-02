@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 
 // const seoImages = {

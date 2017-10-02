@@ -1,10 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router';
-import {Meteor} from 'meteor/meteor';
 import moment from 'moment';
 import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';
-import { Session } from 'meteor/session';
 
 import SliderBanner from '../slider/SliderBanner.jsx';
 import SliderInter from '../slider/SliderInter.jsx';
@@ -52,14 +50,14 @@ class Home extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data.advertisements && !this.props.data.advertisements && nextProps.data.advertisements[0]) {
-      if (localStorage.getItem('REGION') && !Session.get('closeAdvertise')) {
+      if (localStorage.getItem('REGION') && !session.get('closeAdvertise')) {
         this.setState({time: nextProps.data.advertisements[0].time});
         this.interval = setInterval(() => {
           if(!this.state.focus) {
             let time = this.state.time - 1;
             this.setState({time});
             if (time < 0) {
-              Session.set('closeAdvertise', true);
+              session.set('closeAdvertise', true);
               clearInterval(this.interval);
             }
           }
@@ -67,20 +65,6 @@ class Home extends React.Component {
       }
     }
   }
-
-  // componentDidMount() {
-  //   if (localStorage.getItem('REGION')) {
-  //     this.interval = setInterval(() => {
-  //       if(!this.state.focus) {
-  //         let time = this.state.time - 1;
-  //         this.setState({time});
-  //         if (time < 0) {
-  //           clearInterval(this.interval);
-  //         }
-  //       }
-  //     }, 1000);
-  //   }
-  // }
 
   setFocus(value) {
     this.setState({focus: value});

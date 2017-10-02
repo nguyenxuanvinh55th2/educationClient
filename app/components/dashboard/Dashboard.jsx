@@ -1,6 +1,5 @@
 import React from 'react';
 import {AgGridReact} from 'ag-grid-react';
-import {Meteor} from 'meteor/meteor';
 import { createContainer } from 'react-meteor-data';
 import __ from 'lodash';
 import Dialog from 'material-ui/Dialog';

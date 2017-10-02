@@ -12,6 +12,7 @@
     "npm-bcrypt",
     "random",
     "tmeasday:publish-counts",
-    "session"
+    "session",
+    "react-meteor-data"
   ]
 }

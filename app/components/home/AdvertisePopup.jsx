@@ -4,7 +4,6 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import __ from 'lodash';
-import { Session } from 'meteor/session';
 
 import {loadHomePopup} from '../../javascript/Popup.js';
 import {hideHomePopup} from '../../javascript/Popup.js';
@@ -15,7 +14,7 @@ export default class AdvertisePopup extends React.Component {
     this.state = {contact: ''};
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.time <= 1 || Session.get('closeAdvertise')) {
+    if(nextProps.time <= 1 || session.get('closeAdvertise')) {
       $('#HomePopup').modal('hide');
     }
   }

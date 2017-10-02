@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 import { browserHistory, Link} from 'react-router';
 
 export default class Login extends React.Component {

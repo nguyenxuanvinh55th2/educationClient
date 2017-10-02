@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 import { AgGridReact } from 'ag-grid-react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';

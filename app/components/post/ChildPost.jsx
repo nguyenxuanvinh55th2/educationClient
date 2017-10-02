@@ -8,7 +8,6 @@ import Popover from 'material-ui/Popover';
 import QuillRender from '../editor/QuillRender.jsx';
 import Cleave from 'cleave.js/react';
 import moment from 'moment';
-import { Meteor } from 'meteor/meteor';
 export class HanderEditorPost extends React.Component {
   constructor(props) {
       super(props);

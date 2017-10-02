@@ -1,5 +1,4 @@
 import React from 'react';
-import {Meteor} from 'meteor/meteor';
 import Slider from 'react-slick';
 import {Link} from 'react-router';
 import { graphql, compose } from 'react-apollo';

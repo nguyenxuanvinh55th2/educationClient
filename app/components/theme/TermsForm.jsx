@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';
 import QuillEditorTour from '../editor/TourEditor.jsx';
