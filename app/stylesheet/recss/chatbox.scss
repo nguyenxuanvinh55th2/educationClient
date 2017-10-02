@@ -1,0 +1,47 @@
+$fs: 15;
+.chat-data-form-content {
+  .chatblock {
+    margin-bottom: 20px;
+    font-size: 15/$fs + em;
+    overflow: hidden;
+
+    p {
+      margin: 0;
+    }
+
+    p.content {
+      border: 1px solid #47a0ff;
+      padding: 5px;
+      margin-top: 5px;
+      text-align: justify;
+    }
+
+    .send-at {
+      color: #9c9c9c;
+      font-size: 12/$fs + em;
+    }
+
+    .chat-name {
+      font-weight: bold;
+    }
+  }
+
+  .support {
+    text-align: left;
+
+    p.content {
+      float: left;
+      position: relative;
+      border-radius: 0 20px 20px 20px;
+    }
+  }
+
+  .me {
+    text-align: right;
+
+    p.content {
+      float: right;
+      border-radius: 20px 20px 0 20px;
+    }
+  }
+}

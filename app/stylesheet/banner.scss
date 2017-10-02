@@ -1,0 +1,29 @@
+.banner {
+	.table-div {
+		height: 540px;
+		text-align: center;
+		color: #fff;
+	}
+
+	h2 {
+		margin-bottom: 50px;
+	}
+
+	h4 {
+		font-size: 43/$fs + em;
+	}
+
+	h5 {
+		font-family: Lobster;
+		font-size: 36/$fs + em;
+	}
+}
+@media only screen and (max-width: 991px) {
+	.banner .table-div {
+		height: 400px;
+	}
+
+	.banner h4 {
+		font-size: 2em;
+	}
+}

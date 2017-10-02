@@ -1,0 +1,93 @@
+.top-header-admin {
+  border-top: 3px solid green;
+  color: #fff;
+  background: #252525!important;
+  padding: 0 20px;
+  ul {
+    margin-bottom: 0;
+    li {
+      a {
+        color: #fff;
+      }
+    }
+
+    .btn.focus,
+    .btn:focus,
+    .btn:hover {
+      color: #fff;
+    }
+
+    .btn .caret {
+      margin-left: 5px;
+    }
+
+    li {
+      display: inline-block;
+      list-style: none;
+      padding: 0 10px;
+
+      .dropdown-menu {
+        left: auto;
+        right: 0;
+        box-shadow: none;
+
+        li {
+          display: block;
+        }
+
+        &:hover {
+          color: #fff;
+        }
+
+        a {
+          color: #000;
+        }
+      }
+
+      .btn.active,
+      .btn:active {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+#headeradmin {
+  ul {
+    li {
+      padding: 5px 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.left-top-header {
+  position: absolute;
+  top: 9px;
+  left: 20px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+  padding: 0 20px 0 5px;
+  font-size: 15px;
+}
+
+.navbar-inverse {
+  margin-bottom: 0;
+  // padding: 13px 0 0;
+  background: #000;
+
+  .dropdown-menu {
+    margin-top: 10px !important;
+  }
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover {
+  background-color: transparent;
+}
+.caret {
+  margin-left: 10px;
+}

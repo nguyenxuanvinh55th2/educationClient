@@ -4,16 +4,14 @@ import { routerReducer} from 'react-router-redux'
 import { client } from '../apollo-client.js';
 
 import users from './users.js'
-import messager from './messager.js'
-import subjectClass from './subjectClass.js'
 import notification from './notification.js'
-import loginToken from './loginToken.js'
+import header from './header.js'
+import google from './google.js'
 const rootReducer = combineReducers({
   users,
-  messager,
-  subjectClass,
   notification,
-  loginToken,
+  header,
+  google,
   routing: routerReducer,
   apollo: client.reducer(),
 })

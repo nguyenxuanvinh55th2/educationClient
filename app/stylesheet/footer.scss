@@ -1,0 +1,146 @@
+.pin-top.active {
+	z-index: 9998;
+	position: fixed;
+	cursor: pointer;
+	bottom: 70px;
+	right: 20px;
+	background-color: #47a0ff;
+	border-radius: 5px;
+
+	i {
+		padding: 3px 10px 7px;
+		font-size: 30px;
+		color: #fff;
+	}
+}
+
+#footer {
+	padding: 80px 0 0;
+
+	h4 {
+		font-size: 30/$fs + em;
+		font-weight: bold;
+		padding-bottom: 30px;
+	}
+
+	ul {
+		padding-left: 0;
+		margin-left: -10px;
+
+		li {
+			display: inline-block;
+			list-style: none;
+			padding: 0 10px 10px;
+
+			&:first-child {
+				// padding-left: 0;
+			}
+
+			a {
+				display: inline-block;
+				height: 44px;
+				width: 44px;
+				text-align: center;
+				line-height: 44px;
+				color: #fff;
+				background-color: #47a0ff;
+				border-radius: 50%;
+
+				&:hover {
+					background-color: #00438b;
+				}
+			}
+		}
+	}
+
+	p {
+		a {
+			color: #5f5f5f;
+
+			&:hover {
+				color: #47a0ff;
+			}
+		}
+	}
+
+	.form-group {
+		position: relative;
+
+		.form-control {
+			padding-left: 20px;
+			height: 54px;
+			font-size: 16/$fs + em;
+			padding-right: 110px;
+			background-color: #f2f2f2;
+		}
+
+		.btn {
+			position: absolute;
+			right: 5px;
+			top: 50%;
+			height: 45px;
+			padding-left: 10px;
+			padding-right: 10px;
+			transform: translateY(-50%);
+		}
+	}
+
+	.end-footer {
+		margin-top: 20px;
+		border-top: 1px solid #ebebeb;
+		padding: 10px 0;
+
+		p {
+			margin-bottom: 0;
+			font-weight: bold;
+			font-size: 13/$fs + em;
+
+			a {
+				font-size: 15/13 + em;
+				color: #006fe6;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: 1500px) {
+	#footer {
+		padding-top: 40px;
+	}
+}
+@media screen and (max-width: 1200px) {
+	#footer {
+		h4 {
+			font-size: 25/$fs + em;
+		}
+	}
+}
+@media screen and (max-width:991px) {
+	#footer {
+		text-align: center;
+
+		h4 {
+			padding-bottom: 0;
+		}
+
+		.col-footer {
+			margin-bottom: 30px;
+		}
+	}
+}
+@media screen and (min-width:992px) and (max-width:1350px) {
+	#footer {
+		h4 {
+			font-size: 16/$fs + em;
+		}
+
+		ul {
+			li {
+				padding: 0 5px 5px;
+			}
+		}
+	}
+}

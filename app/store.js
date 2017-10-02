@@ -1,32 +1,25 @@
 import rootReducer from './reducers';
+import { createStore, applyMiddleware, compose} from 'redux';
+import {syncHistoryWithStore} from 'react-router-redux';
+import { browserHistory} from 'react-router';
 import { client } from './apollo-client.js';
-import { createStore, compose, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk';
-import {routerReducer, syncHistoryWithStore} from 'react-router-redux'
-import { browserHistory} from 'react-router'
-import { socketEndpoint } from './config';
 const defaultState = {
   users: {},
   notification: {
     fetchData: false,
-    level: '', message: ''
+    level: '', message: '',
+    header: 'home',
+    google: false
   },
-  loginToken: 'Meteor.loginToken'
 }
-
 const store = createStore(
   rootReducer,
   defaultState,
-  applyMiddleware(thunk),
   compose(
-      window.devToolsExtension ? window.devToolsExtension(): f => f
-  ));
-  if(module.hot){
-    module.hot.accept(() => {
-      const nextRootReducer = require('./reducers/index').default;
-      store.replaceReducer(nextRootReducer);
-    })
-  }
+      applyMiddleware(client.middleware()),
+      // (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+  )
+);
 
-export const history = syncHistoryWithStore(browserHistory, store);
+// export const history = syncHistoryWithStore(browserHistory, store);
 export default store;

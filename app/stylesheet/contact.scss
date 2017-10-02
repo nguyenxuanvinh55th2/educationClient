@@ -1,0 +1,210 @@
+.contact {
+	background: #ebebeb;
+	padding: 50px 0;
+
+	h3 {
+		text-transform: uppercase;
+		font-size: 32/$fs + em;
+		letter-spacing: 0;
+		margin-bottom: 40px;
+	}
+
+	.contact-info {
+		.block-info {
+			overflow: hidden;
+			margin-bottom: 30px;
+
+			.icon {
+				width: 20%;
+				margin-bottom: 30px;
+
+				i.fa {
+					color: #fff;
+					background: #006fe6;
+					font-size: 40/$fs + em;
+					width: 100px;
+					height: 100px;
+					padding: 30px;
+					text-align: center;
+					border-radius: 5px;
+				}
+			}
+
+			.info {
+				margin-bottom: 30px;
+
+				h3 {
+					font-family: Oswald, sans-serif;
+					text-transform: uppercase;
+					font-size: 22/$fs + em;
+					line-height: 26/$fs + em;
+					margin: 0;
+				}
+
+				p {
+					font-family: Open Sans, sans-serif;
+					font-size: 20/$fs + em;
+					margin: 0;
+				}
+			}
+		}
+	}
+
+	.contact-form {
+		.form-group {
+			margin-bottom: 3px;
+		}
+
+		input.form-control {
+			padding: 20px;
+			font-family: Open Sans, sans-serif;
+			font-size: 18/$fs + em;
+		}
+
+		textarea.form-control {
+			padding: 15px;
+			font-family: Open Sans, sans-serif;
+			font-size: 18/$fs + em;
+			height: 200px;
+			resize: none;
+			text-align: justify;
+		}
+
+		.submit {
+			text-align: right;
+		}
+
+		a.btn {
+			font-family: Oswald, sans-serif;
+			text-transform: uppercase;
+			font-size: 24/$fs + em;
+			color: #fff;
+			padding: 10px 40px;
+		}
+	}
+}
+
+span.help-block {
+	font-size: 12/$fs + em;
+	margin: 0;
+	display: block;
+	height: 15px;
+	font-style: italic;
+}
+@media only screen and (max-width: 1450px) {
+	.contact {
+		padding: 20px 0 !important;
+		.container {
+			max-width: 1160px;
+		}
+	}
+}
+@media screen and (min-width:1200px) {
+	.contact {
+		.contact-info {
+			.block-info {
+				.icon {
+					width: 25%;
+				}
+				.info {
+					padding-left: 0;
+					margin-left: -15px;
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width:1399px) {
+	.contact {
+		h3 {
+			font-size: 26/$fs + em;
+		}
+
+		.contact-info {
+			.block-info {
+				.icon {
+					width: 18%;
+					i.fa {
+						font-size: 30/$fs + em;
+						width: 70px;
+				    height: 70px;
+				    padding: 20px;
+					}
+				}
+
+				.info {
+					h3 {
+						font-size: 18/$fs + em;
+					}
+
+					p {
+						font-size: 16/$fs + em;
+					}
+				}
+			}
+		}
+
+		.contact-form {
+			input.form-control {
+				font-size: 18/$fs + em;
+			}
+
+			textarea.form-control {
+				font-size: 18/$fs + em;
+			}
+
+			a.btn {
+				font-size: 18/$fs + em;
+			}
+		}
+	}
+}
+@media screen and (max-width:1199px) {
+	.contact {
+		h3 {
+			text-align: center;
+		}
+
+		.contact-info {
+			.block-info {
+				.icon {
+					margin-bottom: 10px;
+					width: 100%;
+					text-align: center;
+
+					i.fa {
+						font-size: 35/$fs + em;
+						width: 75px;
+						height: 75px;
+						padding: 22px;
+					}
+				}
+
+				.info {
+					margin-bottom: 0;
+					text-align: center;
+
+				}
+			}
+		}
+
+		.contact-form {
+			.submit {
+				text-align: center;
+			}
+		}
+	}
+}
+@media screen and (max-width:991px) {
+	.contact {
+		h2 {
+			text-align: center;
+		}
+
+		.contact-form {
+			.submit {
+				text-align: center;
+			}
+		}
+	}
+}

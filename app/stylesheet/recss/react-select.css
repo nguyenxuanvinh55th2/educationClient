@@ -1,0 +1,8 @@
+.Select-control {
+  width: calc(100% + 1px) !important;
+  border-radius: 0 !important;
+}
+.Select-option.is-selected,
+.Select-option.is-focused {
+  background-color: pink !important;
+}

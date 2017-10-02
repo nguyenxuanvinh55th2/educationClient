@@ -1,0 +1,26 @@
+.login-page {
+  background-color: #f1f1f1;
+  min-height: 654px;
+  .login-area {
+    width: 320px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+  form {
+    background: #fff;
+  }
+  .back-to-home-page {
+    font-size: 13px;
+    padding: 20px 0;
+    a {
+      color: #555d66;
+    }
+    a:hover {
+      color: #00a0d2;
+      text-decoration: none;
+    }
+  }
+}

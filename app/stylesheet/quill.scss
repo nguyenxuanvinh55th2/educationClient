@@ -1,0 +1,34 @@
+.ql-editor{
+	h2,h1{
+		font-size: 2.33333em;
+		font-family: "Open Sans",sans-serif;
+		letter-spacing: 0;
+	}
+	h1{
+		padding-top: 30px;
+	}
+	h2{
+		padding: 10px 0;
+		font-size: 1.93em;
+	}
+}
+.ql-video{
+		width:100%;
+		min-height: 400px;
+		max-width: 700px;
+		margin: 0 auto;
+		margin-top: 13px;
+	}
+@media only screen and (min-width: 768px){
+	.ql-container{
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+}
+@media only screen and (max-width: 767px){
+	.ql-editor{
+		.ql-video{
+			min-height: 200px;
+		}
+	}
+}
