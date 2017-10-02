@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
-;
+import { Meteor } from 'meteor/meteor';
 import __ from 'lodash';
 import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';

@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import Header from '../main/Header.jsx'
 import Footer from '../main/Footer.jsx'
-// import {SetHeightPage404} from '../../javascript/convertHeight.js';
+import {SetHeightPage404} from '../../javascript/convertHeight.js';
 export default class Page404 extends React.Component {
 	constructor(props) {
 		super(props)
@@ -28,7 +28,7 @@ export class DetailPage404 extends React.Component {
 		super(props)
 	}
 	componentDidMount() {
-		// SetHeightPage404();
+		SetHeightPage404();
 	}
 	render(){
 		return (

@@ -1,1 +1,4 @@
-# RealSalary_Client
+# Education Client
+# npm insatll
+# npm start
+

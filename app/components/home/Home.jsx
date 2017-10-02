@@ -1,9 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router';
+import {Meteor} from 'meteor/meteor';
 import moment from 'moment';
 import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';
-// import { session } from 'meteor/session';
+import { Session } from 'meteor/session';
 
 import SliderBanner from '../slider/SliderBanner.jsx';
 import SliderInter from '../slider/SliderInter.jsx';
@@ -51,14 +52,14 @@ class Home extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data.advertisements && !this.props.data.advertisements && nextProps.data.advertisements[0]) {
-      if (localStorage.getItem('REGION') && !session.get('closeAdvertise')) {
+      if (localStorage.getItem('REGION') && !Session.get('closeAdvertise')) {
         this.setState({time: nextProps.data.advertisements[0].time});
         this.interval = setInterval(() => {
           if(!this.state.focus) {
             let time = this.state.time - 1;
             this.setState({time});
             if (time < 0) {
-              session.set('closeAdvertise', true);
+              Session.set('closeAdvertise', true);
               clearInterval(this.interval);
             }
           }
@@ -95,7 +96,7 @@ class Home extends React.Component {
       <div>
         {!localStorage.getItem('REGION') && window.innerWidth > 767
           ? <HomePopup refetch={this.refetch.bind(this)}/>
-          : (data.advertisements && data.advertisements.length && this.state.showAdvertise && this.state.time > 0 && !session.get('closeAdvertise'))
+          : (data.advertisements && data.advertisements.length && this.state.showAdvertise && this.state.time > 0 && !Session.get('closeAdvertise'))
             ? <AdvertisePopup advertisements={data.advertisements} time={this.state.time} hideAdvertise={() => this.setState({showAdvertise: false})} setFocus={this.setFocus.bind(this)}/>
             : null
         }

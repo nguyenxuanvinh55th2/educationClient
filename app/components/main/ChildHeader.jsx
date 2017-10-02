@@ -1,5 +1,5 @@
 import React from 'react';
-;
+import { Meteor } from 'meteor/meteor';
 import { Link, browserHistory } from 'react-router';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';

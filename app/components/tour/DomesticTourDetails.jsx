@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import { displayContactInfo } from '../../javascript/Popup.js';
 import gql from 'graphql-tag';
 import __ from 'lodash';
-// import {Meteor} from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import { DetailPage404 } from '../wrap/Page404.jsx';
 import Quill from 'quill';
 class DomesticTourDetails extends React.Component {

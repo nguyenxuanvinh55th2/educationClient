@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
 import __ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import NotificationSystem from 'react-notification-system';
-// import '../javascript/bootstrap.min.js';
+import '../javascript/bootstrap.min.js';
 import enterprise from 'ag-grid-enterprise/main';
 import * as actionCreator from "../actions/actionCreator";
 function mapStateToProps(state) {

@@ -1,5 +1,5 @@
 import React from 'react';
-;
+import { Meteor } from 'meteor/meteor';
 import { browserHistory, Link } from 'react-router';
 import __ from 'lodash';
 import store from '../../store.js';

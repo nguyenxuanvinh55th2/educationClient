@@ -1,5 +1,5 @@
 import React from 'react';
-// import {Meteor} from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import {browserHistory} from 'react-router';
 import __ from 'lodash';
 import moment from 'moment';

@@ -7,7 +7,7 @@ import __ from 'lodash';
 import Popover from 'material-ui/Popover';
 import Cleave from 'cleave.js/react';
 import moment from 'moment';
-;
+import { Meteor } from 'meteor/meteor';
 
 export class HanderEditor extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link, browserHistory} from 'react-router';
-// import {Meteor} from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import moment from 'moment';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
