@@ -8,6 +8,7 @@ import {removeMenuSearch} from '../../javascript/header.js';
 import {heightEqua} from '../../javascript/convertHeight.js';
 import {createContainer} from 'react-meteor-data';
 import ChildHeader from './ChildHeader.jsx';
+import { Settings } from 'collections-root/setting'
 class Header extends React.Component {
   constructor(props) {
     super(props);

@@ -14,7 +14,8 @@ import AdvertisePopup from './AdvertisePopup.jsx';
 import HotTour from './HotTour.jsx';
 import BookTour from './BookTour.jsx';
 import EventInfo from './Event.jsx';
-import FindingType from './FindingType.jsx'
+import FindingType from './FindingType.jsx';
+import { Settings } from 'collections-root/setting';
 const TIME = 300000;
 
 class Home extends React.Component {

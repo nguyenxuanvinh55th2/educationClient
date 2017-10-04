@@ -6,9 +6,8 @@ import { ApolloProvider } from 'react-apollo';
 
 import store from './store';
 import {client} from './apollo-client';
-
+import 'meteor-client';
 import {renderRoutes} from './routes.js';
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // import '../imports/stylesheet/recss/react-select.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -22,4 +21,4 @@ ReactDOM.render(
         {renderRoutes()}
     </MuiThemeProvider>
   </ApolloProvider>
-, document.getElementById('render-target'));
+, document.getElementById('root'));

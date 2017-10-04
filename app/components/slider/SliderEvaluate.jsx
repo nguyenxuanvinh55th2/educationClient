@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import {Link} from 'react-router';
 import { createContainer } from 'react-meteor-data';
 import __ from 'lodash';
-
+import {AccountingObjects} from 'collections-root/accountingObject'
 class SliderEvaluate extends React.Component {
   constructor(props) {
     super(props);

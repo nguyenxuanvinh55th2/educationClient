@@ -3,7 +3,6 @@ import { browserHistory, Link } from 'react-router';
 import __ from 'lodash';
 import store from '../../store.js';
 import Dialog from 'material-ui/Dialog';
-import { Accounts } from 'meteor/accounts-base';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import CryptoJS from "crypto-js";

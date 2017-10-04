@@ -17,13 +17,15 @@ var config = {
             'ag-grid', 'ag-grid-enterprise', 'ag-grid-react',
             'quill', 'react-tab-panel', 'react-tabs'
         ],
-        meteor: ['meteor-client']
+        meteor: __dirname + '/node_modules/meteor-client'
     },
     devServer: {
-        hot: true,
-        contentBase: __dirname,
-        port: 4000,
-        historyApiFallback: true
+      hot: true,
+      contentBase: __dirname,
+      port: 4000,
+      host: '0.0.0.0',
+      historyApiFallback: true,
+      disableHostCheck: true
     },
     output: {
         filename: "[name].[hash].js",
@@ -35,14 +37,14 @@ var config = {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
-          name: ['vendor', 'utility'],
+          name: ['app', 'vendor', 'meteor'],
           minChunks: Infinity,
-          filename: '[name].[hash].js',
+          filename: '[name].[hash:6].js',
       }),
       new HtmlWebpackPlugin({
           template: path.join(__dirname, './index.html'),
           filename: 'index.html',
-          inject: 'body'
+          inject: 'body',
       }),
       new ExtractTextPlugin({ // define where to save the file
           filename: 'bundle.css',
@@ -81,10 +83,28 @@ var config = {
           },
           {
               test: /\.(ttf|eot|svg|gif|png|jpg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-              loader: 'file-loader?cacheDirectory=true',
-              options: {
-                  name: '[sha512:hash:hex].[ext]'
-              }
+              loaders: [
+                  'file-loader',
+                  {
+                      loader: 'image-webpack-loader',
+                      options: {
+                          gifsicle: {
+                            interlaced: false,
+                          },
+                          optipng: {
+                            optimizationLevel: 0,
+                          },
+                          pngquant: {
+                            quality: '65-90',
+                            speed: 4
+                          },
+                          mozjpeg: {
+                            progressive: true,
+                            quality: 65
+                          }
+                      }
+                  }
+              ]
           }
         ],
     },
@@ -95,18 +115,18 @@ var config = {
             "react-grid-layout-root" : __dirname + "/node_modules/react-grid-layout",
             "react-resizable-root" : __dirname + "/node_modules/react-resizable",
             "rc-slider-root" : __dirname + "/node_modules/rc-slider",
-            "educationServer" : path.resolve(__dirname, '../educationServer/collections')
-            // "patternfly-root": __dirname + "/node_modules/patternfly/",
+            "collections-root": __dirname + "/collections",
+            "meteor-client": __dirname + "/node_modules/meteor-client",
         }
     },
     externals: [
-      function resolveMeteor(context, request, callback) {
-        var match = request.match(/^meteor\/(.+)$/);
-        var pack = match && match[1];
-        var locator = pack && 'Package["' + pack + '"]';
+     function resolveMeteor(context, request, callback) {
+       var match = request.match(/^meteor\/(.+)$/);
+       var pack = match && match[1];
+       var locator = pack && 'Package["' + pack + '"]';
 
-        return locator ? callback(null, locator) : callback();
-      }
-    ],
+       return locator ? callback(null, locator) : callback();
+     }
+   ]
 };
 module.exports = config;

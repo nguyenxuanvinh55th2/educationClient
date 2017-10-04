@@ -1,5 +1,6 @@
 //dev
 const graphqlUrl = 'http://localhost:3000/graphql';
+let ddp = 'http://localhost:3000';
 // let socketEndpoint = 'ws://localhost:3000';
 let title = 'Localhost';
 // switch(caseProto){
@@ -8,4 +9,4 @@ let title = 'Localhost';
 //         title = 'Hệ thống đào tạo trực tuyến';
 //         break;
 // }
-module.exports = {graphqlUrl, title};
+module.exports = {graphqlUrl, title, ddp};
