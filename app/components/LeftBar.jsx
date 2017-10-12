@@ -286,12 +286,12 @@ class LeftBar extends React.Component {
           }
         }} containerStyle={{backgroundColor: '#2b3a41', boxShadow: 'none'}}>
         <div style={{textAlign: 'center', cursor: 'pointer'}}>
-          <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
+          <img src="http://sv1.upsieutoc.com/2017/10/12/logofn1.png" alt="Dispute Bills" onClick={() => browserHistory.push("/")} style={{height: 40}} />
         </div>
         <List>
           <ListItem style={{backgroundColor :'#35bcbf', fontSize: 13}} onClick={() => browserHistory.push("/profile/" + users.userId)}
             innerDivStyle={{padding: '5px 16px 5px 50px'}}
-             leftAvatar={<Avatar src={users.currentUser && users.currentUser.image ? users.currentUser.image : 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/userImage_zpsqz3krq9r.jpg'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
+             leftAvatar={<Avatar src={users.currentUser && users.currentUser.image ? users.currentUser.image : 'http://sv1.upsieutoc.com/2017/10/12/userImage.png'} backgroundColor={'#35bcbf'} style={{top: 5, left: 7}} />}
              primaryText={
                <p>
                  {users.currentUser ? users.currentUser.name : ''}

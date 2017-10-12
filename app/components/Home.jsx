@@ -19,8 +19,8 @@ export default class Home extends React.Component {
     }
   }
   render() {
-    let imgUrlTop = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/home-page_01_zpsty0reykt.png';
-    let imgUrlCenter = 'https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/home-page_15_zpsjp7fq1qu.png';
+    let imgUrlTop = 'http://sv1.upsieutoc.com/2017/10/12/home-page_01.png';
+    let imgUrlCenter = 'http://sv1.upsieutoc.com/2017/10/12/home-page_15.png';
     return(
       <div style={{display: 'flex', flexDirection: 'column'}}>
         <div style={{height: 40}}>
@@ -29,7 +29,7 @@ export default class Home extends React.Component {
         <div style={{flexDirection:'column', width:'auto', marginTop: 30}}>
           <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center',background: 'url(' + imgUrlTop + ') no-repeat', backgroundSize: 'cover', height: this.state.height - 65, paddingTop: 10}}>
             <div style={{paddingBottom: 60, marginTop: 40, }}>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/text_zps26sj4dh6.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
+              <img src="http://sv1.upsieutoc.com/2017/10/12/sologan.png" className="img-responsive" style={{maxHeight: this.state.height - 180}} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <input type="text" style={{background: 'none', borderRadius: 25, color: 'white', width: 250, height: 50, textAlign: 'center'}} placeholder="NHẬP MÃ CODE" />
                 <button type="button" className="btn" style={{backgroundColor: '#35bcbf', borderRadius: 25, width: 250, height: 45, color: 'white', marginTop: 15}}>THAM GIA THI</button>
@@ -56,8 +56,8 @@ export default class Home extends React.Component {
               </p>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh1_zpsgftsjtdy.png" className="img-responsive" style={{height: 200}}/>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh2New_zpsp9haf4py.png" className="img-responsive" style={{marginTop: 15, height: 200}}/>
+              <img src="http://sv1.upsieutoc.com/2017/10/12/anh1.png" className="img-responsive" style={{height: 200}}/>
+              <img src="http://sv1.upsieutoc.com/2017/10/12/anh2.png" className="img-responsive" style={{marginTop: 15, height: 200}}/>
             </div>
           </div>
           <div className="row" style={{margin: 40}}>
@@ -112,7 +112,7 @@ export default class Home extends React.Component {
           </div>
           <div  className="row" style={{margin: 0,padding: 50}}>
             <div className="col-sm-12 col-md-6 col-lg-6">
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/anh3_zpsksmg5fvi.png" className="img-responsive" style={{height: 230, width: 420}}/>
+              <img src="http://sv1.upsieutoc.com/2017/10/12/anh3.png" className="img-responsive" style={{height: 230, width: 420}}/>
             </div>
             <div className="col-sm-12 col-md-6 col-lg-6">
               <h2>Rèn luyện tính tự lập cho sinh viên</h2>
@@ -184,7 +184,7 @@ export default class Home extends React.Component {
           </div>
           <div className="row" style={{margin: 0, backgroundColor: '#2b3a41', color: 'white', padding: 15}}>
             <div className="col-sm-12 col-md-5 col-lg-4 col-md-offset-1 col-lg-offset-1" style={{flexDirection: 'column', alignItems: 'center'}}>
-              <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn1_zpswndf0chm.png" alt="Dispute Bills" style={{height: 40}} />
+              <img src="http://sv1.upsieutoc.com/2017/10/12/logofn1.png" alt="Dispute Bills" style={{height: 40}} />
               <div style={{ fontSize: 15 }}>
                 <h2>LIÊN HỆ</h2>
                 <p>Tuielearning.com.vn <span className="glyphicon glyphicon-home pull-left" style={{paddingRight: 10, top: 3}}></span></p>

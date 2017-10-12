@@ -166,7 +166,7 @@ class ChatItem extends Component {
                   <div className="modal-content">
                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
                       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center',width: '95%'}}>
-                        <img src="https://i1249.photobucket.com/albums/hh508/nguyenxuanvinhict/logofn2_zps8wakpjpf.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+                        <img src="http://sv1.upsieutoc.com/2017/10/12/logofn2.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
                       </div>
                       <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                     </div>
