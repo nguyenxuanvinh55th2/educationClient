@@ -69,7 +69,7 @@ class Header extends React.Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <img src="http://sv1.upsieutoc.com/2017/10/12/logofn1.png" alt="Dispute Bills" style={{height: 80, width: 180}}/>
+                <img src="https://sv1.upsieutoc.com/2017/10/12/logofn1.png" alt="Dispute Bills" style={{height: 80, width: 180}}/>
               </a>
             </div>
             {
@@ -79,7 +79,7 @@ class Header extends React.Component {
                   {
                     users.userId &&
                     <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                    <img src={users.currentUser.image ? users.currentUser.image : 'http://sv1.upsieutoc.com/2017/10/12/userImage.png'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                    <img src={users.currentUser.image ? users.currentUser.image : 'https://sv1.upsieutoc.com/2017/10/12/userImage.png'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
                   }
                   {
                     !users.userId &&
@@ -105,7 +105,7 @@ class Header extends React.Component {
               {
                 users.userId &&
                 <li style={{display:'inline'}}><a onClick={() => browserHistory.push('/profile/'+users.userId)}>
-                <img src={users.currentUser.image ? users.currentUser.image : 'http://sv1.upsieutoc.com/2017/10/12/userImage.png'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
+                <img src={users.currentUser.image ? users.currentUser.image : 'https://sv1.upsieutoc.com/2017/10/12/userImage.png'} alt="Nature" style={{borderRadius: '50%',width:40, height: 40}}/><span style={{paddingLeft: 10, color: 'white'}}>{users.currentUser.name}</span></a></li>
               }
               {
                 !users.userId &&
@@ -134,7 +134,7 @@ class Header extends React.Component {
               <div className="modal-content">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
                   <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center',width: '95%'}}>
-                    <img src="http://sv1.upsieutoc.com/2017/10/12/logofn2.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+                    <img src="https://sv1.upsieutoc.com/2017/10/12/logofn2.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
                   </div>
                   <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                 </div>

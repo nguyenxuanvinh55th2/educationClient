@@ -11,6 +11,7 @@ import gql from 'graphql-tag';
 import store from '../store.js'
 import { loginCommand } from '../action/actionCreator';
 import { changTypeLogin } from '../action/actionCreator';
+import { Helmet } from "react-helmet";
 function mapStateToProps(state){
   return {
     users: state.users,
@@ -104,6 +105,9 @@ class Main extends React.Component {
    delete childProps.children;
     return (
       <div style={{flexDirection: 'column'}}>
+        <Helmet>
+           <title>Vinh đẹp Trai</title>
+       </Helmet>
         {
           Meteor.userId() && this.props.users.userId || localStorage.getItem('Meteor.loginTokenFacebook') || localStorage.getItem('Meteor.loginTokenGoogle') ?
           <div>

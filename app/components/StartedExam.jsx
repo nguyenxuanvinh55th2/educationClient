@@ -336,7 +336,7 @@ class StartedExam extends React.Component {
         return (
           <div style={{backgroundColor: 'white'}}>
             <a className="navbar-brand" href="/" style={{backgroundColor: 'white', position: 'absolute', top: 0, left: 0}}>
-              <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
+              <img src="https://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
             </a>
             <div style={{textAlign: 'center', paddingBottom: 20}}>
               <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
@@ -385,7 +385,7 @@ class StartedExam extends React.Component {
     return (
       <div style={{backgroundColor: 'white'}}>
         <a className="navbar-brand" href="/" style={{backgroundColor: 'white', position: 'absolute', top: 0, left: 0}}>
-              <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
+              <img src="https://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
         </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC'}}>{ data.examById.name.toUpperCase() }</h1>
@@ -444,7 +444,7 @@ class StartedExam extends React.Component {
     return (
       <div>
         <a className="navbar-brand" href="/" style={{backgroundColor: 'transparent', position: 'absolute', top: 0, left: 0}}>
-            <img src="http://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
+            <img src="https://i1117.photobucket.com/albums/k593/ngocsang1501/logofn1_zpsxdfhy9fg.png" alt="Dispute Bills" />
         </a>
         <div style={{textAlign: 'center', paddingBottom: 20}}>
           <h1 style={{color: '#68C0BC', margin: 0, paddingTop: 15}}>{ data.examById.name.toUpperCase() }</h1>

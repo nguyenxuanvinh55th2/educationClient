@@ -179,7 +179,7 @@ button:active {
 }
 
 .navbar-inverse {
-  background-image: url("http://www.whitetablegallery.org/src/share/default.jpg");
+  background-image: url("https://www.whitetablegallery.org/src/share/default.jpg");
 }
 
 .navbar-default {
@@ -457,4 +457,3 @@ ul, li {
   background-color: rgb(105, 105, 104);
   left: 0px;
 }
-

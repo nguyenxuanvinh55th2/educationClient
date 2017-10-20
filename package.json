@@ -2,9 +2,10 @@
   "name": "webpacktutorial",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "meteor-client bundle && ./node_modules/.bin/webpack-dev-server",
+    "startFast": "./node_modules/.bin/webpack-dev-server",
     "build": "webpack -p --config webpack.production.config.js --progress"
   },
   "author": "",
@@ -79,6 +80,7 @@
     "react-geosuggest": "^2.1.0",
     "react-google-login": "^2.8.5",
     "react-grid-layout": "^0.14.0",
+    "react-helmet": "^5.2.0",
     "react-i18next": "^2.1.0",
     "react-meteor-data": "^0.2.10",
     "react-notification-system": "^0.2.12",

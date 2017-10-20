@@ -127,10 +127,10 @@ class ChatItem extends Component {
                     </td>
                     <td>
                       { this.props.isFriend ? (
-                          this.props.online ? 
-                          <div style={{width: '9px', height: '9px', backgroundColor: '#53af13', borderRadius: '50%'}}/> : 
+                          this.props.online ?
+                          <div style={{width: '9px', height: '9px', backgroundColor: '#53af13', borderRadius: '50%'}}/> :
                           <div style={{width: '27%', fontSize: '11px', color: 'gray'}}>{this.props.lastLogin}</div>
-                        ) : 
+                        ) :
                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
                           <IconButton style={{height: 30, width: 30, paddingTop: 0, paddingLeft: 0}} tooltip="Thêm bạn" iconStyle={{color: 'rgb(53, 188, 191)', height: 30, width: 30}} onClick={() => {
                             this.props.insertUserFriend(users.userId, this.props.userId).then(() => {
@@ -138,7 +138,7 @@ class ChatItem extends Component {
                             })
                           }}>
                             <i className="material-icons">person_add</i>
-                          </IconButton> 
+                          </IconButton>
                           <IconMenu
                             style={{height: 30, width: 20, paddingTop: 0}}
                             iconButtonElement={<IconButton style={{height: 30, width: 20, paddingTop: 0, paddingLeft: 0}} iconStyle={{color: 'rgb(53, 188, 191)'}}><MoreVertIcon /></IconButton>}
@@ -166,7 +166,7 @@ class ChatItem extends Component {
                   <div className="modal-content">
                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f5f5f5', borderBottom: 'none', padding: '10px 18px'}}>
                       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center',width: '95%'}}>
-                        <img src="http://sv1.upsieutoc.com/2017/10/12/logofn2.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
+                        <img src="https://sv1.upsieutoc.com/2017/10/12/logofn2.png" alt="Dispute Bills" style={{height: 50, width: 200}} />
                       </div>
                       <span className="close" onClick={() => this.setState({showModal: false})}>&times;</span>
                     </div>
@@ -187,7 +187,7 @@ class ChatItem extends Component {
                           })
                         }}>
                           Thêm
-                        </button> 
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -200,11 +200,11 @@ class ChatItem extends Component {
 
 const ADD_FRIEND = gql`
   mutation insertUserFriend($userId: String!, $_id: String) {
-    insertUserFriend(userId: $userId, _id: $_id) 
+    insertUserFriend(userId: $userId, _id: $_id)
   }`
 const ADD_CHILDRENT = gql`
   mutation insertChildrent($userId: String!, $code: String!) {
-    insertChildrent(userId: $userId, code: $code) 
+    insertChildrent(userId: $userId, code: $code)
 }`
 
 

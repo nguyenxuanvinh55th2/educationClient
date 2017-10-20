@@ -2,49 +2,34 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import { render } from 'react-dom';
 import {Router, Route, IndexRoute} from 'react-router'
-import store,{history} from './store'
+import store,{history} from './app/store'
 
-import {client} from './apollo-client'
+import {client} from './app/apollo-client'
 import { ApolloProvider } from 'react-apollo';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import 'react-grid-layout-root/css/styles.css';
-import 'react-resizable-root/css/styles.css';
-import 'quill-root/dist/quill.core.css';
-import 'quill-root/dist/quill.snow.css';
-import 'rc-slider-root/assets/index.css';
-import './material.css';
-import './ag-pattern.css';
-import './react-tab.css';
-import './react-tree.css';
-import './pattern-fly.css';
-import 'ag-grid-root/dist/styles/ag-grid.css';
-import 'ag-grid-root/dist/styles/theme-fresh.css';
-import './customer.css';
-import './main.css';
 
-import App from './components/App.jsx'
-import Login from './components/Login.jsx'
-import Profile from './components/Profile.jsx'
-import Wall from './components/Wall.jsx'
-import Home from './components/Home.jsx'
-import ClassList from './components/ClassList.jsx'
-import CreateTest from './components/CreateTest.jsx'
-import CreateSubject from './components/CreateSubject.jsx'
-import QueryUserPermission from './QueryUserPermission.jsx';
-import WaitExam from './components/WaitExam.jsx';
-import StartedExam from './components/StartedExam.jsx';
-import ManagerSubject from './components/ManagerSubject.jsx';
-import QuestionStatis from './components/QuestionStatis.jsx';
-import Authenticate from './components/Authenticate.jsx';
-import ManagerUserParent from './components/ManagerUserParent.jsx';
-import { ListUserGiveAss } from './components/ChildManagerSubject.jsx'
-import UserProfile from './components/EditProfile.jsx';
+import App from './app/components/App.jsx'
+import Login from './app/components/Login.jsx'
+import Profile from './app/components/Profile.jsx'
+import Wall from './app/components/Wall.jsx'
+import Home from './app/components/Home.jsx'
+import ClassList from './app/components/ClassList.jsx'
+import CreateTest from './app/components/CreateTest.jsx'
+import CreateSubject from './app/components/CreateSubject.jsx'
+import QueryUserPermission from './app/QueryUserPermission.jsx';
+import WaitExam from './app/components/WaitExam.jsx';
+import StartedExam from './app/components/StartedExam.jsx';
+import ManagerSubject from './app/components/ManagerSubject.jsx';
+import QuestionStatis from './app/components/QuestionStatis.jsx';
+import Authenticate from './app/components/Authenticate.jsx';
+import ManagerUserParent from './app/components/ManagerUserParent.jsx';
+import { ListUserGiveAss } from './app/components/ChildManagerSubject.jsx'
+import UserProfile from './app/components/EditProfile.jsx';
 
 injectTapEventPlugin();
-
-ReactDOM.render(
+let routes = (
   <ApolloProvider store={store} client={client}>
     <MuiThemeProvider>
         <Router history={history}>
@@ -69,4 +54,5 @@ ReactDOM.render(
         </Router>
     </MuiThemeProvider>
   </ApolloProvider>
-, document.getElementById('root'));
+)
+export default routes;

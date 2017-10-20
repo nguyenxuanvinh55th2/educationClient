@@ -18,6 +18,7 @@ import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import Notifications from 'material-ui/svg-icons/social/notifications'
 import IconChat from 'material-ui/svg-icons/communication/chat';
+import { Helmet } from "react-helmet";
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -49,6 +50,16 @@ export default class Profile extends React.Component {
     if(users.userId){
       return(
         <div style={{flexDirection: 'column', zIndex: 1}}>
+          <Helmet>
+             <title>OK.Vinh đẹp Trai</title>
+             <meta name="description" content="VINH NGUYỄN TEST "/>
+             <meta name="keywords" content="VINH,NGUYEN" />
+             <meta property="og:url"                content="https://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
+              <meta property="og:type"               content="article" />
+              <meta property="og:title"              content="When Great Minds Don’t Think Alike" />
+              <meta property="og:description"        content="How much does culture influence creative thinking?" />
+              <meta property="og:image"              content="https://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+         </Helmet>
           <Notification {...this.props} loginToken={this.props.loginToken}/>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({sidebarOpen: true
           })} iconClassNameRight="muidocs-icon-navigation-expand-more" style={{backgroundColor: '#ebebeb', height: 47, position: 'fixed'}}
